@@ -30,6 +30,12 @@ local date1 = c(current_date)
 local time1 = c(current_time)
 
 
+// clean survey data exported from qualtrics 
+do $csacprojdir/do/clean/clean_qualtrics_export.do
+
+
+
+
 
 local date2 = c(current_date)
 local time2 = c(current_time)
