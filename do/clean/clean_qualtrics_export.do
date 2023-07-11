@@ -403,7 +403,7 @@ tab progress
 // recode variables 
 //--------------------------------------------------------------
 
-// convert all timing vars from string to numeric 
+****** convert all timing vars from string to numeric 
 destring t_*, replace 
 // put all timing vars at end of dataset
 order t_*, last
@@ -419,6 +419,7 @@ drop senior
 rename senior_temp senior 
 
 ****** recode how did you hear about importance of aid app
+// this is a check all that apply question 
 // define value label for new categorical variable 
 #delimit ;
 label define hear_import_aid 
@@ -438,6 +439,237 @@ label var hear_import_aid_temp "`: var lab hear_import_aid'"
 drop hear_import_aid
 rename hear_import_aid_temp hear_import_aid
 
+
+****** recode were you required by your high school to file FAFSA
+label define hs_req_fafsa 0 "No" 1 "Yes"
+encode hs_req_fafsa, generate(hs_req_fafsa_temp) label(hs_req_fafsa)
+label var hs_req_fafsa "`: var lab hs_req_fafsa'"
+drop hs_req_fafsa_temp
+rename hs_req_fafsa_temp hs_req_fafsa
+
+****** recode: support you received in completing FAFSA/CADAA, check all that apply
+#delimit ;
+label define fafsa_support
+    1 "High school counselor"
+    2 "Teacher"
+    3 "FAFSA workshop or training at your high school"
+    4 "FAFSA workshop at community location outside of high school"
+    5 "Parent"
+    6 "Family member other than parent"
+    7 "Friend"
+    8 "Nobody (I completed it on my own)"
+    ;
+#delimit cr
+
+encode fafsa_support, generate(fafsa_support_temp) label(fafsa_support)
+label var fafsa_support_temp "`: var lab fafsa_support'"
+drop fafsa_support
+rename fafsa_support_temp fafsa_support 
+
+
+****** recode: do you plan to attend college in the fall?
+label define college_fall 0 "No" 1 "Yes" 2 "I don't know"
+
+encode college_fall, generate(college_fall_temp) label(college_fall)
+label var college_fall_temp "`: var lab college_fall'"
+drop college_fall
+rename college_fall_temp college_fall
+
+****** recode: where do you plan to attend college?
+/* this question is only shown if participant answered Yes to college_fall */
+#delimit ;
+label define where_college
+    1 "California Community College (CCC)"
+    2 "California State University (CSU)"
+    3 "University of California (UC)"
+    4 "Private four-year college/university in California"
+    5 "Vocational, technical, or career college in California"
+    6 "College outside of California"
+    ;
+#delimit cr
+
+encode where_college, generate(where_college_temp) label(where_college)
+label var where_college_temp "`: var lab where_college'"
+drop where_college
+rename where_college_temp where_college
+
+****** recode: has your college contacted you about your financial aid?
+label define college_contact 0 "No" 1 "Yes"
+encode college_contact, generate(college_contact_temp) label(college_contact)
+label var college_contact_temp "`: var lab college_contact'"
+drop college_contact
+rename college_contact_temp college_contact
+
+****** recode: has your college contacted you about the following regarding your financial aid?
+/* this is a check all that reply question. It is only shown if college_contact is Yes */
+#delimit ;
+label define college_contact_item
+    1 "FAFSA/CADAA verification (additional documentation needed to process financial aid)"
+    2 "Financial aid offer/award letter"
+    3 "Eligibility for work study"
+    4 "Information about loans"
+    ;
+#delimit cr 
+encode college_contact_item, generate(college_contact_item_temp) label(college_contact_item)
+label var college_contact_item_temp "`: var lab college_contact_item'"
+drop college_contact_item
+rename college_contact_item_temp college_contact_item
+
+****** recode: what do you think you'll be doing this fall?
+/* this is check all that apply. It is only shown if college_fall is No */
+#delimit ;
+label define fall_plan
+    1 "Work part-time"
+    2 "Work full-time"
+    3 "Family obligations"
+    4 "Military"
+    ;
+#delimit cr 
+encode fall_plan, generate(fall_plan_temp) label(fall_plan)
+label var fall_plan_temp "`: var lab fall_plan'"
+drop fall_plan
+rename fall_plan_temp fall_plan
+
+****** recode: Which of the following might influence your decision of whether or not to attend college? 
+/* this is check all that apply. only shown if college_fall is I don't know */
+label define inf_no_college 1 "Financial support" 2 "Academic support" 3 "Family or other support"
+encode inf_no_college, generate(inf_no_college_temp) label(inf_no_college)
+label var inf_no_college_temp "`: var lab inf_no_college'"
+drop inf_no_college
+rename inf_no_college_temp inf_no_college
+
+****** recode: Do you plan to take college classes this summer?
+#delimit ;
+label define plan_summer_class
+    -2 "Definitely not"
+    -1 "Probably not"
+    0 "Not sure"
+    1 "Probably yes"
+    2 "Definitely yes"
+    ;
+#delimit cr 
+encode plan_summer_class, generate(plan_summer_class_temp) label(plan_summer_class)
+label var plan_summer_class_temp "`: var lab plan_summer_class'"
+drop plan_summer_class
+rename plan_summer_class_temp plan_summer_class
+
+****** recode: After taking this information into account, how likely are you to take college classes this summer?
+/*  this is the summer nudge question */
+#delimit ;
+label define likely_summer_class 
+    -2 "Extremely unlikely"
+    -1 "Somewhat unlikely"
+    0 "Not sure"
+    1 "Somewhat likely"
+    2 "Extremely likely"
+    ;
+#delimit cr 
+encode likely_summer_class, generate(likely_summer_class_temp) label(likely_summer_class)
+label var likely_summer_class_temp "`: var lab likely_summer_class"
+drop likely_summer_class
+rename likely_summer_class_temp likely_summer_class
+
+****** recode: What are you most likely to study in college?
+#delimit ;
+label define major
+    1 "Business"
+    2 "Engineering"
+    3 "Natural sciences (e.g., biology, chemistry, physics)"
+    4 "Social sciences (e.g., psychology, sociology, economics)"
+    5 "Humanities & Arts (e.g., English, History, Arts)"
+    6 "Health sciences"
+    7 "Education"
+    8 "Applied sciences (e.g., automotive repair, HVAC, construction)"
+    9 "Public service (e.g., criminal justice, fire science)"
+    10 "Undecided"
+    ;
+#delimit cr 
+encode major, generate(major_temp) label(major)
+label var major_temp "`: var lab major'"
+drop major 
+rename major_temp major 
+
+****** recode: How do you plan to pay college tuition and fees? 
+/* (Check all that apply) */
+#delimit ;
+label define pay_plan
+    1 "Scholarships"
+    2 "Grants (e.g., Pell Grant, Cal Grant)"
+    3 "My own savings"
+    4 "Working while enrolled"
+    5 "Money from other people (e.g., family and friends)"
+    6 "Student loans"
+    7 "Military/VA benefits"
+    8 "Credit card(s)"
+    ;
+#delimit cr 
+encode pay_plan, generate(pay_plan_temp) label(pay_plan)
+label var pay_plan_temp "`: var lab pay_plan'"
+drop pay_plan
+rename pay_plan_temp pay_plan
+
+****** recode: 
+/* Imagine that you borrowed $10,000 in student loans to pay for college. 
+How much do you think you would actually be required to pay back? 
+In other words, how much of these loans do you think would not be forgiven? */
+destring loan_pay_10k, replace 
+
+****** recode:
+/* Imagine that you borrowed $50,000 in student loans to pay for college. 
+How much do you think you would actually be required to pay back? 
+In other words, how much of these loans do you think would not be forgiven? */
+destring loan_pay_50k, replace 
+
+****** recode: You indicated you plan to take out student loans. How much do you plan to borrow in student loans?
+#delimit ;
+label define loan_borrow_amount
+    1 "Less than $5K"
+    2 "$6K to $10K"
+    3 "$11K to $20K"
+    4 "$21K to $50K"
+    5 "$51K to $100K"
+    6 "More than $100K"
+    ;
+#delimit cr 
+encode loan_borrow_amount, generate(loan_borrow_amount_temp) label(loan_borrow_amount)
+label var loan_borrow_amount_temp "`: var lab loan_borrow_amount'"
+drop loan_borrow_amount
+rename loan_borrow_amount_temp loan_borrow_amount
+
+
+****** recode: What is the highest degree you hope to earn after you have completed all of your schooling?
+#delimit ;
+label define highest_degree
+    1 "Get a certificate in a vocational or technical field"
+    2 "Associate degree  (AA/AS/ADT)"
+    3 "Bachelor’s Degree (BA/BS)"
+    4 "Master’s Degree (MA/MS)"
+    5 "Doctoral Degree (Ph.D., M.D., J.D., etc.)"
+    ;
+#delimit cr 
+encode highest_degree, generate(highest_degree_temp) label(highest_degree)
+label var highest_degree_temp "`: var lab highest_degree'"
+drop highest_degree
+rename highest_degree_temp highest_degree
+
+
+****** recode: When you think about college, how worried are you about the following? (matrix)
+****** recode: When you think about college, how worried are you about experiencing discrimination because of your: (matrix)
+// define value label that's common to all questions in above two categories
+#delimit ;
+label define worry 
+    0 "Not at all worried"
+    1 "Slightly worried"
+    2 "Somewhat worried"
+    3 "Very worried"
+    ;
+#delimit cr 
+foreach v of varlist worry_* {
+    encode `v', generate(`v'_temp) label(worry)
+    label var `v'_temp "`: var lab `v''"
+    drop `v'
+    rename `v'_temp `v'
+}
 
 
 
