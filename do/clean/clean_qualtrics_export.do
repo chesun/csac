@@ -249,8 +249,8 @@ rename religion worry_religion
 label var worry_religion "how worried about discrimination based on religion"
 
 // note: there is no timing question for the number of online class question
-rename q47 num_online_class
-label var num_online_class "how many college classes do you plan to take online"
+rename q47 prop_online_class
+label var prop_online_class "how many college classes do you plan to take online"
 
 // CCC full time nudge
 rename q48_pagesubmit t_ccc_ft
@@ -310,6 +310,8 @@ label var race "race/ethnicity"
 
 /* note: there was a page break between the timing question (q68) and the parent education question (q69)
 so the time spent on parent education question was not captured */
+drop q68_pagesubmit 
+
 rename q69 parent_edu
 label var parent_edu "highest level of education among parents"
 
@@ -329,8 +331,8 @@ rename q75 has_job
 label var has_job "do you currently have job"
 
     // there is no timing for this question; displayed only if previous question answer is yes
-    rename q76 job_hours
-    label var job_hours "how many hours a wekk do you work at your job"
+    rename q76 hours_job
+    label var hours_job "how many hours a wekk do you work at your job"
 
 rename q77_pagesubmit t_agab
 label var t_agab "time spent on 'what is your assigned sex at birth', in seconds"
@@ -444,7 +446,7 @@ rename hear_import_aid_temp hear_import_aid
 label define hs_req_fafsa 0 "No" 1 "Yes"
 encode hs_req_fafsa, generate(hs_req_fafsa_temp) label(hs_req_fafsa)
 label var hs_req_fafsa "`: var lab hs_req_fafsa'"
-drop hs_req_fafsa_temp
+drop hs_req_fafsa
 rename hs_req_fafsa_temp hs_req_fafsa
 
 ****** recode: support you received in completing FAFSA/CADAA, check all that apply
@@ -670,6 +672,271 @@ foreach v of varlist worry_* {
     drop `v'
     rename `v'_temp `v'
 }
+
+
+****** recode: When thinking about your college classes, how many do you plan to take online?
+#delimit ;
+label define prop_online_class
+    0 "None"
+    -1 "One or two"
+    -2 "Half"
+    -3 "Most"
+    -4 "All"
+    ;
+#delimit cr 
+encode prop_online_class, generate(prop_online_class_temp) label(prop_online_class)
+label var prop_online_class_temp "`: var lab prop_online_class'"
+drop prop_online_class
+rename prop_online_class_temp prop_online_class
+
+****** recode: CCC full time nudge 
+/* You indicated you plan to enroll in a California Community College next year. 
+ommunity college students eligible for the Cal Grant can receive as much as $8000 a year 
+in extra grant aid for taking 15 units each term (4-5 classes). This money could be used for 
+living expenses and other costs, and would not need to be paid back.
+
+Prior to taking this survey, did you know that Cal Grant recipients could get this additional 
+money for enrolling in 15 units each term? */
+label define ccc_ft_yn 0 "No" 1 "Yes"
+encode ccc_ft_yn, generate(ccc_ft_yn_temp) label(ccc_ft_yn)
+label var ccc_ft_yn_temp "`: ccc_ft_yn'"
+drop ccc_ft_yn
+rename ccc_ft_yn_temp ccc_ft_yn
+
+****** recode: How would you rate your academic performance in high school?
+****** recode: How would you rate your social experience in high school?
+// common value label
+#delimit ;
+label define hs_experience
+    1 "Poor"
+    2 "Fair"
+    3 "Good"
+    4 "Very Good"
+    5 "Excellent"
+    ;
+#delimit cr 
+
+foreach v in hs_academic hs_social {
+    encode `v', generate(`v'_temp) label(hs_experience)
+    label var `v'_temp "`: var lab `v''"
+    drop `v'
+    rename `v'_temp `v'
+}
+
+
+****** recode: Please indicate your agreement with the following statements. 
+/* this is a matrix question with 4 statements: 
+hs_community_belong: I feel that I belong in my high school community  
+hs_teacher_care: Teachers and staff at my high school care about my future
+hs_good_advising: I received good advising from my high school about my college plans
+hs_prepared_college: I feel prepared for college
+*/
+#delimit ;
+label define hs_belong 
+    -2 "Strongly disagree"
+    -1 "Somewhat disagree"
+    0 "Neither agree nor disagree"
+    1 "Somewhat agree"
+    2 "Strongly agree"
+    ;
+#delimit cr 
+
+foreach v in hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college {
+    encode `v', generate(`v'_temp) label(hs_belong)
+    label var `v'_temp "`: var lab `v''"
+    drop `v'
+    rename `v'_temp `v'
+}
+
+****** recode: During the past 12 months, how many times on school property were you harassed or bullied?
+#delimit ;
+label define times_bullied
+    0 "0 times"
+    1 "1 time"
+    2 "2-3 times"
+    3 "4 or more times"
+    ; 
+#delimit cr 
+
+encode times_bullied, generate(times_bullied_temp) label(times_bullied)
+label var times_bullied_temp "`: var lab times_bullied'"
+drop times_bullied
+rename times_bullied_temp times_bullied
+
+    ****** recode: During the past 12 months, were you harassed or bullied for any of the following reasons? 
+    /* (Check all that apply) this is only shown if time_bullied is not 0 */
+    #delimit ;
+    label define reasons_bullied
+        1 "Because of your race or ethnicity"
+        2 "Because of your religion"
+        3 "Because of your gender identity"
+        4 "Because of your sexual orientation"
+        ;
+    #delimit cr 
+
+    encode reasons_bullied, generate(reasons_bullied_temp) label(reasons_bullied)
+    label var reasons_bullied_temp "`: var lab reasons_bullied'"
+    drop reasons_bullied
+    rename reasons_bullied_temp reasons_bullied
+
+****** recode: Please tell us what type of high school you are graduating from:
+#delimit ;
+label define hs_type
+    1 "Public high school (including charter)"
+    2 "Private/Parochial high school"
+    3 "Home school"
+    ;
+#delimit cr 
+
+encode hs_type, generate(hs_type_temp) label(hs_type)
+label var hs_type_temp "`: var lab hs_type'"
+drop hs_type
+rename hs_type_temp hs_type
+
+
+
+****** recode: Please indicate your race/ethnicity 
+/* (Check all that apply) */
+#delimit ;
+label define race
+    1 "Black/African American"
+    2 "American Indian/Alaskan Native"
+    3 "Asian"
+    4 "Filipino"
+    5 "Hispanic/Latinx"
+    6 "Pacific Islander"
+    7 "White/Non-Hispanic"
+    8 "Other"
+    ;
+#delimit cr 
+
+encode race, generate(race_temp) label(race)
+label var race_temp "`: var lab race'"
+drop race 
+rename race_temp race 
+
+****** recode: When you were growing up, was English the primary language spoken in your home?
+label define primary_english 0 "No" 1 "Yes"
+
+encode primary_english, generate(primary_english_temp) label(primary_english)
+label var primary_english_temp "`: var lab primary_english'"
+drop primary_english
+rename primary_english_temp primary_english
+
+****** do not need to recode: What language was primarily spoken in your home when you were growing up?
+/* this is a text entry question . it is only shown if primary_english is No */
+
+****** recode: Do you currently have a job?
+label define has_job 0 "No" 1 "Yes"
+
+encode has_job, generate(has_job_temp) label(has_job)
+label var has_job_temp "`: var lab has_job'"
+drop has_job
+rename has_job_temp has_job
+
+****** recode: How many hours a week do you work at your job?
+/* this is only shown if has_job is Yes */
+#delimit ;
+label define hours_job
+    1 "Less than 10"
+    2 "10-19"
+    3 "20-30"
+    4 "More than 30"
+    ;
+#delimit cr 
+
+encode hours_job, generate(hours_job_temp) label(hours_job)
+label var hours_job_temp "`: var lab hours_job'"
+drop hours_job
+rename hours_job_temp hours_job
+
+
+
+//-------------------------------------------------------
+// cleaning and recoding the gender and sexual orientation variables 
+//-------------------------------------------------------
+
+****** recode gender variable 
+replace gender = "Other" if gender=="Other (please feel free to specify)"
+
+****** generate a dummy for assigned sex at birth
+gen afab =.
+replace afab = 0 if agab=="Male"
+replace afab = 1 if agab=="Female"
+label var afab "dummy for assigned female at birth"
+label define afab 0 "assigned male at birth" 1 "assigned female at birth"
+label values afab afab  
+
+****** generate new variables for gender and sexual orientation 
+tab gender 
+tab so 
+tab gender_other 
+tab so_other 
+
+// first clean the gender and so vars and gender_other and so_other text responses 
+foreach v in gender so gender_other so_other {
+    // convert to upper case
+    replace `v' = strupper(`v')
+    // collapse internal multiple blanks to one blank 
+    replace `v' = stritrim(`v')
+    // remove leading and trailing blanks
+    replace `v' = strtrim(`v')
+    // remove dashes "-"
+    replace `v' = subinstr(`v', "-", "", .)
+} 
+
+// check tabulation again 
+tab gender 
+tab so 
+tab gender_other
+tab so_other
+
+****** create a cleaned gender variable 
+// clean the gender_other free response text 
+gen gender_other_clean = gender_other
+label var gender_other_clean "cleaned gender other free text response"
+
+// collapse categories of free response gender
+/* collapsed categories:
+1. NONBINARY
+    includes mentions of nonbinary, they/them
+2. GENDERFLUID:
+    includes mentions of genderfluid  
+3. OTHERGNC (other gender nonconforming)
+    includes mentions of gender non conforming, androgyne, demiboy(girl), bigender,
+    agender, genderqueer
+4. UNSURE/QUESTIONING
+    includes mentions of unsure, unknown, uncertain, questioning, i don't know, IDK
+5. WOMAN
+    includes mentions of transfem
+6. MAN
+    includes mentions of transmasc
+** NOTE: by coding nonbinary first, any mention of nonbinary transmasc/fem will be coded as nonbinary 
+7. CISGENDER/HOSTILE
+    includes any other responses not in the previous 6 categories, such as overtly queerphobic ones, e.g. attack helicopter
+    assume they are cisgender 
+*/
+#delimit ;
+replace gender_other_clean = "BIGENDER/TWOSPIRIT" 
+    if strpos(gender_other, "BIGENDER")!=0 
+    | strpos(gender_other, "TWOSPIRIT")!=0 
+    | strpos(gender_other, "TWO SPIRIT")!=0
+    ;
+
+replace gender_other_clean
+#delimlit cr 
+
+
+
+// create an overall gender variable that combines the free text response with the choice question
+gen gender_all = gender
+label var gender_all "combined gender variable including free text"
+replace gender_all = gender_other if !mi(gender_other)
+
+tab gender_all
+
+// create a cleaned gender variable 
+
 
 
 
