@@ -19,6 +19,21 @@ do files
 log files
 
 ```
+/est
+```
+estimates (.ster files)
+
+```
+/out/fig
+```
+output figures 
+
+```
+/out/tab
+```
+output tables 
+
+```
 /lit
 ```
 relevant literature 
