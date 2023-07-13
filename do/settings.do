@@ -4,7 +4,8 @@
 ************************ Written by Christina Sun 07/05/2023 *******************
 
 // overall project directory
-global csacprojdir "/home/research/ca_ed_lab/users/chesun/gsr/csac"
+global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
 
 // data directory
-global csacdatadir "/home/research/ca_ed_lab/users/chesun/gsr/csac/data"
+global csacrawdatadir "/home/research/ca_ed_lab/data/restricted_access/raw/csac_survey/2023"
+global csacclndatadir "/home/research/ca_ed_lab/data/restricted_access/clean/csac_survey/2023"

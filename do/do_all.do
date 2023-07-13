@@ -7,7 +7,7 @@ do %csacprojdir/do/do_all.do
 
 // set working directory and set global project settings
 
-cd "/home/research/ca_ed_lab/users/chesun/gsr/csac"
+cd "/home/research/ca_ed_lab/projects/csac_survey2023"
 do do/settings.do
 
 cap log close _all

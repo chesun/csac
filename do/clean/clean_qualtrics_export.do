@@ -34,7 +34,7 @@ local time1 = c(current_time)
 
 
 // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not data)
-import delimited $csacdatadir/raw/csac_hs_senior_2023_export_07_05_2023.csv, varnames(1) rowrange(4:) clear
+import delimited $csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv, varnames(1) rowrange(4:) clear
 
 // drop unused variables
 drop status recipientfirstname recipientlastname recipientemail externalreference distributionchannel userlanguage
@@ -59,6 +59,10 @@ label var email_fall "email to contact in the fall"
 
 // delete observations with missing email
 drop if email==""
+// remove leading and trailing blanks
+foreach v in email email_fall {
+    replace `v' = strtrim(`v')
+}
 
 // preserve dataset
 preserve
@@ -68,7 +72,7 @@ keep id ipaddress latitude longitude email email_fall
 label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
 
 compress
-save $csacdatadir/restricted/csac_hs_senior_2023_id_xwalk.dta, replace
+save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
 
 
 //---------------------------------------------------------------------------
@@ -76,6 +80,8 @@ save $csacdatadir/restricted/csac_hs_senior_2023_id_xwalk.dta, replace
 //---------------------------------------------------------------------------
 restore
 
+// drop personally identifiable information 
+drop id ipaddress latitude longitude email email_fall
 
 // rename and label all other variables
 rename durationinseconds duration_sec
@@ -334,10 +340,10 @@ label var has_job "do you currently have job"
     rename q76 hours_job
     label var hours_job "how many hours a wekk do you work at your job"
 
-rename q77_pagesubmit t_agab
-label var t_agab "time spent on 'what is your assigned sex at birth', in seconds"
-rename q78 agab
-label var agab "assigned sex at birth on birth certificate"
+rename q77_pagesubmit t_asab
+label var t_asab "time spent on 'what is your assigned sex at birth', in seconds"
+rename q78 asab
+label var asab "assigned sex at birth on birth certificate"
 
 rename q79_pagesubmit t_gender
 label var t_gender "time spent on 'what is yoru current gender identity', in seconds"
@@ -859,13 +865,15 @@ rename hours_job_temp hours_job
 ****** recode gender variable 
 replace gender = "Other" if gender=="Other (please feel free to specify)"
 
-****** generate a dummy for assigned sex at birth
-gen afab =.
-replace afab = 0 if agab=="Male"
-replace afab = 1 if agab=="Female"
-label var afab "dummy for assigned female at birth"
-label define afab 0 "assigned male at birth" 1 "assigned female at birth"
-label values afab afab  
+****** generate a var for assigned gender at birth
+/* translate male/female from assigned sex at birth to man/woman for assigned gender at birth */
+gen agab =""
+replace agab = "MAN" if asab=="Male"
+replace agab = "WOMAN" if asab=="Female"
+label var agab "assigned gender at birth"
+
+
+
 
 ****** generate new variables for gender and sexual orientation 
 tab gender 
@@ -903,41 +911,303 @@ label var gender_other_clean "cleaned gender other free text response"
 2. GENDERFLUID:
     includes mentions of genderfluid  
 3. OTHERGNC (other gender nonconforming)
-    includes mentions of gender non conforming, androgyne, demiboy(girl), bigender,
+    includes mentions of gender non conforming, androgyne, demiboy(girl), bigender, twospirit,
     agender, genderqueer
 4. UNSURE/QUESTIONING
     includes mentions of unsure, unknown, uncertain, questioning, i don't know, IDK
 5. WOMAN
-    includes mentions of transfem
+    includes mentions of transfem, woman, girl
 6. MAN
-    includes mentions of transmasc
+    includes mentions of transmasc, man, boy
 ** NOTE: by coding nonbinary first, any mention of nonbinary transmasc/fem will be coded as nonbinary 
-7. CISGENDER/HOSTILE
+7. CISGENDER/OTHER
     includes any other responses not in the previous 6 categories, such as overtly queerphobic ones, e.g. attack helicopter
     assume they are cisgender 
 */
 #delimit ;
-replace gender_other_clean = "BIGENDER/TWOSPIRIT" 
-    if strpos(gender_other, "BIGENDER")!=0 
-    | strpos(gender_other, "TWOSPIRIT")!=0 
-    | strpos(gender_other, "TWO SPIRIT")!=0
+
+replace gender_other_clean = "NONBINARY"
+    if strpos(gender_other, "NONBINARY")!=0
+    | strpos(gender_other, "NON BINARY")!=0
+    | strpos(gender_other, "THEY/THEM")!=0
     ;
 
-replace gender_other_clean
-#delimlit cr 
+replace gender_other_clean = "GENDERFLUID"
+    if strpos(gender_other, "GENDERFLUID")!=0
+    | strpos(gender_other, "GENDER FLUID")!=0
+    | strpos(gender_other, "FLUID")!=0
+    ;
+
+replace gender_other_clean = "OTHERGNC"
+    if strpos(gender_other, "GENDER NONCONFORMING")!=0
+    | strpos(gender_other, "GENDERNONCONFORMING")!=0
+    | strpos(gender_other, "GENDER NON CONFORMING")!=0
+    | strpos(gender_other, "ANDROGYNE")!=0
+    | strpos(gender_other, "ANDROGYNOUS")!=0
+    | strpos(gender_other, "DEMIBOY")!=0
+    | strpos(gender_other, "DEMOGIRL")!=0
+    | strpos(gender_other, "BIGENDER")!=0 
+    | strpos(gender_other, "TWOSPIRIT")!=0 
+    | strpos(gender_other, "TWO SPIRIT")!=0
+    | strpos(gender_other, "AGENDER")!=0
+    | strpos(gender_other, "GENDERQUEER")!=0
+    | strpos(gender_other, "GENDER QUEER")!=0
+    ;
+
+replace gender_other_clean = "UNSURE/QUESTIONING"
+    if strpos(gender_other, "UNSURE")!=0
+    | strpos(gender_other, "UNKNOWN")!=0
+    | strpos(gender_other, "UNCERTAIN")!=0
+    | strpos(gender_other, "QUESTIONING")!=0
+    | strpos(gender_other, "I DON'T KNOW")!=0
+    | strpos(gender_other, "IDK")!=0
+    | strpos(gender_other, "NOT SURE")!=0
+    ;
+
+replace gender_other_clean = "WOMAN"
+    if strpos(gender_other, "WOMAN")!=0
+    | strpos(gender_other, "GIRL")!=0
+    | strpos(gender_other, "TRANSFEM")!=0
+    | strpos(gender_other, "TRANSFEMME")!=0
+    | strpos(gender_other, "TRANSFEM")!=0
+    ;
+
+replace gender_other_clean = "MAN"
+    if strpos(gender_other, "MAN")!=0
+    | strpos(gender_other, "BOY")!=0
+    | strpos(gender_other, "TRANSMASCULINE")!=0
+    | strpos(gender_other, "TRANSMASC")!=0
+    ;
+
+replace gender_other_clean = "CISGENDER/OTHER"
+    if 
+    gender_other_clean!="NONBINARY"
+    & gender_other_clean!="GENDERFLUID"
+    & gender_other_clean!="OTHERGNC"
+    & gender_other_clean!="UNSURE/QUESTIONING"
+    & gender_other_clean!="WOMAN"
+    & gender_other_clean!="MAN"
+    & !mi(gender_other_clean)
+    ;
+
+#delimit cr 
 
 
 
 // create an overall gender variable that combines the free text response with the choice question
-gen gender_all = gender
-label var gender_all "combined gender variable including free text"
-replace gender_all = gender_other if !mi(gender_other)
+gen gender_clean = gender
+label var gender_clean "cleaned current gender identity"
+replace gender_clean = gender_other_clean if !mi(gender_other_clean)
+// assume that people who responded irrelevant/quetab geerphobic text are cisgender, populate with assigned gender at birth 
+replace gender_clean = agab if gender_other_clean=="CISGENDER/OTHER"
 
-tab gender_all
+tab gender_clean
 
-// create a cleaned gender variable 
+rename gender gender_raw 
+rename gender_other gender_other_raw
+
+// there are 5 observations which chose "other" for gender but did not write text response. assume they are cisgender
+replace gender_clean = agab if gender_clean=="OTHER"
+
+/* NOTE: of the 147 people who reported prefer not to say for gender, 
+- 11 are straight
+- 58 chose prefer not to say for sexual orientation
+- the rest are all non-straight  
+Therefore, there is good reason to classify them as likely to be not cisgender 
+*/
+tab so if gender_clean=="PREFER NOT TO SAY"
+tab so_other if gender_clean=="PREFER NOT TO SAY"
+
+//------------------------------------------------
+/* NOTE: gender_trans_binary==1 is a subset of 
+gender_trans_gnc==1, which is a subset of 
+cisgender==0 */
+//------------------------------------------------
+// create a dummy for cisgender
+/* code prefer not to say and unsure/questioning as non-cis */
+gen gender_cis = .
+replace gender_cis=0 if gender_clean!=agab & !mi(gender_clean) 
+replace gender_cis=1 if gender_clean==agab & !mi(gender_clean)
+label var gender_cis "cisgender"
+
+tab gender_cis 
+
+// create a dummy for umbrella transgender, a broad definition that inludes everyone whose agab is different from current gender
+// this includes trans, nb, gnc, genderfluid, EXCLUDES unsure/questioning and prefer not to say
+// ***** !!!!!NOTE: THIS VARIABLE IS NOT THE COMPLEMENT OF gender_cis!!!!! *****
+gen gender_trans_gnc =.
+replace gender_trans_gnc=1 if gender_cis==0
+replace gender_trans_gnc=0 if gender_cis==1 | (gender_cis==0 & gender_clean=="PREFER NOT TO SAY" & gender_clean=="UNSURE/QUESTIONING")
+label var gender_trans_gnc "umbrella transgender, exclude unsure and prefer not to say"
+
+tab gender_trans_gnc
+
+// create a dummy for transgender and not nonbinary/other gnc: binary trans folks whose current gender is either man or woman
+gen gender_trans_binary =.
+// define not binary trans as cisgender or non-cisgender and do not identify with neither woman nor man 
+replace gender_trans_binary=0 if gender_cis==1 | (gender_cis==0 & gender_clean!="WOMAN" & gender_clean!="MAN")
+replace gender_trans_binary=1 if (gender_clean=="WOMAN" & agab=="MAN") | (gender_clean=="MAN" & agab=="WOMAN")
+label var gender_trans_binary "binary transgender"
+
+tab gender_trans_binary
+
+// create a dummy for current gender is woman 
+gen gender_woman =.
+replace gender_woman=0 if gender_clean!="WOMAN" & !mi(gender_clean)
+replace gender_woman=1 if gender_clean=="WOMAN" 
+label var gender_woman "current gender is woman"
+
+// create a dummy for current gender is man
+gen gender_man =.
+replace gender_man=0 if gender_clean!="MAN" & !mi(gender_clean)
+replace gender_man=1 if gender_clean=="MAN" & !mi(gender_clean)
+label var gender_man "current gender is man"
 
 
+//-----------------------------------------------------------
+// clean sexual orientation variables
+//-----------------------------------------------------------
+/* first clean the so_other free text response, collapse down to the following categories: 
+1. PAN/QUEER
+    includes mentions of PAN, QUEER, ANTHROSEXUAL, ANTROSEXUAL, OMNI, NOT STRAIGHT
+2. BISEXUAL
+    includes mentions of BISEXUAL, BICURIOUS
+3. ASEXUAL
+    includes mentions of ASEXUAL, ACE, ARO, DEMI
+4. UNSURE/QUESTIONING
+    includes mentions of UNSURE, UNKNOWN, UNCERTAIN, QUESTIONING, I DON'T KNOW, IDK
+5. STRAIGHT/OTHER
+    all others
+
+*/
+
+gen so_other_clean=so_other
+label var so_other_clean "cleaned free text response for sexual orientation"
+
+#delimit ;
+
+replace so_other_clean = "PAN/QUEER"
+    if 
+    strpos(so_other, "PAN")!=0
+    | strpos(so_other, "QUEER")!=0
+    | strpos(so_other, "ANTHROSEXUAL")!=0
+    | strpos(so_other, "ANTROSEXUAL")!=0
+    | strpos(so_other, "OMNI")!=0
+    | strpos(so_other, "NOT STRAIGHT")!=0
+    ;
+
+replace so_other_clean = "BISEXUAL"
+    if 
+    strpos(so_other, "BISEXUAL")!=0
+    | strpos(so_other, "BICURIOUS")!=0
+    ;
+
+replace so_other_clean = "ASEXUAL"
+    if 
+    strpos(so_other, "ASEXUAL")!=0
+    | strpos(so_other, "ACE")!=0
+    | strpos(so_other, "ARO")!=0
+    | strpos(so_other, "DEMI")!=0
+    ;
+
+replace so_other_clean = "UNSURE/QUESTIONING"
+    if strpos(so_other, "UNSURE")!=0
+    | strpos(so_other, "UNKNOWN")!=0
+    | strpos(so_other, "UNCERTAIN")!=0
+    | strpos(so_other, "QUESTIONING")!=0
+    | strpos(so_other, "I DON'T KNOW")!=0
+    | strpos(so_other, "IDK")!=0
+    | strpos(so_other, "NOT SURE")!=0
+    ;
+
+replace so_other_clean = "STRAIGHT/OTHER"
+    if 
+    so_other_clean!="PAN/QUEER"
+    & so_other_clean!="BISEXUAL"
+    & so_other_clean!="ASEXUAL"
+    & so_other_clean!="UNSURE/QUESTIONING"
+    & !mi(so_other_clean)
+    ;
+
+#delimit cr 
+
+tab so_other_clean
+
+// create a cleaned sexual orientation variable
+gen so_clean = so 
+label var so_clean "cleaned sexual orientation including free text response"
+replace so_clean = so_other_clean if strpos(so, "OTHER")!=0
+replace so_clean = "STRAIGHT" if strpos(so_clean, "STRAIGHT")!=0
+tab so_clean
+
+
+/* **************
+NOTE: so_queer_narrow==1 is a subset of 
+so_queer_broad==1 which is a subset of 
+so_straight==0 */
+// create a dummy for striaght
+// this excludes prefer not to say and unsure/questioning
+gen so_straight =.
+label var so_straight "straight"
+replace so_straight=0 if so_clean!="STRAIGHT" & !mi(so_clean)
+replace so_straight=1 if so_clean=="STRAIGHT"
+
+tab so_straight
+
+// create a dummy for queer (non straight) sexual orientation, narrowly defined
+// excludes prefer not to say and unsure/questioning
+gen so_queer_narrow =.
+label var so_queer_narrow "non-straight, narrowly defined"
+replace so_queer_narrow=0 if so_straight==1 | so_clean=="PREFER NOT TO SAY" | so_clean=="UNSURE/QUESTIONING"
+replace so_queer_narrow=1 if so_straight==0 & so_clean!="PREFER NOT TO SAY" & so_clean!="UNSURE/QUESTIONING"
+
+tab so_queer_narrow
+
+// create a dummy for queer (non straight) sexual orientation, broadly defined
+gen so_queer_broad = so_queer_narrow
+label var so_queer_broad "non straight, broadly defined"
+replace so_queer_broad=1 if so_clean=="PREFER NOT TO SAY" | so_clean=="UNSURE/QUESTIONING"
+
+tab so_queer_broad
+
+rename so so_raw 
+rename so_other so_other_raw
+
+
+
+
+****** recode: What is the highest level of education completed among either of your parents (or those who raised you)?
+#delimit ;
+label define parent_edu
+    1 "Did not complete high school"
+    2 "High school diploma"
+    3 "Some college, no college degree"
+    4 "Associate degree"
+    5 "Bachelor's degree"
+    6 "Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)"
+    7 "Don't know"
+    ;
+#delimit cr 
+
+encode parent_edu, generate(parent_edu_temp) label(parent_edu)
+label var parent_edu_temp "`: var lab parent_edu'"
+drop parent_edu
+rename parent_edu_temp parent_edu
+
+****** clean the open ended college questions at the end
+foreach v in college_whynot college_excited college_challenge {
+    // convert to upper case 
+    replace `v' = strupper(`v')
+    // collapse internal blanks to one space, and remove leading and trailing blanks
+    replace `v' = stritrim(`v')
+    replace `v' = strtrim(`v')
+}
+
+
+label data "Fully cleaned CSAC 2023 HS senior survey data"
+compress 
+
+save $csacclndatadir/csac_hs_senior_2023_clean, replace 
 
 
 local date2 = c(current_date)
