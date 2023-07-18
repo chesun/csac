@@ -24,21 +24,21 @@ log files
 estimates (.ster files)
 
 ```
-/out/fig
+/fig
 ```
 output figures 
 
 ```
-/out/tab
+/tab
 ```
 output tables 
 
 ```
 /lit
 ```
-relevant literature 
+relevant literature/survey
 
 ```
 /doc 
 ```
-documentation/other documents 
+documentation/codebooks/other documents
