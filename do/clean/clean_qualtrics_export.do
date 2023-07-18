@@ -1037,7 +1037,7 @@ tab gender_cis
 // ***** !!!!!NOTE: THIS VARIABLE IS NOT THE COMPLEMENT OF gender_cis!!!!! *****
 gen gender_trans_gnc =.
 replace gender_trans_gnc=1 if gender_cis==0
-replace gender_trans_gnc=0 if gender_cis==1 | (gender_cis==0 & gender_clean=="PREFER NOT TO SAY" & gender_clean=="UNSURE/QUESTIONING")
+replace gender_trans_gnc=0 if gender_cis==1 | (gender_cis==0 & gender_clean=="PREFER NOT TO SAY") | (gender_cis==0 & gender_clean=="UNSURE/QUESTIONING")
 label var gender_trans_gnc "umbrella transgender, exclude unsure and prefer not to say"
 
 tab gender_trans_gnc
