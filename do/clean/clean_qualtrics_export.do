@@ -4,6 +4,7 @@
 ************************ Written by Christina Sun 07/05/2023 *******************
 
 /* Change Log:
+07/19/2023: deleted code that drops incomplete responses. Only delete obs with missing email
 */
 
 /* Notes:
@@ -81,7 +82,7 @@ save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
 restore
 
 // drop personally identifiable information 
-drop id ipaddress latitude longitude email email_fall
+drop ipaddress latitude longitude email email_fall
 
 // rename and label all other variables
 rename durationinseconds duration_sec
@@ -397,12 +398,8 @@ label var summer_nudge "in summer class nudge treatment"
 label var ccc_ft_nudge "in CCC full time nudge treatment"
 
 
-//--------------------------------------------------------------
-// drop incomplete responses
-//--------------------------------------------------------------
-keep if finished=="True"
 
-// double check using the finished and progress vars 
+// check using the finished and progress vars 
 tab finished 
 tab progress
 
