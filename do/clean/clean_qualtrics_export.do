@@ -4,6 +4,9 @@
 ************************ Written by Christina Sun 07/05/2023 *******************
 
 /* Change Log:
+[CS] 07/19/2023: deleted code that drops incomplete responses. Only delete obs with missing email
+[BZ] 07/24/2023: added toggles to increase multi-user compatibility.
+		 validated and fix errors on generated gender/so vars
 */
 
 /* Notes:
@@ -17,9 +20,20 @@ thus do not need to be imported. First row is variable names.
  do $csacprojdir/do/clean/clean_qualtrics_export.do
  */
 
-cap log close _all
 
+********************************************************************************
+* Specify owner in do_all.do 
+
+if $user_cs == 1{
+cap log close _all
 log using $csacprojdir/log/clean/clean_qualtrics_export.smcl, replace
+}
+
+
+if $user_bz == 1{
+cap log close _all
+log using $csacprojdir/log/clean/clean_qualtrics_export_bz.txt, text replace
+}
 
 graph drop _all
 set more off
@@ -64,9 +78,13 @@ foreach v in email email_fall {
     replace `v' = strtrim(`v')
 }
 
+
+	
+
 // preserve dataset
 preserve
 
+if $user_cs == 1{ 
 keep id ipaddress latitude longitude email email_fall
 
 label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
@@ -74,14 +92,15 @@ label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
 compress
 save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
 
-
+}
 //---------------------------------------------------------------------------
 // clean the anonymized dataset
 //---------------------------------------------------------------------------
 restore
 
+
 // drop personally identifiable information 
-drop id ipaddress latitude longitude email email_fall
+drop ipaddress latitude longitude email email_fall
 
 // rename and label all other variables
 rename durationinseconds duration_sec
@@ -397,12 +416,8 @@ label var summer_nudge "in summer class nudge treatment"
 label var ccc_ft_nudge "in CCC full time nudge treatment"
 
 
-//--------------------------------------------------------------
-// drop incomplete responses
-//--------------------------------------------------------------
-keep if finished=="True"
 
-// double check using the finished and progress vars 
+// check using the finished and progress vars 
 tab finished 
 tab progress
 
@@ -1036,8 +1051,12 @@ tab gender_cis
 // this includes trans, nb, gnc, genderfluid, EXCLUDES unsure/questioning and prefer not to say
 // ***** !!!!!NOTE: THIS VARIABLE IS NOT THE COMPLEMENT OF gender_cis!!!!! *****
 gen gender_trans_gnc =.
-replace gender_trans_gnc=1 if gender_cis==0
-replace gender_trans_gnc=0 if gender_cis==1 | (gender_cis==0 & gender_clean=="PREFER NOT TO SAY") | (gender_cis==0 & gender_clean=="UNSURE/QUESTIONING")
+replace gender_trans_gnc=1 if gender_cis==0 & gender_clean != "PREFER NOT TO SAY" & gender_clean != "UNSURE/QUESTIONING" // transgnc if not cis & sure & share about gender identity
+
+replace gender_trans_gnc=0 if gender_cis==1 // not transgnc if cis
+replace gender_trans_gnc=0 if gender_cis==0 & gender_clean=="PREFER NOT TO SAY" // not transgnc not sharing 
+replace gender_trans_gnc=0 if gender_cis==0 & gender_clean=="UNSURE/QUESTIONING" // not transgnc if not sure 
+
 label var gender_trans_gnc "umbrella transgender, exclude unsure and prefer not to say"
 
 tab gender_trans_gnc
@@ -1045,8 +1064,11 @@ tab gender_trans_gnc
 // create a dummy for transgender and not nonbinary/other gnc: binary trans folks whose current gender is either man or woman
 gen gender_trans_binary =.
 // define not binary trans as cisgender or non-cisgender and do not identify with neither woman nor man 
-replace gender_trans_binary=0 if gender_cis==1 | (gender_cis==0 & gender_clean!="WOMAN" & gender_clean!="MAN")
-replace gender_trans_binary=1 if (gender_clean=="WOMAN" & agab=="MAN") | (gender_clean=="MAN" & agab=="WOMAN")
+replace gender_trans_binary=0 if gender_trans_gnc == 0 // not binary trans if not trans
+replace gender_trans_binary=0 if gender_clean!="WOMAN" & gender_clean!="MAN" // not binary trans if not binary
+
+replace gender_trans_binary=1 if gender_trans_gnc == 1 & gender_clean == "WOMAN"
+replace gender_trans_binary=1 if gender_trans_gnc == 1 & gender_clean == "MAN" // binary trans if trans & binary
 label var gender_trans_binary "binary transgender"
 
 tab gender_trans_binary
@@ -1062,6 +1084,15 @@ gen gender_man =.
 replace gender_man=0 if gender_clean!="MAN" & !mi(gender_clean)
 replace gender_man=1 if gender_clean=="MAN" & !mi(gender_clean)
 label var gender_man "current gender is man"
+
+
+// validation
+assert gender_trans_gnc == 0 if gender_cis == 1
+assert gender_trans_binary == 0 if gender_cis == 1
+assert gender_trans_binary == 0 if gender_man == 0 & gender_woman == 0
+assert gender_trans_binary == 1 if gender_trans_gnc == 1 & gender_woman == 1
+assert gender_trans_binary == 1 if gender_trans_gnc == 1 & gender_man == 1
+
 
 
 //-----------------------------------------------------------
@@ -1154,6 +1185,7 @@ replace so_straight=1 if so_clean=="STRAIGHT"
 
 tab so_straight
 
+
 // create a dummy for queer (non straight) sexual orientation, narrowly defined
 // excludes prefer not to say and unsure/questioning
 gen so_queer_narrow =.
@@ -1173,6 +1205,12 @@ tab so_queer_broad
 rename so so_raw 
 rename so_other so_other_raw
 
+
+// validation
+assert so_straight == 0 if so_queer_broad == 1
+assert so_straight == 1 if so_queer_broad == 0
+assert so_queer_broad == 1 if so_queer_narrow == 1
+assert so_queer_narrow == 0 if so_queer_broad == 0
 
 
 
@@ -1219,5 +1257,9 @@ di "End date time: `date2' `time2'"
 
 
 log close
+
+if $user_cs == 1{
+
 translate $csacprojdir/log/clean/clean_qualtrics_export.smcl ///
     $csacprojdir/log/clean/clean_qualtrics_export.txt, replace
+}
