@@ -1,9 +1,32 @@
 ********************************************************************************
 /* 2023 CSAC high school senior survey master do file */
 ********************************************************************************
-* Toggler owner
+
+
+* Toggle owner
 global user_cs 0
 global user_bz 1
+
+* Toggle If First Time Running: to create output folders
+local mkdir 0
+
+if `mkdir' == 1 {
+global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
+
+mkdir "$csacprojdir/dta"  //store all output tables
+mkdir "$csacprojdir/dta/cln" // store cleaned data 
+
+mkdir "$csacprojdir/tab"  //store all output tables
+mkdir "$csacprojdir/tab/learn" // create subfolder within tables
+mkdir "$csacprojdir/tab/learn/demog" 
+
+mkdir "$csacprojdir/fig"  //store all output figures
+mkdir "$csacprojdir/fig/learn" // create subfolder within figures
+
+mkdir "$csacprojdir/log" // store all log files
+mkdir "$csacprojdir/log/clean" // create subfolder within log 
+mkdir "$csacprojdir/log/learn" 
+}
 
 if $user_cs == 1{
 
@@ -70,6 +93,9 @@ global csacclndatadir "$csacprojdir/dta/cln"
 
 
 * Clean and save ready-to-analyze data to project folder
-do $csacprojdir/do/clean/clean_qualtrics_export.do
+do "$csacprojdir/do/clean/clean_qualtrics_export.do"
+
+* Generate Codebook
+do "$csacprojdir/do/clean/create_codebook.do"
 
 }
