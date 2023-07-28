@@ -7,6 +7,8 @@
 [CS] 07/19/2023: deleted code that drops incomplete responses. Only delete obs with missing email
 [BZ] 07/24/2023: added toggles to increase multi-user compatibility.
 		 validated and fix errors on generated gender/so vars
+[BZ] 07/28/2023: assign gender to "PREFER NOT TO SAY" if only report gender or asab.
+		 moved gender and sexual orientation generating process to prep_brief.do
 */
 
 /* Notes:
@@ -22,7 +24,12 @@ thus do not need to be imported. First row is variable names.
 
 
 ********************************************************************************
-* Specify owner in do_all.do 
+*----------*
+* Toggle
+*----------*
+local standalone 0
+
+* User specific log file: Specify global owner in do_all.do 
 
 if $user_cs == 1{
 cap log close _all
@@ -35,6 +42,8 @@ cap log close _all
 log using $csacprojdir/log/clean/clean_qualtrics_export_bz.txt, text replace
 }
 
+if `standalone' == 1{
+	
 graph drop _all
 set more off
 set varabbrev off
@@ -45,7 +54,7 @@ set seed 1984
 local date1 = c(current_date)
 local time1 = c(current_time)
 
-
+}
 
 // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not data)
 import delimited $csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv, varnames(1) rowrange(4:) clear
@@ -1024,6 +1033,15 @@ rename gender_other gender_other_raw
 // there are 5 observations which chose "other" for gender but did not write text response. assume they are cisgender
 replace gender_clean = agab if gender_clean=="OTHER"
 
+
+// there are 14 observations didn't answer gender identity but answered assigned sex at birth. assume "prefer not to say"
+replace gender_clean = "PREFER NOT TO SAY" if !mi(asab) & mi(gender_clean) == 1
+
+// there are 18 observations reported gender-identity but not asab. move to prefer not to say
+replace gender_clean = "PREFER NOT TO SAY" if !mi(gender_clean) & mi(asab) == 1
+
+
+
 /* NOTE: of the 147 people who reported prefer not to say for gender, 
 - 11 are straight
 - 58 chose prefer not to say for sexual orientation
@@ -1032,66 +1050,6 @@ Therefore, there is good reason to classify them as likely to be not cisgender
 */
 tab so if gender_clean=="PREFER NOT TO SAY"
 tab so_other if gender_clean=="PREFER NOT TO SAY"
-
-//------------------------------------------------
-/* NOTE: gender_trans_binary==1 is a subset of 
-gender_trans_gnc==1, which is a subset of 
-cisgender==0 */
-//------------------------------------------------
-// create a dummy for cisgender
-/* code prefer not to say and unsure/questioning as non-cis */
-gen gender_cis = .
-replace gender_cis=0 if gender_clean!=agab & !mi(gender_clean) 
-replace gender_cis=1 if gender_clean==agab & !mi(gender_clean)
-label var gender_cis "cisgender"
-
-tab gender_cis 
-
-// create a dummy for umbrella transgender, a broad definition that inludes everyone whose agab is different from current gender
-// this includes trans, nb, gnc, genderfluid, EXCLUDES unsure/questioning and prefer not to say
-// ***** !!!!!NOTE: THIS VARIABLE IS NOT THE COMPLEMENT OF gender_cis!!!!! *****
-gen gender_trans_gnc =.
-replace gender_trans_gnc=1 if gender_cis==0 & gender_clean != "PREFER NOT TO SAY" & gender_clean != "UNSURE/QUESTIONING" // transgnc if not cis & sure & share about gender identity
-
-replace gender_trans_gnc=0 if gender_cis==1 // not transgnc if cis
-replace gender_trans_gnc=0 if gender_cis==0 & gender_clean=="PREFER NOT TO SAY" // not transgnc not sharing 
-replace gender_trans_gnc=0 if gender_cis==0 & gender_clean=="UNSURE/QUESTIONING" // not transgnc if not sure 
-
-label var gender_trans_gnc "umbrella transgender, exclude unsure and prefer not to say"
-
-tab gender_trans_gnc
-
-// create a dummy for transgender and not nonbinary/other gnc: binary trans folks whose current gender is either man or woman
-gen gender_trans_binary =.
-// define not binary trans as cisgender or non-cisgender and do not identify with neither woman nor man 
-replace gender_trans_binary=0 if gender_trans_gnc == 0 // not binary trans if not trans
-replace gender_trans_binary=0 if gender_clean!="WOMAN" & gender_clean!="MAN" // not binary trans if not binary
-
-replace gender_trans_binary=1 if gender_trans_gnc == 1 & gender_clean == "WOMAN"
-replace gender_trans_binary=1 if gender_trans_gnc == 1 & gender_clean == "MAN" // binary trans if trans & binary
-label var gender_trans_binary "binary transgender"
-
-tab gender_trans_binary
-
-// create a dummy for current gender is woman 
-gen gender_woman =.
-replace gender_woman=0 if gender_clean!="WOMAN" & !mi(gender_clean)
-replace gender_woman=1 if gender_clean=="WOMAN" 
-label var gender_woman "current gender is woman"
-
-// create a dummy for current gender is man
-gen gender_man =.
-replace gender_man=0 if gender_clean!="MAN" & !mi(gender_clean)
-replace gender_man=1 if gender_clean=="MAN" & !mi(gender_clean)
-label var gender_man "current gender is man"
-
-
-// validation
-assert gender_trans_gnc == 0 if gender_cis == 1
-assert gender_trans_binary == 0 if gender_cis == 1
-assert gender_trans_binary == 0 if gender_man == 0 & gender_woman == 0
-assert gender_trans_binary == 1 if gender_trans_gnc == 1 & gender_woman == 1
-assert gender_trans_binary == 1 if gender_trans_gnc == 1 & gender_man == 1
 
 
 
@@ -1172,45 +1130,8 @@ replace so_clean = "STRAIGHT" if strpos(so_clean, "STRAIGHT")!=0
 tab so_clean
 
 
-/* **************
-NOTE: so_queer_narrow==1 is a subset of 
-so_queer_broad==1 which is a subset of 
-so_straight==0 */
-// create a dummy for striaght
-// this excludes prefer not to say and unsure/questioning
-gen so_straight =.
-label var so_straight "straight"
-replace so_straight=0 if so_clean!="STRAIGHT" & !mi(so_clean)
-replace so_straight=1 if so_clean=="STRAIGHT"
-
-tab so_straight
-
-
-// create a dummy for queer (non straight) sexual orientation, narrowly defined
-// excludes prefer not to say and unsure/questioning
-gen so_queer_narrow =.
-label var so_queer_narrow "non-straight, narrowly defined"
-replace so_queer_narrow=0 if so_straight==1 | so_clean=="PREFER NOT TO SAY" | so_clean=="UNSURE/QUESTIONING"
-replace so_queer_narrow=1 if so_straight==0 & so_clean!="PREFER NOT TO SAY" & so_clean!="UNSURE/QUESTIONING"
-
-tab so_queer_narrow
-
-// create a dummy for queer (non straight) sexual orientation, broadly defined
-gen so_queer_broad = so_queer_narrow
-label var so_queer_broad "non straight, broadly defined"
-replace so_queer_broad=1 if so_clean=="PREFER NOT TO SAY" | so_clean=="UNSURE/QUESTIONING"
-
-tab so_queer_broad
-
 rename so so_raw 
 rename so_other so_other_raw
-
-
-// validation
-assert so_straight == 0 if so_queer_broad == 1
-assert so_straight == 1 if so_queer_broad == 0
-assert so_queer_broad == 1 if so_queer_narrow == 1
-assert so_queer_narrow == 0 if so_queer_broad == 0
 
 
 
@@ -1255,8 +1176,10 @@ di "Do file start date time: `date1' `time1'"
 di "End date time: `date2' `time2'"
 
 
-
 log close
+
+
+
 
 if $user_cs == 1{
 

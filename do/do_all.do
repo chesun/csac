@@ -2,13 +2,20 @@
 /* 2023 CSAC high school senior survey master do file */
 ********************************************************************************
 
+********************************* Preamble ************************************
 
-* Toggle owner
+*----------*
+* Toggle
+*----------*
 global user_cs 0
 global user_bz 1
 
+
+
 * Toggle If First Time Running: to create output folders
 local mkdir 0
+
+
 
 if `mkdir' == 1 {
 global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
@@ -81,14 +88,16 @@ translate $csacprojdir/log/do_all.smcl ///
 }
 
 if $user_bz == 1{
+cd "/home/research/ca_ed_lab/projects/csac_survey2023" // first thing first
+
 
 // overall project directory
 global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
 
-// data directory
+// raw data directory
 global csacrawdatadir "/home/research/ca_ed_lab/data/restricted_access/raw/csac_survey/2023"
 
-// save a copy of cleaned data in project folder
+// direcotry: a copy of cleaned data in project folder
 global csacclndatadir "$csacprojdir/dta/cln"
 
 
@@ -97,5 +106,8 @@ do "$csacprojdir/do/clean/clean_qualtrics_export.do"
 
 * Generate Codebook
 do "$csacprojdir/do/clean/create_codebook.do"
+
+* Prepare data for main brief
+do "$csacprojdir/do/clean/prep_brief.do"
 
 }
