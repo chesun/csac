@@ -29,6 +29,7 @@ mkdir "$csacprojdir/tab/learn/demog"
 
 mkdir "$csacprojdir/fig"  //store all output figures
 mkdir "$csacprojdir/fig/learn" // create subfolder within figures
+mkdir "$csacprojdir/fig/learn/crosstab" // create subfolder within figures
 
 mkdir "$csacprojdir/log" // store all log files
 mkdir "$csacprojdir/log/clean" // create subfolder within log 
