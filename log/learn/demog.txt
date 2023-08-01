@@ -1,0 +1,690 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/demog.t
+> xt
+  log type:  text
+ opened on:  25 Jul 2023, 20:37:46
+
+. 
+. ********************************* Main ***************************************
+> **
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_clean.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. * Sample: HS senior
+. keep if senior == 1
+(1,220 observations deleted)
+
+. 
+. 
+. *===================*
+. * Race/Ethnicity
+. *===================*
+. 
+. * Non-response
+. gen race_missing = .
+(10,221 missing values generated)
+
+. label var race_missing "respondent skipped race/ethinicity questions"
+
+. replace race_missing = 0 if inrange(race,1,91)
+(8,030 real changes made)
+
+. replace race_missing = 1 if race == .
+(2,191 real changes made)
+
+. //validate
+. assert race_missing == 1 if !inrange(race,1,91)
+
+. 
+. 
+. *----------------------------------------------------------------------------*
+. * All-inclusive: 1 if a race/ethinicity was selected. Not mutually exclusive 
+. *----------------------------------------------------------------------------*
+. 
+. * Generate a string version of race to do text search
+. decode race, gen(race_str) 
+
+. 
+. * Selected Black/African American
+. gen race_black = 0 if !race_missing // set default to 0 if not missing
+(2,191 missing values generated)
+
+. replace race_black = 1 if strpos(race_str, "Black/African American")!=0
+(595 real changes made)
+
+. label var race_black "selected 'Black/African American'"
+
+. 
+. * Selected American Indian/Alaskan Native
+. gen race_native= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_native = 1 if strpos(race_str, "American Indian/Alaskan Native")!
+> =0
+(180 real changes made)
+
+. label var race_native "selected 'American Indian/Alaskan Native'"
+
+. 
+. * Selected Asian
+. gen race_asian = 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_asian= 1 if strpos(race_str, "Asian")!=0
+(1,391 real changes made)
+
+. label var race_asian "selected 'Asian'"
+
+. 
+. * Selected Filipino 
+. gen race_flip = 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_flip = 1 if strpos(race_str, "Filipino")!=0
+(336 real changes made)
+
+. label var race_flip "selected 'Filipino'"
+
+. 
+. * Selected Hispanic/Latinx
+. gen race_hisp= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_hisp = 1 if strpos(race_str, "Hispanic/Latinx")!=0
+(4,279 real changes made)
+
+. label var race_hisp "selected 'Hispanic/Latinx'"
+
+. 
+. * Selected Pacific Islander
+. gen race_pi= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_pi = 1 if strpos(race_str, "Pacific Islander")!=0
+(101 real changes made)
+
+. label var race_pi "selected 'Pacific Islander'"
+
+. 
+. * Selected White/Non-Hispanic
+. gen race_white= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_white = 1 if strpos(race_str, "White/Non-Hispanic")!=0
+(2,462 real changes made)
+
+. label var race_white "selected 'White/Non-Hispanic'"
+
+. 
+. * Selected Other
+. gen race_other= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_other = 1 if strpos(race_str, "Other")!=0
+(288 real changes made)
+
+. label var race_other "selected 'Other'"
+
+. 
+. 
+. *---------------------------------------*
+. * Detailed: select all apply 
+. *---------------------------------------*
+. 
+. /* # of race/ethnic groups  */
+. egen race_num = rowtotal(race_black race_native race_asian race_flip race_hisp
+>  race_pi race_white race_other)
+
+. replace race_num = . if race == .
+(2,191 real changes made, 2,191 to missing)
+
+. label var race_num "number of race/ethnicity selected" 
+
+. assert race_num == 1 if inrange(race, 1, 8)
+
+. 
+. 
+. * Created indicator for single, double, 3+
+. tab race_num, gen(race_n)
+
+  number of |
+race/ethnic |
+        ity |
+   selected |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |      6,704       83.49       83.49
+          2 |      1,099       13.69       97.17
+          3 |        187        2.33       99.50
+          4 |         32        0.40       99.90
+          5 |          7        0.09       99.99
+          6 |          1        0.01      100.00
+------------+-----------------------------------
+      Total |      8,030      100.00
+
+. 
+. cap drop race_n3plus
+
+. egen race_n3plus = rowtotal(race_n3 race_n4 race_n5 race_n6) if race != .
+(2,191 missing values generated)
+
+. label var race_n3plus "race_num >= 3"
+
+. 
+. 
+. *------------------------------------------------*
+. * Reduced: group two or more into one category
+. *------------------------------------------------*
+. 
+. /* Race 9: Mutually exclusive race using the 8 categories + 1 multi */
+. cap drop race9
+
+. gen race9 = .
+(10,221 missing values generated)
+
+. label var race9 "race/ethnicity reduced to 9 categories"
+
+. replace race9 = race    if race_num == 1
+(6,704 real changes made)
+
+. replace race9 = 9       if inrange(race_num,2,8)
+(1,326 real changes made)
+
+. label copy race race9_lbl //, replace
+
+. label def race9_lbl 9 "Two or more", modify
+
+. label val race9 race9_lbl  
+
+. 
+. 
+. *-------------------------------------------*
+. * Print Tables: Google Doc Shareable Format
+. *-------------------------------------------*
+. ssc install asdoc, replace // use asdoc package
+checking asdoc consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. 
+. cd "$outtab" // change directory to use 
+/home/research/ca_ed_lab/projects/csac_survey2023/tab/learn/demog
+
+. 
+. /* Reduced Race/Ethnicity [Common in reports] */
+. * Save as doc // asdoc doesn't sort one-way tabulate by frequency
+. qui asdoc tab race9, save(tab_race9.doc) replace
+
+. 
+. * Print in log
+. tab race9, sort
+
+ race/ethnicity reduced to 9 categories |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                        Hispanic/Latinx |      3,564       44.38       44.38
+                     White/Non-Hispanic |      1,553       19.34       63.72
+                            Two or more |      1,326       16.51       80.24
+                                  Asian |        952       11.86       92.09
+                 Black/African American |        320        3.99       96.08
+                                  Other |        151        1.88       97.96
+                               Filipino |        119        1.48       99.44
+                       Pacific Islander |         26        0.32       99.76
+         American Indian/Alaskan Native |         19        0.24      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      8,030      100.00
+
+. 
+. 
+. /* All-inclusive */
+. * Save as doc
+. qui asdoc tabstat race_missing race_n1 race_n2 race_n3plus race_black race_nat
+> ive race_asian race_flip race_hisp race_pi race_white race_other, stat(mean su
+> m count) col(stat) save(tabstat_allrace.doc) replace
+
+. 
+. * Print in log
+. tabstat race_missing race_n1 race_n2 race_n3plus race_black race_native race_a
+> sian race_flip race_hisp race_pi race_white race_other, stat(mean sum count) c
+> ol(stat)
+
+    Variable |      Mean       Sum         N
+-------------+------------------------------
+race_missing |  .2143626      2191     10221
+     race_n1 |  .8348692      6704      8030
+     race_n2 |  .1368618      1099      8030
+ race_n3plus |   .028269       227      8030
+  race_black |  .0740971       595      8030
+ race_native |  .0224159       180      8030
+  race_asian |  .1732254      1391      8030
+   race_flip |  .0418431       336      8030
+   race_hisp |  .5328767      4279      8030
+     race_pi |  .0125778       101      8030
+  race_white |  .3066002      2462      8030
+  race_other |  .0358655       288      8030
+--------------------------------------------
+
+. 
+. /* Detailed Combiniation */
+. 
+. * Save as doc
+. qui bys race_num: asdoc tab race, sort save(tab_race.doc) replace
+
+. 
+. * Print in log
+. tab race if race_num == 1, sort
+
+                         race/ethnicity |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                        Hispanic/Latinx |      3,564       53.16       53.16
+                     White/Non-Hispanic |      1,553       23.17       76.33
+                                  Asian |        952       14.20       90.53
+                 Black/African American |        320        4.77       95.30
+                                  Other |        151        2.25       97.55
+                               Filipino |        119        1.78       99.33
+                       Pacific Islander |         26        0.39       99.72
+         American Indian/Alaskan Native |         19        0.28      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      6,704      100.00
+
+. tab race if race_num == 2, sort
+
+                         race/ethnicity |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+     Hispanic/Latinx,White/Non-Hispanic |        339       30.85       30.85
+               Asian,White/Non-Hispanic |        189       17.20       48.04
+ Black/African American,Hispanic/Latinx |         85        7.73       55.78
+Black/African American,White/Non-Hispan |         71        6.46       62.24
+                         Asian,Filipino |         59        5.37       67.61
+               White/Non-Hispanic,Other |         47        4.28       71.88
+            Filipino,White/Non-Hispanic |         45        4.09       75.98
+                  Asian,Hispanic/Latinx |         44        4.00       79.98
+American Indian/Alaskan Native,Hispanic |         41        3.73       83.71
+               Filipino,Hispanic/Latinx |         27        2.46       86.17
+                  Hispanic/Latinx,Other |         25        2.27       88.44
+American Indian/Alaskan Native,White/No |         24        2.18       90.63
+           Black/African American,Asian |         18        1.64       92.27
+                            Asian,Other |         15        1.36       93.63
+        Black/African American,Filipino |         13        1.18       94.81
+                 Asian,Pacific Islander |         10        0.91       95.72
+       Hispanic/Latinx,Pacific Islander |         10        0.91       96.63
+Black/African American,American Indian/ |          9        0.82       97.45
+           Black/African American,Other |          7        0.64       98.09
+    Pacific Islander,White/Non-Hispanic |          6        0.55       98.64
+   American Indian/Alaskan Native,Asian |          4        0.36       99.00
+Black/African American,Pacific Islander |          4        0.36       99.36
+                         Filipino,Other |          3        0.27       99.64
+              Filipino,Pacific Islander |          2        0.18       99.82
+American Indian/Alaskan Native,Pacific  |          1        0.09       99.91
+                 Pacific Islander,Other |          1        0.09      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      1,099      100.00
+
+. tab race if race_num >= 3, sort
+
+                         race/ethnicity |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+American Indian/Alaskan Native,Hispanic |         33       14.54       14.54
+Asian,Hispanic/Latinx,White/Non-Hispani |         19        8.37       22.91
+Black/African American,Hispanic/Latinx, |         19        8.37       31.28
+      Asian,Filipino,White/Non-Hispanic |         17        7.49       38.77
+Filipino,Hispanic/Latinx,White/Non-Hisp |         12        5.29       44.05
+Hispanic/Latinx,White/Non-Hispanic,Othe |         12        5.29       49.34
+Asian,Pacific Islander,White/Non-Hispan |         11        4.85       54.19
+Black/African American,American Indian/ |         10        4.41       58.59
+         Asian,White/Non-Hispanic,Other |          7        3.08       61.67
+American Indian/Alaskan Native,Asian,Hi |          5        2.20       63.88
+        Asian,Filipino,Pacific Islander |          5        2.20       66.08
+Asian,Filipino,Pacific Islander,White/N |          5        2.20       68.28
+Black/African American,American Indian/ |          5        2.20       70.48
+Black/African American,American Indian/ |          5        2.20       72.69
+Black/African American,Asian,Hispanic/L |          4        1.76       74.45
+American Indian/Alaskan Native,Hispanic |          3        1.32       75.77
+American Indian/Alaskan Native,White/No |          3        1.32       77.09
+  Black/African American,Asian,Filipino |          3        1.32       78.41
+American Indian/Alaskan Native,Asian,Fi |          2        0.88       79.30
+American Indian/Alaskan Native,Filipino |          2        0.88       80.18
+         Asian,Filipino,Hispanic/Latinx |          2        0.88       81.06
+Asian,Filipino,Hispanic/Latinx,Pacific  |          2        0.88       81.94
+Asian,Filipino,Hispanic/Latinx,White/No |          2        0.88       82.82
+Black/African American,American Indian/ |          2        0.88       83.70
+Black/African American,Asian,White/Non- |          2        0.88       84.58
+Black/African American,Filipino,White/N |          2        0.88       85.46
+Black/African American,White/Non-Hispan |          2        0.88       86.34
+Filipino,Hispanic/Latinx,Pacific Island |          2        0.88       87.22
+American Indian/Alaskan Native,Asian,Fi |          1        0.44       87.67
+American Indian/Alaskan Native,Asian,Fi |          1        0.44       88.11
+American Indian/Alaskan Native,Asian,Fi |          1        0.44       88.55
+American Indian/Alaskan Native,Asian,Wh |          1        0.44       88.99
+American Indian/Alaskan Native,Filipino |          1        0.44       89.43
+American Indian/Alaskan Native,Hispanic |          1        0.44       89.87
+American Indian/Alaskan Native,Pacific  |          1        0.44       90.31
+   Asian,Filipino,Hispanic/Latinx,Other |          1        0.44       90.75
+                   Asian,Filipino,Other |          1        0.44       91.19
+            Asian,Hispanic/Latinx,Other |          1        0.44       91.63
+ Asian,Hispanic/Latinx,Pacific Islander |          1        0.44       92.07
+Black/African American,American Indian/ |          1        0.44       92.51
+Black/African American,American Indian/ |          1        0.44       92.95
+Black/African American,American Indian/ |          1        0.44       93.39
+Black/African American,American Indian/ |          1        0.44       93.83
+Black/African American,American Indian/ |          1        0.44       94.27
+Black/African American,Asian,Filipino,P |          1        0.44       94.71
+Black/African American,Asian,Filipino,W |          1        0.44       95.15
+Black/African American,Asian,Pacific Is |          1        0.44       95.59
+Black/African American,Filipino,Hispani |          1        0.44       96.04
+Black/African American,Hispanic/Latinx, |          1        0.44       96.48
+Black/African American,Hispanic/Latinx, |          1        0.44       96.92
+Black/African American,Hispanic/Latinx, |          1        0.44       97.36
+Black/African American,Pacific Islander |          1        0.44       97.80
+Black/African American,Pacific Islander |          1        0.44       98.24
+         Filipino,Hispanic/Latinx,Other |          1        0.44       98.68
+Filipino,Hispanic/Latinx,Pacific Island |          1        0.44       99.12
+Filipino,Pacific Islander,White/Non-His |          1        0.44       99.56
+Hispanic/Latinx,Pacific Islander,White/ |          1        0.44      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        227      100.00
+
+. 
+. 
+. 
+. *=====================================*
+. * Gender, Sex, and Sexual Orientation
+. *=====================================*
+. 
+. *---------*
+. * Gender  *
+. *---------*
+. gen gender_missing = 1 if gender_clean == ""
+(7,962 missing values generated)
+
+. replace gender_missing = 0 if gender_clean != ""
+(7,962 real changes made)
+
+. label var gender_missing "respondent skipped gender-identity question"
+
+. 
+. /* Gender is diverse */
+. * Save to doc
+. qui asdoc tab gender_clean asab, save(xtab_genderasab.doc) replace
+
+. 
+. * print in log
+. tab gender_clean asab
+
+                   | assigned sex at birth
+   cleaned current | on birth certificate
+   gender identity |    Female       Male |     Total
+-------------------+----------------------+----------
+       GENDERFLUID |        29          7 |        36 
+               MAN |        65      2,864 |     2,929 
+         NONBINARY |       248         36 |       284 
+          OTHERGNC |         8          3 |        11 
+ PREFER NOT TO SAY |       108         43 |       151 
+UNSURE/QUESTIONING |         3          5 |         8 
+             WOMAN |     4,503         22 |     4,525 
+-------------------+----------------------+----------
+             Total |     4,964      2,980 |     7,944 
+
+. 
+. /* Mutually exclusive 3-category gender-sex combination */
+. gen genderasab = .
+(10,221 missing values generated)
+
+. label var genderasab "gender-sex at birth"
+
+. replace genderasab = 0 if gender_cis == 1
+(7,367 real changes made)
+
+. replace genderasab = 1 if gender_trans_gnc == 1
+(434 real changes made)
+
+. replace genderasab = 2 if gender_cis == 0 & gender_trans_gnc == 0 // unsure & 
+> not to say
+(161 real changes made)
+
+. assert genderasab == . if gender_clean == ""
+
+. 
+. label def genderasab_lbl 0 "same" 1 "different" 2 "gender unsure"
+
+. label val genderasab genderasab_lbl
+
+. 
+. tab genderasab
+
+gender-sex at |
+        birth |      Freq.     Percent        Cum.
+--------------+-----------------------------------
+         same |      7,367       92.53       92.53
+    different |        434        5.45       97.98
+gender unsure |        161        2.02      100.00
+--------------+-----------------------------------
+        Total |      7,962      100.00
+
+. 
+. /* Reduce into broader category */
+. * Indicator for non-binary/other gender identity (exclude unsure/prefer not to
+>  say)
+. gen gender_other = .
+(10,221 missing values generated)
+
+. label var gender_other "gender nonbinary, fluid, nonconforming"
+
+. replace gender_other = 0 if gender_missing == 0
+(7,962 real changes made)
+
+. replace gender_other = 1 if gender_clean == "GENDERFLUID" | gender_clean == "N
+> ONBINARY" | gender_clean == "OTHERGNC" 
+(332 real changes made)
+
+. assert gender_other == . if gender_clean == ""
+
+. 
+. * Indicator for unsure/prefer not to say
+. gen gender_unsure = .
+(10,221 missing values generated)
+
+. label var gender_unsure "gender unsure/prefer not to say"
+
+. replace gender_unsure = 0 if gender_man == 1 | gender_woman == 1 | gender_othe
+> r == 1
+(7,801 real changes made)
+
+. replace gender_unsure = 1 if gender_clean == "PREFER NOT TO SAY" | gender_clea
+> n == "UNSURE/QUESTIONING"
+(161 real changes made)
+
+. assert gender_other == . if gender_clean == ""
+
+. 
+. * Mutually exclusive 4-category gender variable: Man Woman Nonbinary/Other Uns
+> ure
+. assert gender_man + gender_woman + gender_other + gender_unsure == 1 if gender
+> _missing == 0
+
+. 
+. gen gender4 = .
+(10,221 missing values generated)
+
+. label var gender4 "gender identity in 4 categories"
+
+. replace gender4 = 0 if gender_man == 1
+(2,937 real changes made)
+
+. replace gender4 = 1 if gender_woman == 1
+(4,532 real changes made)
+
+. replace gender4 = 2 if gender_other == 1
+(332 real changes made)
+
+. replace gender4 = 3 if gender_unsure == 1
+(161 real changes made)
+
+. assert gender4 == . if gender_clean == ""
+
+. 
+. label def gender4_lbl 0 "man" 1 "woman" 2 "non-binary/other" 3 "unsure"
+
+. label val gender4 gender4_lbl
+
+. tab gender4 
+
+ gender identity |
+ in 4 categories |      Freq.     Percent        Cum.
+-----------------+-----------------------------------
+             man |      2,937       36.89       36.89
+           woman |      4,532       56.92       93.81
+non-binary/other |        332        4.17       97.98
+          unsure |        161        2.02      100.00
+-----------------+-----------------------------------
+           Total |      7,962      100.00
+
+. 
+. * ender-identity by if agree with sex
+. asdoc tab gender4 genderasab, save(xtab_gigs.doc) replace
+
+ gender identity |       gender-sex at birth
+ in 4 categories |      same  different  gender un |     Total
+-----------------+---------------------------------+----------
+             man |     2,864         73          0 |     2,937 
+           woman |     4,503         29          0 |     4,532 
+non-binary/other |         0        332          0 |       332 
+          unsure |         0          0        161 |       161 
+-----------------+---------------------------------+----------
+           Total |     7,367        434        161 |     7,962 
+Click to Open File:  xtab_gigs.doc
+
+. 
+. 
+. *--------------------*
+. * Sexual Orientation *
+. *--------------------*
+. gen so_missing = 1 if so_clean == ""
+(7,868 missing values generated)
+
+. replace so_missing = 0 if so_clean != ""
+(7,868 real changes made)
+
+. label var so_missing "respondent skipped sexual orientation question"
+
+. 
+. gen so_unsure = 0 if so_missing == 0
+(2,353 missing values generated)
+
+. replace so_unsure = 1 if so_clean == "PREFER NOT TO SAY" | so_clean == "UNSURE
+> /QUESTIONING"
+(556 real changes made)
+
+. 
+. * Mutually exclusive so: 
+. assert so_unsure + so_queer_narrow + so_straight == 1 if so_missing == 0
+
+. 
+. 
+. 
+. *-----------------------------*
+. * Gender x Sexual Orientation *
+. *-----------------------------*
+. * Detailed 
+. asdoc tab so_clean gender_clean, save(xtab_genderso.doc) replace
+
+    cleaned sexual |
+       orientation |
+    including free |       cleaned current gender identity
+     text response | GENDERFLU        MAN  NONBINARY   OTHERGNC |     Total
+-------------------+--------------------------------------------+----------
+           ASEXUAL |         3         35         45          5 |       210 
+          BISEXUAL |        13        159        118          1 |     1,088 
+    LESBIAN OR GAY |         4        129         51          2 |       349 
+         PAN/QUEER |        11         18         36          3 |       154 
+ PREFER NOT TO SAY |         0        132         16          0 |       542 
+          STRAIGHT |         4      2,429          7          0 |     5,508 
+UNSURE/QUESTIONING |         1          4          1          0 |        12 
+-------------------+--------------------------------------------+----------
+             Total |        36      2,906        274         11 |     7,863 
+
+
+    cleaned sexual |
+       orientation |
+    including free | cleaned current gender identity
+     text response | PREFER NO  UNSURE/QU      WOMAN |     Total
+-------------------+---------------------------------+----------
+           ASEXUAL |        15          1        106 |       210 
+          BISEXUAL |        44          1        752 |     1,088 
+    LESBIAN OR GAY |        11          4        148 |       349 
+         PAN/QUEER |         8          2         76 |       154 
+ PREFER NOT TO SAY |        59          0        335 |       542 
+          STRAIGHT |        12          0      3,056 |     5,508 
+UNSURE/QUESTIONING |         0          0          6 |        12 
+-------------------+---------------------------------+----------
+             Total |       149          8      4,479 |     7,863 
+Click to Open File:  xtab_genderso.doc
+
+. * tab so_clean gender4
+. 
+. * Broad 
+. asdoc tab so_straight gender4, save(xtab_genderso_broad) replace 
+
+           |       gender identity in 4 categories
+  straight |       man      woman  non-binar     unsure |     Total
+-----------+--------------------------------------------+----------
+         0 |       477      1,423        310        145 |     2,355 
+         1 |     2,429      3,056         11         12 |     5,508 
+-----------+--------------------------------------------+----------
+     Total |     2,906      4,479        321        157 |     7,863 
+Click to Open File:  xtab_genderso_broad.doc
+
+. 
+. *---------*
+. * LGBTQ+  *
+. *---------*
+. 
+. /* Overall LGBTQ */
+. gen lgbtq = .
+(10,221 missing values generated)
+
+. replace lgbtq = 0 if gender_cis == 1 & so_straight == 1 // non-LGBTQ+ if cis &
+>  straight
+(5,470 real changes made)
+
+. replace lgbtq = 1 if gender_cis == 0 | so_straight == 0 // LGBTQ+ if non-cis o
+> r not straight
+(2,415 real changes made)
+
+. label var lgbtq "LGBTQ+"
+
+. 
+. 
+. *--------------------------------------------*
+. * Print Overall Gender/SO Minority
+. *--------------------------------------------*
+. asdoc tabstat gender_missing so_missing gender_trans_gnc gender_unsure so_quee
+> r_narrow so_unsure lgbtq, stat(mean sum count) col(stat) save(tabstat_genderso
+> ) replace 
+
+             |      Mean        Sum          N 
+-------------+---------------------------------
+gender_mis~g |  .2210156       2259      10221 
+  so_missing |  .2302123       2353      10221 
+gender_tra~c |  .0545089        434       7962 
+gender_uns~e |   .020221        161       7962 
+so_queer_n~w |  .2289019       1801       7868 
+   so_unsure |   .070666        556       7868 
+       lgbtq |  .3062777       2415       7885 
+(file tabstat_genderso.doc not found)
+Click to Open File:  tabstat_genderso.doc
+
+. 
+. 
+. 
+. ********************************* End Main ***********************************
+> *
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/demog.t
+> xt
+  log type:  text
+ closed on:  25 Jul 2023, 20:37:49
+--------------------------------------------------------------------------------

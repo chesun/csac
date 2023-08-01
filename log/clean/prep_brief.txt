@@ -1,0 +1,562 @@
+-----------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/prep_brief.txt
+  log type:  text
+ opened on:  28 Jul 2023, 15:33:27
+
+. 
+. ********************************* Main *****************************************
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_clean.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. * Sample: HS senior
+. keep if senior == 1
+(1,220 observations deleted)
+
+. 
+. 
+. *===================*
+. * Race/Ethnicity
+. *===================*
+. * Survey design: 8 options. Check all apply.
+. 
+. * Non-response
+. gen race_missing = .
+(10,221 missing values generated)
+
+. label var race_missing "respondent skipped race/ethinicity questions"
+
+. replace race_missing = 0 if inrange(race,1,91)
+(8,030 real changes made)
+
+. replace race_missing = 1 if race == .
+(2,191 real changes made)
+
+. //validate
+. assert race_missing == 1 if !inrange(race,1,91)
+
+. 
+. 
+. *----------------------------------------------------------------------------*
+. * All-inclusive: 1 if a race/ethinicity was selected. Not mutually exclusive 
+. *----------------------------------------------------------------------------*
+. 
+. * Generate a string version of race to do text search
+. decode race, gen(race_str) 
+
+. 
+. * Selected Black/African American
+. gen race_black = 0 if !race_missing // set default to 0 if not missing
+(2,191 missing values generated)
+
+. replace race_black = 1 if strpos(race_str, "Black/African American")!=0
+(595 real changes made)
+
+. label var race_black "selected 'Black/African American'"
+
+. 
+. * Selected American Indian/Alaskan Native
+. gen race_native= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_native = 1 if strpos(race_str, "American Indian/Alaskan Native")!=0
+(180 real changes made)
+
+. label var race_native "selected 'American Indian/Alaskan Native'"
+
+. 
+. * Selected Asian
+. gen race_asian = 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_asian= 1 if strpos(race_str, "Asian")!=0
+(1,391 real changes made)
+
+. label var race_asian "selected 'Asian'"
+
+. 
+. * Selected Filipino 
+. gen race_flip = 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_flip = 1 if strpos(race_str, "Filipino")!=0
+(336 real changes made)
+
+. label var race_flip "selected 'Filipino'"
+
+. 
+. * Selected Hispanic/Latinx
+. gen race_hisp= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_hisp = 1 if strpos(race_str, "Hispanic/Latinx")!=0
+(4,279 real changes made)
+
+. label var race_hisp "selected 'Hispanic/Latinx'"
+
+. 
+. * Selected Pacific Islander
+. gen race_pi= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_pi = 1 if strpos(race_str, "Pacific Islander")!=0
+(101 real changes made)
+
+. label var race_pi "selected 'Pacific Islander'"
+
+. 
+. * Selected White/Non-Hispanic
+. gen race_white= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_white = 1 if strpos(race_str, "White/Non-Hispanic")!=0
+(2,462 real changes made)
+
+. label var race_white "selected 'White/Non-Hispanic'"
+
+. 
+. * Selected Other
+. gen race_other= 0 if race_missing == 0 // set default to 0
+(2,191 missing values generated)
+
+. replace race_other = 1 if strpos(race_str, "Other")!=0
+(288 real changes made)
+
+. label var race_other "selected 'Other'"
+
+. 
+. 
+. *---------------------------------------*
+. * Check number of race/ethnic groups
+. *---------------------------------------*
+. 
+. /* # of race/ethnic groups  */
+. egen race_num = rowtotal(race_black race_native race_asian race_flip race_hisp race_pi race_white race_ot
+> her)
+
+. replace race_num = . if race == .
+(2,191 real changes made, 2,191 to missing)
+
+. label var race_num "number of race/ethnicity selected" 
+
+. 
+. * Validate if generated correctly
+. assert race_num == 1 if inrange(race, 1, 8)
+
+. 
+. 
+. *------------------------------------------------*
+. * FOR MAIN BRIEF: race_simp 
+. *------------------------------------------------*
+. 
+. /* race_simp : Mutually exclusive race using the 8 categories + 1 multi */
+. gen race_simp = .
+(10,221 missing values generated)
+
+. label var race_simp "race/ethnicity reduced to 9 categories"
+
+. replace race_simp = race        if race_num == 1
+(6,704 real changes made)
+
+. replace race_simp = 9   if inrange(race_num,2,8)
+(1,326 real changes made)
+
+. label copy race race_simp_lbl //, replace
+
+. label def race_simp_lbl 9 "Two or more", modify
+
+. label val race_simp race_simp_lbl  
+
+. 
+. 
+. /* race_assn: move "two or more" into one of the eight based on URM */
+. **# Waiting for the complete order
+. 
+. 
+. *===========*
+. * Gender
+. *===========*
+. 
+. *--------------*
+. * Indicators
+. *--------------*
+. 
+. /* Missing */
+. * Indicator for missing assigned sex at birth
+. gen asab_missing = 1 if asab == ""
+(7,958 missing values generated)
+
+. replace asab_missing = 0 if !mi(asab)
+(7,958 real changes made)
+
+. label var asab_missing "respondent skipped assigned sex at birth"
+
+. 
+. * Indicator for missing gender identity
+. gen gender_missing = 1 if gender_clean == ""
+(7,976 missing values generated)
+
+. replace gender_missing = 0 if gender_clean != ""
+(7,976 real changes made)
+
+. label var gender_missing "respondent skipped gender-identity question"
+
+. 
+. tab asab_missing gender_missing 
+
+respondent |
+   skipped |  respondent skipped
+  assigned |    gender-identity
+    sex at |       question
+     birth |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     7,958          0 |     7,958 
+         1 |        18      2,245 |     2,263 
+-----------+----------------------+----------
+     Total |     7,976      2,245 |    10,221 
+
+. 
+. /* Categories */
+. * Indicator for cisgender (gender identity is the same as assigned sex as birth)
+. gen gender_cis = .
+(10,221 missing values generated)
+
+. replace gender_cis = 0 if gender_clean!=agab & !mi(gender_clean) & !mi(asab)
+(591 real changes made)
+
+. replace gender_cis = 1 if gender_clean==agab & !mi(gender_clean) & !mi(asab)
+(7,367 real changes made)
+
+. assert gender_cis == . if asab == ""
+
+. assert gender_cis == . if gender_clean == ""
+
+. label var gender_cis "cisgender"
+
+. 
+. * Indicator for gender identity is woman 
+. gen gender_woman =.
+(10,221 missing values generated)
+
+. replace gender_woman=0 if gender_clean!="WOMAN" & !mi(gender_clean)
+(3,451 real changes made)
+
+. replace gender_woman=1 if gender_clean=="WOMAN" 
+(4,525 real changes made)
+
+. label var gender_woman "woman"
+
+. 
+. * Indicator for gender identity is man
+. gen gender_man =.
+(10,221 missing values generated)
+
+. replace gender_man=0 if gender_clean!="MAN" & !mi(gender_clean)
+(5,047 real changes made)
+
+. replace gender_man=1 if gender_clean=="MAN" & !mi(gender_clean)
+(2,929 real changes made)
+
+. label var gender_man "man"
+
+. 
+. * Indicator for non-binary/other gender identity (exclude unsure/prefer not to say)
+. gen gender_other = .
+(10,221 missing values generated)
+
+. label var gender_other "gender nonbinary, fluid, nonconforming"
+
+. replace gender_other = 0 if gender_missing == 0
+(7,976 real changes made)
+
+. replace gender_other = 1 if gender_clean == "GENDERFLUID" | gender_clean == "NONBINARY" | gender_clean ==
+>  "OTHERGNC" 
+(331 real changes made)
+
+. assert gender_other == . if gender_clean == ""
+
+. 
+. * Indicator for unsure 
+. gen gender_unsure = 0 if gender_missing == 0
+(2,245 missing values generated)
+
+. label var gender_unsure "unsure/questioning"
+
+. replace gender_unsure = 1 if gender_clean == "UNSURE/QUESTIONING"
+(8 real changes made)
+
+. assert gender_other == . if gender_clean == ""
+
+. 
+. * Indicator for prefer not to say
+. gen gender_pnts = 0 if gender_missing == 0
+(2,245 missing values generated)
+
+. label var gender_pnts "prefer not to say"
+
+. replace gender_pnts = 1 if gender_clean == "PREFER NOT TO SAY"
+(183 real changes made)
+
+. assert gender_pnts == . if gender_clean == ""
+
+. 
+. 
+. * Validate muturally exclisive & add up to one.
+. assert gender_man + gender_woman + gender_other + gender_unsure + gender_pnts == 1 if gender_missing == 0
+
+. 
+. *-----------------------*
+. * GENDER FOR MAIN BRIEF
+. *-----------------------*
+. 
+. gen gender_brief = . 
+(10,221 missing values generated)
+
+. label var gender_brief "gender for main brief"
+
+. 
+. replace gender_brief = 0 if gender_cis == 1 & gender_woman == 1 // cis-woman as baseline
+(4,503 real changes made)
+
+. replace gender_brief = 1 if gender_cis == 1 & gender_man == 1 // cis-man
+(2,864 real changes made)
+
+. 
+. replace gender_brief = 2 if gender_cis == 0 & gender_woman == 1  // trans-woman
+(22 real changes made)
+
+. replace gender_brief = 2 if gender_cis == 0 & gender_man == 1 // + trans-man group together
+(65 real changes made)
+
+. 
+. replace gender_brief = 3 if gender_other == 1 // nonbinary, fluid, nonconforming
+(331 real changes made)
+
+. replace gender_brief = 4 if gender_unsure == 1
+(8 real changes made)
+
+. replace gender_brief = 5 if gender_pnts == 1
+(183 real changes made)
+
+. 
+. assert gender_brief == . if gender_missing == 1
+
+. 
+. label def gender_brief_lbl 0 "cis woman" 1 "cis man" 2 "binary trans" 3 "other" 4 "unsure" 5 "prefer not 
+> to say"
+
+. label val gender_brief gender_brief_lbl
+
+. 
+. 
+. *====================*
+. * Sexual Orientation
+. *====================*
+. 
+. *------------*
+. * Indicators
+. *------------*
+. 
+. * Indicator for missing
+. gen so_missing = 1 if so_clean == ""
+(7,868 missing values generated)
+
+. replace so_missing = 0 if so_clean != ""
+(7,868 real changes made)
+
+. label var so_missing "respondent skipped sexual orientation question"
+
+. 
+. * Indicator for straight
+. gen so_straight =.
+(10,221 missing values generated)
+
+. label var so_straight "straight"
+
+. replace so_straight=0 if so_clean!="STRAIGHT" & !mi(so_clean)
+(2,357 real changes made)
+
+. replace so_straight=1 if so_clean=="STRAIGHT"
+(5,511 real changes made)
+
+. 
+. * Indicator for non-straight
+. gen so_queer = 0 if so_missing == 0
+(2,353 missing values generated)
+
+. label var so_queer "non-straight"
+
+. replace so_queer = 1 if so_clean == "ASEXUAL"
+(210 real changes made)
+
+. replace so_queer = 1 if so_clean == "BISEXUAL"
+(1,088 real changes made)
+
+. replace so_queer = 1 if so_clean == "LESBIAN OR GAY"
+(349 real changes made)
+
+. replace so_queer = 1 if so_clean == "PAN/QUEER"
+(154 real changes made)
+
+. 
+. * Indicator for unsure 
+. gen so_unsure = 0 if so_missing == 0
+(2,353 missing values generated)
+
+. replace so_unsure = 1 if so_clean == "UNSURE/QUESTIONING"
+(12 real changes made)
+
+. label var so_unsure "sexual orientation unsure"
+
+. 
+. * Indicator for prefer not to say 
+. gen so_pnts = 0 if so_missing == 0
+(2,353 missing values generated)
+
+. replace so_pnts = 1 if so_clean == "PREFER NOT TO SAY"
+(544 real changes made)
+
+. label var so_pnts "sexual orientation prefer not so say"
+
+. 
+. * Validate mutually exclusive & add up to one
+. assert so_pnts + so_unsure + so_queer + so_straight == 1 if !mi(so_clean)
+
+. 
+. 
+. *---------------------*
+. * SO FOR MAIN BRIEF
+. *---------------------*
+. 
+. /* Sexual Orientation */
+. gen so_brief = .
+(10,221 missing values generated)
+
+. label var so_brief "sexual orientation for main brief"
+
+. replace so_brief = 0 if so_straight == 1 
+(5,511 real changes made)
+
+. replace so_brief = 1 if so_queer == 1
+(1,801 real changes made)
+
+. replace so_brief = 2 if so_unsure == 1
+(12 real changes made)
+
+. replace so_brief = 3 if so_pnts == 1
+(544 real changes made)
+
+. assert so_brief == . if so_missing == 1
+
+. 
+. label def so_brief_lbl 0 "straight" 1 "queer" 2 "unsure" 3 "prefer not to say"
+
+. label val so_brief so_brief_lbl
+
+. 
+. 
+. 
+. 
+. /* Umbrella LGBTQ+: only if report both gender, sex, & so  */
+. tab so_brief gender_brief
+
+           sexual |
+  orientation for |                       gender for main brief
+       main brief | cis woman    cis man  binary tr      other     unsure  prefer no |     Total
+------------------+------------------------------------------------------------------+----------
+         straight |     3,047      2,423          9         11          0         19 |     5,509 
+            queer |     1,064        283         71        291          8         84 |     1,801 
+           unsure |         6          4          0          2          0          0 |        12 
+prefer not to say |       334        127          6         16          0         60 |       543 
+------------------+------------------------------------------------------------------+----------
+            Total |     4,451      2,837         86        320          8        163 |     7,865 
+
+. 
+. gen lgbtq = .
+(10,221 missing values generated)
+
+. label var lgbtq "LGBTQ+"
+
+. replace lgbtq = 0 if gender_cis == 1 & so_straight == 1 // non-LGBTQ+ if cis & straight
+(5,470 real changes made)
+
+. replace lgbtq = 1 if inlist(gender_brief,2,3) // 1 if trans & nonbinary 
+(418 real changes made)
+
+. replace lgbtq = 1 if so_queer == 1  // 1 if so_queer 
+(1,439 real changes made)
+
+. replace lgbtq = 2 if gender_unsure == 1 & lgbtq != 1 // unsure if doesn;t belong to one of the previous l
+> gbtq criteria & specified unsure
+(0 real changes made)
+
+. replace lgbtq = 2 if so_unsure == 1 & lgbtq != 1
+(10 real changes made)
+
+. replace lgbtq = 3 if gender_pnts == 1 & lgbtq != 1
+(99 real changes made)
+
+. replace lgbtq = 3 if so_pnts == 1 & lgbtq != 1
+(462 real changes made)
+
+. replace lgbtq = . if mi(gender_brief)==1 | mi(so_brief)==1 // force missing if not reporting both.
+(33 real changes made, 33 to missing)
+
+. 
+. label def lgbtq_lbl 0 "non-LGBTQ" 1 "LGBTQ+" 2 "unsure" 3 "prefer not to say"
+
+. label val lgbtq lgbtq_lbl
+
+. 
+. 
+. 
+. *=========*
+. * Export  *
+. *=========+
+. compress
+  variable race_missing was float now byte
+  variable race_black was float now byte
+  variable race_native was float now byte
+  variable race_asian was float now byte
+  variable race_flip was float now byte
+  variable race_hisp was float now byte
+  variable race_pi was float now byte
+  variable race_white was float now byte
+  variable race_other was float now byte
+  variable race_num was float now byte
+  variable race_simp was float now byte
+  variable asab_missing was float now byte
+  variable gender_missing was float now byte
+  variable gender_cis was float now byte
+  variable gender_woman was float now byte
+  variable gender_man was float now byte
+  variable gender_other was float now byte
+  variable gender_unsure was float now byte
+  variable gender_pnts was float now byte
+  variable gender_brief was float now byte
+  variable so_missing was float now byte
+  variable so_straight was float now byte
+  variable so_queer was float now byte
+  variable so_unsure was float now byte
+  variable so_pnts was float now byte
+  variable so_brief was float now byte
+  variable lgbtq was float now byte
+  (827,901 bytes saved)
+
+. save "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", replace
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_brief.dta saved
+
+. 
+. 
+. 
+. ********************************* End Main ************************************
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/prep_brief.txt
+  log type:  text
+ closed on:  28 Jul 2023, 15:33:28
+-----------------------------------------------------------------------------------------------------------
