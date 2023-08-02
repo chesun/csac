@@ -1,18 +1,18 @@
 /* To run this master do file, type:
 
-cd "/home/research/ca_ed_lab/users/chesun/gsr/csac"
-do %csacprojdir/do/do_all.do
+cd "/home/research/ca_ed_lab/projects/csac_survey2023/christina"
+do $csacprojdir/do/do_all.do
 
  */
 
 // set working directory and set global project settings
 
-cd "/home/research/ca_ed_lab/projects/csac_survey2023"
+cd "/home/research/ca_ed_lab/projects/csac_survey2023/christina"
 do do/settings.do
 
 cap log close _all
 
-log using $csacprojdir/log/do_all.smcl, replace 
+log using $cs_csacprojdir/log/do_all.smcl, replace 
 
 clear all
 pause off
@@ -31,7 +31,7 @@ local time1 = c(current_time)
 
 
 // clean survey data exported from qualtrics 
-do $csacprojdir/do/clean/clean_qualtrics_export.do
+do $cs_csacprojdir/do/clean/clean_qualtrics_export.do
 
 
 
@@ -44,5 +44,5 @@ di "Do file start date time: `date1' `time1'"
 di "End date time: `date2' `time2'"
 
 log close 
-translate $csacprojdir/log/do_all.smcl ///
-    $csacprojdir/log/do_all.txt, replace 
+translate $cs_csacprojdir/log/do_all.smcl ///
+    $cs_csacprojdir/log/do_all.txt, replace 

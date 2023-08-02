@@ -5,6 +5,9 @@
 
 // overall project directory
 global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
+// my own project dir
+global cs_csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023/christina"
+
 
 // data directory
 global csacrawdatadir "/home/research/ca_ed_lab/data/restricted_access/raw/csac_survey/2023"

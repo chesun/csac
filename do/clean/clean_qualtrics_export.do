@@ -15,12 +15,12 @@ thus do not need to be imported. First row is variable names.
 
 
  /* to run this do file:
- do $csacprojdir/do/clean/clean_qualtrics_export.do
+ do $cs_csacprojdir/do/clean/clean_qualtrics_export.do
  */
 
 cap log close _all
 
-log using $csacprojdir/log/clean/clean_qualtrics_export.smcl, replace
+log using $cs_csacprojdir/log/clean/clean_qualtrics_export.smcl, replace
 
 graph drop _all
 set more off
@@ -1200,11 +1200,11 @@ foreach v in college_whynot college_excited college_challenge {
     replace `v' = strtrim(`v')
 }
 
-
+order t_*, last
 label data "Fully cleaned CSAC 2023 HS senior survey data"
 compress 
 
-save $csacclndatadir/csac_hs_senior_2023_clean, replace 
+save $cs_csacprojdir/dta/csac_hs_senior_2023_clean, replace 
 
 
 local date2 = c(current_date)
@@ -1216,5 +1216,5 @@ di "End date time: `date2' `time2'"
 
 
 log close
-translate $csacprojdir/log/clean/clean_qualtrics_export.smcl ///
-    $csacprojdir/log/clean/clean_qualtrics_export.txt, replace
+translate $cs_csacprojdir/log/clean/clean_qualtrics_export.smcl ///
+    $cs_csacprojdir/log/clean/clean_qualtrics_export.txt, replace
