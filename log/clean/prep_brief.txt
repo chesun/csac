@@ -1,11 +1,11 @@
------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/prep_brief.txt
   log type:  text
- opened on:  28 Jul 2023, 15:33:27
+ opened on:   2 Aug 2023, 12:18:37
 
 . 
-. ********************************* Main *****************************************
+. ********************************* Main ****************************************
 . 
 . * Load fully cleaned data
 . use "$csacprojdir/dta/cln/csac_hs_senior_2023_clean.dta", clear
@@ -15,6 +15,583 @@
 . * Sample: HS senior
 . keep if senior == 1
 (1,220 observations deleted)
+
+. 
+. 
+. *===================================*
+. * ChecK All That Apply To Dummies
+. *===================================*
+. *------*
+. * Prep *
+. *------*
+. summ hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan // verify nume
+> rical
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+hear_impor~d |      9,891     17.4771    24.33755          1         84
+fafsa_supp~t |      9,704    40.63335    44.21555          1        156
+   fall_plan |        147    2.863946    2.079382          1          9
+inf_no_col~e |        285    3.038596    2.236521          1          7
+college_co~m |      6,346    6.810117    4.920618          1         15
+-------------+---------------------------------------------------------
+    pay_plan |      8,714    75.35586    58.16955          1        186
+
+. 
+. * decode categories from num to string for text search
+. foreach var in hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan{
+  2.         decode `var', gen(`var'_str)
+  3. }
+
+. 
+. 
+. *----------*
+. * Generate *
+. *----------*
+. *** Each indicator has the format: `var'_i`abbrcat' ***
+. 
+. /* Q2: hear_import_aid */
+. 
+. * hsstaff: High school staff (counselor, teacher, etc.)
+. gen hear_import_aid_ihsstaff = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_ihsstaff = 1 if strpos(hear_import_aid_str, "High school staff (counselor, teach
+> er, etc.)")!=0
+(8,187 real changes made)
+
+. label var hear_import_aid_ihsstaff "selected 'High school staff (counselor, teacher, etc.)'"
+
+. 
+. * social: Social media
+. gen hear_import_aid_isocial = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_isocial = 1 if strpos(hear_import_aid_str, "Social media")!=0
+(0 real changes made)
+
+. label var hear_import_aid_isocial "selected 'Social media'"
+
+. 
+. * online: Online website
+. gen hear_import_aid_ionline = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_ionline = 1 if strpos(hear_import_aid_str, "Online website")!=0
+(1,132 real changes made)
+
+. label var hear_import_aid_ionline "selected 'Online website'"
+
+. 
+. * mouth: Word of mouth
+. gen hear_import_aid_imouth = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_imouth = 1 if strpos(hear_import_aid_str, "Word of mouth")!=0
+(2,767 real changes made)
+
+. label var hear_import_aid_imouth "selected 'Word of mouth'"
+
+. 
+. * workshop: Financial aid workshop
+. gen hear_import_aid_iworkshop = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_iworkshop = 1 if strpos(hear_import_aid_str, "Financial aid workshop")!=0
+(2,016 real changes made)
+
+. label var hear_import_aid_iworkshop "selected 'Financial aid workshop'"
+
+. 
+. * print: Print media
+. gen hear_import_aid_iprint = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_iprint = 1 if strpos(hear_import_aid_str, "Print media")!=0
+(565 real changes made)
+
+. label var hear_import_aid_iprint "selected 'Print media'"
+
+. 
+. 
+. * public: Public service announcement
+. gen hear_import_aid_ipublic = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_ipublic = 1 if strpos(hear_import_aid_str, "Public service announcement")!=0
+(618 real changes made)
+
+. label var hear_import_aid_ipublic "selected 'Public service announcement'"
+
+. 
+. 
+. * other: Other 
+. // note var hear_import_aid_other stores text response if iother == 1
+. // the i here is to differentiate from the free response variable
+. gen hear_import_aid_iother = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+(330 missing values generated)
+
+. replace hear_import_aid_iother = 1 if strpos(hear_import_aid_str, "Other")!=0
+(678 real changes made)
+
+. label var hear_import_aid_iother "selected 'Other'"
+
+. 
+. 
+. /* Q6: fafsa_support */
+. 
+. tab fafsa_support 
+
+        support you received completing |
+                            FAFSA/CADAA |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                  High school counselor |        965        9.94        9.94
+                                Teacher |        220        2.27       12.21
+FAFSA workshop or training at your high |        613        6.32       18.53
+FAFSA workshop at community location ou |         84        0.87       19.39
+                                 Parent |      2,003       20.64       40.04
+        Family member other than parent |        300        3.09       43.13
+                                 Friend |         60        0.62       43.74
+      Nobody (I completed it on my own) |        770        7.93       51.68
+FAFSA workshop at community location ou |          8        0.08       51.76
+FAFSA workshop at community location ou |          3        0.03       51.79
+FAFSA workshop at community location ou |          1        0.01       51.80
+FAFSA workshop at community location ou |          1        0.01       51.81
+FAFSA workshop at community location ou |          5        0.05       51.87
+FAFSA workshop at community location ou |         28        0.29       52.15
+FAFSA workshop at community location ou |          4        0.04       52.19
+FAFSA workshop at community location ou |          2        0.02       52.22
+FAFSA workshop at community location ou |          5        0.05       52.27
+FAFSA workshop at community location ou |          1        0.01       52.28
+FAFSA workshop or training at your high |         43        0.44       52.72
+FAFSA workshop or training at your high |          5        0.05       52.77
+FAFSA workshop or training at your high |          2        0.02       52.79
+FAFSA workshop or training at your high |          7        0.07       52.86
+FAFSA workshop or training at your high |         12        0.12       52.99
+FAFSA workshop or training at your high |          2        0.02       53.01
+FAFSA workshop or training at your high |         51        0.53       53.53
+FAFSA workshop or training at your high |         10        0.10       53.64
+FAFSA workshop or training at your high |          2        0.02       53.66
+FAFSA workshop or training at your high |         21        0.22       53.87
+FAFSA workshop or training at your high |         21        0.22       54.09
+FAFSA workshop or training at your high |        233        2.40       56.49
+FAFSA workshop or training at your high |         13        0.13       56.63
+FAFSA workshop or training at your high |          4        0.04       56.67
+FAFSA workshop or training at your high |         19        0.20       56.86
+FAFSA workshop or training at your high |          3        0.03       56.89
+ Family member other than parent,Friend |         16        0.16       57.06
+Family member other than parent,Nobody  |         14        0.14       57.20
+Friend,Nobody (I completed it on my own |          9        0.09       57.30
+High school counselor,FAFSA workshop at |         29        0.30       57.59
+High school counselor,FAFSA workshop at |          5        0.05       57.65
+High school counselor,FAFSA workshop at |          2        0.02       57.67
+High school counselor,FAFSA workshop at |          3        0.03       57.70
+High school counselor,FAFSA workshop at |          1        0.01       57.71
+High school counselor,FAFSA workshop at |         23        0.24       57.95
+High school counselor,FAFSA workshop at |          2        0.02       57.97
+High school counselor,FAFSA workshop at |          2        0.02       57.99
+High school counselor,FAFSA workshop at |          1        0.01       58.00
+High school counselor,FAFSA workshop or |        361        3.72       61.72
+High school counselor,FAFSA workshop or |         48        0.49       62.21
+High school counselor,FAFSA workshop or |          7        0.07       62.28
+High school counselor,FAFSA workshop or |          5        0.05       62.34
+High school counselor,FAFSA workshop or |          2        0.02       62.36
+High school counselor,FAFSA workshop or |         16        0.16       62.52
+High school counselor,FAFSA workshop or |          4        0.04       62.56
+High school counselor,FAFSA workshop or |          1        0.01       62.57
+High school counselor,FAFSA workshop or |         61        0.63       63.20
+High school counselor,FAFSA workshop or |          9        0.09       63.29
+High school counselor,FAFSA workshop or |         26        0.27       63.56
+High school counselor,FAFSA workshop or |          7        0.07       63.63
+High school counselor,FAFSA workshop or |        274        2.82       66.46
+High school counselor,FAFSA workshop or |         35        0.36       66.82
+High school counselor,FAFSA workshop or |         14        0.14       66.96
+High school counselor,FAFSA workshop or |         37        0.38       67.34
+High school counselor,FAFSA workshop or |          1        0.01       67.35
+High school counselor,Family member oth |        111        1.14       68.50
+High school counselor,Family member oth |         12        0.12       68.62
+           High school counselor,Friend |         31        0.32       68.94
+High school counselor,Friend,Nobody (I  |          1        0.01       68.95
+High school counselor,Nobody (I complet |         32        0.33       69.28
+           High school counselor,Parent |        550        5.67       74.95
+High school counselor,Parent,Family mem |         78        0.80       75.75
+High school counselor,Parent,Family mem |         19        0.20       75.95
+    High school counselor,Parent,Friend |         53        0.55       76.49
+High school counselor,Parent,Friend,Nob |          1        0.01       76.50
+High school counselor,Parent,Nobody (I  |          2        0.02       76.53
+          High school counselor,Teacher |        253        2.61       79.13
+High school counselor,Teacher,FAFSA wor |         23        0.24       79.37
+High school counselor,Teacher,FAFSA wor |          3        0.03       79.40
+High school counselor,Teacher,FAFSA wor |          1        0.01       79.41
+High school counselor,Teacher,FAFSA wor |          4        0.04       79.45
+High school counselor,Teacher,FAFSA wor |         12        0.12       79.58
+High school counselor,Teacher,FAFSA wor |          1        0.01       79.59
+High school counselor,Teacher,FAFSA wor |          3        0.03       79.62
+High school counselor,Teacher,FAFSA wor |          6        0.06       79.68
+High school counselor,Teacher,FAFSA wor |          2        0.02       79.70
+High school counselor,Teacher,FAFSA wor |          1        0.01       79.71
+High school counselor,Teacher,FAFSA wor |        209        2.15       81.86
+High school counselor,Teacher,FAFSA wor |         32        0.33       82.19
+High school counselor,Teacher,FAFSA wor |          8        0.08       82.28
+High school counselor,Teacher,FAFSA wor |          6        0.06       82.34
+High school counselor,Teacher,FAFSA wor |         11        0.11       82.45
+High school counselor,Teacher,FAFSA wor |         10        0.10       82.55
+High school counselor,Teacher,FAFSA wor |          5        0.05       82.61
+High school counselor,Teacher,FAFSA wor |         19        0.20       82.80
+High school counselor,Teacher,FAFSA wor |          1        0.01       82.81
+High school counselor,Teacher,FAFSA wor |          9        0.09       82.90
+High school counselor,Teacher,FAFSA wor |         40        0.41       83.32
+High school counselor,Teacher,FAFSA wor |         15        0.15       83.47
+High school counselor,Teacher,FAFSA wor |         44        0.45       83.92
+High school counselor,Teacher,FAFSA wor |          1        0.01       83.93
+High school counselor,Teacher,FAFSA wor |        188        1.94       85.87
+High school counselor,Teacher,FAFSA wor |         21        0.22       86.09
+High school counselor,Teacher,FAFSA wor |         29        0.30       86.39
+High school counselor,Teacher,FAFSA wor |         58        0.60       86.98
+High school counselor,Teacher,FAFSA wor |          1        0.01       87.00
+High school counselor,Teacher,Family me |         54        0.56       87.55
+High school counselor,Teacher,Family me |          8        0.08       87.63
+High school counselor,Teacher,Family me |          2        0.02       87.65
+High school counselor,Teacher,Family me |          1        0.01       87.66
+   High school counselor,Teacher,Friend |         48        0.49       88.16
+High school counselor,Teacher,Nobody (I |          7        0.07       88.23
+   High school counselor,Teacher,Parent |        222        2.29       90.52
+High school counselor,Teacher,Parent,Fa |         44        0.45       90.97
+High school counselor,Teacher,Parent,Fa |         33        0.34       91.31
+High school counselor,Teacher,Parent,Fr |         58        0.60       91.91
+ Parent,Family member other than parent |        134        1.38       93.29
+Parent,Family member other than parent, |         21        0.22       93.51
+Parent,Family member other than parent, |          4        0.04       93.55
+                          Parent,Friend |         84        0.87       94.41
+Parent,Friend,Nobody (I completed it on |          3        0.03       94.45
+Parent,Nobody (I completed it on my own |         89        0.92       95.36
+Teacher,FAFSA workshop at community loc |         13        0.13       95.50
+Teacher,FAFSA workshop at community loc |          3        0.03       95.53
+Teacher,FAFSA workshop at community loc |          1        0.01       95.54
+Teacher,FAFSA workshop at community loc |          7        0.07       95.61
+Teacher,FAFSA workshop at community loc |          2        0.02       95.63
+Teacher,FAFSA workshop at community loc |          1        0.01       95.64
+Teacher,FAFSA workshop or training at y |         72        0.74       96.38
+Teacher,FAFSA workshop or training at y |         12        0.12       96.51
+Teacher,FAFSA workshop or training at y |          1        0.01       96.52
+Teacher,FAFSA workshop or training at y |          2        0.02       96.54
+Teacher,FAFSA workshop or training at y |          5        0.05       96.59
+Teacher,FAFSA workshop or training at y |          1        0.01       96.60
+Teacher,FAFSA workshop or training at y |         19        0.20       96.80
+Teacher,FAFSA workshop or training at y |          2        0.02       96.82
+Teacher,FAFSA workshop or training at y |          1        0.01       96.83
+Teacher,FAFSA workshop or training at y |          9        0.09       96.92
+Teacher,FAFSA workshop or training at y |          4        0.04       96.96
+Teacher,FAFSA workshop or training at y |         46        0.47       97.43
+Teacher,FAFSA workshop or training at y |          6        0.06       97.50
+Teacher,FAFSA workshop or training at y |          3        0.03       97.53
+Teacher,FAFSA workshop or training at y |          1        0.01       97.54
+Teacher,FAFSA workshop or training at y |          1        0.01       97.55
+Teacher,FAFSA workshop or training at y |          8        0.08       97.63
+Teacher,FAFSA workshop or training at y |          1        0.01       97.64
+Teacher,Family member other than parent |         26        0.27       97.91
+Teacher,Family member other than parent |          5        0.05       97.96
+Teacher,Family member other than parent |          1        0.01       97.97
+                         Teacher,Friend |         11        0.11       98.08
+Teacher,Friend,Nobody (I completed it o |          1        0.01       98.09
+Teacher,Nobody (I completed it on my ow |         14        0.14       98.24
+                         Teacher,Parent |        117        1.21       99.44
+Teacher,Parent,Family member other than |         14        0.14       99.59
+Teacher,Parent,Family member other than |         11        0.11       99.70
+Teacher,Parent,Family member other than |          2        0.02       99.72
+                  Teacher,Parent,Friend |         24        0.25       99.97
+Teacher,Parent,Nobody (I completed it o |          3        0.03      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      9,704      100.00
+
+. 
+. * counselor
+. gen fafsa_support_icounselor = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_icounselor = 1 if strpos(fafsa_support_str, "High school counselor")!=0
+(4,324 real changes made)
+
+. label var fafsa_support_icounselor "selected 'High school counselor'"
+
+. 
+. * teacher
+. gen fafsa_support_iteacher = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_iteacher = 1 if strpos(fafsa_support_str, "Teacher")!=0
+(2,163 real changes made)
+
+. label var fafsa_support_iteacher "selected 'Teacher'"
+
+. 
+. * hsworkshop
+. gen fafsa_support_ihsworkshop = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_ihsworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop or training at your h
+> igh school")!=0
+(2,870 real changes made)
+
+. label var fafsa_support_ihsworkshop "selected 'FAFSA workshop or training at your high school'"
+
+. 
+. * cmworkshop
+. **# google doc options different from value label
+. gen fafsa_support_icmworkshop = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_icmworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop at community location
+> ")!=0
+(569 real changes made)
+
+. label var fafsa_support_icmworkshop "selected 'FAFSA training at community location outside of your high
+>  school'"
+
+. 
+. * parent
+. gen fafsa_support_iparent = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_iparent = 1 if strpos(fafsa_support_str, "Parent")!=0
+(4,753 real changes made)
+
+. label var fafsa_support_iparent "selected 'Parent'"
+
+. 
+. * family
+. gen fafsa_support_ifamily = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_ifamily = 1 if strpos(fafsa_support_str, "Family member other than parent")!=0
+(1,354 real changes made)
+
+. label var fafsa_support_ifamily "selected 'Family member other than parent'"
+
+. 
+. * friend
+. gen fafsa_support_ifriend = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_ifriend = 1 if strpos(fafsa_support_str, "Friend")!=0
+(930 real changes made)
+
+. label var fafsa_support_ifriend "selected 'Friend'"
+
+. 
+. * nobody 
+. **# google doc options different from value label
+. gen fafsa_support_inobody = 0 if !mi(fafsa_support) // set default to 0 if not missing
+(517 missing values generated)
+
+. replace fafsa_support_inobody = 1 if strpos(fafsa_support_str, "Nobody")!=0
+(1,013 real changes made)
+
+. label var fafsa_support_inobody "selected 'Nobody (I completed it on my own)'"
+
+. 
+. 
+. /* Q7a: fall_plan */
+. * workpt
+. gen fall_plan_iworkpt = 0 if !mi(fall_plan) // set default to 0 if not missing
+(10,074 missing values generated)
+
+. replace fall_plan_iworkpt = 1 if strpos(fall_plan_str, "Work part-time")!=0
+(62 real changes made)
+
+. label var fall_plan_iworkpt "selected 'Work part-time'"
+
+. 
+. * workft
+. gen fall_plan_iworkft = 0 if !mi(fall_plan) // set default to 0 if not missing
+(10,074 missing values generated)
+
+. replace fall_plan_iworkft = 1 if strpos(fall_plan_str, "Work full-time")!=0
+(54 real changes made)
+
+. label var fall_plan_iworkft "selected 'Work full-time'"
+
+. 
+. * family
+. gen fall_plan_ifamily = 0 if !mi(fall_plan) // set default to 0 if not missing
+(10,074 missing values generated)
+
+. replace fall_plan_ifamily = 1 if strpos(fall_plan_str, "Family obligations")!=0
+(25 real changes made)
+
+. label var fall_plan_ifamily "selected 'Family obligations'"
+
+. 
+. * military
+. gen fall_plan_imilitary = 0 if !mi(fall_plan) // set default to 0 if not missing
+(10,074 missing values generated)
+
+. replace fall_plan_imilitary = 1 if strpos(fall_plan_str, "Military")!=0
+(28 real changes made)
+
+. label var fall_plan_imilitary "selected 'Military'"
+
+. 
+. 
+. /* Q6b: inf_no_college */
+. * financial
+. gen inf_no_college_ifinancial = 0 if !mi(inf_no_college) // set default to 0 if not missing
+(9,936 missing values generated)
+
+. replace inf_no_college_ifinancial = 1 if strpos(inf_no_college_str, "Financial support")!=0
+(216 real changes made)
+
+. label var inf_no_college_ifinancial "selected 'Financial support'"
+
+. 
+. * academic
+. gen inf_no_college_iacademic = 0 if !mi(inf_no_college) // set default to 0 if not missing
+(9,936 missing values generated)
+
+. replace inf_no_college_iacademic = 1 if strpos(inf_no_college_str, "Academic support")!=0
+(94 real changes made)
+
+. label var inf_no_college_iacademic "selected 'Academic support'"
+
+. 
+. * fam_other
+. gen inf_no_college_ifam_other = 0 if !mi(inf_no_college) // set default to 0 if not missing
+(9,936 missing values generated)
+
+. replace inf_no_college_ifam_other = 1 if strpos(inf_no_college_str, "Family or other support")!=0
+(107 real changes made)
+
+. label var inf_no_college_ifam_other "selected 'Family or other support'"
+
+. 
+. 
+. /* Q7b: college_contact_item */
+. // varname too long. abbr to college_contact_i`cat'
+. * verification
+. gen college_contact_iverification = 0 if !mi(college_contact_item) // set default to 0 if not missing
+(3,875 missing values generated)
+
+. replace college_contact_iverification = 1 if strpos(college_contact_item_str, "FAFSA/CADAA verification"
+> )!=0
+(3,503 real changes made)
+
+. label var college_contact_iverification "selected 'FAFSA/CADAA verification (additional documentation ne
+> eded to process financial aid)'"
+note: label truncated to 80 characters
+
+. 
+. * faoffer
+. gen college_contact_ifaoffer = 0 if !mi(college_contact_item) // set default to 0 if not missing
+(3,875 missing values generated)
+
+. replace college_contact_ifaoffer = 1 if strpos(college_contact_item_str, "Financial aid offer/award lett
+> er")!=0
+(4,535 real changes made)
+
+. label var college_contact_ifaoffer "selected 'Financial aid offer/award letter'"
+
+. 
+. * workstudy
+. gen college_contact_iworkstudy = 0 if !mi(college_contact_item) // set default to 0 if not missing
+(3,875 missing values generated)
+
+. replace college_contact_iworkstudy = 1 if strpos(college_contact_item_str, "Eligibility for work study")
+> !=0
+(1,832 real changes made)
+
+. label var college_contact_iworkstudy "selected 'Eligibility for work study'"
+
+. 
+. * loans
+. gen college_contact_iloans = 0 if !mi(college_contact_item) // set default to 0 if not missing
+(3,875 missing values generated)
+
+. replace college_contact_iloans = 1 if strpos(college_contact_item_str, "Information about loans")!=0
+(2,722 real changes made)
+
+. label var college_contact_iloans "selected 'Information about loans'"
+
+. 
+. 
+. /* Q10: pay_plan */
+. * scholarships
+. gen pay_plan_ischolarships = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_ischolarships = 1 if strpos(pay_plan_str, "Scholarships")!=0
+(4,425 real changes made)
+
+. label var pay_plan_ischolarships "selected 'Scholarships'"
+
+. 
+. * grants
+. gen pay_plan_igrants = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_igrants = 1 if strpos(pay_plan_str, "Grants (e.g., Pell Grant, Cal Grant)")!=0
+(4,374 real changes made)
+
+. label var pay_plan_igrants "selected 'Grants (e.g., Pell Grant, Cal Grant)'"
+
+. 
+. * savings
+. gen pay_plan_isavings = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_isavings = 1 if strpos(pay_plan_str, "My own savings")!=0
+(3,064 real changes made)
+
+. label var pay_plan_isavings "selected 'My own savings'"
+
+. 
+. * working
+. gen pay_plan_iworking = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_iworking = 1 if strpos(pay_plan_str, "Working while enrolled")!=0
+(4,661 real changes made)
+
+. label var pay_plan_iworking "selected 'Working while enrolled'"
+
+. 
+. * people
+. gen pay_plan_ipeople = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_ipeople = 1 if strpos(pay_plan_str, "Money from other people")!=0
+(3,817 real changes made)
+
+. label var pay_plan_ipeople "selected 'Money from other people'"
+
+. 
+. * loans
+. gen pay_plan_iloans = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_iloans = 1 if strpos(pay_plan_str, "Student loans")!=0
+(2,866 real changes made)
+
+. label var pay_plan_iloans "selected 'Student loans'"
+
+. 
+. * military
+. gen pay_plan_imilitary = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_imilitary = 1 if strpos(pay_plan_str, "Military/VA benefits")!=0
+(227 real changes made)
+
+. label var pay_plan_imilitary "selected 'Military/VA benefits'"
+
+. 
+. * credit
+. gen pay_plan_icredit = 0 if !mi(pay_plan) // set default to 0 if not missing
+(1,507 missing values generated)
+
+. replace pay_plan_icredit = 1 if strpos(pay_plan_str, "Credit card(s)")!=0
+(389 real changes made)
+
+. label var pay_plan_icredit "selected 'Credit card(s)'"
 
 . 
 . 
@@ -134,8 +711,8 @@
 . *---------------------------------------*
 . 
 . /* # of race/ethnic groups  */
-. egen race_num = rowtotal(race_black race_native race_asian race_flip race_hisp race_pi race_white race_ot
-> her)
+. egen race_num = rowtotal(race_black race_native race_asian race_flip race_hisp race_pi race_white race_o
+> ther)
 
 . replace race_num = . if race == .
 (2,191 real changes made, 2,191 to missing)
@@ -272,8 +849,8 @@ respondent |
 . replace gender_other = 0 if gender_missing == 0
 (7,976 real changes made)
 
-. replace gender_other = 1 if gender_clean == "GENDERFLUID" | gender_clean == "NONBINARY" | gender_clean ==
->  "OTHERGNC" 
+. replace gender_other = 1 if gender_clean == "GENDERFLUID" | gender_clean == "NONBINARY" | gender_clean =
+> = "OTHERGNC" 
 (331 real changes made)
 
 . assert gender_other == . if gender_clean == ""
@@ -305,7 +882,8 @@ respondent |
 . 
 . 
 . * Validate muturally exclisive & add up to one.
-. assert gender_man + gender_woman + gender_other + gender_unsure + gender_pnts == 1 if gender_missing == 0
+. assert gender_man + gender_woman + gender_other + gender_unsure + gender_pnts == 1 if gender_missing == 
+> 0
 
 . 
 . *-----------------------*
@@ -345,8 +923,8 @@ respondent |
 . assert gender_brief == . if gender_missing == 1
 
 . 
-. label def gender_brief_lbl 0 "cis woman" 1 "cis man" 2 "binary trans" 3 "other" 4 "unsure" 5 "prefer not 
-> to say"
+. label def gender_brief_lbl 0 "cis woman" 1 "cis man" 2 "binary trans" 3 "other" 4 "unsure" 5 "prefer not
+>  to say"
 
 . label val gender_brief gender_brief_lbl
 
@@ -489,8 +1067,8 @@ prefer not to say |       334        127          6         16          0       
 . replace lgbtq = 1 if so_queer == 1  // 1 if so_queer 
 (1,439 real changes made)
 
-. replace lgbtq = 2 if gender_unsure == 1 & lgbtq != 1 // unsure if doesn;t belong to one of the previous l
-> gbtq criteria & specified unsure
+. replace lgbtq = 2 if gender_unsure == 1 & lgbtq != 1 // unsure if doesn;t belong to one of the previous 
+> lgbtq criteria & specified unsure
 (0 real changes made)
 
 . replace lgbtq = 2 if so_unsure == 1 & lgbtq != 1
@@ -516,7 +1094,45 @@ prefer not to say |       334        127          6         16          0       
 . *=========*
 . * Export  *
 . *=========+
+. drop *_str
+
+. 
 . compress
+  variable hear_import_aid_ihsstaff was float now byte
+  variable hear_import_aid_isocial was float now byte
+  variable hear_import_aid_ionline was float now byte
+  variable hear_import_aid_imouth was float now byte
+  variable hear_import_aid_iworkshop was float now byte
+  variable hear_import_aid_iprint was float now byte
+  variable hear_import_aid_ipublic was float now byte
+  variable hear_import_aid_iother was float now byte
+  variable fafsa_support_icounselor was float now byte
+  variable fafsa_support_iteacher was float now byte
+  variable fafsa_support_ihsworkshop was float now byte
+  variable fafsa_support_icmworkshop was float now byte
+  variable fafsa_support_iparent was float now byte
+  variable fafsa_support_ifamily was float now byte
+  variable fafsa_support_ifriend was float now byte
+  variable fafsa_support_inobody was float now byte
+  variable fall_plan_iworkpt was float now byte
+  variable fall_plan_iworkft was float now byte
+  variable fall_plan_ifamily was float now byte
+  variable fall_plan_imilitary was float now byte
+  variable inf_no_college_ifinancial was float now byte
+  variable inf_no_college_iacademic was float now byte
+  variable inf_no_college_ifam_other was float now byte
+  variable college_contact_iverification was float now byte
+  variable college_contact_ifaoffer was float now byte
+  variable college_contact_iworkstudy was float now byte
+  variable college_contact_iloans was float now byte
+  variable pay_plan_ischolarships was float now byte
+  variable pay_plan_igrants was float now byte
+  variable pay_plan_isavings was float now byte
+  variable pay_plan_iworking was float now byte
+  variable pay_plan_ipeople was float now byte
+  variable pay_plan_iloans was float now byte
+  variable pay_plan_imilitary was float now byte
+  variable pay_plan_icredit was float now byte
   variable race_missing was float now byte
   variable race_black was float now byte
   variable race_native was float now byte
@@ -544,7 +1160,7 @@ prefer not to say |       334        127          6         16          0       
   variable so_pnts was float now byte
   variable so_brief was float now byte
   variable lgbtq was float now byte
-  (827,901 bytes saved)
+  (1,901,106 bytes saved)
 
 . save "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", replace
 file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_brief.dta saved
@@ -558,5 +1174,5 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_20
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/prep_brief.txt
   log type:  text
- closed on:  28 Jul 2023, 15:33:28
------------------------------------------------------------------------------------------------------------
+ closed on:   2 Aug 2023, 12:18:37
+----------------------------------------------------------------------------------------------------------

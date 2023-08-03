@@ -16,6 +16,11 @@ SEXUAL ORIENTATION:
 WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
 
 DATE CREATED: July 25, 2023
+
+UPDATES: 
+[BZ]08/02/2023: Check-all-that-apply combo -> all inclusive dummy
+including: race_clean hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan
+
 *******************************************************************************/
 
 
@@ -51,13 +56,230 @@ global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
 cap log close
 log using "$csacprojdir/log/clean/prep_brief.txt", text replace
 
-********************************* Main *****************************************
+********************************* Main ****************************************
 
 * Load fully cleaned data
 use "$csacprojdir/dta/cln/csac_hs_senior_2023_clean.dta", clear
 
 * Sample: HS senior
 keep if senior == 1
+
+
+*===================================*
+* ChecK All That Apply To Dummies
+*===================================*
+*------*
+* Prep *
+*------*
+summ hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan // verify numerical
+
+* decode categories from num to string for text search
+foreach var in hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan{
+	decode `var', gen(`var'_str)
+}
+
+
+*----------*
+* Generate *
+*----------*
+*** Each indicator has the format: `var'_i`abbrcat' ***
+
+/* Q2: hear_import_aid */
+
+* hsstaff: High school staff (counselor, teacher, etc.)
+gen hear_import_aid_ihsstaff = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_ihsstaff = 1 if strpos(hear_import_aid_str, "High school staff (counselor, teacher, etc.)")!=0
+label var hear_import_aid_ihsstaff "selected 'High school staff (counselor, teacher, etc.)'"
+
+* social: Social media
+gen hear_import_aid_isocial = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_isocial = 1 if strpos(hear_import_aid_str, "Social media")!=0
+label var hear_import_aid_isocial "selected 'Social media'"
+
+* online: Online website
+gen hear_import_aid_ionline = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_ionline = 1 if strpos(hear_import_aid_str, "Online website")!=0
+label var hear_import_aid_ionline "selected 'Online website'"
+
+* mouth: Word of mouth
+gen hear_import_aid_imouth = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_imouth = 1 if strpos(hear_import_aid_str, "Word of mouth")!=0
+label var hear_import_aid_imouth "selected 'Word of mouth'"
+
+* workshop: Financial aid workshop
+gen hear_import_aid_iworkshop = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_iworkshop = 1 if strpos(hear_import_aid_str, "Financial aid workshop")!=0
+label var hear_import_aid_iworkshop "selected 'Financial aid workshop'"
+
+* print: Print media
+gen hear_import_aid_iprint = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_iprint = 1 if strpos(hear_import_aid_str, "Print media")!=0
+label var hear_import_aid_iprint "selected 'Print media'"
+
+
+* public: Public service announcement
+gen hear_import_aid_ipublic = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_ipublic = 1 if strpos(hear_import_aid_str, "Public service announcement")!=0
+label var hear_import_aid_ipublic "selected 'Public service announcement'"
+
+
+* other: Other 
+// note var hear_import_aid_other stores text response if iother == 1
+// the i here is to differentiate from the free response variable
+gen hear_import_aid_iother = 0 if !mi(hear_import_aid) // set default to 0 if not missing
+replace hear_import_aid_iother = 1 if strpos(hear_import_aid_str, "Other")!=0
+label var hear_import_aid_iother "selected 'Other'"
+
+
+/* Q6: fafsa_support */
+
+tab fafsa_support 
+
+* counselor
+gen fafsa_support_icounselor = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_icounselor = 1 if strpos(fafsa_support_str, "High school counselor")!=0
+label var fafsa_support_icounselor "selected 'High school counselor'"
+
+* teacher
+gen fafsa_support_iteacher = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_iteacher = 1 if strpos(fafsa_support_str, "Teacher")!=0
+label var fafsa_support_iteacher "selected 'Teacher'"
+
+* hsworkshop
+gen fafsa_support_ihsworkshop = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_ihsworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop or training at your high school")!=0
+label var fafsa_support_ihsworkshop "selected 'FAFSA workshop or training at your high school'"
+
+* cmworkshop
+**# google doc options different from value label
+gen fafsa_support_icmworkshop = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_icmworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop at community location")!=0
+label var fafsa_support_icmworkshop "selected 'FAFSA training at community location outside of your high school'"
+
+* parent
+gen fafsa_support_iparent = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_iparent = 1 if strpos(fafsa_support_str, "Parent")!=0
+label var fafsa_support_iparent "selected 'Parent'"
+
+* family
+gen fafsa_support_ifamily = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_ifamily = 1 if strpos(fafsa_support_str, "Family member other than parent")!=0
+label var fafsa_support_ifamily "selected 'Family member other than parent'"
+
+* friend
+gen fafsa_support_ifriend = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_ifriend = 1 if strpos(fafsa_support_str, "Friend")!=0
+label var fafsa_support_ifriend "selected 'Friend'"
+
+* nobody 
+**# google doc options different from value label
+gen fafsa_support_inobody = 0 if !mi(fafsa_support) // set default to 0 if not missing
+replace fafsa_support_inobody = 1 if strpos(fafsa_support_str, "Nobody")!=0
+label var fafsa_support_inobody "selected 'Nobody (I completed it on my own)'"
+
+
+/* Q7a: fall_plan */
+* workpt
+gen fall_plan_iworkpt = 0 if !mi(fall_plan) // set default to 0 if not missing
+replace fall_plan_iworkpt = 1 if strpos(fall_plan_str, "Work part-time")!=0
+label var fall_plan_iworkpt "selected 'Work part-time'"
+
+* workft
+gen fall_plan_iworkft = 0 if !mi(fall_plan) // set default to 0 if not missing
+replace fall_plan_iworkft = 1 if strpos(fall_plan_str, "Work full-time")!=0
+label var fall_plan_iworkft "selected 'Work full-time'"
+
+* family
+gen fall_plan_ifamily = 0 if !mi(fall_plan) // set default to 0 if not missing
+replace fall_plan_ifamily = 1 if strpos(fall_plan_str, "Family obligations")!=0
+label var fall_plan_ifamily "selected 'Family obligations'"
+
+* military
+gen fall_plan_imilitary = 0 if !mi(fall_plan) // set default to 0 if not missing
+replace fall_plan_imilitary = 1 if strpos(fall_plan_str, "Military")!=0
+label var fall_plan_imilitary "selected 'Military'"
+
+
+/* Q6b: inf_no_college */
+* financial
+gen inf_no_college_ifinancial = 0 if !mi(inf_no_college) // set default to 0 if not missing
+replace inf_no_college_ifinancial = 1 if strpos(inf_no_college_str, "Financial support")!=0
+label var inf_no_college_ifinancial "selected 'Financial support'"
+
+* academic
+gen inf_no_college_iacademic = 0 if !mi(inf_no_college) // set default to 0 if not missing
+replace inf_no_college_iacademic = 1 if strpos(inf_no_college_str, "Academic support")!=0
+label var inf_no_college_iacademic "selected 'Academic support'"
+
+* fam_other
+gen inf_no_college_ifam_other = 0 if !mi(inf_no_college) // set default to 0 if not missing
+replace inf_no_college_ifam_other = 1 if strpos(inf_no_college_str, "Family or other support")!=0
+label var inf_no_college_ifam_other "selected 'Family or other support'"
+
+
+/* Q7b: college_contact_item */
+// varname too long. abbr to college_contact_i`cat'
+* verification
+gen college_contact_iverification = 0 if !mi(college_contact_item) // set default to 0 if not missing
+replace college_contact_iverification = 1 if strpos(college_contact_item_str, "FAFSA/CADAA verification")!=0
+label var college_contact_iverification "selected 'FAFSA/CADAA verification (additional documentation needed to process financial aid)'"
+
+* faoffer
+gen college_contact_ifaoffer = 0 if !mi(college_contact_item) // set default to 0 if not missing
+replace college_contact_ifaoffer = 1 if strpos(college_contact_item_str, "Financial aid offer/award letter")!=0
+label var college_contact_ifaoffer "selected 'Financial aid offer/award letter'"
+
+* workstudy
+gen college_contact_iworkstudy = 0 if !mi(college_contact_item) // set default to 0 if not missing
+replace college_contact_iworkstudy = 1 if strpos(college_contact_item_str, "Eligibility for work study")!=0
+label var college_contact_iworkstudy "selected 'Eligibility for work study'"
+
+* loans
+gen college_contact_iloans = 0 if !mi(college_contact_item) // set default to 0 if not missing
+replace college_contact_iloans = 1 if strpos(college_contact_item_str, "Information about loans")!=0
+label var college_contact_iloans "selected 'Information about loans'"
+
+
+/* Q10: pay_plan */
+* scholarships
+gen pay_plan_ischolarships = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_ischolarships = 1 if strpos(pay_plan_str, "Scholarships")!=0
+label var pay_plan_ischolarships "selected 'Scholarships'"
+
+* grants
+gen pay_plan_igrants = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_igrants = 1 if strpos(pay_plan_str, "Grants (e.g., Pell Grant, Cal Grant)")!=0
+label var pay_plan_igrants "selected 'Grants (e.g., Pell Grant, Cal Grant)'"
+
+* savings
+gen pay_plan_isavings = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_isavings = 1 if strpos(pay_plan_str, "My own savings")!=0
+label var pay_plan_isavings "selected 'My own savings'"
+
+* working
+gen pay_plan_iworking = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_iworking = 1 if strpos(pay_plan_str, "Working while enrolled")!=0
+label var pay_plan_iworking "selected 'Working while enrolled'"
+
+* people
+gen pay_plan_ipeople = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_ipeople = 1 if strpos(pay_plan_str, "Money from other people")!=0
+label var pay_plan_ipeople "selected 'Money from other people'"
+
+* loans
+gen pay_plan_iloans = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_iloans = 1 if strpos(pay_plan_str, "Student loans")!=0
+label var pay_plan_iloans "selected 'Student loans'"
+
+* military
+gen pay_plan_imilitary = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_imilitary = 1 if strpos(pay_plan_str, "Military/VA benefits")!=0
+label var pay_plan_imilitary "selected 'Military/VA benefits'"
+
+* credit
+gen pay_plan_icredit = 0 if !mi(pay_plan) // set default to 0 if not missing
+replace pay_plan_icredit = 1 if strpos(pay_plan_str, "Credit card(s)")!=0
+label var pay_plan_icredit "selected 'Credit card(s)'"
 
 
 *===================*
@@ -323,6 +545,8 @@ label val lgbtq lgbtq_lbl
 *=========*
 * Export  *
 *=========+
+drop *_str
+
 compress
 save "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", replace
 
