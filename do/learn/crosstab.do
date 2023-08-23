@@ -11,7 +11,7 @@ DATE CREATED: July 17, 2023
 *----------*
 * Toggle
 *----------*
-local standalone 1 // Set to 1 if running this program for the first time
+local standalone 0 // Set to 1 if running this program for the first time
 local do_plot 0
 
 *----------*
@@ -75,6 +75,8 @@ global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_a
 *-----------------------------*
 * Demographics/ Background
 *-----------------------------*
+* Using varlist environment while looping.
+* Show both row and column percantages
 
 vl set // initiate varlist environment
 vl clear, user // clear user defined varlist 
@@ -92,7 +94,7 @@ vl modify vlxtab = vlxtab - (`var') 	// remove self from category
 	if `r' > 0 {   			// only run crosstab if non-emply varlist 
 	di "Interaction over: $vlxtab "
 		foreach cat of varlist $vlxtab {
-		tab `cat' `var', row	// cross tab over other crosstab categories	
+		tab `cat' `var', row col // cross tab over other crosstab categories	
 	}
 	}
 }
@@ -102,94 +104,53 @@ vl modify vlxtab = vlxtab - (`var') 	// remove self from category
 *----------------------*
 * Not Going or Unsure *
 *---------------------*
-* if not: alternative plan
+/* if not: alternative plan */
 tab fall_plan // check all apply
 
-* if unsure (marginal students): potential effective treatment
+di "If not going to college, $fall_plan"
+tabstat fall_plan_i*, stat(mean sum count) columns(statistics) varwidth(20)
+
+/* if unsure (marginal students): potential effective treatment */
 tab inf_no_college // check all apply
 
-
-*-----------------------------------------------*
-* If going to college - Collge Plans & Worries  *
-*-----------------------------------------------*
-* College going within all HS Sr,
-tab college_fall //q6 - college going
-
-* Conditioning on Going - Detailed plans
-tab where_college //q6
-tab major //q9
-tab highest_degree //q12
-* Online class // q14
-tab prop_online_class
-
-* Non-FA-related Worries // q13
-tab worry_academic
-tab worry_family
-tab worry_community
-tab worry_away
-tab worry_support 
-tab worry_race 
-tab worry_gender 
-tab worry_so 
-tab worry_religion
+di "If unsure, $inf_no_college"
+tabstat inf_no_college_i*, stat(mean sum count) columns(statistics) varwidth(25)
 
 
+*--------------------------------------------------*
+* Going: Collge Plans, HS Experience & HS Worries  *
+*--------------------------------------------------*
+* $`var' display survey question 
+* For each question, showed one way tab, cross tab with frequency, row%, column%
+* 	Showing frequency to know if cell sizes are too small to share 
+* 	Showing row & freq percentages to detect varation across groups
+*	Showing missing counts to capture nonresponse
 
-/* Cross Tab College Plans & Worries */
-foreach var in $plans $nfaworries {
+
+foreach var in $plans $hsexp $nfaworries{
 	di ""
 	di "*******************************************************************"
 	di "$`var'"
 	di "*******************************************************************"
+	di "One way tabulation"
+	tab `var' 
+
 	di "Two way tabulation"
 	foreach cat in $xtab {
 	if "`var'" != "`cat'"{ // omit xtab against itself
-		tab `cat' `var', row	// cross tab over other crosstab categories	
+		tab `cat' `var', row col miss	// cross tab over other crosstab categories	
 		}
 	}
 }
 
 
 
-*---------------*
-* HS Experience *
-*---------------*
 
-* Academic performance
-tab hs_academic //q16
-
-* Social experience
-tab hs_social //q17
-
-* Detailed social experience aspectes //q18
-tab hs_community_belong 
-tab hs_teacher_care 
-tab hs_good_advising 
-tab hs_prepared_college
-
-* Bullying // q19, 20
-tab times_bullied 
-tab reasons_bullied
-
-
-/* Cross Tab HS experience & bullying */
-foreach var in $hsexp {
-	di ""
-	di "*******************************************************************"
-	di "$`var'"
-	di "*******************************************************************"
-	di "Two way tabulation"
-	foreach cat in $xtab {
-	if "`var'" != "`cat'"{
-		tab `cat' `var', row	// cross tab over other crosstab categories	
-		}
-	}
-}
-
-if `do_plot' == 1{
 *================*
 * Visualization  *
 *================*
+
+if `do_plot' == 1{
 
 * Relabel Crosstab Variables to include counts
 foreach var in $xtab{
