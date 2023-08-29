@@ -18,6 +18,7 @@ WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
 DATE CREATED: July 25, 2023
 
 UPDATES: 
+[BZ]08/29/2023: Completed race_assn for multi-race/ethinicity
 [BZ]08/02/2023: Check-all-that-apply combo -> all inclusive dummy
 including: race_clean hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan
 
@@ -372,7 +373,25 @@ label val race_simp race_simp_lbl
 
 
 /* race_assn: move "two or more" into one of the eight based on URM */
-**# Waiting for the complete order
+* race_assn hierarchy: native > black > hispanic > PI > Filipino > Asian > Other > White
+cap drop race_assn
+cap label drop race_assn_lbl
+
+gen race_assn = . // initiate variable
+label var race_assn "race/ethnicity with `Two or more' assigned to single race following URM hierachy"
+local j = 8 // numerical value reflects assignment hierachical rank 1 - 8
+label define race_assn_lbl 0 "" // initiate value label for race_assn
+
+* Assign race according to hierarchy
+foreach cat in white other asian flip pi hisp black native{ // replacement happen in reverse order to make sure the lower-raned one is always replaced by the higher-ranked one
+	replace race_assn = `j' if race_`cat' == 1
+	local varlab: variable label race_`cat' // copy value label from indicator variables
+	local varlab = subinstr("`varlab'", "selected '", "",1) // keep only the categories
+	local varlab = subinstr("`varlab'", "'", "",1)
+	label define race_assn_lbl `j' "`varlab'", add // update value label
+	local j = `j'-1 // update numerical value
+}
+label val race_assn race_assn_lbl // label value
 
 
 *===========*

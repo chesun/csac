@@ -4,6 +4,13 @@ PROGRAM: Cross Tabulate Cleaned CSAC HS Sr 2023 Survey
 WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
 
 DATE CREATED: July 17, 2023
+
+[BZ]08/29/2023: Reduce crosstab categories to race, gender, parental education
+- race_brief: Combine PI with Native from race_assn
+- gender_brief_main: Form broader group by umbrella gender variants & not to say/unsure
+- parent_edu_brief: Combine "some college" with "associate degree"
+
+
 *******************************************************************************/
 
 
@@ -44,20 +51,73 @@ log using "$csacprojdir/log/learn/crosstab.txt", text replace
 use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
 
 
+*===========================*
+* Update Crosstab Variables
+*===========================*
+
+/* RACE: race_brief */
+* tab race_assn // PI < 100
+
+cap drop race_brief
+cap label drop race_brief_lbl
+
+* Race for main brief: combine PI and native Americans
+gen race_brief = race_assn
+replace race_brief = 1 if race_assn == 4 // move to native if pi
+label var race_brief "race/ethnicity for the main brief"
+
+* modify value label
+label copy race_assn_lbl race_brief_lbl, replace
+label define race_brief_lbl 1 "American Indian/Alaskan Native/Pacific Islander" 4 "", modify
+label val race_brief race_brief_lbl
+
+
+/* GENDER: gender_brief_main */
+cap drop gender_brief_main
+cap label drop gender_brief_main_lbl
+
+* combine categories for the main brief
+gen gender_brief_main = gender_brief
+replace gender_brief_main = 2 if gender_brief == 3 // combine binary trans & other
+replace gender_brief_main = 4 if gender_brief == 5 // combine prefer not to say with unsure
+label var gender_brief_main "gender for the main brief"
+
+* modify value label
+label copy gender_brief_lbl gender_brief_main_lbl, replace // copy from finer label
+label define gender_brief_main_lbl 2 "gender variant" 4 "unsure/prefer not to say",  modify
+label val gender_brief_main gender_brief_main_lbl
+
+
+/* PARENT EDUCATION: parent_edu_brief */
+cap drop parent_edu_brief
+cap label drop parent_edu_brief_lbl
+
+* combine asso & some college for the main brief
+gen parent_edu_brief = parent_edu
+replace parent_edu_brief = 3 if parent_edu == 4 
+label var parent_edu_brief "highest level of education among parents"
+
+* modify value label 
+label copy parent_edu parent_edu_brief_lbl
+label define parent_edu_brief_lbl 3 "Some college, no college degree/Associate degree", modify
+label val parent_edu_brief parent_edu_brief_lbl
+tab parent_edu_brief
+
+
+
+
 *==================*
 * Macros set up
 *==================*
 
-/* Store all questions into global macros for easy display during visualization */
-foreach var in race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
-	global `var' `: var label `var''
-}
 
 /* Global macros for crosstab variables */
-* crosstab
-global xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type where_college
+* crosstab subgroups: 
+global xtab race_brief gender_brief_main parent_edu_brief
+
 
 *** Outcomes: 
+
 * college plans
 global plans college_fall where_college major highest_degree prop_online_class
 
@@ -67,6 +127,11 @@ global nfaworries worry_academic worry_family worry_community worry_away worry_s
 * hs experience & bullying 
 global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied
 
+
+/* Store all questions into global macros for easy display during visualization */
+foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
+	global `var' `: var label `var''
+}
 
 
 *================*
@@ -85,9 +150,9 @@ vl create vlxtab = ( $xtab ) // initiate a varlist that stores categorical varia
 foreach var in $xtab{
 vl modify vlxtab = vlxtab - (`var') 	// remove self from category
 	di ""
-	di "**************************************"
+	di "*******************************************************************"
 	di "$`var'"
-	di "**************************************"
+	di "*******************************************************************"
 	di "One way tabulation: "
 	tab `var' 
 	local r wordcount("$vlxtab") 	// count length of varlist 

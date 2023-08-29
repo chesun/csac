@@ -1,8 +1,8 @@
-----------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/prep_brief.txt
   log type:  text
- opened on:   2 Aug 2023, 12:18:37
+ opened on:  29 Aug 2023, 11:37:02
 
 . 
 . ********************************* Main ****************************************
@@ -24,8 +24,8 @@
 . *------*
 . * Prep *
 . *------*
-. summ hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan // verify nume
-> rical
+. summ hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan // ve
+> rify numerical
 
     Variable |        Obs        Mean    Std. dev.       Min        Max
 -------------+---------------------------------------------------------
@@ -39,7 +39,8 @@ college_co~m |      6,346    6.810117    4.920618          1         15
 
 . 
 . * decode categories from num to string for text search
-. foreach var in hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan{
+. foreach var in hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_
+> plan{
   2.         decode `var', gen(`var'_str)
   3. }
 
@@ -56,8 +57,8 @@ college_co~m |      6,346    6.810117    4.920618          1         15
 . gen hear_import_aid_ihsstaff = 0 if !mi(hear_import_aid) // set default to 0 if not missing
 (330 missing values generated)
 
-. replace hear_import_aid_ihsstaff = 1 if strpos(hear_import_aid_str, "High school staff (counselor, teach
-> er, etc.)")!=0
+. replace hear_import_aid_ihsstaff = 1 if strpos(hear_import_aid_str, "High school staff (counsel
+> or, teacher, etc.)")!=0
 (8,187 real changes made)
 
 . label var hear_import_aid_ihsstaff "selected 'High school staff (counselor, teacher, etc.)'"
@@ -97,7 +98,8 @@ college_co~m |      6,346    6.810117    4.920618          1         15
 . gen hear_import_aid_iworkshop = 0 if !mi(hear_import_aid) // set default to 0 if not missing
 (330 missing values generated)
 
-. replace hear_import_aid_iworkshop = 1 if strpos(hear_import_aid_str, "Financial aid workshop")!=0
+. replace hear_import_aid_iworkshop = 1 if strpos(hear_import_aid_str, "Financial aid workshop")!
+> =0
 (2,016 real changes made)
 
 . label var hear_import_aid_iworkshop "selected 'Financial aid workshop'"
@@ -118,7 +120,8 @@ college_co~m |      6,346    6.810117    4.920618          1         15
 . gen hear_import_aid_ipublic = 0 if !mi(hear_import_aid) // set default to 0 if not missing
 (330 missing values generated)
 
-. replace hear_import_aid_ipublic = 1 if strpos(hear_import_aid_str, "Public service announcement")!=0
+. replace hear_import_aid_ipublic = 1 if strpos(hear_import_aid_str, "Public service announcement
+> ")!=0
 (618 real changes made)
 
 . label var hear_import_aid_ipublic "selected 'Public service announcement'"
@@ -329,8 +332,8 @@ Teacher,Parent,Nobody (I completed it o |          3        0.03      100.00
 . gen fafsa_support_ihsworkshop = 0 if !mi(fafsa_support) // set default to 0 if not missing
 (517 missing values generated)
 
-. replace fafsa_support_ihsworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop or training at your h
-> igh school")!=0
+. replace fafsa_support_ihsworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop or training 
+> at your high school")!=0
 (2,870 real changes made)
 
 . label var fafsa_support_ihsworkshop "selected 'FAFSA workshop or training at your high school'"
@@ -341,12 +344,12 @@ Teacher,Parent,Nobody (I completed it o |          3        0.03      100.00
 . gen fafsa_support_icmworkshop = 0 if !mi(fafsa_support) // set default to 0 if not missing
 (517 missing values generated)
 
-. replace fafsa_support_icmworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop at community location
-> ")!=0
+. replace fafsa_support_icmworkshop = 1 if strpos(fafsa_support_str, "FAFSA workshop at community
+>  location")!=0
 (569 real changes made)
 
-. label var fafsa_support_icmworkshop "selected 'FAFSA training at community location outside of your high
->  school'"
+. label var fafsa_support_icmworkshop "selected 'FAFSA training at community location outside of 
+> your high school'"
 
 . 
 . * parent
@@ -363,7 +366,8 @@ Teacher,Parent,Nobody (I completed it o |          3        0.03      100.00
 . gen fafsa_support_ifamily = 0 if !mi(fafsa_support) // set default to 0 if not missing
 (517 missing values generated)
 
-. replace fafsa_support_ifamily = 1 if strpos(fafsa_support_str, "Family member other than parent")!=0
+. replace fafsa_support_ifamily = 1 if strpos(fafsa_support_str, "Family member other than parent
+> ")!=0
 (1,354 real changes made)
 
 . label var fafsa_support_ifamily "selected 'Family member other than parent'"
@@ -458,7 +462,8 @@ Teacher,Parent,Nobody (I completed it o |          3        0.03      100.00
 . gen inf_no_college_ifam_other = 0 if !mi(inf_no_college) // set default to 0 if not missing
 (9,936 missing values generated)
 
-. replace inf_no_college_ifam_other = 1 if strpos(inf_no_college_str, "Family or other support")!=0
+. replace inf_no_college_ifam_other = 1 if strpos(inf_no_college_str, "Family or other support")!
+> =0
 (107 real changes made)
 
 . label var inf_no_college_ifam_other "selected 'Family or other support'"
@@ -468,35 +473,38 @@ Teacher,Parent,Nobody (I completed it o |          3        0.03      100.00
 . /* Q7b: college_contact_item */
 . // varname too long. abbr to college_contact_i`cat'
 . * verification
-. gen college_contact_iverification = 0 if !mi(college_contact_item) // set default to 0 if not missing
+. gen college_contact_iverification = 0 if !mi(college_contact_item) // set default to 0 if not m
+> issing
 (3,875 missing values generated)
 
-. replace college_contact_iverification = 1 if strpos(college_contact_item_str, "FAFSA/CADAA verification"
-> )!=0
+. replace college_contact_iverification = 1 if strpos(college_contact_item_str, "FAFSA/CADAA veri
+> fication")!=0
 (3,503 real changes made)
 
-. label var college_contact_iverification "selected 'FAFSA/CADAA verification (additional documentation ne
-> eded to process financial aid)'"
+. label var college_contact_iverification "selected 'FAFSA/CADAA verification (additional documen
+> tation needed to process financial aid)'"
 note: label truncated to 80 characters
 
 . 
 . * faoffer
-. gen college_contact_ifaoffer = 0 if !mi(college_contact_item) // set default to 0 if not missing
+. gen college_contact_ifaoffer = 0 if !mi(college_contact_item) // set default to 0 if not missin
+> g
 (3,875 missing values generated)
 
-. replace college_contact_ifaoffer = 1 if strpos(college_contact_item_str, "Financial aid offer/award lett
-> er")!=0
+. replace college_contact_ifaoffer = 1 if strpos(college_contact_item_str, "Financial aid offer/a
+> ward letter")!=0
 (4,535 real changes made)
 
 . label var college_contact_ifaoffer "selected 'Financial aid offer/award letter'"
 
 . 
 . * workstudy
-. gen college_contact_iworkstudy = 0 if !mi(college_contact_item) // set default to 0 if not missing
+. gen college_contact_iworkstudy = 0 if !mi(college_contact_item) // set default to 0 if not miss
+> ing
 (3,875 missing values generated)
 
-. replace college_contact_iworkstudy = 1 if strpos(college_contact_item_str, "Eligibility for work study")
-> !=0
+. replace college_contact_iworkstudy = 1 if strpos(college_contact_item_str, "Eligibility for wor
+> k study")!=0
 (1,832 real changes made)
 
 . label var college_contact_iworkstudy "selected 'Eligibility for work study'"
@@ -506,7 +514,8 @@ note: label truncated to 80 characters
 . gen college_contact_iloans = 0 if !mi(college_contact_item) // set default to 0 if not missing
 (3,875 missing values generated)
 
-. replace college_contact_iloans = 1 if strpos(college_contact_item_str, "Information about loans")!=0
+. replace college_contact_iloans = 1 if strpos(college_contact_item_str, "Information about loans
+> ")!=0
 (2,722 real changes made)
 
 . label var college_contact_iloans "selected 'Information about loans'"
@@ -711,8 +720,8 @@ note: label truncated to 80 characters
 . *---------------------------------------*
 . 
 . /* # of race/ethnic groups  */
-. egen race_num = rowtotal(race_black race_native race_asian race_flip race_hisp race_pi race_white race_o
-> ther)
+. egen race_num = rowtotal(race_black race_native race_asian race_flip race_hisp race_pi race_whi
+> te race_other)
 
 . replace race_num = . if race == .
 (2,191 real changes made, 2,191 to missing)
@@ -750,7 +759,44 @@ note: label truncated to 80 characters
 . 
 . 
 . /* race_assn: move "two or more" into one of the eight based on URM */
-. **# Waiting for the complete order
+. * race_assn hierarchy: native > black > hispanic > PI > Filipino > Asian > Other > White
+. cap drop race_assn
+
+. cap label drop race_assn_lbl
+
+. 
+. gen race_assn = . // initiate variable
+(10,221 missing values generated)
+
+. label var race_assn "race/ethnicity with `Two or more' assigned to single race following URM hi
+> erachy"
+
+. local j = 8 // numerical value reflects assignment hierachical rank 1 - 8
+
+. label define race_assn_lbl 0 "" // initiate value label for race_assn
+
+. 
+. * Assign race according to hierarchy
+. foreach cat in white other asian flip pi hisp black native{ // replacement happen in reverse or
+> der to make sure the lower-raned one is always replaced by the higher-ranked one
+  2.         replace race_assn = `j' if race_`cat' == 1
+  3.         local varlab: variable label race_`cat' // copy value label from indicator variables
+  4.         local varlab = subinstr("`varlab'", "selected '", "",1) // keep only the categories
+  5.         local varlab = subinstr("`varlab'", "'", "",1)
+  6.         label define race_assn_lbl `j' "`varlab'", add // update value label
+  7.         local j = `j'-1 // update numerical value
+  8. }
+(2,462 real changes made)
+(288 real changes made)
+(1,391 real changes made)
+(336 real changes made)
+(101 real changes made)
+(4,279 real changes made)
+(595 real changes made)
+(180 real changes made)
+
+. label val race_assn race_assn_lbl // label value
+
 . 
 . 
 . *===========*
@@ -849,8 +895,8 @@ respondent |
 . replace gender_other = 0 if gender_missing == 0
 (7,976 real changes made)
 
-. replace gender_other = 1 if gender_clean == "GENDERFLUID" | gender_clean == "NONBINARY" | gender_clean =
-> = "OTHERGNC" 
+. replace gender_other = 1 if gender_clean == "GENDERFLUID" | gender_clean == "NONBINARY" | gende
+> r_clean == "OTHERGNC" 
 (331 real changes made)
 
 . assert gender_other == . if gender_clean == ""
@@ -882,8 +928,8 @@ respondent |
 . 
 . 
 . * Validate muturally exclisive & add up to one.
-. assert gender_man + gender_woman + gender_other + gender_unsure + gender_pnts == 1 if gender_missing == 
-> 0
+. assert gender_man + gender_woman + gender_other + gender_unsure + gender_pnts == 1 if gender_mi
+> ssing == 0
 
 . 
 . *-----------------------*
@@ -923,8 +969,8 @@ respondent |
 . assert gender_brief == . if gender_missing == 1
 
 . 
-. label def gender_brief_lbl 0 "cis woman" 1 "cis man" 2 "binary trans" 3 "other" 4 "unsure" 5 "prefer not
->  to say"
+. label def gender_brief_lbl 0 "cis woman" 1 "cis man" 2 "binary trans" 3 "other" 4 "unsure" 5 "p
+> refer not to say"
 
 . label val gender_brief gender_brief_lbl
 
@@ -1067,8 +1113,8 @@ prefer not to say |       334        127          6         16          0       
 . replace lgbtq = 1 if so_queer == 1  // 1 if so_queer 
 (1,439 real changes made)
 
-. replace lgbtq = 2 if gender_unsure == 1 & lgbtq != 1 // unsure if doesn;t belong to one of the previous 
-> lgbtq criteria & specified unsure
+. replace lgbtq = 2 if gender_unsure == 1 & lgbtq != 1 // unsure if doesn;t belong to one of the 
+> previous lgbtq criteria & specified unsure
 (0 real changes made)
 
 . replace lgbtq = 2 if so_unsure == 1 & lgbtq != 1
@@ -1080,7 +1126,8 @@ prefer not to say |       334        127          6         16          0       
 . replace lgbtq = 3 if so_pnts == 1 & lgbtq != 1
 (462 real changes made)
 
-. replace lgbtq = . if mi(gender_brief)==1 | mi(so_brief)==1 // force missing if not reporting both.
+. replace lgbtq = . if mi(gender_brief)==1 | mi(so_brief)==1 // force missing if not reporting bo
+> th.
 (33 real changes made, 33 to missing)
 
 . 
@@ -1144,6 +1191,7 @@ prefer not to say |       334        127          6         16          0       
   variable race_other was float now byte
   variable race_num was float now byte
   variable race_simp was float now byte
+  variable race_assn was float now byte
   variable asab_missing was float now byte
   variable gender_missing was float now byte
   variable gender_cis was float now byte
@@ -1160,10 +1208,11 @@ prefer not to say |       334        127          6         16          0       
   variable so_pnts was float now byte
   variable so_brief was float now byte
   variable lgbtq was float now byte
-  (1,901,106 bytes saved)
+  (1,931,769 bytes saved)
 
 . save "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", replace
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_brief.dta saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_brief.dta
+    saved
 
 . 
 . 
@@ -1174,5 +1223,5 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_20
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/prep_brief.txt
   log type:  text
- closed on:   2 Aug 2023, 12:18:37
-----------------------------------------------------------------------------------------------------------
+ closed on:  29 Aug 2023, 11:37:03
+-------------------------------------------------------------------------------------------------
