@@ -9,6 +9,7 @@ DATE CREATED: July 17, 2023
 - race_brief: Combine PI with Native from race_assn
 - gender_brief_main: Form broader group by umbrella gender variants & not to say/unsure
 - parent_edu_brief: Combine "some college" with "associate degree"
+[BZ]08/29/2023: Replace reaons bullied by reason indicator
 
 
 *******************************************************************************/
@@ -49,6 +50,36 @@ log using "$csacprojdir/log/learn/crosstab.txt", text replace
 
 * Load fully cleaned data
 use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
+
+
+*==================*
+* Macros set up
+*==================*
+
+
+/* Global macros for crosstab variables */
+* crosstab subgroups: race, gender, parental education
+global xtab race_brief gender_brief_main parent_edu_brief
+
+
+/* Outcomes */
+
+* hs experience & bullying 
+global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied_irace reasons_bullied_ireligion reasons_bullied_igender reasons_bullied_iso
+
+* college plans
+global plans college_fall where_college major highest_degree prop_online_class
+
+* non-fa college worries
+global nfaworries worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion
+
+
+/* Store all questions into global macros for easy display during visualization */
+foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
+	global `var' `: var label `var''
+}
+
+
 
 
 *===========================*
@@ -106,33 +137,6 @@ tab parent_edu_brief
 
 
 
-*==================*
-* Macros set up
-*==================*
-
-
-/* Global macros for crosstab variables */
-* crosstab subgroups: 
-global xtab race_brief gender_brief_main parent_edu_brief
-
-
-*** Outcomes: 
-
-* college plans
-global plans college_fall where_college major highest_degree prop_online_class
-
-* non-fa college worries
-global nfaworries worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion
-
-* hs experience & bullying 
-global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied
-
-
-/* Store all questions into global macros for easy display during visualization */
-foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
-	global `var' `: var label `var''
-}
-
 
 *================*
 * Tabulation
@@ -173,7 +177,7 @@ vl modify vlxtab = vlxtab - (`var') 	// remove self from category
 tab fall_plan // check all apply
 
 di "If not going to college, $fall_plan"
-tabstat fall_plan_i*, stat(mean sum count) columns(statistics) varwidth(20)
+tabstat fall_plan_i*, stat(mean sum count) columns(statistics) varwidth(20) // change varwidth to show full results
 
 /* if unsure (marginal students): potential effective treatment */
 tab inf_no_college // check all apply
@@ -192,7 +196,7 @@ tabstat inf_no_college_i*, stat(mean sum count) columns(statistics) varwidth(25)
 *	Showing missing counts to capture nonresponse
 
 
-foreach var in $plans $hsexp $nfaworries{
+foreach var in $hsexp $plans $nfaworries {
 	di ""
 	di "*******************************************************************"
 	di "$`var'"
@@ -203,7 +207,7 @@ foreach var in $plans $hsexp $nfaworries{
 	di "Two way tabulation"
 	foreach cat in $xtab {
 	if "`var'" != "`cat'"{ // omit xtab against itself
-		tab `cat' `var', row col miss	// cross tab over other crosstab categories	
+		tab `cat' `var', row col miss	// subgroup tabulation
 		}
 	}
 }
@@ -230,7 +234,8 @@ label val `var' new_`var'_lbl
 
 
 * Stacked Bar Graph By Crosstab Vars
-foreach var in college_fall $plans $nfaworries $hsexp  {
+foreach var in college_fall $hsexp $plans $nfaworries {
+	
 foreach cat in $xtab{
 	if "`var'" != "`cat'"{ // omit against itself
 	#delimit;

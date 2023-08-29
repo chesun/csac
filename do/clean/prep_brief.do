@@ -19,6 +19,7 @@ DATE CREATED: July 25, 2023
 
 UPDATES: 
 [BZ]08/29/2023: Completed race_assn for multi-race/ethinicity
+		Include reasons_bully into Check-all-that-apply decomp
 [BZ]08/02/2023: Check-all-that-apply combo -> all inclusive dummy
 including: race_clean hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan
 
@@ -29,7 +30,7 @@ including: race_clean hear_import_aid fafsa_support fall_plan inf_no_college col
 *----------*
 * Toggle
 *----------*
-local standalone 0
+local standalone 1
 
 
 *----------*
@@ -72,10 +73,10 @@ keep if senior == 1
 *------*
 * Prep *
 *------*
-summ hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan // verify numerical
+summ hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan reasons_bullied // verify numerical
 
 * decode categories from num to string for text search
-foreach var in hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan{
+foreach var in hear_import_aid fafsa_support fall_plan inf_no_college college_contact_item pay_plan reasons_bullied{
 	decode `var', gen(`var'_str)
 }
 
@@ -282,6 +283,27 @@ gen pay_plan_icredit = 0 if !mi(pay_plan) // set default to 0 if not missing
 replace pay_plan_icredit = 1 if strpos(pay_plan_str, "Credit card(s)")!=0
 label var pay_plan_icredit "selected 'Credit card(s)'"
 
+
+/* Q20: reasons_bullied */
+* race
+gen reasons_bullied_irace = 0 if !mi(reasons_bullied) // set default to 0 if not missing
+replace reasons_bullied_irace = 1 if strpos(reasons_bullied_str, "race or ethnicity")
+label var reasons_bullied_irace "being bullied because of race/ethnicity"
+
+* religion
+gen reasons_bullied_ireligion = 0 if !mi(reasons_bullied) // set default to 0 if not missing
+replace reasons_bullied_ireligion = 1 if strpos(reasons_bullied_str, "religion")
+label var reasons_bullied_ireligion "being bullied because of religion"
+
+* gender identity
+gen reasons_bullied_igender = 0 if !mi(reasons_bullied) // set default to 0 if not missing
+replace reasons_bullied_igender = 1 if strpos(reasons_bullied_str, "gender identity")
+label var reasons_bullied_igender "being bullied because of gender identity"
+
+* sexual orientation
+gen reasons_bullied_iso = 0 if !mi(reasons_bullied) // set default to 0 if not missing
+replace reasons_bullied_iso = 1 if strpos(reasons_bullied_str, "sexual orientation")
+label var reasons_bullied_iso "being bullied because of sexual orientation"
 
 *===================*
 * Race/Ethnicity
