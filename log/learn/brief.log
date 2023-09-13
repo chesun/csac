@@ -1,0 +1,471 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.log
+  log type:  text
+ opened on:  12 Sep 2023, 18:41:54
+
+. 
+. ********************************* Main *****************************************
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. 
+. *==================*
+. * Macros set up
+. *==================*
+. 
+. 
+. /* Global macros for crosstab variables */
+. 
+. * crosstab subgroups: race, gender, parental education
+. global xtab race_brief gender_brief_main parent_edu_brief
+
+. 
+. 
+. /* Outcomes */
+. 
+. * hs experience & bullying 
+. global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied_irace reasons_bullied_ireligion 
+> reasons_bullied_igender reasons_bullied_iso
+
+. 
+. * college plans
+. global plans college_fall where_college major highest_degree prop_online_class
+
+. 
+. * non-fa college worries
+. global nfaworries worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_religion //  worry_so 
+
+. 
+. 
+. /* Store all questions into global macros for easy display during visualization */
+. foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_acade
+> mic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_c
+> are hs_good_advising hs_prepared_college times_bullied reasons_bullied{
+  2.         global `var' `: var label `var''
+  3. }
+variable race_brief not found
+variable gender_brief_main not found
+variable parent_edu_brief not found
+
+. 
+. 
+. 
+. 
+. *==========================================*
+. * Update Crosstab Variables for Main Brief
+. *==========================================*
+. 
+. /* RACE: race_brief */
+. * tab race_assn // PI < 100
+. 
+. cap drop race_brief
+
+. cap label drop race_brief_lbl
+
+. 
+. * Race for main brief: combine PI and native Americans
+. gen race_brief = race_assn
+(2,191 missing values generated)
+
+. replace race_brief = 1 if race_assn == 4 // move to native if pi
+(67 real changes made)
+
+. label var race_brief "race/ethnicity for the main brief"
+
+. 
+. * modify value label
+. label copy race_assn_lbl race_brief_lbl, replace
+
+. label define race_brief_lbl 1 "American Indian/Alaskan Native/Pacific Islander" 4 "", modify
+
+. label val race_brief race_brief_lbl
+
+. 
+. 
+. /* GENDER: gender_brief_main */
+. cap drop gender_brief_main
+
+. cap label drop gender_brief_main_lbl
+
+. 
+. * combine categories for the main brief
+. gen gender_brief_main = gender_brief
+(2,245 missing values generated)
+
+. replace gender_brief_main = 2 if gender_brief == 3 // combine binary trans & other
+(331 real changes made)
+
+. replace gender_brief_main = 4 if gender_brief == 5 // combine prefer not to say with unsure
+(183 real changes made)
+
+. label var gender_brief_main "gender for the main brief"
+
+. 
+. * modify value label
+. label copy gender_brief_lbl gender_brief_main_lbl, replace // copy from finer label
+
+. label define gender_brief_main_lbl 2 "gender variant" 4 "unsure/prefer not to say",  modify
+
+. label val gender_brief_main gender_brief_main_lbl
+
+. 
+. 
+. /* PARENT EDUCATION: parent_edu_brief */
+. cap drop parent_edu_brief
+
+. cap label drop parent_edu_brief_lbl
+
+. 
+. * combine asso & some college for the main brief
+. gen parent_edu_brief = parent_edu
+(2,223 missing values generated)
+
+. replace parent_edu_brief = 3 if parent_edu == 4 
+(474 real changes made)
+
+. label var parent_edu_brief "highest level of education among parents"
+
+. 
+. * modify value label 
+. label copy parent_edu parent_edu_brief_lbl
+
+. label define parent_edu_brief_lbl 3 "Some college, no college degree/Associate degree", modify
+
+. label val parent_edu_brief parent_edu_brief_lbl
+
+. tab parent_edu_brief
+
+       highest level of education among |
+                                parents |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+           Did not complete high school |      1,467       18.34       18.34
+                    High school diploma |      1,708       21.36       39.70
+Some college, no college degree/Associa |      1,497       18.72       58.41
+                      Bachelor's degree |      1,394       17.43       75.84
+Graduate/Professional degree beyond Bac |      1,485       18.57       94.41
+                             Don't know |        447        5.59      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,998      100.00
+
+. 
+. 
+. 
+. *=====================*
+. * Aggregated Tables
+. *=====================*
+. 
+. *--------------------------------------*
+. * Reasons for Bullying and Harassment  *
+. *--------------------------------------*
+. 
+. * Column: Each Reason of Being Bullied
+. * Row: Each subsample
+. * Cell: Fraction of respondents selected reason `X'
+. 
+. 
+. /* Note: */
+. * Use reg on a constant computationally
+. * It estimate the mean = share as dep vars are dummies
+. * For now formatted log file. Think of ways to put into exportable format later.
+. 
+. 
+. * All:
+. eststo clear 
+
+. di "All"
+All
+
+. foreach y in reasons_bullied_igender reasons_bullied_irace reasons_bullied_ireligion{
+  2.         qui eststo: qui reg `y'
+  3. }
+
+. 
+. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("Gender" "Race" "Religion") nonum noline varwidth(20)
+
+                           Gender         Race     Religion
+All                         0.326        0.512        0.127
+N                            1042         1042         1042
+
+. 
+. 
+. * By Gender & Race:
+. foreach cat in gender_brief_main race_brief{ // foreach crosstab variable
+  2.         di ""
+  3.         di "$`cat'"
+  4.         qui levelsof `cat', local(vals)
+  5.         foreach val in `vals'{ // foreach subsample
+  6.         eststo clear
+  7.         foreach y in reasons_bullied_igender reasons_bullied_irace reasons_bullied_ireligion{
+  8.                 qui eststo: qui reg `y' if `cat' == `val'  // estimate the share
+  9.         }
+ 10.         local lab: label(`cat') `val' // row name
+ 11.         esttab, nostar not b(a3) coeflabels(_cons "`lab'") nomtitles varwidth(20) nonum nodep noline // each subsample is a row
+ 12.         }
+ 13. }
+
+
+
+cis woman                   0.295        0.541        0.137
+N                             569          569          569
+
+cis man                    0.0833        0.663        0.163
+N                             252          252          252
+
+gender variant              0.780        0.252       0.0566
+N                             159          159          159
+
+unsure/prefer not ~y        0.512        0.256       0.0233
+N                              43           43           43
+
+
+
+American Indian/Al~P        0.457        0.630       0.0870
+N                              46           46           46
+
+Black/African Amer~n        0.196        0.833       0.0588
+N                             102          102          102
+
+Hispanic/Latinx             0.299        0.488        0.109
+N                             469          469          469
+
+Filipino                    0.250        0.769       0.0577
+N                              52           52           52
+
+Asian                       0.285        0.669        0.108
+N                             130          130          130
+
+Other                       0.185        0.593        0.370
+N                              27           27           27
+
+White/Non-Hispanic          0.498        0.209        0.189
+N                             201          201          201
+
+. 
+. 
+. 
+. *------------------*
+. * College Worries  *
+. *------------------*
+. 
+. * Column: Each worry
+. * Row: Each Sample
+. * Cell: Fraction of respondents selected "VERY WORRIED"
+. 
+. /* Generate Indicator for Very Worried */
+. foreach y in $nfaworries {
+  2.          gen v_`y' = .
+  3.          replace v_`y' = 1 if `y' == 3
+  4.          replace v_`y' = 0 if inlist(`y', 0, 1, 2)
+  5. }
+(10,221 missing values generated)
+(1,502 real changes made)
+(6,456 real changes made)
+(10,221 missing values generated)
+(843 real changes made)
+(7,098 real changes made)
+(10,221 missing values generated)
+(1,293 real changes made)
+(6,641 real changes made)
+(10,221 missing values generated)
+(771 real changes made)
+(7,177 real changes made)
+(10,221 missing values generated)
+(923 real changes made)
+(7,021 real changes made)
+(10,221 missing values generated)
+(238 real changes made)
+(7,657 real changes made)
+(10,221 missing values generated)
+(250 real changes made)
+(7,636 real changes made)
+(10,221 missing values generated)
+(109 real changes made)
+(7,782 real changes made)
+
+. 
+. 
+. des $nfaworries
+
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+worry_academic  byte    %18.0g     worry      how worried are you about performing well academically
+worry_family    byte    %18.0g     worry      how worried are you about balancing family obligations
+worry_community byte    %18.0g     worry      how worried are you about finding community
+worry_away      byte    %18.0g     worry      how worried are you about living away from home
+worry_support   byte    %18.0g     worry      how worried about having adequate support for emotional and mental health needs
+worry_race      byte    %18.0g     worry      how worried about discrimination based on race
+worry_gender    byte    %18.0g     worry      how worried about discrimination based on gender
+worry_religion  byte    %18.0g     worry      how worried about discrimination based on religion
+
+. 
+. 
+. * All:
+. di "All"
+All
+
+. eststo clear
+
+. foreach y in $nfaworries {
+  2.         qui eststo: qui reg v_`y'
+  3. }
+
+. 
+. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("academic" "family" "community" "away" "support" "race" "gender" "religion") nonum noline varwidth(20)
+
+                         academic       family    community         away      support         race       gender     religion
+All                         0.189        0.106        0.163       0.0970        0.116       0.0301       0.0317       0.0138
+N                            7958         7941         7934         7948         7944         7895         7886         7891
+
+. 
+. 
+. * Gender & Race
+. foreach cat in gender_brief_main race_brief parent_edu_brief { // foreach crosstab variable
+  2.         di ""
+  3.         di "$`cat'"
+  4.         qui levelsof `cat', local(vals)
+  5.         foreach val in `vals'{ // each subsample
+  6.         eststo clear
+  7.         foreach y in $nfaworries{
+  8.                 qui eststo: qui reg v_`y' if `cat' == `val'  // estimate the share of very worried
+  9.         }
+ 10.         local lab: label(`cat') `val' // row name
+ 11.         esttab, nostar not b(a3) coeflabels(_cons "`lab'") nomtitles varwidth(20) nonum nodep noline // each subsample is a row
+ 12.         }
+ 13. }
+
+
+
+cis woman                   0.208        0.109        0.174        0.115        0.129       0.0336       0.0227       0.0140
+N                            4291         4285         4286         4285         4285         4286         4272         4285
+
+cis man                     0.149       0.0860        0.130       0.0727       0.0682       0.0210      0.00785       0.0105
+N                            2671         2664         2664         2669         2669         2669         2674         2666
+
+gender variant              0.228        0.175        0.253       0.0702        0.263       0.0475        0.265       0.0250
+N                             400          399          396          399          400          400          400          400
+
+unsure/prefer not ~y        0.227        0.153        0.254        0.102        0.237       0.0511       0.0971       0.0286
+N                             176          176          177          177          177          176          175          175
+
+
+
+American Indian/Al~P        0.181        0.102        0.112       0.0356        0.107       0.0487       0.0717       0.0177
+N                             226          225          224          225          224          226          223          226
+
+Black/African Amer~n        0.156       0.0909        0.155        0.108        0.119       0.0960       0.0358      0.00945
+N                             527          528          530          528          531          531          530          529
+
+Hispanic/Latinx             0.209        0.128        0.159       0.0972        0.128       0.0284       0.0289      0.00981
+N                            3782         3776         3773         3776         3777         3772         3769         3773
+
+Filipino                    0.204       0.0681        0.221        0.102        0.132       0.0256       0.0470       0.0255
+N                             235          235          235          235          235          234          234          235
+
+Asian                       0.233        0.106        0.194        0.103       0.0993       0.0289       0.0289       0.0132
+N                            1139         1136         1136         1140         1138         1142         1140         1140
+
+Other                       0.176       0.0884        0.116        0.132        0.104       0.0387       0.0275       0.0333
+N                             182          181          181          182          182          181          182          180
+
+White/Non-Hispanic          0.118       0.0610        0.160       0.0951       0.0998      0.00803       0.0328       0.0194
+N                            1496         1492         1491         1493         1493         1495         1494         1493
+
+
+
+Did not complete h~l        0.246        0.151        0.169        0.116        0.146       0.0343       0.0206       0.0110
+N                            1368         1368         1365         1367         1367         1370         1361         1367
+
+High school diploma         0.196        0.114        0.149       0.0899        0.115       0.0325       0.0324       0.0127
+N                            1575         1567         1569         1568         1570         1571         1572         1572
+
+Some college, no c~/        0.183        0.107        0.162       0.0942        0.117       0.0331       0.0352       0.0120
+N                            1425         1425         1424         1422         1424         1421         1422         1419
+
+Bachelor's degree           0.165       0.0854        0.175       0.0897       0.0957       0.0228       0.0309       0.0155
+N                            1360         1359         1358         1360         1359         1358         1359         1359
+
+Graduate/Prof..)            0.162       0.0665        0.172        0.101        0.112       0.0276       0.0374       0.0159
+N                            1449         1444         1443         1451         1449         1448         1445         1446
+
+Don't know                  0.172        0.107        0.143       0.0859        0.104       0.0312       0.0442       0.0207
+N                             383          383          384          384          384          385          385          386
+
+. 
+. 
+. 
+. *================*
+. * Visualization  *
+. *================*
+. 
+. if `do_plot' == 1{
+. 
+. * Relabel Crosstab Variables to include counts
+. foreach var in $xtab{
+  2.         qui levelsof `var', local(vals)
+  3.         foreach val in `vals'{
+  4.                 local oldlbl: label (`var') `val'
+  5.                 qui count if `var' == `val'
+  6.                 label define new_`var'_lbl `val' "`oldlbl' (N=`r(N)')", add
+  7.         }
+  8. label val `var' new_`var'_lbl
+  9. }
+. 
+. 
+. 
+. * Stacked Bar Graphs
+. foreach var in $hsexp $plans $nfaworries {
+  2. * Stacked Bar Graph For Overall
+.         #delimit;
+delimiter now ;
+.         graph hbar, over(`var', label(labsize(small))) asyvars stack 
+>                 percentages missing
+>                 title("$`var'", span size(medium))
+>                 ;
+  3.                 // note: percentages option make the graph shows the within percentages
+>         #delimit cr 
+delimiter now cr
+.         graph export "$csacprojdir/fig/learn/brief/`var'.png", replace
+  4. 
+.         * Stacked Bar Graph By Crosstab Vars
+.         foreach cat in $xtab{
+  5.                 if "`var'" != "`cat'"{ // omit against itself
+  6.                 #delimit;
+delimiter now ;
+.                 graph hbar, over(`var', label(labsize(small))) asyvars stack 
+>                         over(`cat', label(labsize(small))) 
+>                         percentages missing
+>                         title("$`var'", span size(medium))
+>                         ;
+  7.                         // note: percentages option make the graph shows the within percentages
+>                 #delimit cr 
+delimiter now cr
+.                 graph export "$csacprojdir/fig/learn/brief/`var'X`cat'.png", replace
+  8.                 }
+  9.         }
+ 10. }
+. 
+. 
+. 
+. 
+. }
+
+. 
+. 
+. 
+. 
+. 
+. 
+. 
+. ********************************* End Main ************************************
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.log
+  log type:  text
+ closed on:  12 Sep 2023, 18:41:58
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
