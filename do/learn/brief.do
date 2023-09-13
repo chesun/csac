@@ -70,16 +70,9 @@ global plans college_fall where_college major highest_degree prop_online_class
 global nfaworries worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_religion //  worry_so 
 
 
-/* Store all questions into global macros for easy display during visualization */
-foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
-	global `var' `: var label `var''
-}
-
-
-
 
 *==========================================*
-* Update Crosstab Variables for Main Brief
+* Gen: Crosstab Variables for Main Brief
 *==========================================*
 
 /* RACE: race_brief */
@@ -130,10 +123,19 @@ label define parent_edu_brief_lbl 3 "Some college, no college degree/Associate d
 label val parent_edu_brief parent_edu_brief_lbl
 
 
+*=======*
+* Prep 
+*=======*
 
-*=====================*
-* Aggregated Tables
-*=====================*
+/* Store all questions into global macros for easy display during visualization */
+foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
+	global `var' `: var label `var''
+}
+
+
+*==========================*
+* Share: Aggregated Tables
+*=========================*
 
 *--------------------------------------*
 * Reasons for Bullying and Harassment  *
@@ -186,7 +188,8 @@ foreach cat in gender_brief_main race_brief{ // foreach crosstab variable
 *	Interpretate as fraction of respondents from a subsample indicating planning to go such segment
 
 foreach cat in $xtab{
-	tab where_college `cat', col nofreq
+	tab where_college `cat', col mi // with freq
+	tab where_college `cat', col mi nofreq // no frequency
 }
 
 *--------*
@@ -198,8 +201,10 @@ foreach cat in $xtab{
 * Cell: Column Percent, All up to 100 within each sub sample
 *	Interpretate as fraction of respondents from a subsample indicating planning to go such segment
 
+
 foreach cat in $xtab{
-	tab major `cat', col nofreq
+	tab major `cat', col mi // with freq
+	tab major `cat', col mi nofreq // no frequency
 }
 
 
