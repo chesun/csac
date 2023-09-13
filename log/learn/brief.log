@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.log
   log type:  text
- opened on:  12 Sep 2023, 18:41:54
+ opened on:  13 Sep 2023, 15:07:52
 
 . 
 . ********************************* Main *****************************************
@@ -28,8 +28,8 @@
 . /* Outcomes */
 . 
 . * hs experience & bullying 
-. global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied_irace reasons_bullied_ireligion 
-> reasons_bullied_igender reasons_bullied_iso
+. global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied_irace 
+> reasons_bullied_ireligion reasons_bullied_igender reasons_bullied_iso
 
 . 
 . * college plans
@@ -42,9 +42,9 @@
 . 
 . 
 . /* Store all questions into global macros for easy display during visualization */
-. foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_acade
-> mic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_c
-> are hs_good_advising hs_prepared_college times_bullied reasons_bullied{
+. foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major 
+> highest_degree worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs
+> _academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college times_bullied reasons_bullied{
   2.         global `var' `: var label `var''
   3. }
 variable race_brief not found
@@ -136,20 +136,6 @@ variable parent_edu_brief not found
 . label define parent_edu_brief_lbl 3 "Some college, no college degree/Associate degree", modify
 
 . label val parent_edu_brief parent_edu_brief_lbl
-
-. tab parent_edu_brief
-
-       highest level of education among |
-                                parents |      Freq.     Percent        Cum.
-----------------------------------------+-----------------------------------
-           Did not complete high school |      1,467       18.34       18.34
-                    High school diploma |      1,708       21.36       39.70
-Some college, no college degree/Associa |      1,497       18.72       58.41
-                      Bachelor's degree |      1,394       17.43       75.84
-Graduate/Professional degree beyond Bac |      1,485       18.57       94.41
-                             Don't know |        447        5.59      100.00
-----------------------------------------+-----------------------------------
-                                  Total |      7,998      100.00
 
 . 
 . 
@@ -246,6 +232,125 @@ N                             201          201          201
 
 . 
 . 
+. *----------*
+. * Segment  *
+. *----------*
+. 
+. * Column: Subsample
+. * Row:    Segment
+. * Cell: Column Percent, All up to 100 within each sub sample
+. *       Interpretate as fraction of respondents from a subsample indicating planning to go such segment
+. 
+. foreach cat in $xtab{
+  2.         tab where_college `cat', col nofreq
+  3. }
+
+ where do you plan to |
+  attend college this |                      race/ethnicity for the main brief
+                 fall | American   Black/Afr  Hispanic/   Filipino      Asian      Other  White/Non |     Total
+----------------------+-----------------------------------------------------------------------------+----------
+California Community  |     39.21      33.83      46.61      36.17      20.42      39.01      28.97 |     37.58 
+California State Univ |     22.03      23.50      25.49      22.98      17.28      19.23      18.83 |     22.47 
+University of Califor |     21.15      19.55      15.74      28.94      43.28      21.43      21.56 |     22.00 
+Private four-year col |      7.93       7.52       4.56       5.11       5.41       5.49       7.61 |      5.64 
+Vocational, technical |      0.88       1.69       2.90       0.43       0.44       1.65       0.93 |      1.89 
+College outside of Ca |      8.81      13.91       4.69       6.38      13.18      13.19      22.10 |     10.42 
+----------------------+-----------------------------------------------------------------------------+----------
+                Total |    100.00     100.00     100.00     100.00     100.00     100.00     100.00 |    100.00 
+
+ where do you plan to |
+  attend college this |          gender for the main brief
+                 fall | cis woman    cis man  gender va  unsure/pr |     Total
+----------------------+--------------------------------------------+----------
+California Community  |     36.20      40.46      35.50      33.52 |     37.61 
+California State Univ |     22.67      21.68      22.75      24.58 |     22.37 
+University of Califor |     22.30      21.46      23.00      24.58 |     22.09 
+Private four-year col |      6.05       5.18       4.50       6.15 |      5.66 
+Vocational, technical |      1.91       1.97       1.50       0.56 |      1.88 
+College outside of Ca |     10.88       9.24      12.75      10.61 |     10.39 
+----------------------+--------------------------------------------+----------
+                Total |    100.00     100.00     100.00     100.00 |    100.00 
+
+ where do you plan to |
+  attend college this |             highest level of education among parents
+                 fall | Did not c  High scho  Some coll  Bachelor'  Graduate/  Don't kno |     Total
+----------------------+------------------------------------------------------------------+----------
+California Community  |     47.05      47.40      44.36      26.71      15.88      59.17 |     37.60 
+California State Univ |     27.09      23.51      23.13      21.06      17.25      22.22 |     22.38 
+University of Califor |     16.90      16.48      18.99      28.69      32.85      10.08 |     22.04 
+Private four-year col |      3.71       4.88       5.12       6.60       8.87       2.33 |      5.66 
+Vocational, technical |      3.20       3.17       1.26       0.51       0.27       4.65 |      1.86 
+College outside of Ca |      2.04       4.56       7.15      16.43      24.88       1.55 |     10.47 
+----------------------+------------------------------------------------------------------+----------
+                Total |    100.00     100.00     100.00     100.00     100.00     100.00 |    100.00 
+
+. 
+. *--------*
+. * Major  *
+. *--------*
+. 
+. * Column: Subsample
+. * Row:    Major
+. * Cell: Column Percent, All up to 100 within each sub sample
+. *       Interpretate as fraction of respondents from a subsample indicating planning to go such segment
+. 
+. foreach cat in $xtab{
+  2.         tab major `cat', col nofreq
+  3. }
+
+    what are you most |
+   likely to study in |                      race/ethnicity for the main brief
+              college | American   Black/Afr  Hispanic/   Filipino      Asian      Other  White/Non |     Total
+----------------------+-----------------------------------------------------------------------------+----------
+             Business |     12.39      10.19      10.22       9.87       8.81       9.34      10.04 |     10.00 
+          Engineering |     14.60      15.28      12.94      20.17      26.70      21.43      15.86 |     16.23 
+Natural sciences (e.g |     13.72      14.72      13.13      14.59      23.65      20.33      19.01 |     16.22 
+Social sciences (e.g. |     13.72      12.26      12.44      10.73      10.65       9.89      13.32 |     12.25 
+Humanities & Arts (e. |     11.95      13.21      10.16       9.87       9.77       8.24      14.99 |     11.27 
+      Health sciences |     14.60      16.98      16.75      21.03      10.47      14.84      11.24 |     14.76 
+            Education |      4.42       2.45       4.50       2.15       1.22       1.65       3.48 |      3.52 
+Applied sciences (e.g |      3.54       3.02       4.21       2.15       2.44       2.20       2.54 |      3.40 
+Public service (e.g., |      4.87       4.53       6.72       2.58       0.87       5.49       3.48 |      4.84 
+            Undecided |      6.19       7.36       8.92       6.87       5.41       6.59       6.02 |      7.51 
+----------------------+-----------------------------------------------------------------------------+----------
+                Total |    100.00     100.00     100.00     100.00     100.00     100.00     100.00 |    100.00 
+
+    what are you most |
+   likely to study in |          gender for the main brief
+              college | cis woman    cis man  gender va  unsure/pr |     Total
+----------------------+--------------------------------------------+----------
+             Business |      9.53      12.13       3.00       6.78 |     10.04 
+          Engineering |      7.78      29.99      12.25      20.34 |     16.18 
+Natural sciences (e.g |     18.45      12.17      18.75      20.34 |     16.29 
+Social sciences (e.g. |     14.68       7.82      15.50      11.86 |     12.23 
+Humanities & Arts (e. |     11.21       8.91      27.00      15.82 |     11.34 
+      Health sciences |     19.83       7.94       8.00       7.91 |     14.71 
+            Education |      4.89       1.35       3.00       2.82 |      3.49 
+Applied sciences (e.g |      1.23       6.96       3.50       2.26 |      3.41 
+Public service (e.g., |      5.29       4.31       3.25       3.95 |      4.80 
+            Undecided |      7.11       8.42       5.75       7.91 |      7.52 
+----------------------+--------------------------------------------+----------
+                Total |    100.00     100.00     100.00     100.00 |    100.00 
+
+    what are you most |
+   likely to study in |             highest level of education among parents
+              college | Did not c  High scho  Some coll  Bachelor'  Graduate/  Don't kno |     Total
+----------------------+------------------------------------------------------------------+----------
+             Business |     11.55      11.00       9.80      10.37       7.29      10.94 |     10.04 
+          Engineering |     13.38      12.46      15.08      17.94      23.80      11.20 |     16.22 
+Natural sciences (e.g |     12.50      13.16      13.46      22.79      21.87       8.59 |     16.27 
+Social sciences (e.g. |     12.35      12.97      11.98      12.28      12.93       6.77 |     12.23 
+Humanities & Arts (e. |      7.75       9.92      12.26      12.50      14.31      11.20 |     11.34 
+      Health sciences |     17.47      17.93      17.05      11.47       9.22      15.36 |     14.71 
+            Education |      5.19       4.26       3.88       1.84       1.99       3.91 |      3.47 
+Applied sciences (e.g |      4.02       3.94       4.02       1.84       2.06       7.55 |      3.41 
+Public service (e.g., |      7.09       5.79       5.64       2.94       2.13       6.51 |      4.82 
+            Undecided |      8.70       8.58       6.84       6.03       4.40      17.97 |      7.49 
+----------------------+------------------------------------------------------------------+----------
+                Total |    100.00     100.00     100.00     100.00     100.00     100.00 |    100.00 
+
+. 
+. 
 . 
 . *------------------*
 . * College Worries  *
@@ -292,7 +397,7 @@ N                             201          201          201
 
 Variable      Storage   Display    Value
     name         type    format    label      Variable label
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------
 worry_academic  byte    %18.0g     worry      how worried are you about performing well academically
 worry_family    byte    %18.0g     worry      how worried are you about balancing family obligations
 worry_community byte    %18.0g     worry      how worried are you about finding community
@@ -315,7 +420,8 @@ All
   3. }
 
 . 
-. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("academic" "family" "community" "away" "support" "race" "gender" "religion") nonum noline varwidth(20)
+. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("academic" "family" "community" "away" "support" "race" "gender" "religion") nonum noline varwi
+> dth(20)
 
                          academic       family    community         away      support         race       gender     religion
 All                         0.189        0.106        0.163       0.0970        0.116       0.0301       0.0317       0.0138
@@ -467,5 +573,5 @@ delimiter now cr
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.log
   log type:  text
- closed on:  12 Sep 2023, 18:41:58
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  13 Sep 2023, 15:07:55
+----------------------------------------------------------------------------------------------------------------------------------------------------------

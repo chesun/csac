@@ -128,7 +128,6 @@ label var parent_edu_brief "highest level of education among parents"
 label copy parent_edu parent_edu_brief_lbl
 label define parent_edu_brief_lbl 3 "Some college, no college degree/Associate degree", modify
 label val parent_edu_brief parent_edu_brief_lbl
-tab parent_edu_brief
 
 
 
@@ -174,6 +173,33 @@ foreach cat in gender_brief_main race_brief{ // foreach crosstab variable
 	local lab: label(`cat') `val' // row name
 	esttab, nostar not b(a3) coeflabels(_cons "`lab'") nomtitles varwidth(20) nonum nodep noline // each subsample is a row
 	}
+}
+
+
+*----------*
+* Segment  *
+*----------*
+
+* Column: Subsample
+* Row: 	  Segment
+* Cell: Column Percent, All up to 100 within each sub sample
+*	Interpretate as fraction of respondents from a subsample indicating planning to go such segment
+
+foreach cat in $xtab{
+	tab where_college `cat', col nofreq
+}
+
+*--------*
+* Major  *
+*--------*
+
+* Column: Subsample
+* Row: 	  Major
+* Cell: Column Percent, All up to 100 within each sub sample
+*	Interpretate as fraction of respondents from a subsample indicating planning to go such segment
+
+foreach cat in $xtab{
+	tab major `cat', col nofreq
 }
 
 
