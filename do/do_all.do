@@ -70,6 +70,9 @@ set seed 1984
 local date1 = c(current_date) 
 local time1 = c(current_time)
 
+ssc install ngram, replace 
+
+
 
 // clean survey data exported from qualtrics 
 do $csacprojdir/do/clean/clean_qualtrics_export.do
