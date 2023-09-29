@@ -1,0 +1,130 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/supp_co
+> mb.txt
+  log type:  text
+ opened on:  27 Sep 2023, 09:34:18
+
+. 
+. ********************************* Main ***************************************
+> **
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+end of do-file
+
+. tab gender_brief
+
+  gender for main |
+            brief |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+        cis woman |      4,503       56.46       56.46
+          cis man |      2,864       35.91       92.36
+     binary trans |         87        1.09       93.46
+            other |        331        4.15       97.61
+           unsure |          8        0.10       97.71
+prefer not to say |        183        2.29      100.00
+------------------+-----------------------------------
+            Total |      7,976      100.00
+
+. tab so_clean
+
+    cleaned sexual |
+       orientation |
+    including free |
+     text response |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+           ASEXUAL |        210        2.67        2.67
+          BISEXUAL |      1,088       13.83       16.50
+    LESBIAN OR GAY |        349        4.44       20.93
+         PAN/QUEER |        154        1.96       22.89
+ PREFER NOT TO SAY |        544        6.91       29.80
+          STRAIGHT |      5,511       70.04       99.85
+UNSURE/QUESTIONING |         12        0.15      100.00
+-------------------+-----------------------------------
+             Total |      7,868      100.00
+
+. tab so_brief
+
+           sexual |
+  orientation for |
+       main brief |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+         straight |      5,511       70.04       70.04
+            queer |      1,801       22.89       92.93
+           unsure |         12        0.15       93.09
+prefer not to say |        544        6.91      100.00
+------------------+-----------------------------------
+            Total |      7,868      100.00
+
+. tab gender_brief so_clean
+
+                  |  cleaned sexual orientation including free
+  gender for main |                text response
+            brief |   ASEXUAL   BISEXUAL  LESBIAN..  PAN/QUEER |     Total
+------------------+--------------------------------------------+----------
+        cis woman |       103        748        140         73 |     4,451 
+          cis man |        26        137        110         10 |     2,837 
+     binary trans |        12         21         27         11 |        86 
+            other |        52        132         57         50 |       320 
+           unsure |         1          1          4          2 |         8 
+prefer not to say |        16         49         11          8 |       163 
+------------------+--------------------------------------------+----------
+            Total |       210      1,088        349        154 |     7,865 
+
+
+                  |    cleaned sexual orientation
+  gender for main |   including free text response
+            brief | PREFER ..   STRAIGHT  UNSURE/.. |     Total
+------------------+---------------------------------+----------
+        cis woman |       334      3,047          6 |     4,451 
+          cis man |       127      2,423          4 |     2,837 
+     binary trans |         6          9          0 |        86 
+            other |        16         11          2 |       320 
+           unsure |         0          0          0 |         8 
+prefer not to say |        60         19          0 |       163 
+------------------+---------------------------------+----------
+            Total |       543      5,509         12 |     7,865 
+
+. do "/home/tmp/SD32765.000000"
+
+. tab so_clean gender_brief
+
+    cleaned sexual |
+       orientation |
+    including free |            gender for main brief
+     text response | cis woman    cis man  binary tr      other |     Total
+-------------------+--------------------------------------------+----------
+           ASEXUAL |       103         26         12         52 |       210 
+          BISEXUAL |       748        137         21        132 |     1,088 
+    LESBIAN OR GAY |       140        110         27         57 |       349 
+         PAN/QUEER |        73         10         11         50 |       154 
+ PREFER NOT TO SAY |       334        127          6         16 |       543 
+          STRAIGHT |     3,047      2,423          9         11 |     5,509 
+UNSURE/QUESTIONING |         6          4          0          2 |        12 
+-------------------+--------------------------------------------+----------
+             Total |     4,451      2,837         86        320 |     7,865 
+
+
+    cleaned sexual |
+       orientation |
+    including free | gender for main brief
+     text response |    unsure  prefer no |     Total
+-------------------+----------------------+----------
+           ASEXUAL |         1         16 |       210 
+          BISEXUAL |         1         49 |     1,088 
+    LESBIAN OR GAY |         4         11 |       349 
+         PAN/QUEER |         2          8 |       154 
+ PREFER NOT TO SAY |         0         60 |       543 
+          STRAIGHT |         0         19 |     5,509 
+UNSURE/QUESTIONING |         0          0 |        12 
+-------------------+----------------------+----------
+             Total |         8        163 |     7,865 
+
+. 
+end of do-file
+
+. exit, clear
