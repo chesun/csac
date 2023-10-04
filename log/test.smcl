@@ -1,0 +1,23 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/home/research/ca_ed_lab/projects/csac_survey2023/log/test.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 1 Aug 2023, 18:31:26
+
+{com}. log using doc/test.smcl
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+{com}. lgo close
+{err}command {bf}lgo{sf} is unrecognized
+{txt}{search r(199), local:r(199);}
+
+{com}. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}/home/research/ca_ed_lab/projects/csac_survey2023/log/test.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res} 1 Aug 2023, 18:31:36
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

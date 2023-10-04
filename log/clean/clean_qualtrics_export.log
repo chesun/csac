@@ -1,0 +1,2441 @@
+-----------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_qualtrics_export.log
+  log type:  text
+ opened on:  18 Jul 2023, 12:42:42
+
+. 
+. graph drop _all
+
+. set more off
+
+. set varabbrev off
+
+. set graphics off
+
+. set scheme s1color
+
+. set seed 1984
+
+. 
+. local date1 = c(current_date)
+
+. local time1 = c(current_time)
+
+. 
+. 
+. 
+. // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not
+>  data)
+. import delimited $csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv, varnames(1) rowrange(4:) clea
+> r
+(encoding automatically selected: UTF-8)
+(249 vars, 19,238 obs)
+
+. 
+. // drop unused variables
+. drop status recipientfirstname recipientlastname recipientemail externalreference distributionchannel use
+> rlanguage
+
+. drop *firstclick *lastclick *clickcount
+
+. 
+. //---------------------------------------------------------------------------
+. // create identifier crosswalk
+. //---------------------------------------------------------------------------
+. 
+. // minimal cleaning to produce crosswalk: rename variables and label them
+. rename responseid id
+
+. label var id "unique response id"
+
+. 
+. rename locationlatitude latitude
+
+. rename locationlongitude longitude
+
+. 
+. rename q5 email
+
+. label var email "email address which received survey link"
+
+. 
+. rename q86 email_fall
+
+. label var email_fall "email to contact in the fall"
+
+. 
+. // delete observations with missing email
+. drop if email==""
+(7,797 observations deleted)
+
+. // remove leading and trailing blanks
+. foreach v in email email_fall {
+  2.     replace `v' = strtrim(`v')
+  3. }
+(0 real changes made)
+(0 real changes made)
+
+. 
+. // preserve dataset
+. preserve
+
+. 
+. keep id ipaddress latitude longitude email email_fall
+
+. 
+. label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
+
+. 
+. compress
+  variable ipaddress was str24 now str15
+  variable id was str24 now str17
+  variable latitude was str31 now str8
+  variable longitude was str32 now str9
+  variable email was str67 now str48
+  variable email_fall was str62 now str38
+  (1,201,305 bytes saved)
+
+. * save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
+. 
+. 
+. //---------------------------------------------------------------------------
+. // clean the anonymized dataset
+. //---------------------------------------------------------------------------
+. restore
+
+. 
+. // drop personally identifiable information 
+. drop id ipaddress latitude longitude email email_fall
+
+. 
+. // rename and label all other variables
+. rename durationinseconds duration_sec
+
+. label var duration_sec "survey duration in seconds"
+
+. 
+. // recode start date and end date into stata date time format
+. foreach var in startdate enddate recordeddate {
+  2.     gen `var'_temp = Clock(`var', "YMD hms")
+  3.     format %tC `var'_temp
+  4.     drop `var'
+  5.     rename `var'_temp `var'
+  6. }
+
+. order startdate enddate recordeddate
+
+. 
+. // convert the progress and duration in seconds vars to numeric
+. destring progress duration_sec, replace
+progress: all characters numeric; replaced as byte
+duration_sec: all characters numeric; replaced as long
+
+. label var progress "survey progress"
+
+. label var duration_sec "survey duration in seconds"
+
+. 
+. // rename and label metadata vars
+. rename q1_browser device_browser
+
+. label var device_browser "browser"
+
+. 
+. rename q1_version device_version
+
+. label var device_version "browser version"
+
+. 
+. rename q1_operatingsystem device_os
+
+. label var device_os "operating system"
+
+. 
+. rename q1_resolution device_res
+
+. label var device_res "device resolution"
+
+. 
+. //--------------------------------------------------------------
+. // go through vars in order, rename and label
+. //--------------------------------------------------------------
+. 
+. // high school senior status and financial aid application
+. rename q3_pagesubmit t_conset
+
+. label var t_conset "time spent on consent and email page in seconds"
+
+. 
+. rename q6_pagesubmit t_senior
+
+. label var t_senior "time spent on 'are you a current hs senior', in seconds"
+
+. rename q7 senior
+
+. label var senior "are you a current hs senior"
+
+. 
+. rename q8_pagesubmit t_hear_import_aid
+
+. label var t_hear_import_aid "time spent on 'how did you hear about the importance of fin aid app', in sec
+> onds"
+
+. rename q9 hear_import_aid
+
+. label var hear_import_aid "how did you hear about the importance of fin aid app"
+
+. rename q9_7_text hear_import_aid_other
+
+. label var hear_import_aid_other "other: specify for how did you hear about importance of fin aid"
+
+. 
+. rename q10_pagesubmit t_hs_req_fafsa
+
+. label var t_hs_req_fafsa "time spent on 'did your high school require FAFSA', in seconds"
+
+. rename q11 hs_req_fafsa
+
+. label var hs_req_fafsa "did your hs require FAFSA/CADAA"
+
+. 
+. rename q12_pagesubmit t_fafsa_support
+
+. label var t_fafsa_support "time spent on 'support you received completing FAFSA', in seconds"
+
+. rename q13 fafsa_support
+
+. label var fafsa_support "support you received completing FAFSA/CADAA"
+
+. 
+. 
+. // college plans
+. rename q14_pagesubmit t_college_fall
+
+. label var t_college_fall "time spent on 'do you plan to attend college in the fall', in seconds"
+
+. rename q15 college_fall
+
+. label var college_fall "do you plan to attend college in the fall"
+
+. 
+. rename q16_pagesubmit t_where_college
+
+. label var t_where_college "time spent on 'where do you plan to attend college in the fall', in seconds"
+
+. rename q17 where_college
+
+. label var where_college "where do you plan to attend college this fall"
+
+. 
+. rename q18_pagesubmit t_college_contact
+
+. label var t_college_contact "time spent on 'has your college contacted you about fin aid', in seconds"
+
+. rename q19 college_contact
+
+. label var college_contact "has your college contacted you about fin aid"
+
+. 
+. rename q20_pagesubmit t_college_contact_item
+
+. label var t_college_contact_item "time spent on 'has your college contacted about following about aid', i
+> n seconds"
+
+. rename q21 college_contact_item
+
+. label var college_contact_item "has your college contacted you about following about aid"
+
+. 
+. // if not college
+. rename q22_pagesubmit t_fall_plan
+
+. label var t_fall_plan "time spent on 'what you plan to do this fall', in seconds"
+
+. rename q23 fall_plan
+
+. label var fall_plan "what is your plan for this fall"
+
+. 
+. 
+. // if idk college
+. rename q24_pagesubmit t_inf_no_college
+
+. label var t_inf_no_college "time spent on 'which might influence decision not to attend college', in seco
+> nds"
+
+. rename q25 inf_no_college
+
+. label var inf_no_college "which of these might influence your decision not to attend college"
+
+. 
+. // summer shcool plans
+. rename q26_pagesubmit t_plan_summer_class
+
+. label var t_plan_summer_class "time spent on 'do you plan to take summer college class', in seconds"
+
+. rename q27 plan_summer_class
+
+. label var plan_summer_class "do you plan to take summer college classes"
+
+. 
+. // summer school nudge
+. rename q28_pagesubmit t_summer_nudge
+
+. label var t_summer_nudge "time spent on the summer nudge page, in seconds"
+
+. rename q30 likely_summer_class
+
+. label var likely_summer_class "after summer nudge how likely to take summer classes"
+
+. 
+. // majors and paying for college
+. rename q31_pagesubmit t_major
+
+. label var t_major "time spent on 'what are you most likely to study in college, in seconds"
+
+. rename q32 major
+
+. label var major "what are you most likely to study in college"
+
+. 
+. rename q33_pagesubmit t_pay_plan
+
+. label var t_pay_plan "time spent on 'how do you plan to pay for college', in seconds"
+
+. rename q34 pay_plan
+
+. label var pay_plan "how do you plan to pay for college tuition and fees"
+
+. 
+. // student loan
+. rename q36_pagesubmit t_loan_pay_10k
+
+. label var t_loan_pay_10k "time spent on 'how much do you have to pay back if you borrow 10k', in seconds"
+
+. rename q37_1 loan_pay_10k
+
+. label var loan_pay_10k "how much do you have to pay back if you borrow 10k"
+
+. 
+. rename q38_pagesubmit t_loan_pay_50k
+
+. label var t_loan_pay_50k "time spent on 'how much do you have to pay back if you borrow 50k', in seconds"
+
+. rename q39_1 loan_pay_50k
+
+. label var loan_pay_50k "how much do you have to pay back if you borrow 50k"
+
+. 
+. rename q40_pagesubmit t_loan_borrow_amount
+
+. label var t_loan_borrow_amount "time spent on 'how much do you plan to borrow', in seconds"
+
+. rename q41 loan_borrow_amount
+
+. label var loan_borrow_amount "how much do you plan to borrow"
+
+. 
+. // college experience expectation
+. rename q42_pagesubmit t_highest_degree
+
+. label var t_highest_degree "time spent on 'what is the highest degree you hope to complete', in seconds"
+
+. rename q43 highest_degree
+
+. label var highest_degree "what is the highest degree you hope to complete"
+
+. 
+. rename q44_pagesubmit t_worry
+
+. label var t_worry "time spent on 'how worried about following in college' (not discrim), in seconds"
+
+. 
+. rename tuition worry_tuition
+
+. label var worry_tuition "how worried are you about affording tuition fees"
+
+. rename living worry_living
+
+. label var worry_living "how worried are you about living expenses"
+
+. rename academic worry_academic
+
+. label var worry_academic "how worried are you about performing well academically"
+
+. rename work worry_work
+
+. label var worry_work "how worried are you about balancing work obligations"
+
+. rename family worry_family
+
+. label var worry_family "how worried are you about balancing family obligations"
+
+. rename community worry_community
+
+. label var worry_community "how worried are you about finding community"
+
+. rename living_away worry_away
+
+. label var worry_away "how worried are you about living away from home"
+
+. rename support worry_support
+
+. label var worry_support "how worried about having adequate support for emotional and mental health needs"
+
+. 
+. // note: there is not a timing question for worry about discrimination in college
+. rename race worry_race
+
+. label var worry_race "how worried about discrimination based on race"
+
+. rename gender worry_gender
+
+. label var worry_gender "how worried about discrimination based on gender"
+
+. rename so worry_so
+
+. label var worry_so "how worried about discrimination based on sexual orientation"
+
+. rename religion worry_religion
+
+. label var worry_religion "how worried about discrimination based on religion"
+
+. 
+. // note: there is no timing question for the number of online class question
+. rename q47 prop_online_class
+
+. label var prop_online_class "how many college classes do you plan to take online"
+
+. 
+. // CCC full time nudge
+. rename q48_pagesubmit t_ccc_ft
+
+. label var t_ccc_ft "time spent on CCC FT nudge, in seconds"
+
+. 
+. rename q49 ccc_ft_yn
+
+. label var ccc_ft_yn "did you know cal grant $8000 for 15 credits"
+
+. 
+. // high school experience
+. rename q52_pagesubmit t_hs_academic
+
+. label var t_hs_academic "time spent on 'how do you rate HS academic experience', in seconds"
+
+. rename q53 hs_academic
+
+. label var hs_academic "how do you rate HS academic experience"
+
+. 
+. rename q54_pagesubmit t_hs_social
+
+. label var t_hs_social "time spent on 'how do you rate HS social experience', in seconds"
+
+. rename q55 hs_social
+
+. label var hs_social "how do you rate your HS social experience"
+
+. 
+. // high school belonging
+. rename q56_pagesubmit t_hs_belong
+
+. label var t_hs_belong "time spent on high school belonging questions, in seconds"
+
+. rename q57_1 hs_community_belong
+
+. label var hs_community_belong "I belong in my high school community"
+
+. rename q57_2 hs_teacher_care
+
+. label var hs_teacher_care "teachers and staff at my HS care about my future"
+
+. rename q57_3 hs_good_advising
+
+. label var hs_good_advising "I received good advising from HS about college"
+
+. rename q57_4 hs_prepared_college
+
+. label var hs_prepared_college "I feel prepared for college"
+
+. 
+. // high school bullying
+. rename q58_pagesubmit t_times_bullied
+
+. label var t_times_bullied "time spent on 'in last 12 months how many times were you bullied', in seconds"
+
+. rename q59 times_bullied
+
+. label var times_bullied "number of times bullied or harassed at school last 12 months"
+
+. 
+.     // reasons bullied was displayed only if number of times bullied in previous question was greater tha
+> n 0
+.     rename q60_pagesubmit t_reasons_bullied
+
+.     label var t_reasons_bullied "time spent on 'were you bullied for any of following reasons', in second
+> s"
+
+.     rename q61 reasons_bullied
+
+.     label var reasons_bullied "in last 12 months were you harassed or bullied for any of the following re
+> asons"
+
+. 
+. // demographics
+. rename q62_pagesubmit t_hs_type
+
+. label var t_hs_type "time spent on 'type of hs you are graduating from', in seconds"
+
+. rename q63 hs_type
+
+. label var hs_type "type of high school you are graduating from"
+
+. 
+. rename q64_pagesubmit t_intro_demo
+
+. label var t_intro_demo "time spent on the introduction paragraph for demographics section, in seconds"
+
+. 
+. rename q66_pagesubmit t_race
+
+. label var t_race "time spent on race/ethnicity, in seconds"
+
+. rename q67 race
+
+. label var race "race/ethnicity"
+
+. 
+. /* note: there was a page break between the timing question (q68) and the parent education question (q69)
+> so the time spent on parent education question was not captured */
+. drop q68_pagesubmit 
+
+. 
+. rename q69 parent_edu
+
+. label var parent_edu "highest level of education among parents"
+
+. 
+. rename q70_pagesubmit t_primary_english
+
+. label var t_primary_english "time spent on 'was English primary language at home', in seconds"
+
+. rename q71 primary_english
+
+. label var primary_english "growing up was English the primary language spoken at home"
+
+. 
+. rename q72_pagesubmit t_primary_lang
+
+. label var t_primary_lang "time spent on 'what was primary language at home when growing up', in seconds"
+
+. rename q73 primary_lang
+
+. label var primary_lang "primary lanaguage at home growing up"
+
+. 
+. rename q74_pagesubmit t_has_job
+
+. label var t_has_job "time spent on 'do you currentlly have a job', in seconds"
+
+. rename q75 has_job
+
+. label var has_job "do you currently have job"
+
+. 
+.     // there is no timing for this question; displayed only if previous question answer is yes
+.     rename q76 hours_job
+
+.     label var hours_job "how many hours a wekk do you work at your job"
+
+. 
+. rename q77_pagesubmit t_asab
+
+. label var t_asab "time spent on 'what is your assigned sex at birth', in seconds"
+
+. rename q78 asab
+
+. label var asab "assigned sex at birth on birth certificate"
+
+. 
+. rename q79_pagesubmit t_gender
+
+. label var t_gender "time spent on 'what is yoru current gender identity', in seconds"
+
+. rename q80 gender
+
+. label var gender "current gender identity"
+
+. rename q80_5_text gender_other
+
+. label var gender_other "current gender other: please specify"
+
+. 
+. rename q81_pagesubmit t_so
+
+. label var t_so "time spent on sexual orientation, in seconds"
+
+. rename q82 so
+
+. label var so "sexual orientation"
+
+. rename q82_6_text so_other
+
+. label var so_other "sexual orientation other: please specify"
+
+. 
+. rename q83_pagesubmit t_followup
+
+. label var t_followup "time spent on 'woudl you like to participate in future interviews', in seconds"
+
+. rename q84 followup
+
+. label var followup "would you like to participate in future interview about transition to college"
+
+. 
+. // fall email question is already renamed when creating identifier crosswalk
+. rename q85_pagesubmit t_email_fall
+
+. label var t_email_fall "time spent on fall email"
+
+. 
+. 
+. // open ended why not college
+. rename q87_pagesubmit t_college_whynot
+
+. label var t_college_whynot "time spent on 'why not planning to attend college in fall', in seconds"
+
+. rename q88 college_whynot
+
+. label var college_whynot "why not planning to attend college in fall"
+
+. 
+. // open ended college expectation
+. rename q89_pagesubmit t_college_excited
+
+. label var t_college_excited "time spent on 'what are you most excited about college', in seconds"
+
+. rename q90 college_excited
+
+. label var college_excited "what are you most excited about college"
+
+. 
+. rename q91_pagesubmit t_college_challenge
+
+. label var t_college_challenge "time spent on 'what is the biggest challenge you'll face in college', in s
+> econds"
+
+. rename q92 college_challenge
+
+. label var college_challenge "what is the biggest challenge you'll face in college"
+
+. 
+. 
+. 
+. //--------------------------------------------------------------
+. // clean embedded data
+. //--------------------------------------------------------------
+. drop attend_college attend_ccc expect_loan
+
+. 
+. label var summer_nudge "in summer class nudge treatment"
+
+. label var ccc_ft_nudge "in CCC full time nudge treatment"
+
+. 
+. 
+. //--------------------------------------------------------------
+. // drop incomplete responses
+. //--------------------------------------------------------------
+. keep if finished=="True"
+(2,703 observations deleted)
+
+. 
+. // double check using the finished and progress vars 
+. tab finished 
+
+               Finished |      Freq.     Percent        Cum.
+------------------------+-----------------------------------
+                   True |      8,738      100.00      100.00
+------------------------+-----------------------------------
+                  Total |      8,738      100.00
+
+. tab progress
+
+     survey |
+   progress |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        100 |      8,738      100.00      100.00
+------------+-----------------------------------
+      Total |      8,738      100.00
+
+. 
+. 
+. //--------------------------------------------------------------
+. // recode variables 
+. //--------------------------------------------------------------
+. 
+. ****** convert all timing vars from string to numeric 
+. destring t_*, replace 
+t_conset: all characters numeric; replaced as double
+t_senior: all characters numeric; replaced as double
+t_hear_import_aid: all characters numeric; replaced as double
+(1061 missing values generated)
+t_hs_req_fafsa: all characters numeric; replaced as double
+(1061 missing values generated)
+t_fafsa_support: all characters numeric; replaced as double
+(1061 missing values generated)
+t_college_fall: all characters numeric; replaced as double
+(1061 missing values generated)
+t_where_college: all characters numeric; replaced as double
+(1448 missing values generated)
+t_college_contact: all characters numeric; replaced as double
+(1448 missing values generated)
+t_college_contact_item: all characters numeric; replaced as double
+(3320 missing values generated)
+t_fall_plan: all characters numeric; replaced as byte
+(8738 missing values generated)
+t_inf_no_college: all characters numeric; replaced as double
+(8490 missing values generated)
+t_plan_summer_class: all characters numeric; replaced as double
+(1448 missing values generated)
+t_summer_nudge: all characters numeric; replaced as double
+(5100 missing values generated)
+t_major: all characters numeric; replaced as double
+(1448 missing values generated)
+t_pay_plan: all characters numeric; replaced as double
+(1448 missing values generated)
+t_loan_pay_10k: all characters numeric; replaced as double
+(1448 missing values generated)
+t_loan_pay_50k: all characters numeric; replaced as double
+(1448 missing values generated)
+t_loan_borrow_amount: all characters numeric; replaced as double
+(6309 missing values generated)
+t_highest_degree: all characters numeric; replaced as double
+(1448 missing values generated)
+t_worry: all characters numeric; replaced as double
+(1448 missing values generated)
+t_ccc_ft: all characters numeric; replaced as double
+(7374 missing values generated)
+t_hs_academic: all characters numeric; replaced as double
+(1061 missing values generated)
+t_hs_social: all characters numeric; replaced as double
+(1061 missing values generated)
+t_hs_belong: all characters numeric; replaced as double
+(1061 missing values generated)
+t_times_bullied: all characters numeric; replaced as double
+(1061 missing values generated)
+t_reasons_bullied: all characters numeric; replaced as double
+(6936 missing values generated)
+t_hs_type: all characters numeric; replaced as double
+(1061 missing values generated)
+t_intro_demo: all characters numeric; replaced as double
+(1061 missing values generated)
+t_race: all characters numeric; replaced as double
+(1061 missing values generated)
+t_primary_english: all characters numeric; replaced as double
+(1061 missing values generated)
+t_primary_lang: all characters numeric; replaced as double
+(5507 missing values generated)
+t_has_job: all characters numeric; replaced as double
+(1061 missing values generated)
+t_asab: all characters numeric; replaced as double
+(1061 missing values generated)
+t_gender: all characters numeric; replaced as double
+(1061 missing values generated)
+t_so: all characters numeric; replaced as double
+(1061 missing values generated)
+t_followup: all characters numeric; replaced as double
+(1061 missing values generated)
+t_email_fall: all characters numeric; replaced as double
+(1061 missing values generated)
+t_college_whynot: all characters numeric; replaced as double
+(8351 missing values generated)
+t_college_excited: all characters numeric; replaced as double
+(1448 missing values generated)
+t_college_challenge: all characters numeric; replaced as double
+(1448 missing values generated)
+
+. // put all timing vars at end of dataset
+. order t_*, last
+
+. 
+. ****** convert senior to dummy
+. // define value label for senior dummy
+. label define senior 0 "No" 1 "Yes"
+
+. encode senior, generate(senior_temp) label(senior)
+
+.  
+. // assign var label of senior to the temp dummy
+. label var senior_temp "`: var lab senior'"
+
+. drop senior 
+
+. rename senior_temp senior 
+
+. 
+. ****** recode how did you hear about importance of aid app
+. // this is a check all that apply question 
+. // define value label for new categorical variable 
+. #delimit ;
+delimiter now ;
+. label define hear_import_aid 
+>     1 "High school staff (counselor, teacher, etc.)"
+>     2 "Financial aid workshop"
+>     3 "Online website"
+>     4 "Print media (Flyer, postcard, billboard, bus ad, etc.)"
+>     5 "Public service announcement"
+>     6 "Word of mouth"
+>     7 "Other (please specify)"
+>     ;
+
+. #delimit cr
+delimiter now cr
+. // create categorical variable based on original string var
+. encode hear_import_aid, generate(hear_import_aid_temp) label(hear_import_aid)
+
+. // copy var label 
+. label var hear_import_aid_temp "`: var lab hear_import_aid'"
+
+. drop hear_import_aid
+
+. rename hear_import_aid_temp hear_import_aid
+
+. 
+. 
+. ****** recode were you required by your high school to file FAFSA
+. label define hs_req_fafsa 0 "No" 1 "Yes"
+
+. encode hs_req_fafsa, generate(hs_req_fafsa_temp) label(hs_req_fafsa)
+
+. label var hs_req_fafsa "`: var lab hs_req_fafsa'"
+
+. drop hs_req_fafsa
+
+. rename hs_req_fafsa_temp hs_req_fafsa
+
+. 
+. ****** recode: support you received in completing FAFSA/CADAA, check all that apply
+. #delimit ;
+delimiter now ;
+. label define fafsa_support
+>     1 "High school counselor"
+>     2 "Teacher"
+>     3 "FAFSA workshop or training at your high school"
+>     4 "FAFSA workshop at community location outside of high school"
+>     5 "Parent"
+>     6 "Family member other than parent"
+>     7 "Friend"
+>     8 "Nobody (I completed it on my own)"
+>     ;
+
+. #delimit cr
+delimiter now cr
+. 
+. encode fafsa_support, generate(fafsa_support_temp) label(fafsa_support)
+
+. label var fafsa_support_temp "`: var lab fafsa_support'"
+
+. drop fafsa_support
+
+. rename fafsa_support_temp fafsa_support 
+
+. 
+. 
+. ****** recode: do you plan to attend college in the fall?
+. label define college_fall 0 "No" 1 "Yes" 2 "I don't know"
+
+. 
+. encode college_fall, generate(college_fall_temp) label(college_fall)
+
+. label var college_fall_temp "`: var lab college_fall'"
+
+. drop college_fall
+
+. rename college_fall_temp college_fall
+
+. 
+. ****** recode: where do you plan to attend college?
+. /* this question is only shown if participant answered Yes to college_fall */
+. #delimit ;
+delimiter now ;
+. label define where_college
+>     1 "California Community College (CCC)"
+>     2 "California State University (CSU)"
+>     3 "University of California (UC)"
+>     4 "Private four-year college/university in California"
+>     5 "Vocational, technical, or career college in California"
+>     6 "College outside of California"
+>     ;
+
+. #delimit cr
+delimiter now cr
+. 
+. encode where_college, generate(where_college_temp) label(where_college)
+
+. label var where_college_temp "`: var lab where_college'"
+
+. drop where_college
+
+. rename where_college_temp where_college
+
+. 
+. ****** recode: has your college contacted you about your financial aid?
+. label define college_contact 0 "No" 1 "Yes"
+
+. encode college_contact, generate(college_contact_temp) label(college_contact)
+
+. label var college_contact_temp "`: var lab college_contact'"
+
+. drop college_contact
+
+. rename college_contact_temp college_contact
+
+. 
+. ****** recode: has your college contacted you about the following regarding your financial aid?
+. /* this is a check all that reply question. It is only shown if college_contact is Yes */
+. #delimit ;
+delimiter now ;
+. label define college_contact_item
+>     1 "FAFSA/CADAA verification (additional documentation needed to process financial aid)"
+>     2 "Financial aid offer/award letter"
+>     3 "Eligibility for work study"
+>     4 "Information about loans"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode college_contact_item, generate(college_contact_item_temp) label(college_contact_item)
+
+. label var college_contact_item_temp "`: var lab college_contact_item'"
+
+. drop college_contact_item
+
+. rename college_contact_item_temp college_contact_item
+
+. 
+. ****** recode: what do you think you'll be doing this fall?
+. /* this is check all that apply. It is only shown if college_fall is No */
+. #delimit ;
+delimiter now ;
+. label define fall_plan
+>     1 "Work part-time"
+>     2 "Work full-time"
+>     3 "Family obligations"
+>     4 "Military"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode fall_plan, generate(fall_plan_temp) label(fall_plan)
+
+. label var fall_plan_temp "`: var lab fall_plan'"
+
+. drop fall_plan
+
+. rename fall_plan_temp fall_plan
+
+. 
+. ****** recode: Which of the following might influence your decision of whether or not to attend college? 
+. /* this is check all that apply. only shown if college_fall is I don't know */
+. label define inf_no_college 1 "Financial support" 2 "Academic support" 3 "Family or other support"
+
+. encode inf_no_college, generate(inf_no_college_temp) label(inf_no_college)
+
+. label var inf_no_college_temp "`: var lab inf_no_college'"
+
+. drop inf_no_college
+
+. rename inf_no_college_temp inf_no_college
+
+. 
+. ****** recode: Do you plan to take college classes this summer?
+. #delimit ;
+delimiter now ;
+. label define plan_summer_class
+>     -2 "Definitely not"
+>     -1 "Probably not"
+>     0 "Not sure"
+>     1 "Probably yes"
+>     2 "Definitely yes"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode plan_summer_class, generate(plan_summer_class_temp) label(plan_summer_class)
+
+. label var plan_summer_class_temp "`: var lab plan_summer_class'"
+
+. drop plan_summer_class
+
+. rename plan_summer_class_temp plan_summer_class
+
+. 
+. ****** recode: After taking this information into account, how likely are you to take college classes thi
+> s summer?
+. /*  this is the summer nudge question */
+. #delimit ;
+delimiter now ;
+. label define likely_summer_class 
+>     -2 "Extremely unlikely"
+>     -1 "Somewhat unlikely"
+>     0 "Not sure"
+>     1 "Somewhat likely"
+>     2 "Extremely likely"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode likely_summer_class, generate(likely_summer_class_temp) label(likely_summer_class)
+
+. label var likely_summer_class_temp "`: var lab likely_summer_class"
+
+. drop likely_summer_class
+
+. rename likely_summer_class_temp likely_summer_class
+
+. 
+. ****** recode: What are you most likely to study in college?
+. #delimit ;
+delimiter now ;
+. label define major
+>     1 "Business"
+>     2 "Engineering"
+>     3 "Natural sciences (e.g., biology, chemistry, physics)"
+>     4 "Social sciences (e.g., psychology, sociology, economics)"
+>     5 "Humanities & Arts (e.g., English, History, Arts)"
+>     6 "Health sciences"
+>     7 "Education"
+>     8 "Applied sciences (e.g., automotive repair, HVAC, construction)"
+>     9 "Public service (e.g., criminal justice, fire science)"
+>     10 "Undecided"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode major, generate(major_temp) label(major)
+
+. label var major_temp "`: var lab major'"
+
+. drop major 
+
+. rename major_temp major 
+
+. 
+. ****** recode: How do you plan to pay college tuition and fees? 
+. /* (Check all that apply) */
+. #delimit ;
+delimiter now ;
+. label define pay_plan
+>     1 "Scholarships"
+>     2 "Grants (e.g., Pell Grant, Cal Grant)"
+>     3 "My own savings"
+>     4 "Working while enrolled"
+>     5 "Money from other people (e.g., family and friends)"
+>     6 "Student loans"
+>     7 "Military/VA benefits"
+>     8 "Credit card(s)"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode pay_plan, generate(pay_plan_temp) label(pay_plan)
+
+. label var pay_plan_temp "`: var lab pay_plan'"
+
+. drop pay_plan
+
+. rename pay_plan_temp pay_plan
+
+. 
+. ****** recode: 
+. /* Imagine that you borrowed $10,000 in student loans to pay for college. 
+> How much do you think you would actually be required to pay back? 
+> In other words, how much of these loans do you think would not be forgiven? */
+. destring loan_pay_10k, replace 
+loan_pay_10k: all characters numeric; replaced as int
+(1721 missing values generated)
+
+. 
+. ****** recode:
+. /* Imagine that you borrowed $50,000 in student loans to pay for college. 
+> How much do you think you would actually be required to pay back? 
+> In other words, how much of these loans do you think would not be forgiven? */
+. destring loan_pay_50k, replace 
+loan_pay_50k: all characters numeric; replaced as long
+(1735 missing values generated)
+
+. 
+. ****** recode: You indicated you plan to take out student loans. How much do you plan to borrow in studen
+> t loans?
+. #delimit ;
+delimiter now ;
+. label define loan_borrow_amount
+>     1 "Less than $5K"
+>     2 "$6K to $10K"
+>     3 "$11K to $20K"
+>     4 "$21K to $50K"
+>     5 "$51K to $100K"
+>     6 "More than $100K"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode loan_borrow_amount, generate(loan_borrow_amount_temp) label(loan_borrow_amount)
+
+. label var loan_borrow_amount_temp "`: var lab loan_borrow_amount'"
+
+. drop loan_borrow_amount
+
+. rename loan_borrow_amount_temp loan_borrow_amount
+
+. 
+. 
+. ****** recode: What is the highest degree you hope to earn after you have completed all of your schooling
+> ?
+. #delimit ;
+delimiter now ;
+. label define highest_degree
+>     1 "Get a certificate in a vocational or technical field"
+>     2 "Associate degree  (AA/AS/ADT)"
+>     3 "Bachelor’s Degree (BA/BS)"
+>     4 "Master’s Degree (MA/MS)"
+>     5 "Doctoral Degree (Ph.D., M.D., J.D., etc.)"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode highest_degree, generate(highest_degree_temp) label(highest_degree)
+
+. label var highest_degree_temp "`: var lab highest_degree'"
+
+. drop highest_degree
+
+. rename highest_degree_temp highest_degree
+
+. 
+. 
+. ****** recode: When you think about college, how worried are you about the following? (matrix)
+. ****** recode: When you think about college, how worried are you about experiencing discrimination becaus
+> e of your: (matrix)
+. // define value label that's common to all questions in above two categories
+. #delimit ;
+delimiter now ;
+. label define worry 
+>     0 "Not at all worried"
+>     1 "Slightly worried"
+>     2 "Somewhat worried"
+>     3 "Very worried"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. foreach v of varlist worry_* {
+  2.     encode `v', generate(`v'_temp) label(worry)
+  3.     label var `v'_temp "`: var lab `v''"
+  4.     drop `v'
+  5.     rename `v'_temp `v'
+  6. }
+
+. 
+. 
+. ****** recode: When thinking about your college classes, how many do you plan to take online?
+. #delimit ;
+delimiter now ;
+. label define prop_online_class
+>     0 "None"
+>     -1 "One or two"
+>     -2 "Half"
+>     -3 "Most"
+>     -4 "All"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. encode prop_online_class, generate(prop_online_class_temp) label(prop_online_class)
+
+. label var prop_online_class_temp "`: var lab prop_online_class'"
+
+. drop prop_online_class
+
+. rename prop_online_class_temp prop_online_class
+
+. 
+. ****** recode: CCC full time nudge 
+. /* You indicated you plan to enroll in a California Community College next year. 
+> ommunity college students eligible for the Cal Grant can receive as much as $8000 a year 
+> in extra grant aid for taking 15 units each term (4-5 classes). This money could be used for 
+> living expenses and other costs, and would not need to be paid back.
+> 
+> Prior to taking this survey, did you know that Cal Grant recipients could get this additional 
+> money for enrolling in 15 units each term? */
+. label define ccc_ft_yn 0 "No" 1 "Yes"
+
+. encode ccc_ft_yn, generate(ccc_ft_yn_temp) label(ccc_ft_yn)
+
+. label var ccc_ft_yn_temp "`: ccc_ft_yn'"
+ccc_ft_yn not allowed
+
+. drop ccc_ft_yn
+
+. rename ccc_ft_yn_temp ccc_ft_yn
+
+. 
+. ****** recode: How would you rate your academic performance in high school?
+. ****** recode: How would you rate your social experience in high school?
+. // common value label
+. #delimit ;
+delimiter now ;
+. label define hs_experience
+>     1 "Poor"
+>     2 "Fair"
+>     3 "Good"
+>     4 "Very Good"
+>     5 "Excellent"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. 
+. foreach v in hs_academic hs_social {
+  2.     encode `v', generate(`v'_temp) label(hs_experience)
+  3.     label var `v'_temp "`: var lab `v''"
+  4.     drop `v'
+  5.     rename `v'_temp `v'
+  6. }
+
+. 
+. 
+. ****** recode: Please indicate your agreement with the following statements. 
+. /* this is a matrix question with 4 statements: 
+> hs_community_belong: I feel that I belong in my high school community  
+> hs_teacher_care: Teachers and staff at my high school care about my future
+> hs_good_advising: I received good advising from my high school about my college plans
+> hs_prepared_college: I feel prepared for college
+> */
+. #delimit ;
+delimiter now ;
+. label define hs_belong 
+>     -2 "Strongly disagree"
+>     -1 "Somewhat disagree"
+>     0 "Neither agree nor disagree"
+>     1 "Somewhat agree"
+>     2 "Strongly agree"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. 
+. foreach v in hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college {
+  2.     encode `v', generate(`v'_temp) label(hs_belong)
+  3.     label var `v'_temp "`: var lab `v''"
+  4.     drop `v'
+  5.     rename `v'_temp `v'
+  6. }
+
+. 
+. ****** recode: During the past 12 months, how many times on school property were you harassed or bullied?
+. #delimit ;
+delimiter now ;
+. label define times_bullied
+>     0 "0 times"
+>     1 "1 time"
+>     2 "2-3 times"
+>     3 "4 or more times"
+>     ;
+
+.  #delimit cr 
+delimiter now cr
+. 
+. encode times_bullied, generate(times_bullied_temp) label(times_bullied)
+
+. label var times_bullied_temp "`: var lab times_bullied'"
+
+. drop times_bullied
+
+. rename times_bullied_temp times_bullied
+
+. 
+.     ****** recode: During the past 12 months, were you harassed or bullied for any of the following reaso
+> ns? 
+.     /* (Check all that apply) this is only shown if time_bullied is not 0 */
+.     #delimit ;
+delimiter now ;
+.     label define reasons_bullied
+>         1 "Because of your race or ethnicity"
+>         2 "Because of your religion"
+>         3 "Because of your gender identity"
+>         4 "Because of your sexual orientation"
+>         ;
+
+.     #delimit cr 
+delimiter now cr
+. 
+.     encode reasons_bullied, generate(reasons_bullied_temp) label(reasons_bullied)
+
+.     label var reasons_bullied_temp "`: var lab reasons_bullied'"
+
+.     drop reasons_bullied
+
+.     rename reasons_bullied_temp reasons_bullied
+
+. 
+. ****** recode: Please tell us what type of high school you are graduating from:
+. #delimit ;
+delimiter now ;
+. label define hs_type
+>     1 "Public high school (including charter)"
+>     2 "Private/Parochial high school"
+>     3 "Home school"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. 
+. encode hs_type, generate(hs_type_temp) label(hs_type)
+
+. label var hs_type_temp "`: var lab hs_type'"
+
+. drop hs_type
+
+. rename hs_type_temp hs_type
+
+. 
+. 
+. 
+. ****** recode: Please indicate your race/ethnicity 
+. /* (Check all that apply) */
+. #delimit ;
+delimiter now ;
+. label define race
+>     1 "Black/African American"
+>     2 "American Indian/Alaskan Native"
+>     3 "Asian"
+>     4 "Filipino"
+>     5 "Hispanic/Latinx"
+>     6 "Pacific Islander"
+>     7 "White/Non-Hispanic"
+>     8 "Other"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. 
+. encode race, generate(race_temp) label(race)
+
+. label var race_temp "`: var lab race'"
+
+. drop race 
+
+. rename race_temp race 
+
+. 
+. ****** recode: When you were growing up, was English the primary language spoken in your home?
+. label define primary_english 0 "No" 1 "Yes"
+
+. 
+. encode primary_english, generate(primary_english_temp) label(primary_english)
+
+. label var primary_english_temp "`: var lab primary_english'"
+
+. drop primary_english
+
+. rename primary_english_temp primary_english
+
+. 
+. ****** do not need to recode: What language was primarily spoken in your home when you were growing up?
+. /* this is a text entry question . it is only shown if primary_english is No */
+. 
+. ****** recode: Do you currently have a job?
+. label define has_job 0 "No" 1 "Yes"
+
+. 
+. encode has_job, generate(has_job_temp) label(has_job)
+
+. label var has_job_temp "`: var lab has_job'"
+
+. drop has_job
+
+. rename has_job_temp has_job
+
+. 
+. ****** recode: How many hours a week do you work at your job?
+. /* this is only shown if has_job is Yes */
+. #delimit ;
+delimiter now ;
+. label define hours_job
+>     1 "Less than 10"
+>     2 "10-19"
+>     3 "20-30"
+>     4 "More than 30"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. 
+. encode hours_job, generate(hours_job_temp) label(hours_job)
+
+. label var hours_job_temp "`: var lab hours_job'"
+
+. drop hours_job
+
+. rename hours_job_temp hours_job
+
+. 
+. 
+. 
+. //-------------------------------------------------------
+. // cleaning and recoding the gender and sexual orientation variables 
+. //-------------------------------------------------------
+. 
+. ****** recode gender variable 
+. replace gender = "Other" if gender=="Other (please feel free to specify)"
+(94 real changes made)
+
+. 
+. ****** generate a var for assigned gender at birth
+. /* translate male/female from assigned sex at birth to man/woman for assigned gender at birth */
+. gen agab =""
+(8,738 missing values generated)
+
+. replace agab = "MAN" if asab=="Male"
+variable agab was str1 now str3
+(2,903 real changes made)
+
+. replace agab = "WOMAN" if asab=="Female"
+variable agab was str3 now str5
+(4,747 real changes made)
+
+. label var agab "assigned gender at birth"
+
+. 
+. 
+. 
+. 
+. ****** generate new variables for gender and sexual orientation 
+. tab gender 
+
+                current gender identity |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                    Man |      2,836       37.00       37.00
+                             Non-binary |        269        3.51       40.51
+                                  Other |         94        1.23       41.74
+                      Prefer not to say |        148        1.93       43.67
+                                  Woman |      4,317       56.33      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,664      100.00
+
+. tab so 
+
+                     sexual orientation |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                Asexual |        167        2.19        2.19
+                               Bisexual |      1,041       13.65       15.84
+                         Lesbian or Gay |        343        4.50       20.33
+           Other (feel free to specify) |        272        3.57       23.90
+                      Prefer not to say |        522        6.84       30.74
+          Straight (not gay or lesbian) |      5,283       69.26      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,628      100.00
+
+. tab gender_other 
+
+   current gender other: please specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                Agender |          3        3.37        3.37
+                              Androgyne |          1        1.12        4.49
+                     Attack helicopter  |          1        1.12        5.62
+             Bigender (male and female) |          1        1.12        6.74
+                              Bisexual  |          1        1.12        7.87
+                              Demi-Girl |          1        1.12        8.99
+                              Demi-girl |          1        1.12       10.11
+                               DemiGirl |          1        1.12       11.24
+                                Demiboy |          1        1.12       12.36
+                               Demigirl |          1        1.12       13.48
+                      Female/non-binary |          1        1.12       14.61
+                           Gender Fluid |          2        2.25       16.85
+             Gender Non Conforming male |          1        1.12       17.98
+                           Gender fluid |          3        3.37       21.35
+                          Gender fluid  |          1        1.12       22.47
+                           Gender-Fluid |          1        1.12       23.60
+                           Gender-fluid |          5        5.62       29.21
+                          Gender-fluid  |          2        2.25       31.46
+                            GenderFluid |          1        1.12       32.58
+                            Genderfluid |         13       14.61       47.19
+                           Genderfluid  |          2        2.25       49.44
+Genderfluid: for ones gender to be fl.. |          1        1.12       50.56
+                           Genderqueer  |          1        1.12       51.69
+                                  Girl  |          1        1.12       52.81
+                              HIM/ALPHA |          1        1.12       53.93
+                                 Hombre |          1        1.12       55.06
+                  I am a straight woman |          1        1.12       56.18
+        I don't play that stupid stuff. |          1        1.12       57.30
+I was born a girl and no one can chan.. |          1        1.12       58.43
+I'm a man male I don't belive in this.. |          1        1.12       59.55
+Idk what it’s called, but I was born .. |          1        1.12       60.67
+I’m a dude this is a bullshit ass que.. |          1        1.12       61.80
+                                 Jewish |          1        1.12       62.92
+                                   Male |          1        1.12       64.04
+                                  Male. |          1        1.12       65.17
+                        Masc Non-binary |          1        1.12       66.29
+     Meant to put male on last question |          1        1.12       67.42
+          No'); DROP TABLE responses;-- |          1        1.12       68.54
+                  Non-binary trans-masc |          1        1.12       69.66
+                         Nonbinary Male |          1        1.12       70.79
+                           Not relevant |          1        1.12       71.91
+                               Not sure |          1        1.12       73.03
+                           Questioning  |          1        1.12       74.16
+                            Rocket Ship |          1        1.12       75.28
+There is no such thing as a “gender i.. |          1        1.12       76.40
+                            Trans-femme |          1        1.12       77.53
+                         Transmasculine |          2        2.25       79.78
+                            Two Spirit  |          1        1.12       80.90
+                              Uncertain |          1        1.12       82.02
+                                Unknown |          1        1.12       83.15
+                                 Unsure |          2        2.25       85.39
+                                agender |          2        2.25       87.64
+                          gender-fluid  |          1        1.12       88.76
+                            genderfluid |          4        4.49       93.26
+                            genderqueer |          1        1.12       94.38
+i don't know, im pretty confused most.. |          1        1.12       95.51
+       man who at times acts as a woman |          1        1.12       96.63
+                     nigger killer 5000 |          1        1.12       97.75
+                    she/her ; they/them |          1        1.12       98.88
+          this should not be a question |          1        1.12      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         89      100.00
+
+. tab so_other 
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                             Abrosexual |          1        0.44        0.44
+                            Antrosexual |          1        0.44        0.88
+                             Aromantic  |          1        0.44        1.32
+                      Aromantic Asexual |          2        0.88        2.19
+                      Asexual and Queer |          1        0.44        2.63
+                    Asexual/ omnisexual |          1        0.44        3.07
+                      Asexual/Aromantic |          1        0.44        3.51
+                          Asexual/queer |          1        0.44        3.95
+                             Bi-curious |          1        0.44        4.39
+                  Biromantic demisexual |          1        0.44        4.82
+     Biromantic. (Bisexual and Asexual) |          1        0.44        5.26
+                       Bisexual Asexual |          1        0.44        5.70
+                 Bisexual and Aromantic |          1        0.44        6.14
+Can’t tell if I’m really Straight or .. |          1        0.44        6.58
+                             Demisexual |          5        2.19        8.77
+                Demisexual Panromantic  |          1        0.44        9.21
+                         Heteroflexible |          1        0.44        9.65
+                           Heterosexual |          1        0.44       10.09
+I am a minor.  You should not be aski.. |          1        0.44       10.53
+                 I do not label myself  |          1        0.44       10.96
+                           I don't know |          1        0.44       11.40
+                    I don't like labels |          1        0.44       11.84
+          I haven't switched sides yet  |          1        0.44       12.28
+                                   Idk  |          1        0.44       12.72
+Im not sure yet but I know im some ty.. |          1        0.44       13.16
+                                    Man |          1        0.44       13.60
+Mentally ill people God will come and.. |          1        0.44       14.04
+                                 Mujer  |          1        0.44       14.47
+                                 No one |          1        0.44       14.91
+          No'); DROP TABLE responses;-- |          1        0.44       15.35
+Nobody’s business but mine.   Not at .. |          1        0.44       15.79
+                                    Non |          1        0.44       16.23
+                           Non Labeled  |          1        0.44       16.67
+                      None apply to me. |          1        0.44       17.11
+                                 None,  |          1        0.44       17.54
+                                 Normal |          1        0.44       17.98
+                           Not relevant |          1        0.44       18.42
+Not straight but I also don't care ab.. |          1        0.44       18.86
+                               Not sure |          1        0.44       19.30
+                             Omnisexual |          7        3.07       22.37
+                  Omnisexual demisexual |          1        0.44       22.81
+       On both the Aro and Ace spectrum |          1        0.44       23.25
+On the Asexual spectrum and im still .. |          1        0.44       23.68
+                             Pan & Demi |          1        0.44       24.12
+                            Pan sexual  |          2        0.88       25.00
+                           Panromantic  |          1        0.44       25.44
+                    Panromantic Asexual |          1        0.44       25.88
+                              Pansexual |         62       27.19       53.07
+                             Pansexual  |         14        6.14       59.21
+                   Pansexual (Everyone) |          1        0.44       59.65
+                     Pansexual/Bisexual |          1        0.44       60.09
+                                  Queer |         34       14.91       75.00
+                                 Queer  |          2        0.88       75.88
+                 Queer (aka don't care) |          1        0.44       76.32
+                       Queer/ no label  |          1        0.44       76.75
+                            Questioning |          3        1.32       78.07
+                              Straight  |          2        0.88       78.95
+                           Trans Female |          1        0.44       79.39
+                             Unlabeled  |          1        0.44       79.82
+                Unlabeled, not straight |          1        0.44       80.26
+                   Unlabeled/Omnisexual |          1        0.44       80.70
+                                 Unsure |          2        0.88       81.58
+Why the fuck does this matter I’m str.. |          1        0.44       82.02
+                                aro/acr |          1        0.44       82.46
+                     asexual biromantic |          1        0.44       82.89
+                      attracted to cars |          1        0.44       83.33
+                             bi-curious |          1        0.44       83.77
+                         big titty jews |          1        0.44       84.21
+                           demi sexual  |          1        0.44       84.65
+                             demisexual |          1        0.44       85.09
+                            hate labels |          1        0.44       85.53
+                           heterosexual |          1        0.44       85.96
+                          i’m not sure  |          1        0.44       86.40
+          no labels, I just like people |          1        0.44       86.84
+                                    pan |          2        0.88       87.72
+                              pansexual |         11        4.82       92.54
+                             pansexual  |          2        0.88       93.42
+                 pansexual demiromantic |          1        0.44       93.86
+                                  queer |          6        2.63       96.49
+                          queer aro ace |          1        0.44       96.93
+                            questioning |          1        0.44       97.37
+questioning labels but definitely queer |          1        0.44       97.81
+                  straight and ace spec |          1        0.44       98.25
+          this should not be a question |          1        0.44       98.68
+                              unlabeled |          1        0.44       99.12
+   who even knows but it's not straight |          1        0.44       99.56
+wow, not really relevant to Financial.. |          1        0.44      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        228      100.00
+
+. 
+. // first clean the gender and so vars and gender_other and so_other text responses 
+. foreach v in gender so gender_other so_other {
+  2.     // convert to upper case
+.     replace `v' = strupper(`v')
+  3.     // collapse internal multiple blanks to one blank 
+.     replace `v' = stritrim(`v')
+  4.     // remove leading and trailing blanks
+.     replace `v' = strtrim(`v')
+  5.     // remove dashes "-"
+.     replace `v' = subinstr(`v', "-", "", .)
+  6. } 
+(7,664 real changes made)
+(0 real changes made)
+(0 real changes made)
+(269 real changes made)
+(7,628 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(88 real changes made)
+(0 real changes made)
+(12 real changes made)
+(16 real changes made)
+(228 real changes made)
+(2 real changes made)
+(36 real changes made)
+(3 real changes made)
+
+. 
+. // check tabulation again 
+. tab gender 
+
+                current gender identity |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                    MAN |      2,836       37.00       37.00
+                              NONBINARY |        269        3.51       40.51
+                                  OTHER |         94        1.23       41.74
+                      PREFER NOT TO SAY |        148        1.93       43.67
+                                  WOMAN |      4,317       56.33      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,664      100.00
+
+. tab so 
+
+                     sexual orientation |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                ASEXUAL |        167        2.19        2.19
+                               BISEXUAL |      1,041       13.65       15.84
+                         LESBIAN OR GAY |        343        4.50       20.33
+           OTHER (FEEL FREE TO SPECIFY) |        272        3.57       23.90
+                      PREFER NOT TO SAY |        522        6.84       30.74
+          STRAIGHT (NOT GAY OR LESBIAN) |      5,283       69.26      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,628      100.00
+
+. tab gender_other
+
+   current gender other: please specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                AGENDER |          5        5.62        5.62
+                              ANDROGYNE |          1        1.12        6.74
+                      ATTACK HELICOPTER |          1        1.12        7.87
+             BIGENDER (MALE AND FEMALE) |          1        1.12        8.99
+                               BISEXUAL |          1        1.12       10.11
+                                DEMIBOY |          1        1.12       11.24
+                               DEMIGIRL |          4        4.49       15.73
+                       FEMALE/NONBINARY |          1        1.12       16.85
+                           GENDER FLUID |          6        6.74       23.60
+             GENDER NON CONFORMING MALE |          1        1.12       24.72
+                            GENDERFLUID |         29       32.58       57.30
+GENDERFLUID: FOR ONES GENDER TO BE FL.. |          1        1.12       58.43
+                            GENDERQUEER |          2        2.25       60.67
+                                   GIRL |          1        1.12       61.80
+                              HIM/ALPHA |          1        1.12       62.92
+                                 HOMBRE |          1        1.12       64.04
+                  I AM A STRAIGHT WOMAN |          1        1.12       65.17
+I DON'T KNOW, IM PRETTY CONFUSED MOST.. |          1        1.12       66.29
+        I DON'T PLAY THAT STUPID STUFF. |          1        1.12       67.42
+I WAS BORN A GIRL AND NO ONE CAN CHAN.. |          1        1.12       68.54
+I'M A MAN MALE I DON'T BELIVE IN THIS.. |          1        1.12       69.66
+IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.12       70.79
+I’M A DUDE THIS IS A BULLSHIT ASS QUE.. |          1        1.12       71.91
+                                 JEWISH |          1        1.12       73.03
+                                   MALE |          1        1.12       74.16
+                                  MALE. |          1        1.12       75.28
+       MAN WHO AT TIMES ACTS AS A WOMAN |          1        1.12       76.40
+                         MASC NONBINARY |          1        1.12       77.53
+     MEANT TO PUT MALE ON LAST QUESTION |          1        1.12       78.65
+                     NIGGER KILLER 5000 |          1        1.12       79.78
+            NO'); DROP TABLE RESPONSES; |          1        1.12       80.90
+                         NONBINARY MALE |          1        1.12       82.02
+                    NONBINARY TRANSMASC |          1        1.12       83.15
+                           NOT RELEVANT |          1        1.12       84.27
+                               NOT SURE |          1        1.12       85.39
+                            QUESTIONING |          1        1.12       86.52
+                            ROCKET SHIP |          1        1.12       87.64
+                    SHE/HER ; THEY/THEM |          1        1.12       88.76
+THERE IS NO SUCH THING AS A “GENDER I.. |          1        1.12       89.89
+          THIS SHOULD NOT BE A QUESTION |          1        1.12       91.01
+                             TRANSFEMME |          1        1.12       92.13
+                         TRANSMASCULINE |          2        2.25       94.38
+                             TWO SPIRIT |          1        1.12       95.51
+                              UNCERTAIN |          1        1.12       96.63
+                                UNKNOWN |          1        1.12       97.75
+                                 UNSURE |          2        2.25      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         89      100.00
+
+. tab so_other
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                             ABROSEXUAL |          1        0.44        0.44
+                            ANTROSEXUAL |          1        0.44        0.88
+                                ARO/ACR |          1        0.44        1.32
+                              AROMANTIC |          1        0.44        1.75
+                      AROMANTIC ASEXUAL |          2        0.88        2.63
+                      ASEXUAL AND QUEER |          1        0.44        3.07
+                     ASEXUAL BIROMANTIC |          1        0.44        3.51
+                    ASEXUAL/ OMNISEXUAL |          1        0.44        3.95
+                      ASEXUAL/AROMANTIC |          1        0.44        4.39
+                          ASEXUAL/QUEER |          1        0.44        4.82
+                      ATTRACTED TO CARS |          1        0.44        5.26
+                              BICURIOUS |          2        0.88        6.14
+                         BIG TITTY JEWS |          1        0.44        6.58
+                  BIROMANTIC DEMISEXUAL |          1        0.44        7.02
+     BIROMANTIC. (BISEXUAL AND ASEXUAL) |          1        0.44        7.46
+                 BISEXUAL AND AROMANTIC |          1        0.44        7.89
+                       BISEXUAL ASEXUAL |          1        0.44        8.33
+CAN’T TELL IF I’M REALLY STRAIGHT OR .. |          1        0.44        8.77
+                            DEMI SEXUAL |          1        0.44        9.21
+                             DEMISEXUAL |          6        2.63       11.84
+                 DEMISEXUAL PANROMANTIC |          1        0.44       12.28
+                            HATE LABELS |          1        0.44       12.72
+                         HETEROFLEXIBLE |          1        0.44       13.16
+                           HETEROSEXUAL |          2        0.88       14.04
+I AM A MINOR. YOU SHOULD NOT BE ASKIN.. |          1        0.44       14.47
+                  I DO NOT LABEL MYSELF |          1        0.44       14.91
+                           I DON'T KNOW |          1        0.44       15.35
+                    I DON'T LIKE LABELS |          1        0.44       15.79
+           I HAVEN'T SWITCHED SIDES YET |          1        0.44       16.23
+                                    IDK |          1        0.44       16.67
+IM NOT SURE YET BUT I KNOW IM SOME TY.. |          1        0.44       17.11
+                           I’M NOT SURE |          1        0.44       17.54
+                                    MAN |          1        0.44       17.98
+MENTALLY ILL PEOPLE GOD WILL COME AND.. |          1        0.44       18.42
+                                  MUJER |          1        0.44       18.86
+          NO LABELS, I JUST LIKE PEOPLE |          1        0.44       19.30
+                                 NO ONE |          1        0.44       19.74
+            NO'); DROP TABLE RESPONSES; |          1        0.44       20.18
+NOBODY’S BUSINESS BUT MINE. NOT AT AL.. |          1        0.44       20.61
+                                    NON |          1        0.44       21.05
+                            NON LABELED |          1        0.44       21.49
+                      NONE APPLY TO ME. |          1        0.44       21.93
+                                  NONE, |          1        0.44       22.37
+                                 NORMAL |          1        0.44       22.81
+                           NOT RELEVANT |          1        0.44       23.25
+NOT STRAIGHT BUT I ALSO DON'T CARE AB.. |          1        0.44       23.68
+                               NOT SURE |          1        0.44       24.12
+                             OMNISEXUAL |          7        3.07       27.19
+                  OMNISEXUAL DEMISEXUAL |          1        0.44       27.63
+       ON BOTH THE ARO AND ACE SPECTRUM |          1        0.44       28.07
+ON THE ASEXUAL SPECTRUM AND IM STILL .. |          1        0.44       28.51
+                                    PAN |          2        0.88       29.39
+                             PAN & DEMI |          1        0.44       29.82
+                             PAN SEXUAL |          2        0.88       30.70
+                            PANROMANTIC |          1        0.44       31.14
+                    PANROMANTIC ASEXUAL |          1        0.44       31.58
+                              PANSEXUAL |         89       39.04       70.61
+                   PANSEXUAL (EVERYONE) |          1        0.44       71.05
+                 PANSEXUAL DEMIROMANTIC |          1        0.44       71.49
+                     PANSEXUAL/BISEXUAL |          1        0.44       71.93
+                                  QUEER |         42       18.42       90.35
+                 QUEER (AKA DON'T CARE) |          1        0.44       90.79
+                          QUEER ARO ACE |          1        0.44       91.23
+                        QUEER/ NO LABEL |          1        0.44       91.67
+                            QUESTIONING |          4        1.75       93.42
+QUESTIONING LABELS BUT DEFINITELY QUEER |          1        0.44       93.86
+                               STRAIGHT |          2        0.88       94.74
+                  STRAIGHT AND ACE SPEC |          1        0.44       95.18
+          THIS SHOULD NOT BE A QUESTION |          1        0.44       95.61
+                           TRANS FEMALE |          1        0.44       96.05
+                              UNLABELED |          2        0.88       96.93
+                UNLABELED, NOT STRAIGHT |          1        0.44       97.37
+                   UNLABELED/OMNISEXUAL |          1        0.44       97.81
+                                 UNSURE |          2        0.88       98.68
+   WHO EVEN KNOWS BUT IT'S NOT STRAIGHT |          1        0.44       99.12
+WHY THE FUCK DOES THIS MATTER I’M STR.. |          1        0.44       99.56
+WOW, NOT REALLY RELEVANT TO FINANCIAL.. |          1        0.44      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        228      100.00
+
+. 
+. ****** create a cleaned gender variable 
+. // clean the gender_other free response text 
+. gen gender_other_clean = gender_other
+(8,649 missing values generated)
+
+. label var gender_other_clean "cleaned gender other free text response"
+
+. 
+. // collapse categories of free response gender
+. /* collapsed categories:
+> 1. NONBINARY
+>     includes mentions of nonbinary, they/them
+> 2. GENDERFLUID:
+>     includes mentions of genderfluid  
+> 3. OTHERGNC (other gender nonconforming)
+>     includes mentions of gender non conforming, androgyne, demiboy(girl), bigender, twospirit,
+>     agender, genderqueer
+> 4. UNSURE/QUESTIONING
+>     includes mentions of unsure, unknown, uncertain, questioning, i don't know, IDK
+> 5. WOMAN
+>     includes mentions of transfem, woman, girl
+> 6. MAN
+>     includes mentions of transmasc, man, boy
+> ** NOTE: by coding nonbinary first, any mention of nonbinary transmasc/fem will be coded as nonbinary 
+> 7. CISGENDER/OTHER
+>     includes any other responses not in the previous 6 categories, such as overtly queerphobic ones, e.g.
+>  attack helicopter
+>     assume they are cisgender 
+> */
+. #delimit ;
+delimiter now ;
+. replace gender_other_clean = "NONBINARY"
+>     if strpos(gender_other, "NONBINARY")!=0
+>     | strpos(gender_other, "NON BINARY")!=0
+>     | strpos(gender_other, "THEY/THEM")!=0
+>     ;
+(6 real changes made)
+
+. replace gender_other_clean = "GENDERFLUID"
+>     if strpos(gender_other, "GENDERFLUID")!=0
+>     | strpos(gender_other, "GENDER FLUID")!=0
+>     | strpos(gender_other, "FLUID")!=0
+>     ;
+(7 real changes made)
+
+. replace gender_other_clean = "OTHERGNC"
+>     if strpos(gender_other, "GENDER NONCONFORMING")!=0
+>     | strpos(gender_other, "GENDERNONCONFORMING")!=0
+>     | strpos(gender_other, "GENDER NON CONFORMING")!=0
+>     | strpos(gender_other, "ANDROGYNE")!=0
+>     | strpos(gender_other, "ANDROGYNOUS")!=0
+>     | strpos(gender_other, "DEMIBOY")!=0
+>     | strpos(gender_other, "DEMOGIRL")!=0
+>     | strpos(gender_other, "BIGENDER")!=0 
+>     | strpos(gender_other, "TWOSPIRIT")!=0 
+>     | strpos(gender_other, "TWO SPIRIT")!=0
+>     | strpos(gender_other, "AGENDER")!=0
+>     | strpos(gender_other, "GENDERQUEER")!=0
+>     | strpos(gender_other, "GENDER QUEER")!=0
+>     ;
+(12 real changes made)
+
+. replace gender_other_clean = "UNSURE/QUESTIONING"
+>     if strpos(gender_other, "UNSURE")!=0
+>     | strpos(gender_other, "UNKNOWN")!=0
+>     | strpos(gender_other, "UNCERTAIN")!=0
+>     | strpos(gender_other, "QUESTIONING")!=0
+>     | strpos(gender_other, "I DON'T KNOW")!=0
+>     | strpos(gender_other, "IDK")!=0
+>     | strpos(gender_other, "NOT SURE")!=0
+>     ;
+(8 real changes made)
+
+. replace gender_other_clean = "WOMAN"
+>     if strpos(gender_other, "WOMAN")!=0
+>     | strpos(gender_other, "GIRL")!=0
+>     | strpos(gender_other, "TRANSFEM")!=0
+>     | strpos(gender_other, "TRANSFEMME")!=0
+>     | strpos(gender_other, "TRANSFEM")!=0
+>     ;
+(9 real changes made)
+
+. replace gender_other_clean = "MAN"
+>     if strpos(gender_other, "MAN")!=0
+>     | strpos(gender_other, "BOY")!=0
+>     | strpos(gender_other, "TRANSMASCULINE")!=0
+>     | strpos(gender_other, "TRANSMASC")!=0
+>     ;
+(7 real changes made)
+
+. replace gender_other_clean = "CISGENDER/OTHER"
+>     if 
+>     gender_other_clean!="NONBINARY"
+>     & gender_other_clean!="GENDERFLUID"
+>     & gender_other_clean!="OTHERGNC"
+>     & gender_other_clean!="UNSURE/QUESTIONING"
+>     & gender_other_clean!="WOMAN"
+>     & gender_other_clean!="MAN"
+>     & !mi(gender_other_clean)
+>     ;
+(16 real changes made)
+
+. #delimit cr 
+delimiter now cr
+. 
+. 
+. 
+. // create an overall gender variable that combines the free text response with the choice question
+. gen gender_clean = gender
+(1,074 missing values generated)
+
+. label var gender_clean "cleaned current gender identity"
+
+. replace gender_clean = gender_other_clean if !mi(gender_other_clean)
+variable gender_clean was str17 now str18
+(89 real changes made)
+
+. // assume that people who responded irrelevant/quetab geerphobic text are cisgender, populate with assign
+> ed gender at birth 
+. replace gender_clean = agab if gender_other_clean=="CISGENDER/OTHER"
+(16 real changes made)
+
+. 
+. tab gender_clean
+
+   cleaned current |
+   gender identity |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+       GENDERFLUID |         36        0.47        0.47
+               MAN |      2,853       37.23       37.70
+         NONBINARY |        273        3.56       41.26
+             OTHER |          5        0.07       41.33
+          OTHERGNC |         11        0.14       41.47
+ PREFER NOT TO SAY |        148        1.93       43.40
+UNSURE/QUESTIONING |          8        0.10       43.51
+             WOMAN |      4,329       56.49      100.00
+-------------------+-----------------------------------
+             Total |      7,663      100.00
+
+. 
+. rename gender gender_raw 
+
+. rename gender_other gender_other_raw
+
+. 
+. // there are 5 observations which chose "other" for gender but did not write text response. assume they a
+> re cisgender
+. replace gender_clean = agab if gender_clean=="OTHER"
+(5 real changes made)
+
+. 
+. /* NOTE: of the 147 people who reported prefer not to say for gender, 
+> - 11 are straight
+> - 58 chose prefer not to say for sexual orientation
+> - the rest are all non-straight  
+> Therefore, there is good reason to classify them as likely to be not cisgender 
+> */
+. tab so if gender_clean=="PREFER NOT TO SAY"
+
+                     sexual orientation |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                ASEXUAL |         10        6.80        6.80
+                               BISEXUAL |         42       28.57       35.37
+                         LESBIAN OR GAY |         11        7.48       42.86
+           OTHER (FEEL FREE TO SPECIFY) |         15       10.20       53.06
+                      PREFER NOT TO SAY |         58       39.46       92.52
+          STRAIGHT (NOT GAY OR LESBIAN) |         11        7.48      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        147      100.00
+
+. tab so_other if gender_clean=="PREFER NOT TO SAY"
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                              BICURIOUS |          1        8.33        8.33
+                            DEMI SEXUAL |          1        8.33       16.67
+                             DEMISEXUAL |          1        8.33       25.00
+                    PANROMANTIC ASEXUAL |          1        8.33       33.33
+                              PANSEXUAL |          6       50.00       83.33
+                                  QUEER |          1        8.33       91.67
+                UNLABELED, NOT STRAIGHT |          1        8.33      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         12      100.00
+
+. 
+. //------------------------------------------------
+. /* NOTE: gender_trans_binary==1 is a subset of 
+> gender_trans_gnc==1, which is a subset of 
+> cisgender==0 */
+. //------------------------------------------------
+. // create a dummy for cisgender
+. /* code prefer not to say and unsure/questioning as non-cis */
+. gen gender_cis = .
+(8,738 missing values generated)
+
+. replace gender_cis=0 if gender_clean!=agab & !mi(gender_clean) 
+(573 real changes made)
+
+. replace gender_cis=1 if gender_clean==agab & !mi(gender_clean)
+(7,090 real changes made)
+
+. label var gender_cis "cisgender"
+
+. 
+. tab gender_cis 
+
+  cisgender |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |        573        7.48        7.48
+          1 |      7,090       92.52      100.00
+------------+-----------------------------------
+      Total |      7,663      100.00
+
+. 
+. // create a dummy for umbrella transgender, a broad definition that inludes everyone whose agab is differ
+> ent from current gender
+. // this includes trans, nb, gnc, genderfluid, EXCLUDES unsure/questioning and prefer not to say
+. // ***** !!!!!NOTE: THIS VARIABLE IS NOT THE COMPLEMENT OF gender_cis!!!!! *****
+. gen gender_trans_gnc =.
+(8,738 missing values generated)
+
+. replace gender_trans_gnc=1 if gender_cis==0
+(573 real changes made)
+
+. replace gender_trans_gnc=0 if gender_cis==1 | (gender_cis==0 & gender_clean=="PREFER NOT TO SAY") | (gend
+> er_cis==0 & gender_clean=="UNSURE/QUESTIONING")
+(7,246 real changes made)
+
+. label var gender_trans_gnc "umbrella transgender, exclude unsure and prefer not to say"
+
+. 
+. tab gender_trans_gnc
+
+   umbrella |
+transgender |
+  , exclude |
+ unsure and |
+ prefer not |
+     to say |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      7,246       94.56       94.56
+          1 |        417        5.44      100.00
+------------+-----------------------------------
+      Total |      7,663      100.00
+
+. 
+. // create a dummy for transgender and not nonbinary/other gnc: binary trans folks whose current gender is
+>  either man or woman
+. gen gender_trans_binary =.
+(8,738 missing values generated)
+
+. // define not binary trans as cisgender or non-cisgender and do not identify with neither woman nor man 
+. replace gender_trans_binary=0 if gender_cis==1 | (gender_cis==0 & gender_clean!="WOMAN" & gender_clean!="
+> MAN")
+(7,566 real changes made)
+
+. replace gender_trans_binary=1 if (gender_clean=="WOMAN" & agab=="MAN") | (gender_clean=="MAN" & agab=="WO
+> MAN")
+(84 real changes made)
+
+. label var gender_trans_binary "binary transgender"
+
+. 
+. tab gender_trans_binary
+
+     binary |
+transgender |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      7,566       98.90       98.90
+          1 |         84        1.10      100.00
+------------+-----------------------------------
+      Total |      7,650      100.00
+
+. 
+. // create a dummy for current gender is woman 
+. gen gender_woman =.
+(8,738 missing values generated)
+
+. replace gender_woman=0 if gender_clean!="WOMAN" & !mi(gender_clean)
+(3,330 real changes made)
+
+. replace gender_woman=1 if gender_clean=="WOMAN" 
+(4,333 real changes made)
+
+. label var gender_woman "current gender is woman"
+
+. 
+. // create a dummy for current gender is man
+. gen gender_man =.
+(8,738 missing values generated)
+
+. replace gender_man=0 if gender_clean!="MAN" & !mi(gender_clean)
+(4,809 real changes made)
+
+. replace gender_man=1 if gender_clean=="MAN" & !mi(gender_clean)
+(2,854 real changes made)
+
+. label var gender_man "current gender is man"
+
+. 
+. 
+. //-----------------------------------------------------------
+. // clean sexual orientation variables
+. //-----------------------------------------------------------
+. /* first clean the so_other free text response, collapse down to the following categories: 
+> 1. PAN/QUEER
+>     includes mentions of PAN, QUEER, ANTHROSEXUAL, ANTROSEXUAL, OMNI, NOT STRAIGHT
+> 2. BISEXUAL
+>     includes mentions of BISEXUAL, BICURIOUS
+> 3. ASEXUAL
+>     includes mentions of ASEXUAL, ACE, ARO, DEMI
+> 4. UNSURE/QUESTIONING
+>     includes mentions of UNSURE, UNKNOWN, UNCERTAIN, QUESTIONING, I DON'T KNOW, IDK
+> 5. STRAIGHT/OTHER
+>     all others
+> 
+> */
+. 
+. gen so_other_clean=so_other
+(8,510 missing values generated)
+
+. label var so_other_clean "cleaned free text response for sexual orientation"
+
+. 
+. #delimit ;
+delimiter now ;
+. replace so_other_clean = "PAN/QUEER"
+>     if 
+>     strpos(so_other, "PAN")!=0
+>     | strpos(so_other, "QUEER")!=0
+>     | strpos(so_other, "ANTHROSEXUAL")!=0
+>     | strpos(so_other, "ANTROSEXUAL")!=0
+>     | strpos(so_other, "OMNI")!=0
+>     | strpos(so_other, "NOT STRAIGHT")!=0
+>     ;
+(162 real changes made)
+
+. replace so_other_clean = "BISEXUAL"
+>     if 
+>     strpos(so_other, "BISEXUAL")!=0
+>     | strpos(so_other, "BICURIOUS")!=0
+>     ;
+(7 real changes made)
+
+. replace so_other_clean = "ASEXUAL"
+>     if 
+>     strpos(so_other, "ASEXUAL")!=0
+>     | strpos(so_other, "ACE")!=0
+>     | strpos(so_other, "ARO")!=0
+>     | strpos(so_other, "DEMI")!=0
+>     ;
+(29 real changes made)
+
+. replace so_other_clean = "UNSURE/QUESTIONING"
+>     if strpos(so_other, "UNSURE")!=0
+>     | strpos(so_other, "UNKNOWN")!=0
+>     | strpos(so_other, "UNCERTAIN")!=0
+>     | strpos(so_other, "QUESTIONING")!=0
+>     | strpos(so_other, "I DON'T KNOW")!=0
+>     | strpos(so_other, "IDK")!=0
+>     | strpos(so_other, "NOT SURE")!=0
+>     ;
+(12 real changes made)
+
+. replace so_other_clean = "STRAIGHT/OTHER"
+>     if 
+>     so_other_clean!="PAN/QUEER"
+>     & so_other_clean!="BISEXUAL"
+>     & so_other_clean!="ASEXUAL"
+>     & so_other_clean!="UNSURE/QUESTIONING"
+>     & !mi(so_other_clean)
+>     ;
+(32 real changes made)
+
+. #delimit cr 
+delimiter now cr
+. 
+. tab so_other_clean
+
+  cleaned free text response for sexual |
+                            orientation |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                ASEXUAL |         29       12.72       12.72
+                               BISEXUAL |          4        1.75       14.47
+                              PAN/QUEER |        151       66.23       80.70
+                         STRAIGHT/OTHER |         32       14.04       94.74
+                     UNSURE/QUESTIONING |         12        5.26      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        228      100.00
+
+. 
+. // create a cleaned sexual orientation variable
+. gen so_clean = so 
+(1,110 missing values generated)
+
+. label var so_clean "cleaned sexual orientation including free text response"
+
+. replace so_clean = so_other_clean if strpos(so, "OTHER")!=0
+(272 real changes made)
+
+. replace so_clean = "STRAIGHT" if strpos(so_clean, "STRAIGHT")!=0
+(5,315 real changes made)
+
+. tab so_clean
+
+   cleaned sexual orientation |
+ including free text response |      Freq.     Percent        Cum.
+------------------------------+-----------------------------------
+                      ASEXUAL |        196        2.58        2.58
+                     BISEXUAL |      1,045       13.78       16.36
+               LESBIAN OR GAY |        343        4.52       20.89
+                    PAN/QUEER |        151        1.99       22.88
+            PREFER NOT TO SAY |        522        6.88       29.76
+                     STRAIGHT |      5,315       70.08       99.84
+           UNSURE/QUESTIONING |         12        0.16      100.00
+------------------------------+-----------------------------------
+                        Total |      7,584      100.00
+
+. 
+. 
+. /* **************
+> NOTE: so_queer_narrow==1 is a subset of 
+> so_queer_broad==1 which is a subset of 
+> so_straight==0 */
+. // create a dummy for striaght
+. // this excludes prefer not to say and unsure/questioning
+. gen so_straight =.
+(8,738 missing values generated)
+
+. label var so_straight "straight"
+
+. replace so_straight=0 if so_clean!="STRAIGHT" & !mi(so_clean)
+(2,269 real changes made)
+
+. replace so_straight=1 if so_clean=="STRAIGHT"
+(5,315 real changes made)
+
+. 
+. tab so_straight
+
+   straight |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      2,269       29.92       29.92
+          1 |      5,315       70.08      100.00
+------------+-----------------------------------
+      Total |      7,584      100.00
+
+. 
+. // create a dummy for queer (non straight) sexual orientation, narrowly defined
+. // excludes prefer not to say and unsure/questioning
+. gen so_queer_narrow =.
+(8,738 missing values generated)
+
+. label var so_queer_narrow "non-straight, narrowly defined"
+
+. replace so_queer_narrow=0 if so_straight==1 | so_clean=="PREFER NOT TO SAY" | so_clean=="UNSURE/QUESTIONI
+> NG"
+(5,849 real changes made)
+
+. replace so_queer_narrow=1 if so_straight==0 & so_clean!="PREFER NOT TO SAY" & so_clean!="UNSURE/QUESTIONI
+> NG"
+(1,735 real changes made)
+
+. 
+. tab so_queer_narrow
+
+non-straigh |
+t, narrowly |
+    defined |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      5,849       77.12       77.12
+          1 |      1,735       22.88      100.00
+------------+-----------------------------------
+      Total |      7,584      100.00
+
+. 
+. // create a dummy for queer (non straight) sexual orientation, broadly defined
+. gen so_queer_broad = so_queer_narrow
+(1,154 missing values generated)
+
+. label var so_queer_broad "non straight, broadly defined"
+
+. replace so_queer_broad=1 if so_clean=="PREFER NOT TO SAY" | so_clean=="UNSURE/QUESTIONING"
+(534 real changes made)
+
+. 
+. tab so_queer_broad
+
+        non |
+  straight, |
+    broadly |
+    defined |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |      5,315       70.08       70.08
+          1 |      2,269       29.92      100.00
+------------+-----------------------------------
+      Total |      7,584      100.00
+
+. 
+. rename so so_raw 
+
+. rename so_other so_other_raw
+
+. 
+. 
+. 
+. 
+. ****** recode: What is the highest level of education completed among either of your parents (or those wh
+> o raised you)?
+. #delimit ;
+delimiter now ;
+. label define parent_edu
+>     1 "Did not complete high school"
+>     2 "High school diploma"
+>     3 "Some college, no college degree"
+>     4 "Associate degree"
+>     5 "Bachelor's degree"
+>     6 "Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)"
+>     7 "Don't know"
+>     ;
+
+. #delimit cr 
+delimiter now cr
+. 
+. encode parent_edu, generate(parent_edu_temp) label(parent_edu)
+
+. label var parent_edu_temp "`: var lab parent_edu'"
+
+. drop parent_edu
+
+. rename parent_edu_temp parent_edu
+
+. 
+. ****** clean the open ended college questions at the end
+. foreach v in college_whynot college_excited college_challenge {
+  2.     // convert to upper case 
+.     replace `v' = strupper(`v')
+  3.     // collapse internal blanks to one space, and remove leading and trailing blanks
+.     replace `v' = stritrim(`v')
+  4.     replace `v' = strtrim(`v')
+  5. }
+(308 real changes made)
+(3 real changes made)
+(116 real changes made)
+(6,081 real changes made)
+(116 real changes made)
+(2,220 real changes made)
+(6,173 real changes made)
+(60 real changes made)
+(2,238 real changes made)
+
+. 
+. 
+. label data "Fully cleaned CSAC 2023 HS senior survey data"
+
+. compress 
+  variable senior was long now byte
+  variable hear_import_aid was long now byte
+  variable hs_req_fafsa was long now byte
+  variable fafsa_support was long now int
+  variable college_fall was long now byte
+  variable where_college was long now byte
+  variable college_contact was long now byte
+  variable college_contact_item was long now byte
+  variable fall_plan was long now byte
+  variable inf_no_college was long now byte
+  variable plan_summer_class was long now byte
+  variable likely_summer_class was long now byte
+  variable major was long now byte
+  variable pay_plan was long now int
+  variable loan_borrow_amount was long now byte
+  variable highest_degree was long now byte
+  variable worry_tuition was long now byte
+  variable worry_living was long now byte
+  variable worry_academic was long now byte
+  variable worry_work was long now byte
+  variable worry_family was long now byte
+  variable worry_community was long now byte
+  variable worry_away was long now byte
+  variable worry_support was long now byte
+  variable worry_race was long now byte
+  variable worry_gender was long now byte
+  variable worry_so was long now byte
+  variable worry_religion was long now byte
+  variable prop_online_class was long now byte
+  variable ccc_ft_yn was long now byte
+  variable hs_academic was long now byte
+  variable hs_social was long now byte
+  variable hs_community_belong was long now byte
+  variable hs_teacher_care was long now byte
+  variable hs_good_advising was long now byte
+  variable hs_prepared_college was long now byte
+  variable times_bullied was long now byte
+  variable reasons_bullied was long now byte
+  variable hs_type was long now byte
+  variable race was long now byte
+  variable primary_english was long now byte
+  variable has_job was long now byte
+  variable hours_job was long now byte
+  variable gender_cis was float now byte
+  variable gender_trans_gnc was float now byte
+  variable gender_trans_binary was float now byte
+  variable gender_woman was float now byte
+  variable gender_man was float now byte
+  variable so_straight was float now byte
+  variable so_queer_narrow was float now byte
+  variable so_queer_broad was float now byte
+  variable parent_edu was long now byte
+  variable finished was str23 now str4
+  variable device_browser was str42 now str14
+  variable device_version was str42 now str15
+  variable device_os was str51 now str24
+  variable device_res was str45 now str9
+  variable asab was str72 now str6
+  variable gender_raw was str55 now str17
+  variable so_raw was str50 now str29
+  variable so_other_raw was str84 now str82
+  variable summer_nudge was str27 now str1
+  variable ccc_ft_nudge was str27 now str1
+  variable gender_other_clean was str183 now str18
+  variable so_other_clean was str82 now str18
+  variable so_clean was str29 now str18
+  hear_import_aid_other is strL now coalesced
+  gender_other_raw is strL now coalesced
+  variable followup was strL now str3
+  college_whynot is strL now coalesced
+  college_excited is strL now coalesced
+  college_challenge is strL now coalesced
+  (6,997,249 bytes saved)
+
+. 
+. save $csacclndatadir/csac_hs_senior_2023_clean, replace 
+file /home/research/ca_ed_lab/data/restricted_access/clean/csac_survey/2023/csac_hs_senior_2023_clean.dta
+    is read-only; cannot be modified or erased
+r(608);
+
+end of do-file
+
+r(608);
+
+. exit, clear
