@@ -33,7 +33,7 @@ net install "http://researchbtn.com/stata/110/wordcloud.pkg" */
 use $csacclndatadir/csac_hs_senior_2023_clean, clear 
 
 
-
+/* 
 // create a var that generates clean tags for the free text response for gender
 gen gender_other_tag = gender_other_raw
 replace gender_other_tag = "NONSERIOUS" if gender_other_clean=="CISGENDER/OTHER"
@@ -49,7 +49,7 @@ replace gender_other_tag = "NONSERIOUS" if strpos(gender_other_raw, "DON'T BELIE
 replace gender_other_tag = "GENDERFLUID"
     if strpos(gender_other_raw, "GENDERFLUID")!=0
     | strpos(gender_other_raw, "GENDER FLUID")!=0
-    ;
+    ; */
 // consolidate unsure ;
 /* replace gender_other_tag = "UNSURE/QUESTIONING"
     if strpos(gender_other_raw, "UNSURE")!=0
@@ -63,7 +63,7 @@ replace gender_other_tag = "GENDERFLUID"
 #delimit cr
 
 
-gen gender_tag = gender_raw 
+/* gen gender_tag = gender_raw 
 replace gender_tag = gender_other_tag if gender_raw=="OTHER"
 // replace nonserious responses with assigned gender at birth
 replace gender_tag = agab if gender_other_tag=="NONSERIOUS"
@@ -83,7 +83,7 @@ tab gender_raw_combined
 // combined sexuality var 
 gen so_raw_combined = so_raw
 replace so_raw_combined = so_other_raw if so_raw =="OTHER (FEEL FREE TO SPECIFY)"
-replace so_raw_combined = "QUEER" if so_raw_combined=="QUEE5"
+replace so_raw_combined = "QUEER" if so_raw_combined=="QUEE5" */
 
 // convert to lower case and get rid of special characters
 txttool gender_other_raw, replace subwords("$csacprojdir/do/learn/subwords.txt")
@@ -94,9 +94,11 @@ txttool so_other_raw, replace subwords("$csacprojdir/do/learn/subwords.txt")
 /* do $csacprojdir/do/learn/wordcloud.ado  */
 local wordvar1 "gender_other_raw" 
 local pathvar1 "$csacprojdir/fig/learn/genderwordcloud.png"
+local freqpath1 "$csacprojdir/fig/learn/gi_freq.xlsx"
 
 local wordvar2 "so_other_raw"
 local pathvar2 "$csacprojdir/fig/learn/sowordcloud.png"
+local freqpath2 "$csacprojdir/fig/learn/so_freq.xlsx"
 
 
 /* python script $csacprojdir/do/learn/test.py, args(`wordvar1' `pathvar1') */
@@ -107,7 +109,8 @@ drop if gender_raw_combined=="man" | gender_raw_combined=="woman" | gender_raw_c
 tab gender_raw_combined */
 tab gender_other_raw
 
-python script $csacprojdir/do/learn/wordcloud.py, args(`wordvar1' `pathvar1')
+/* set python_userpath "/home/users/chesun1.AD3/conda/lib/python3.11/site-packages" */
+python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar1' `pathvar1' `freqpath1')
 
 /* restore, preserve 
 
@@ -116,7 +119,7 @@ tab so_raw_combined */
 
 tab so_other_raw
 
-python script $csacprojdir/do/learn/wordcloud.py, args(`wordvar2' `pathvar2')
+python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar2' `pathvar2' `freqpath2')
 
 
 local date2 = c(current_date)

@@ -9,6 +9,8 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+from openpyxl import Workbook
+import xlsxwriter
 
 #url = "https://www.stata.com/new-in-stata/python-integration/"    
 #html = requests.get(url)  
@@ -20,6 +22,7 @@ from sfi import Macro
 
 wordvar = sys.argv[1]
 filevar = sys.argv[2]
+freq_path = sys.argv[3]
 
 # this is a list in python 
 rawtext = Data.get(wordvar)
@@ -41,7 +44,7 @@ stop_words = ["IM", "PRETTY", "HIMALPHA", "NO'", "FINANCIAL", "AID", "COLLEGE", 
 
 
 
-wordcloud = WordCloud(width=1000, height=800, min_font_size=15, stopwords=stop_words, random_state=1, collocations=True, collocation_threshold=5,scale=10, background_color="white").generate(text)
+wordcloud = WordCloud(width=1000, height=800, min_font_size=15, stopwords=stop_words, random_state=1, collocations=True, collocation_threshold=10, scale=15, background_color="white").generate(text)
 
 # create a dictionary of word frequencies
 text_dictionary = wordcloud.process_text(text)
@@ -51,9 +54,19 @@ word_freq={k: v for k, v in sorted(text_dictionary.items(),reverse=True, key=lam
 #use words_ to print relative word frequencies
 rel_freq=wordcloud.words_
 
+# convert sets to lists
+word_freq_list = list(word_freq.items())
+rel_freq_list = list(rel_freq.items())
+
 #print results
-print(list(word_freq.items())[:30])
-print(list(rel_freq.items())[:30])
+print(word_freq_list)
+print(rel_freq_list)
+
+# convert lists to pandas data frames
+word_freq_df = pd.DataFrame(word_freq_list, columns=["Word", "Frequency"])
+
+# output dataframes to excel
+word_freq_df.to_excel(freq_path, index=False)
 
 
 from sfi import Platform
