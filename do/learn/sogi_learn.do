@@ -109,7 +109,9 @@ drop if gender_raw_combined=="man" | gender_raw_combined=="woman" | gender_raw_c
 tab gender_raw_combined */
 tab gender_other_raw
 
-/* set python_userpath "/home/users/chesun1.AD3/conda/lib/python3.11/site-packages" */
+/* 
+set python_userpath "/home/users/chesun1.AD3/conda/lib/python3.11/site-packages" 
+*/
 python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar1' `pathvar1' `freqpath1')
 
 /* restore, preserve 
