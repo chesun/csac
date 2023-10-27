@@ -11,6 +11,8 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from openpyxl import Workbook
 import xlsxwriter
+from sklearn.feature_extraction.text import CountVectorizer
+
 
 #url = "https://www.stata.com/new-in-stata/python-integration/"    
 #html = requests.get(url)  
@@ -23,6 +25,7 @@ from sfi import Macro
 wordvar = sys.argv[1]
 filevar = sys.argv[2]
 freq_path = sys.argv[3]
+ngram_path = sys.argv[4]
 
 # this is a list in python 
 rawtext = Data.get(wordvar)
@@ -44,7 +47,7 @@ stop_words = ["IM", "PRETTY", "HIMALPHA", "NO'", "FINANCIAL", "AID", "COLLEGE", 
 
 
 
-wordcloud = WordCloud(width=1000, height=800, min_font_size=15, stopwords=stop_words, random_state=1, collocations=True, collocation_threshold=10, scale=15, background_color="white").generate(text)
+wordcloud = WordCloud(width=1000, height=800, min_font_size=15, stopwords='english', random_state=1, collocations=True, collocation_threshold=10, scale=15, background_color="white").generate(text)
 
 # create a dictionary of word frequencies
 text_dictionary = wordcloud.process_text(text)
@@ -59,8 +62,8 @@ word_freq_list = list(word_freq.items())
 rel_freq_list = list(rel_freq.items())
 
 #print results
-print(word_freq_list)
-print(rel_freq_list)
+# print(word_freq_list)
+# print(rel_freq_list)
 
 # convert lists to pandas data frames
 word_freq_df = pd.DataFrame(word_freq_list, columns=["Word", "Frequency"])
@@ -68,6 +71,31 @@ word_freq_df = pd.DataFrame(word_freq_list, columns=["Word", "Frequency"])
 # output dataframes to excel
 word_freq_df.to_excel(freq_path, index=False)
 
+
+# Use count vectorizer to extract n-grams
+def get_n_grams(corpus, n):
+    vec = CountVectorizer(ngram_range=(n,n), stop_words=stop_words)
+    bag_of_words = vec.fit_transform(corpus)
+    counts_list = bag_of_words.toarray().sum(axis=0) 
+    words_list = vec.get_feature_names()
+    #print(vec.vocabulary_.items())
+    words_freq = dict(zip(words_list, counts_list))
+    # freq =sorted(words_freq, key = lambda x: x[1], reverse=True)
+    return words_freq
+
+ngram_freq_dict= dict()
+
+# append all n-gram dictionaries
+for n in range(1, 5):
+    ngram_freq_dict.update(get_n_grams(rawtext, n))
+print(ngram_freq_dict)
+
+# convert dictionary into list 
+ngram_freq_list = [(k,v) for k,v in sorted(ngram_freq_dict.items(), reverse=True, key=lambda item: item[1])]
+
+df1 = pd.DataFrame(ngram_freq_list, columns = ['narrative' , 'count'])
+# output to excel 
+df1.to_excel(ngram_path, index=False)
 
 from sfi import Platform
 import matplotlib

@@ -95,10 +95,14 @@ txttool so_other_raw, replace subwords("$csacprojdir/do/learn/subwords.txt")
 local wordvar1 "gender_other_raw" 
 local pathvar1 "$csacprojdir/fig/learn/genderwordcloud.png"
 local freqpath1 "$csacprojdir/fig/learn/gi_freq.xlsx"
+local ngram_path1 "$csacprojdir/fig/learn/gi_ngram_freq.xlsx"
 
 local wordvar2 "so_other_raw"
 local pathvar2 "$csacprojdir/fig/learn/sowordcloud.png"
 local freqpath2 "$csacprojdir/fig/learn/so_freq.xlsx"
+local ngram_path2 "$csacprojdir/fig/learn/so_ngram_freq.xlsx"
+
+
 
 
 /* python script $csacprojdir/do/learn/test.py, args(`wordvar1' `pathvar1') */
@@ -112,7 +116,7 @@ tab gender_other_raw
 /* 
 set python_userpath "/home/users/chesun1.AD3/conda/lib/python3.11/site-packages" 
 */
-python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar1' `pathvar1' `freqpath1')
+python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar1' `pathvar1' `freqpath1' `ngram_path1')
 
 /* restore, preserve 
 
@@ -121,7 +125,7 @@ tab so_raw_combined */
 
 tab so_other_raw
 
-python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar2' `pathvar2' `freqpath2')
+python script $csacprojdir/do/learn/gen_wordcloud.py, args(`wordvar2' `pathvar2' `freqpath2' `ngram_path2')
 
 
 local date2 = c(current_date)
