@@ -1,0 +1,40 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/crosswalk_gender_minority.txt
+  log type:  text
+ opened on:   3 Dec 2023, 17:55:21
+
+. 
+. ********************************* Main *****************************************
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. /* Crosswalk with survey id & gender groups */
+. 
+. * Also keep raw gender & free response (if other)
+. * (maybe helpful to keep gender expression text & compare to experience expression text)
+. keep id gender_brief gender_other_raw gender_raw
+
+. 
+. * Keep binary trans and other gender variants
+. keep if inlist(gender_brief, 2, 3)
+(9,803 observations deleted)
+
+. 
+. 
+. * save crosswalk into dta folder
+. save "$csacprojdir/dta/cln/crosswalk_gender_minority.dta" , replace
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/crosswalk_gender_minority.dta saved
+
+. 
+. ********************************* End Main ************************************
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/crosswalk_gender_minority.txt
+  log type:  text
+ closed on:   3 Dec 2023, 17:55:21
+-----------------------------------------------------------------------------------------------------------------------------------------------------------

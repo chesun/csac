@@ -1,0 +1,574 @@
+{\rtf1\ansi\deff0 {\fonttbl{\f0\fnil Garamond;}}
+{\info {\author .}{\company .}{\title .}}
+\deflang1033\plain\fs20
+{\footer\pard\qc\plain\f0\fs20\chpgn\par}
+{
+{
+{\b\qc\line Summary Statistics }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {gender categories}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {cis man}\cell
+\qr {2675}\cell
+\qr {35.56}\cell
+\row
+\ql {cis woman}\cell
+\qr {4289}\cell
+\qr {57.02}\cell
+\row
+\ql {trans man}\cell
+\qr {59}\cell
+\qr {0.78}\cell
+\row
+\ql {trans woman}\cell
+\qr {20}\cell
+\qr {0.27}\cell
+\row
+\ql {nonbinary}\cell
+\qr {267}\cell
+\qr {3.55}\cell
+\row
+\ql {gender diverse/questioning}\cell
+\qr {71}\cell
+\qr {0.94}\cell
+\row
+\ql {prefer not to say}\cell
+\qr {141}\cell
+\qr {1.87}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {7522}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{
+{\b\qc\line Tabulation of so_cat  }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {sexual orientation categories}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {straight/heterosexual}\cell
+\qr {5190}\cell
+\qr {69.38}\cell
+\row
+\ql {gay or lesbian}\cell
+\qr {330}\cell
+\qr {4.41}\cell
+\row
+\ql {bisexual/pansexual/omnisexual}\cell
+\qr {1139}\cell
+\qr {15.23}\cell
+\row
+\ql {asexual/aromantic/demisexual}\cell
+\qr {182}\cell
+\qr {2.43}\cell
+\row
+\ql {other/queer/questioning}\cell
+\qr {131}\cell
+\qr {1.75}\cell
+\row
+\ql {prefer not to say}\cell
+\qr {509}\cell
+\qr {6.80}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {7481}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race_assn  }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {race/ethnicity with  assigned to single race following URM hierachy}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {American Indian/Alaskan Native}\cell
+\qr {163}\cell
+\qr {2.14}\cell
+\row
+\ql {Black/African American}\cell
+\qr {532}\cell
+\qr {6.99}\cell
+\row
+\ql {Hispanic/Latinx}\cell
+\qr {3793}\cell
+\qr {49.82}\cell
+\row
+\ql {Pacific Islander}\cell
+\qr {64}\cell
+\qr {0.84}\cell
+\row
+\ql {Filipino}\cell
+\qr {235}\cell
+\qr {3.09}\cell
+\row
+\ql {Asian}\cell
+\qr {1146}\cell
+\qr {15.05}\cell
+\row
+\ql {Other}\cell
+\qr {182}\cell
+\qr {2.39}\cell
+\row
+\ql {White/Non-Hispanic}\cell
+\qr {1498}\cell
+\qr {19.68}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {7613}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{
+{\b\qc\line Tabulation of parent_edu  }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {highest level of education among parents}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {Did not complete high school}\cell
+\qr {1373}\cell
+\qr {18.11}\cell
+\row
+\ql {High school diploma}\cell
+\qr {1578}\cell
+\qr {20.81}\cell
+\row
+\ql {Some college, no college degree}\cell
+\qr {975}\cell
+\qr {12.86}\cell
+\row
+\ql {Associate degree}\cell
+\qr {452}\cell
+\qr {5.96}\cell
+\row
+\ql {Bachelor's degree}\cell
+\qr {1363}\cell
+\qr {17.97}\cell
+\row
+\ql {Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)}\cell
+\qr {1455}\cell
+\qr {19.19}\cell
+\row
+\ql {Don't know}\cell
+\qr {387}\cell
+\qr {5.10}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {7583}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{\b\qc\line Tabulation of gender_cat so_cat  }{\par}
+{\trowd\trgaph108\trleft-108
+\clvmgf \clvertalb \clbrdrr\brdrw10\brdrs \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx3000
+\fs20\pard\intbl\ql {gender categories}\cell
+\clmgf \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx4000
+\fs20\pard\intbl\qc {sexual orientation categories}\cell
+\clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx5000
+\fs20\pard\intbl\qr {}\cell
+\clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx6000
+\fs20\pard\intbl\qr {}\cell
+\clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx7000
+\fs20\pard\intbl\qr {}\cell
+\clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx8000
+\fs20\pard\intbl\qr {}\cell
+\clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx9000
+\fs20\pard\intbl\qr {}\cell
+\clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx10000
+\fs20\pard\intbl\qr {}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clvmrg  \clvertalb \clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {}\cell
+\cellx4000
+\fs20\pard\intbl\qr {straight/heterosexual}\cell
+\cellx5000
+\fs20\pard\intbl\qr {gay or lesbian}\cell
+\cellx6000
+\fs20\pard\intbl\qr {bisexual/pansexual/omnisexual}\cell
+\cellx7000
+\fs20\pard\intbl\qr {asexual/aromantic/demisexual}\cell
+\cellx8000
+\fs20\pard\intbl\qr {other/queer/questioning}\cell
+\cellx9000
+\fs20\pard\intbl\qr {prefer not to say}\cell
+\cellx10000
+\fs20\pard\intbl\qr {Total}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \clbrdrt\brdrw25\brdrs\cellx3000
+\fs20\pard\intbl\ql {cis man}\cell
+\clbrdrt\brdrw25\brdrs\cellx4000
+\fs20\pard\intbl\qr {85.03}\cell
+\clbrdrt\brdrw25\brdrs\cellx5000
+\fs20\pard\intbl\qr {4.03}\cell
+\clbrdrt\brdrw25\brdrs\cellx6000
+\fs20\pard\intbl\qr {5.09}\cell
+\clbrdrt\brdrw25\brdrs\cellx7000
+\fs20\pard\intbl\qr {0.75}\cell
+\clbrdrt\brdrw25\brdrs\cellx8000
+\fs20\pard\intbl\qr {0.57}\cell
+\clbrdrt\brdrw25\brdrs\cellx9000
+\fs20\pard\intbl\qr {4.52}\cell
+\clbrdrt\brdrw25\brdrs\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {cis woman}\cell
+\cellx4000
+\fs20\pard\intbl\qr {68.05}\cell
+\cellx5000
+\fs20\pard\intbl\qr {3.03}\cell
+\cellx6000
+\fs20\pard\intbl\qr {17.85}\cell
+\cellx7000
+\fs20\pard\intbl\qr {2.25}\cell
+\cellx8000
+\fs20\pard\intbl\qr {1.50}\cell
+\cellx9000
+\fs20\pard\intbl\qr {7.32}\cell
+\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {trans man}\cell
+\cellx4000
+\fs20\pard\intbl\qr {6.90}\cell
+\cellx5000
+\fs20\pard\intbl\qr {32.76}\cell
+\cellx6000
+\fs20\pard\intbl\qr {32.76}\cell
+\cellx7000
+\fs20\pard\intbl\qr {6.90}\cell
+\cellx8000
+\fs20\pard\intbl\qr {12.07}\cell
+\cellx9000
+\fs20\pard\intbl\qr {8.62}\cell
+\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {trans woman}\cell
+\cellx4000
+\fs20\pard\intbl\qr {20.00}\cell
+\cellx5000
+\fs20\pard\intbl\qr {40.00}\cell
+\cellx6000
+\fs20\pard\intbl\qr {25.00}\cell
+\cellx7000
+\fs20\pard\intbl\qr {10.00}\cell
+\cellx8000
+\fs20\pard\intbl\qr {0.00}\cell
+\cellx9000
+\fs20\pard\intbl\qr {5.00}\cell
+\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {nonbinary}\cell
+\cellx4000
+\fs20\pard\intbl\qr {1.92}\cell
+\cellx5000
+\fs20\pard\intbl\qr {18.77}\cell
+\cellx6000
+\fs20\pard\intbl\qr {50.19}\cell
+\cellx7000
+\fs20\pard\intbl\qr {13.41}\cell
+\cellx8000
+\fs20\pard\intbl\qr {9.58}\cell
+\cellx9000
+\fs20\pard\intbl\qr {6.13}\cell
+\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {gender diverse/questioning}\cell
+\cellx4000
+\fs20\pard\intbl\qr {2.90}\cell
+\cellx5000
+\fs20\pard\intbl\qr {13.04}\cell
+\cellx6000
+\fs20\pard\intbl\qr {50.72}\cell
+\cellx7000
+\fs20\pard\intbl\qr {14.49}\cell
+\cellx8000
+\fs20\pard\intbl\qr {18.84}\cell
+\cellx9000
+\fs20\pard\intbl\qr {0.00}\cell
+\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \cellx3000
+\fs20\pard\intbl\ql {prefer not to say}\cell
+\cellx4000
+\fs20\pard\intbl\qr {7.91}\cell
+\cellx5000
+\fs20\pard\intbl\qr {6.47}\cell
+\cellx6000
+\fs20\pard\intbl\qr {33.09}\cell
+\cellx7000
+\fs20\pard\intbl\qr {10.07}\cell
+\cellx8000
+\fs20\pard\intbl\qr {4.32}\cell
+\cellx9000
+\fs20\pard\intbl\qr {38.13}\cell
+\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrr\brdrw10\brdrs \clbrdrt\brdrw10\brdrs\cellx3000
+\fs20\pard\intbl\ql {Total}\cell
+\clbrdrt\brdrw10\brdrs\cellx4000
+\fs20\pard\intbl\qr {69.45}\cell
+\clbrdrt\brdrw10\brdrs\cellx5000
+\fs20\pard\intbl\qr {4.42}\cell
+\clbrdrt\brdrw10\brdrs\cellx6000
+\fs20\pard\intbl\qr {15.17}\cell
+\clbrdrt\brdrw10\brdrs\cellx7000
+\fs20\pard\intbl\qr {2.43}\cell
+\clbrdrt\brdrw10\brdrs\cellx8000
+\fs20\pard\intbl\qr {1.74}\cell
+\clbrdrt\brdrw10\brdrs\cellx9000
+\fs20\pard\intbl\qr {6.79}\cell
+\clbrdrt\brdrw10\brdrs\cellx10000
+\fs20\pard\intbl\qr {100.00}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw25\brdrs\cellx10000
+\fs20\pard\intbl\ql {}\cell
+\row}
+
+{\fs20\b\qc\line College Worries Items and Constructs }{\par}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx8690
+\fs20\pard\intbl\qr { }\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx9695
+\fs20\pard\intbl\qr {{ N}}\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx10700
+\fs20\pard\intbl\qr {{ Mean}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about affording tuition fees}}\cell
+\cellx9695
+\qr {{7957}}\cell
+\cellx10700
+\qr {{1.827}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about living expenses}}\cell
+\cellx9695
+\qr {{7956}}\cell
+\cellx10700
+\qr {{1.676}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about performing well academically}}\cell
+\cellx9695
+\qr {{7958}}\cell
+\cellx10700
+\qr {{1.502}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about balancing work obligations}}\cell
+\cellx9695
+\qr {{7943}}\cell
+\cellx10700
+\qr {{1.557}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about balancing family obligations}}\cell
+\cellx9695
+\qr {{7941}}\cell
+\cellx10700
+\qr {{1.055}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about finding community}}\cell
+\cellx9695
+\qr {{7934}}\cell
+\cellx10700
+\qr {{1.316}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried are you about living away from home}}\cell
+\cellx9695
+\qr {{7948}}\cell
+\cellx10700
+\qr {{.908}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried about having adequate support for emotional and mental health needs}}\cell
+\cellx9695
+\qr {{7944}}\cell
+\cellx10700
+\qr {{1.127}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried about discrimination based on gender}}\cell
+\cellx9695
+\qr {{7886}}\cell
+\cellx10700
+\qr {{.436}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried about discrimination based on sexual orientation}}\cell
+\cellx9695
+\qr {{7876}}\cell
+\cellx10700
+\qr {{.333}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried about discrimination based on race}}\cell
+\cellx9695
+\qr {{7895}}\cell
+\cellx10700
+\qr {{.514}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ how worried about discrimination based on religion}}\cell
+\cellx9695
+\qr {{7891}}\cell
+\cellx10700
+\qr {{.232}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ general worries}}\cell
+\cellx9695
+\qr {{7706}}\cell
+\cellx10700
+\qr {{3.776}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx8690
+\fs20\pard\intbl\ql {{ worries about discrimination}}\cell
+\cellx9695
+\qr {{7706}}\cell
+\cellx10700
+\qr {{-1.219}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrb\brdrw15\brdrs\cellx8690
+\fs20\pard\intbl\ql {{ worries about financial burdens}}\cell
+\clbrdrb\brdrw15\brdrs\cellx9695
+\qr {{7706}}\cell
+\clbrdrb\brdrw15\brdrs\cellx10700
+\qr {{.634}}\cell
+\row}
+
+{\fs20\b\qc\line High School Experience Items and Construct }{\par}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx5280
+\fs20\pard\intbl\qr { }\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx6500
+\fs20\pard\intbl\qr {{ N}}\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx7720
+\fs20\pard\intbl\qr {{ Mean}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx5280
+\fs20\pard\intbl\ql {{ how do you rate HS academic experience}}\cell
+\cellx6500
+\qr {{7847}}\cell
+\cellx7720
+\qr {{.65}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx5280
+\fs20\pard\intbl\ql {{ how do you rate your HS social experience}}\cell
+\cellx6500
+\qr {{7825}}\cell
+\cellx7720
+\qr {{.115}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx5280
+\fs20\pard\intbl\ql {{ I belong in my high school community}}\cell
+\cellx6500
+\qr {{7711}}\cell
+\cellx7720
+\qr {{.573}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx5280
+\fs20\pard\intbl\ql {{ teachers and staff at my HS care about my future}}\cell
+\cellx6500
+\qr {{7711}}\cell
+\cellx7720
+\qr {{1.098}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx5280
+\fs20\pard\intbl\ql {{ I received good advising from HS about college}}\cell
+\cellx6500
+\qr {{7713}}\cell
+\cellx7720
+\qr {{.728}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx5280
+\fs20\pard\intbl\ql {{ I feel prepared for college}}\cell
+\cellx6500
+\qr {{7709}}\cell
+\cellx7720
+\qr {{.66}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrb\brdrw15\brdrs\cellx5280
+\fs20\pard\intbl\ql {{ general HS experience}}\cell
+\clbrdrb\brdrw15\brdrs\cellx6500
+\qr {{7687}}\cell
+\clbrdrb\brdrw15\brdrs\cellx7720
+\qr {{3.829}}\cell
+\row}
+
+
+\writepositionforappend
+}}

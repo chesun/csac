@@ -5,8 +5,6 @@
 
 /* Change Log:
 [CS] 07/19/2023: deleted code that drops incomplete responses. Only delete obs with missing email
-[BZ] 07/24/2023: added toggles to increase multi-user compatibility.
-		 validated and fix errors on generated gender/so vars
 [BZ] 07/28/2023: assign gender to "PREFER NOT TO SAY" if only report gender or asab.
 		 moved gender and sexual orientation generating process to prep_brief.do
 */
@@ -27,22 +25,10 @@ thus do not need to be imported. First row is variable names.
 *----------*
 * Toggle
 *----------*
-local standalone 0
 
-* User specific log file: Specify global owner in do_all.do 
-
-if $user_cs == 1{
 cap log close _all
-log using $csacprojdir/log/clean/clean_qualtrics_export.smcl, replace
-}
+log using "$csacprojdir/log/clean/clean_qualtrics_export_bz.txt", text replace
 
-
-if $user_bz == 1{
-cap log close _all
-log using $csacprojdir/log/clean/clean_qualtrics_export_bz.txt, text replace
-}
-
-if `standalone' == 1{
 	
 graph drop _all
 set more off
@@ -54,10 +40,9 @@ set seed 1984
 local date1 = c(current_date)
 local time1 = c(current_time)
 
-}
 
 // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not data)
-import delimited $csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv, varnames(1) rowrange(4:) clear
+import delimited "$csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv", varnames(1) rowrange(4:) clear
 
 // drop unused variables
 drop status recipientfirstname recipientlastname recipientemail externalreference distributionchannel userlanguage
@@ -89,11 +74,11 @@ foreach v in email email_fall {
 
 
 	
-
-// preserve dataset
+/*
+// preserve dataset: Only Christina has the access to raw data category. Baiyu commented it out.
 preserve
 
-if $user_cs == 1{ 
+
 keep id ipaddress latitude longitude email email_fall
 
 label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
@@ -101,11 +86,14 @@ label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
 compress
 save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
 
-}
+restore
+
+*/
+
 //---------------------------------------------------------------------------
 // clean the anonymized dataset
 //---------------------------------------------------------------------------
-restore
+
 
 
 // drop personally identifiable information 
@@ -1180,9 +1168,3 @@ log close
 
 
 
-
-if $user_cs == 1{
-
-translate $csacprojdir/log/clean/clean_qualtrics_export.smcl ///
-    $csacprojdir/log/clean/clean_qualtrics_export.txt, replace
-}

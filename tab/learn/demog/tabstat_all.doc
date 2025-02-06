@@ -1,0 +1,140 @@
+{\rtf1\ansi\deff0 {\fonttbl{\f0\fnil Garamond;}}
+{\info {\author .}{\company .}{\title .}}
+\deflang1033\plain\fs20
+{\footer\pard\qc\plain\f0\fs20\chpgn\par}
+{
+{\fs20\b\qc\line Summary statistics }{\par}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx1320
+\fs20\pard\intbl\qr { }\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx2540
+\fs20\pard\intbl\qr {{ Mean}}\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx3760
+\fs20\pard\intbl\qr {{ Sum}}\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx4980
+\fs20\pard\intbl\qr {{ N}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race missing}}\cell
+\cellx2540
+\qr {{.214}}\cell
+\cellx3760
+\qr {{2191}}\cell
+\cellx4980
+\qr {{10221.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race n1}}\cell
+\cellx2540
+\qr {{.835}}\cell
+\cellx3760
+\qr {{6704}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race n2}}\cell
+\cellx2540
+\qr {{.137}}\cell
+\cellx3760
+\qr {{1099}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race n3plus}}\cell
+\cellx2540
+\qr {{.028}}\cell
+\cellx3760
+\qr {{227}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race black}}\cell
+\cellx2540
+\qr {{.074}}\cell
+\cellx3760
+\qr {{595}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race native}}\cell
+\cellx2540
+\qr {{.022}}\cell
+\cellx3760
+\qr {{180}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race asian}}\cell
+\cellx2540
+\qr {{.173}}\cell
+\cellx3760
+\qr {{1391}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race flip}}\cell
+\cellx2540
+\qr {{.042}}\cell
+\cellx3760
+\qr {{336}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race hisp}}\cell
+\cellx2540
+\qr {{.533}}\cell
+\cellx3760
+\qr {{4279}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race pi}}\cell
+\cellx2540
+\qr {{.013}}\cell
+\cellx3760
+\qr {{101}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1320
+\fs20\pard\intbl\ql {{ race white}}\cell
+\cellx2540
+\qr {{.307}}\cell
+\cellx3760
+\qr {{2462}}\cell
+\cellx4980
+\qr {{8030.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrb\brdrw15\brdrs\cellx1320
+\fs20\pard\intbl\ql {{ race other}}\cell
+\clbrdrb\brdrw15\brdrs\cellx2540
+\qr {{.036}}\cell
+\clbrdrb\brdrw15\brdrs\cellx3760
+\qr {{288}}\cell
+\clbrdrb\brdrw15\brdrs\cellx4980
+\qr {{8030.000}}\cell
+\row}
+
+
+\writepositionforappend
+}}

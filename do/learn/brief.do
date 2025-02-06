@@ -6,6 +6,7 @@ WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
 DATE CREATED: Sep 12, 2023
 
 * NOTE: require install esttab packages
+* do "/home/research/ca_ed_lab/projects/csac_survey2023/do/learn/brief.do"
 *******************************************************************************/
 
 
@@ -55,7 +56,7 @@ use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
 /* Global macros for crosstab variables */
 
 * crosstab subgroups: race, gender, parental education
-global xtab race_brief gender_brief_main parent_edu_brief
+global xtab race_brief gender_brief_main parent_edu
 
 
 /* Outcomes */
@@ -67,9 +68,37 @@ global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_a
 global plans college_fall where_college major highest_degree prop_online_class
 
 * non-fa college worries
-global nfaworries worry_academic worry_family worry_community worry_away worry_support worry_race worry_gender worry_religion //  worry_so 
+global nfaworries worry_academic worry_family worry_community worry_away worry_support //  worry_so 
+
+* fa college worries
+global faworries worry_tuition worry_living 
 
 
+*--------------------------------------*
+* Reasons for Bullying and Harassment  *
+*--------------------------------------*
+
+* Column: Each Reason of Being Bullied
+* Row: Each subsample
+* Cell: Fraction of respondents selected reason `X'
+
+
+/* Note: */
+* Use reg on a constant computationally
+* It estimate the mean = share as dep vars are dummies
+* For now formatted log file. Think of ways to put into exportable format later.
+
+/* Reason: race OR gender */
+gen reasons_race_or_gen = 0
+replace reasons_race_or_gen = 1 if reasons_bullied_igender == 1
+replace reasons_race_or_gen = 1 if reasons_bullied_irace == 1
+replace reasons_race_or_gen = . if reasons_bullied == .
+
+/* Count ever bullied */
+gen ever_bullied = .
+replace ever_bullied = 1 if inrange(times_bullied, 1, 3)
+replace ever_bullied = 0 if times_bullied == 0
+tab ever_bullied
 
 *==========================================*
 * Gen: Crosstab Variables for Main Brief
@@ -137,21 +166,31 @@ foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_en
 * Share: Aggregated Tables
 *=========================*
 
-*--------------------------------------*
-* Reasons for Bullying and Harassment  *
-*--------------------------------------*
+/* Table 1 */
+tab race_brief, mi
+tab gender_brief_main, mi
+tab parent_edu, mi
 
-* Column: Each Reason of Being Bullied
-* Row: Each subsample
-* Cell: Fraction of respondents selected reason `X'
+/* Figure 1: HS academic*/
+tab hs_academic
+foreach var in $xtab{
+ tab `var'  hs_academic , nofreq row
+}
+
+/* Figure 2: HS social*/
+tab hs_social
+foreach var in $xtab{
+ tab `var' hs_social , nofreq row
+}
+
+/* Figure 3: Bullied*/
+tab times_bullied
+foreach var in $xtab{
+ tab `var' times_bullied , nofreq row
+}
 
 
-/* Note: */
-* Use reg on a constant computationally
-* It estimate the mean = share as dep vars are dummies
-* For now formatted log file. Think of ways to put into exportable format later.
-
-
+/* Table 2: Bullied Reason */
 * All:
 eststo clear 
 di "All"
@@ -178,55 +217,59 @@ foreach cat in gender_brief_main race_brief{ // foreach crosstab variable
 }
 
 
-*----------*
-* Segment  *
-*----------*
-
-* Column: Subsample
-* Row: 	  Segment
-* Cell: Column Percent, All up to 100 within each sub sample
-*	Interpretate as fraction of respondents from a subsample indicating planning to go such segment
-
-foreach cat in $xtab{
-	tab where_college `cat', col mi // with freq
-	tab where_college `cat', col mi nofreq // no frequency
+/* Figure 4: hs_teacher_care */
+tab hs_teacher_care
+foreach var in $xtab{
+ tab `var' hs_teacher_care, nofreq row
 }
 
-*--------*
-* Major  *
-*--------*
+/* Figure 5: hs_good_advising */
+tab hs_good_advising
+foreach var in $xtab{
+ tab `var' hs_good_advising, nofreq row
+}
 
-* Column: Subsample
-* Row: 	  Major
-* Cell: Column Percent, All up to 100 within each sub sample
-*	Interpretate as fraction of respondents from a subsample indicating planning to go such segment
+/* Figure 6: hs_prepared_college */
+tab hs_prepared_college
+foreach var in $xtab{
+ tab `var' hs_prepared_college, nofreq row
+}
 
-
-foreach cat in $xtab{
-	tab major `cat', col mi // with freq
-	tab major `cat', col mi nofreq // no frequency
+/* Figure 7: where_college */
+tab where_college
+foreach var in $xtab{
+ tab `var' where_college, nofreq row
 }
 
 
+/* Table 3: Major*/
+tab major
+foreach var in $xtab{
+ tab `var'  major , nofreq row
+}
 
-*------------------*
-* College Worries  *
-*------------------*
+/* Figure 8: prop_online_class */
+tab prop_online_class
+foreach var in $xtab{
+ tab `var' prop_online_class, nofreq row
+}
 
+/* Figure 9: worries */
+foreach y in $nfaworries {
+	tab `y'
+}
+
+/* Table 3 & 4*/
 * Column: Each worry
 * Row: Each Sample
 * Cell: Fraction of respondents selected "VERY WORRIED"
 
 /* Generate Indicator for Very Worried */
-foreach y in $nfaworries {
+foreach y in $nfaworries $faworries{
          gen v_`y' = .
          replace v_`y' = 1 if `y' == 3
          replace v_`y' = 0 if inlist(`y', 0, 1, 2)
 }
-
-
-des $nfaworries
-
 
 * All:
 di "All"
@@ -237,22 +280,30 @@ foreach y in $nfaworries {
 
 esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("academic" "family" "community" "away" "support" "race" "gender" "religion") nonum noline varwidth(20)
 
-
-* Gender & Race
-foreach cat in gender_brief_main race_brief parent_edu_brief { // foreach crosstab variable
-	di ""
-	di "$`cat'"
-	qui levelsof `cat', local(vals)
-	foreach val in `vals'{ // each subsample
-	eststo clear
-	foreach y in $nfaworries{
-		qui eststo: qui reg v_`y' if `cat' == `val'  // estimate the share of very worried
+* Updating Table 3 & 4
+foreach cat in race_brief gender_brief_main parent_edu { // foreach crosstab variable
+	* Table 3
+	foreach y in $nfaworries {
+		tab `cat' v_`y', row nofreq
 	}
-	local lab: label(`cat') `val' // row name
-	esttab, nostar not b(a3) coeflabels(_cons "`lab'") nomtitles varwidth(20) nonum nodep noline // each subsample is a row
+
+	* Table 4
+	foreach y in $faworries{
+		tab `cat' v_`y', row nofreq
 	}
 }
 
+foreach cat in parent_edu { // foreach crosstab variable
+	* Table 3
+	foreach y in $nfaworries {
+		tab `cat' v_`y', row 
+	}
+
+	* Table 4
+	foreach y in $faworries{
+		tab `cat' v_`y', row 
+	}
+}
 
 
 *================*

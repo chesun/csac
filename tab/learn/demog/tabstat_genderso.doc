@@ -1,0 +1,90 @@
+{\rtf1\ansi\deff0 {\fonttbl{\f0\fnil Garamond;}}
+{\info {\author .}{\company .}{\title .}}
+\deflang1033\plain\fs20
+{\footer\pard\qc\plain\f0\fs20\chpgn\par}
+{
+{\fs20\b\qc\line Summary statistics }{\par}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx1760
+\fs20\pard\intbl\qr { }\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx2980
+\fs20\pard\intbl\qr {{ Mean}}\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx4200
+\fs20\pard\intbl\qr {{ Sum}}\cell
+\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs  \cellx5420
+\fs20\pard\intbl\qr {{ N}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1760
+\fs20\pard\intbl\ql {{ gender missing}}\cell
+\cellx2980
+\qr {{.221}}\cell
+\cellx4200
+\qr {{2259}}\cell
+\cellx5420
+\qr {{10221.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1760
+\fs20\pard\intbl\ql {{ so missing}}\cell
+\cellx2980
+\qr {{.23}}\cell
+\cellx4200
+\qr {{2353}}\cell
+\cellx5420
+\qr {{10221.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1760
+\fs20\pard\intbl\ql {{ gender trans gnc}}\cell
+\cellx2980
+\qr {{.055}}\cell
+\cellx4200
+\qr {{434}}\cell
+\cellx5420
+\qr {{7962.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1760
+\fs20\pard\intbl\ql {{ gender unsure}}\cell
+\cellx2980
+\qr {{.02}}\cell
+\cellx4200
+\qr {{161}}\cell
+\cellx5420
+\qr {{7962.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1760
+\fs20\pard\intbl\ql {{ so queer narrow}}\cell
+\cellx2980
+\qr {{.229}}\cell
+\cellx4200
+\qr {{1801}}\cell
+\cellx5420
+\qr {{7868.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\cellx1760
+\fs20\pard\intbl\ql {{ so unsure}}\cell
+\cellx2980
+\qr {{.071}}\cell
+\cellx4200
+\qr {{556}}\cell
+\cellx5420
+\qr {{7868.000}}\cell
+\row}
+{\trowd\trgaph108\trleft-108
+\clbrdrb\brdrw15\brdrs\cellx1760
+\fs20\pard\intbl\ql {{ lgbtq}}\cell
+\clbrdrb\brdrw15\brdrs\cellx2980
+\qr {{.306}}\cell
+\clbrdrb\brdrw15\brdrs\cellx4200
+\qr {{2415}}\cell
+\clbrdrb\brdrw15\brdrs\cellx5420
+\qr {{7885.000}}\cell
+\row}
+
+
+\writepositionforappend
+}}

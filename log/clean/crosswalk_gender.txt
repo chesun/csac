@@ -1,0 +1,220 @@
+--------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023
+> /log/clean/crosswalk_gender.txt
+  log type:  text
+ opened on:  11 Oct 2023, 10:45:17
+
+. 
+. ********************************* Main *********************
+> ********************
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", cl
+> ear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. /* Crosswalk with survey id & gender groups */
+. 
+. * Also keep raw gender & free response (if other)
+. * (maybe helpful to keep gender expression text & compare to
+>  experience expression text)
+. keep id gender_brief gender_other_raw gender_raw
+
+. 
+end of do-file
+
+. do "/home/tmp/SD279223.000000"
+
+. * Keep non-cis 
+. keep if inlist(gender_brief, 2, 3, 4, 5)
+(9,612 observations deleted)
+
+. 
+end of do-file
+
+. tab gender_brief
+
+  gender for main |
+            brief |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+     binary trans |         87       14.29       14.29
+            other |        331       54.35       68.64
+           unsure |          8        1.31       69.95
+prefer not to say |        183       30.05      100.00
+------------------+-----------------------------------
+            Total |        609      100.00
+
+. tab gender_raw
+
+   current gender |
+         identity |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+              MAN |         68       11.43       11.43
+        NONBINARY |        281       47.23       58.66
+            OTHER |         65       10.92       69.58
+PREFER NOT TO SAY |        153       25.71       95.29
+            WOMAN |         28        4.71      100.00
+------------------+-----------------------------------
+            Total |        595      100.00
+
+. do "/home/tmp/SD279223.000000"
+
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", cl
+> ear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+end of do-file
+
+. tab gender_clean
+
+   cleaned current |
+   gender identity |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+       GENDERFLUID |         36        0.45        0.45
+               MAN |      2,929       36.72       37.17
+         NONBINARY |        284        3.56       40.73
+          OTHERGNC |         11        0.14       40.87
+ PREFER NOT TO SAY |        183        2.29       43.17
+UNSURE/QUESTIONING |          8        0.10       43.27
+             WOMAN |      4,525       56.73      100.00
+-------------------+-----------------------------------
+             Total |      7,976      100.00
+
+. do "/home/tmp/SD279223.000000"
+
+. keep if inlist(gender_brief, 2, 3, 4, 5)
+(9,612 observations deleted)
+
+. 
+end of do-file
+
+. tab gender_clean
+
+   cleaned current |
+   gender identity |      Freq.     Percent        Cum.
+-------------------+-----------------------------------
+       GENDERFLUID |         36        5.91        5.91
+               MAN |         65       10.67       16.58
+         NONBINARY |        284       46.63       63.22
+          OTHERGNC |         11        1.81       65.02
+ PREFER NOT TO SAY |        183       30.05       95.07
+UNSURE/QUESTIONING |          8        1.31       96.39
+             WOMAN |         22        3.61      100.00
+-------------------+-----------------------------------
+             Total |        609      100.00
+
+. tab gender_raw
+
+   current gender |
+         identity |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+              MAN |         68       11.43       11.43
+        NONBINARY |        281       47.23       58.66
+            OTHER |         65       10.92       69.58
+PREFER NOT TO SAY |        153       25.71       95.29
+            WOMAN |         28        4.71      100.00
+------------------+-----------------------------------
+            Total |        595      100.00
+
+. list gender_other_clean if gender_raw == "" & gender_clean !
+> = ""
+
+     +----------+
+     | gender.. |
+     |----------|
+213. |          |
+215. |          |
+288. |          |
+296. |          |
+328. |          |
+     |----------|
+335. |          |
+415. |          |
+416. |          |
+432. |          |
+483. |          |
+     |----------|
+485. |          |
+561. |          |
+583. |          |
+604. |          |
+     +----------+
+
+. list gender_clean if gender_raw == "" & gender_clean != ""
+
+     +-------------------+
+     |      gender_clean |
+     |-------------------|
+213. | PREFER NOT TO SAY |
+215. | PREFER NOT TO SAY |
+288. | PREFER NOT TO SAY |
+296. | PREFER NOT TO SAY |
+328. | PREFER NOT TO SAY |
+     |-------------------|
+335. | PREFER NOT TO SAY |
+415. | PREFER NOT TO SAY |
+416. | PREFER NOT TO SAY |
+432. | PREFER NOT TO SAY |
+483. | PREFER NOT TO SAY |
+     |-------------------|
+485. | PREFER NOT TO SAY |
+561. | PREFER NOT TO SAY |
+583. | PREFER NOT TO SAY |
+604. | PREFER NOT TO SAY |
+     +-------------------+
+
+. do "/home/tmp/SD279223.000000"
+
+. /***********************************************************
+> *******************
+> PROGRAM: Gender/SO/LGBTQ supplemental analysis
+> - Create crosswalk with survey id & gender for Kairo
+> 
+> WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
+> 
+> DATE CREATED: Oct 11, 2023
+> 
+> ************************************************************
+> *******************/
+. 
+. 
+. ********************************* Preamble *****************
+> *******************
+. *----------*
+. * Toggle
+. *----------*
+. local standalone 1 // Set to 1 if running this program for t
+> he first time
+
+. local do_plot 0
+
+. 
+. *----------*
+. * Settings
+. *----------*
+. 
+. if `standalone' == 1{
+. 
+. * Set default directory // comment out if run the master do 
+> file
+. cd "/home/research/ca_ed_lab/projects/csac_survey2023"
+/home/research/ca_ed_lab/projects/csac_survey2023
+. global csacprojdir "/home/research/ca_ed_lab/projects/csac_s
+> urvey2023"
+. 
+. * Set settings
+. version 17.0
+. graph drop _all
+. set more off
+. set varabbrev off
+. set graphics off
+. set scheme s1color
+. set seed 1984
+. }
+
+. 
+. * Log results
+. cap log close

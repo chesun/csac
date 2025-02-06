@@ -1,0 +1,2048 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/paper_quant_analysis.txt
+  log type:  text
+ opened on:  28 May 2024, 13:22:27
+
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. *** Add bully reasons : either gender or so
+. gen reasons_bullied_igenderso = reasons_bullied_igender
+(8,244 missing values generated)
+
+. replace reasons_bullied_igenderso = 1 if reasons_bullied_iso == 1
+(213 real changes made)
+
+. 
+. label var reasons_bullied_igenderso "being bullied because of gender or sexual orientation"
+
+. label def reasons_bullied_lbl 0 "No" 1 "Yes", replace
+
+. label val reasons_bullied_igenderso reasons_bullied_lbl
+
+. 
+. 
+. ***************
+. * Macro Setup *
+. ***************
+. // Note: decided to focus on gender
+. * crosstab caterogies: gender (sexual orientation)
+. global xtab gender_cat // so_cat
+
+. 
+. * outcomes
+. * hs experience & bullying 
+. global hsexp    hs_academic hs_social hs_community_belong hs_teacher_care                  hs_prepared_college
+
+. global allhsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college 
+
+. global bully    times_bullied reasons_bullied_igenderso
+
+. 
+. * college plans
+. global plans    college_fall segment major highest_degree
+
+. 
+. * college worries
+. global worries    worry_tuition worry_living worry_academic worry_work worry_family worry_community worry_away worry_support worry_gender worry_so
+
+. global allworries worry_tuition worry_living worry_academic worry_work worry_family worry_community worry_away worry_support worry_gender worry_so worry_race worry_religion
+
+. global worries6   worry_tuition worry_living worry_academic worry_work worry_family worry_community  
+
+. global worries12                                                                                    worry_away worry_support worry_gender worry_so worry_race worry_religion
+
+. 
+. * indices
+. global indices worry_index1 worry_index2 worry_index3
+
+. 
+. 
+. 
+. 
+. **************************
+. * Descriptive - Crosstab *
+. **************************
+. 
+. foreach y in $plans { //  $worries $hsexp $bully 
+  2.     foreach cat in $xtab {
+  3.         tab `cat' `y', row col
+  4.     }
+  5. }
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                      |   do you
+                      |  plan to
+                      |   attend
+                      | college in
+                      |  the fall
+    gender categories |       Yes |     Total
+----------------------+-----------+----------
+              cis man |     2,675 |     2,675 
+                      |    100.00 |    100.00 
+                      |     35.56 |     35.56 
+----------------------+-----------+----------
+            cis woman |     4,289 |     4,289 
+                      |    100.00 |    100.00 
+                      |     57.02 |     57.02 
+----------------------+-----------+----------
+            trans man |        59 |        59 
+                      |    100.00 |    100.00 
+                      |      0.78 |      0.78 
+----------------------+-----------+----------
+          trans woman |        20 |        20 
+                      |    100.00 |    100.00 
+                      |      0.27 |      0.27 
+----------------------+-----------+----------
+            nonbinary |       267 |       267 
+                      |    100.00 |    100.00 
+                      |      3.55 |      3.55 
+----------------------+-----------+----------
+gender diverse/questi |        71 |        71 
+                      |    100.00 |    100.00 
+                      |      0.94 |      0.94 
+----------------------+-----------+----------
+    prefer not to say |       141 |       141 
+                      |    100.00 |    100.00 
+                      |      1.87 |      1.87 
+----------------------+-----------+----------
+                Total |     7,522 |     7,522 
+                      |    100.00 |    100.00 
+                      |    100.00 |    100.00 
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                      |  plan to attend 2-yr
+                      | or 4-yr schools this
+                      |         fall
+    gender categories | 2-yr scho  4-yr scho |     Total
+----------------------+----------------------+----------
+              cis man |     1,134      1,541 |     2,675 
+                      |     42.39      57.61 |    100.00 
+                      |     38.12      33.89 |     35.56 
+----------------------+----------------------+----------
+            cis woman |     1,634      2,655 |     4,289 
+                      |     38.10      61.90 |    100.00 
+                      |     54.92      58.39 |     57.02 
+----------------------+----------------------+----------
+            trans man |        18         41 |        59 
+                      |     30.51      69.49 |    100.00 
+                      |      0.61       0.90 |      0.78 
+----------------------+----------------------+----------
+          trans woman |         6         14 |        20 
+                      |     30.00      70.00 |    100.00 
+                      |      0.20       0.31 |      0.27 
+----------------------+----------------------+----------
+            nonbinary |        92        175 |       267 
+                      |     34.46      65.54 |    100.00 
+                      |      3.09       3.85 |      3.55 
+----------------------+----------------------+----------
+gender diverse/questi |        35         36 |        71 
+                      |     49.30      50.70 |    100.00 
+                      |      1.18       0.79 |      0.94 
+----------------------+----------------------+----------
+    prefer not to say |        56         85 |       141 
+                      |     39.72      60.28 |    100.00 
+                      |      1.88       1.87 |      1.87 
+----------------------+----------------------+----------
+                Total |     2,975      4,547 |     7,522 
+                      |     39.55      60.45 |    100.00 
+                      |    100.00     100.00 |    100.00 
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                      |                                 what are you most likely to study in college
+    gender categories |  Business  Engineeri  Natural s  Social sc  Humanitie  Health sc  Education  Applied s  Public se  Undecided |     Total
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+              cis man |       321        799        324        209        237        212         36        185        115        224 |     2,662 
+                      |     12.06      30.02      12.17       7.85       8.90       7.96       1.35       6.95       4.32       8.41 |    100.00 
+                      |     42.86      65.98      26.56      22.72      27.82      19.17      13.74      72.55      31.94      39.72 |     35.50 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+            cis woman |       409        333        788        629        478        850        210         53        226        304 |     4,280 
+                      |      9.56       7.78      18.41      14.70      11.17      19.86       4.91       1.24       5.28       7.10 |    100.00 
+                      |     54.61      27.50      64.59      68.37      56.10      76.85      80.15      20.78      62.78      53.90 |     57.07 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+            trans man |         1          8         13          9         17          4          3          1          1          2 |        59 
+                      |      1.69      13.56      22.03      15.25      28.81       6.78       5.08       1.69       1.69       3.39 |    100.00 
+                      |      0.13       0.66       1.07       0.98       2.00       0.36       1.15       0.39       0.28       0.35 |      0.79 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+          trans woman |         2          5          2          2          5          0          0          3          0          1 |        20 
+                      |     10.00      25.00      10.00      10.00      25.00       0.00       0.00      15.00       0.00       5.00 |    100.00 
+                      |      0.27       0.41       0.16       0.22       0.59       0.00       0.00       1.18       0.00       0.18 |      0.27 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+            nonbinary |         8         32         53         41         68         21          8          9          9         18 |       267 
+                      |      3.00      11.99      19.85      15.36      25.47       7.87       3.00       3.37       3.37       6.74 |    100.00 
+                      |      1.07       2.64       4.34       4.46       7.98       1.90       3.05       3.53       2.50       3.19 |      3.56 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+gender diverse/questi |         1          7         14         12         22          6          1          1          4          3 |        71 
+                      |      1.41       9.86      19.72      16.90      30.99       8.45       1.41       1.41       5.63       4.23 |    100.00 
+                      |      0.13       0.58       1.15       1.30       2.58       0.54       0.38       0.39       1.11       0.53 |      0.95 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+    prefer not to say |         7         27         26         18         25         13          4          3          5         12 |       140 
+                      |      5.00      19.29      18.57      12.86      17.86       9.29       2.86       2.14       3.57       8.57 |    100.00 
+                      |      0.93       2.23       2.13       1.96       2.93       1.18       1.53       1.18       1.39       2.13 |      1.87 
+----------------------+--------------------------------------------------------------------------------------------------------------+----------
+                Total |       749      1,211      1,220        920        852      1,106        262        255        360        564 |     7,499 
+                      |      9.99      16.15      16.27      12.27      11.36      14.75       3.49       3.40       4.80       7.52 |    100.00 
+                      |    100.00     100.00     100.00     100.00     100.00     100.00     100.00     100.00     100.00     100.00 |    100.00 
+
++-------------------+
+| Key               |
+|-------------------|
+|     frequency     |
+|  row percentage   |
+| column percentage |
++-------------------+
+
+                      |    what is the highest degree you hope to complete
+    gender categories | Get a cer  Associate  Bachelor’  Master’s   Doctoral  |     Total
+----------------------+-------------------------------------------------------+----------
+              cis man |       145        192      1,053        839        438 |     2,667 
+                      |      5.44       7.20      39.48      31.46      16.42 |    100.00 
+                      |     57.77      39.26      39.78      34.81      25.76 |     35.57 
+----------------------+-------------------------------------------------------+----------
+            cis woman |        95        271      1,397      1,392      1,119 |     4,274 
+                      |      2.22       6.34      32.69      32.57      26.18 |    100.00 
+                      |     37.85      55.42      52.78      57.76      65.82 |     57.01 
+----------------------+-------------------------------------------------------+----------
+            trans man |         0          2         22         20         15 |        59 
+                      |      0.00       3.39      37.29      33.90      25.42 |    100.00 
+                      |      0.00       0.41       0.83       0.83       0.88 |      0.79 
+----------------------+-------------------------------------------------------+----------
+          trans woman |         1          1          7          8          3 |        20 
+                      |      5.00       5.00      35.00      40.00      15.00 |    100.00 
+                      |      0.40       0.20       0.26       0.33       0.18 |      0.27 
+----------------------+-------------------------------------------------------+----------
+            nonbinary |         2         12         93         86         74 |       267 
+                      |      0.75       4.49      34.83      32.21      27.72 |    100.00 
+                      |      0.80       2.45       3.51       3.57       4.35 |      3.56 
+----------------------+-------------------------------------------------------+----------
+gender diverse/questi |         4          2         24         21         19 |        70 
+                      |      5.71       2.86      34.29      30.00      27.14 |    100.00 
+                      |      1.59       0.41       0.91       0.87       1.12 |      0.93 
+----------------------+-------------------------------------------------------+----------
+    prefer not to say |         4          9         51         44         32 |       140 
+                      |      2.86       6.43      36.43      31.43      22.86 |    100.00 
+                      |      1.59       1.84       1.93       1.83       1.88 |      1.87 
+----------------------+-------------------------------------------------------+----------
+                Total |       251        489      2,647      2,410      1,700 |     7,497 
+                      |      3.35       6.52      35.31      32.15      22.68 |    100.00 
+                      |    100.00     100.00     100.00     100.00     100.00 |    100.00 
+
+. 
+. ***********************************
+. * Reliability - Cronbach's Alpha  *
+. ***********************************
+. /* Worries */
+. 
+. * All
+. alpha $allworries, item
+
+Test scale = mean(unstandardized items)
+
+                                                            Average
+                             Item-test     Item-rest       interitem
+Item         |  Obs  Sign   correlation   correlation     covariance      alpha
+-------------+-----------------------------------------------------------------
+worry_tuit~n | 7957    +       0.5543        0.4278        .2154364      0.7930
+worry_living | 7956    +       0.6091        0.4847        .2072845      0.7875
+worry_acad~c | 7958    +       0.6180        0.5050        .2086923      0.7853
+worry_work   | 7943    +       0.6769        0.5805          .20369      0.7781
+worry_family | 7941    +       0.6317        0.5190        .2068351      0.7841
+worry_comm~y | 7934    +       0.6047        0.4814        .2084885      0.7878
+worry_away   | 7948    +       0.5130        0.3784        .2199268      0.7981
+worry_supp~t | 7944    +       0.6810        0.5784        .2008457      0.7776
+worry_gender | 7886    +       0.4818        0.3765        .2285728      0.7971
+worry_so     | 7876    +       0.4509        0.3515        .2327794      0.7990
+worry_race   | 7895    +       0.5245        0.4219        .2244279      0.7936
+worry_reli~n | 7891    +       0.3488        0.2609        .2429924      0.8046
+-------------+-----------------------------------------------------------------
+Test scale   |                                             .2166699      0.8049
+-------------------------------------------------------------------------------
+
+. 
+. /* HS Experience */
+. 
+. * All
+. alpha $allhsexp, item
+
+Test scale = mean(unstandardized items)
+
+                                                            Average
+                             Item-test     Item-rest       interitem
+Item         |  Obs  Sign   correlation   correlation     covariance      alpha
+-------------+-----------------------------------------------------------------
+hs_academic  | 7847    +       0.4828        0.2719        .4565409      0.7537
+hs_social    | 7825    +       0.6226        0.4227        .3894418      0.7120
+hs_communi~g | 7711    +       0.7545        0.6003        .3341718      0.6663
+hs_teacher~e | 7711    +       0.7183        0.5769         .367211      0.6790
+hs_good_ad~g | 7713    +       0.6681        0.4650        .3723996      0.7079
+hs_prepare~e | 7709    +       0.6786        0.5068        .3757341      0.6954
+-------------+-----------------------------------------------------------------
+Test scale   |                                             .3825581      0.7403
+-------------------------------------------------------------------------------
+
+. 
+. 
+. ********************************
+. * Principle Component Analysis *
+. ********************************
+. // Check dimension of worries
+. // PCA on HS experience and their correlations see appendix
+. 
+. /* Worries */
+. 
+. pca $allworries
+
+Principal components/correlation                 Number of obs    =      7,706
+                                                 Number of comp.  =         12
+                                                 Trace            =         12
+    Rotation: (unrotated = principal)            Rho              =     1.0000
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      3.84301      2.18849             0.3203       0.3203
+           Comp2 |      1.65452      .422995             0.1379       0.4581
+           Comp3 |      1.23152      .313149             0.1026       0.5608
+           Comp4 |      .918373     .0762706             0.0765       0.6373
+           Comp5 |      .842103      .217839             0.0702       0.7075
+           Comp6 |      .624264     .0128773             0.0520       0.7595
+           Comp7 |      .611386     .0127046             0.0509       0.8104
+           Comp8 |      .598682      .082267             0.0499       0.8603
+           Comp9 |      .516415       .08461             0.0430       0.9034
+          Comp10 |      .431805     .0475185             0.0360       0.9393
+          Comp11 |      .384286     .0406488             0.0320       0.9714
+          Comp12 |      .343637            .             0.0286       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    ----------------------------------------------------------------------------------------------------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3     Comp4     Comp5     Comp6     Comp7     Comp8     Comp9    Comp10    Comp11    Comp12 | Unexplained 
+    -------------+------------------------------------------------------------------------------------------------------------------------+-------------
+    worry_tuit~n |   0.2730   -0.1931    0.6075    0.0842   -0.0607    0.0674    0.1649   -0.1295    0.0314   -0.0091    0.0546    0.6751 |           0 
+    worry_living |   0.3003   -0.1936    0.5428    0.1915   -0.1176    0.0692    0.0146    0.0152    0.0335    0.0090    0.0899   -0.7160 |           0 
+    worry_acad~c |   0.3196   -0.2399   -0.1975   -0.3480    0.1457   -0.1769    0.4015    0.4134   -0.0616    0.1138    0.5280   -0.0031 |           0 
+      worry_work |   0.3550   -0.2592   -0.0206   -0.3554    0.1548   -0.0259   -0.0646    0.2569   -0.0127   -0.0970   -0.7586   -0.0126 |           0 
+    worry_family |   0.3261   -0.1959   -0.1426   -0.1925    0.2166    0.1767   -0.6882   -0.2822    0.2556   -0.0309    0.3138    0.0426 |           0 
+    worry_comm~y |   0.3066   -0.0883   -0.3825    0.1064   -0.1479    0.1104    0.4967   -0.5441    0.3737    0.0224   -0.1343   -0.0746 |           0 
+      worry_away |   0.2469   -0.0932   -0.2584    0.7029   -0.1344   -0.1078   -0.1863    0.4718    0.2360    0.0642   -0.0376    0.1459 |           0 
+    worry_supp~t |   0.3537   -0.0144   -0.2247    0.1446   -0.2394    0.0962   -0.0874   -0.1889   -0.8285   -0.0759    0.0232    0.0266 |           0 
+    worry_gender |   0.2488    0.4908    0.0297   -0.1724   -0.3165   -0.0322   -0.0027    0.1511    0.1811   -0.7063    0.1036    0.0126 |           0 
+        worry_so |   0.2337    0.4895    0.0437   -0.2210   -0.2950    0.3438   -0.0666    0.1565    0.0780    0.6413   -0.0526    0.0285 |           0 
+      worry_race |   0.2709    0.3601    0.0978    0.0446    0.2198   -0.7882   -0.0802   -0.2484   -0.0206    0.2103   -0.0516   -0.0217 |           0 
+    worry_reli~n |   0.1756    0.3677    0.0258    0.2549    0.7467    0.3924    0.1834    0.0554   -0.0871   -0.1087   -0.0057   -0.0239 |           0 
+    ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+. 
+. 
+. ******************************
+. * Construct Indices of Worry *
+. ******************************
+. 
+. pca $allworries, component(3)
+
+Principal components/correlation                 Number of obs    =      7,706
+                                                 Number of comp.  =          3
+                                                 Trace            =         12
+    Rotation: (unrotated = principal)            Rho              =     0.5608
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      3.84301      2.18849             0.3203       0.3203
+           Comp2 |      1.65452      .422995             0.1379       0.4581
+           Comp3 |      1.23152      .313149             0.1026       0.5608
+           Comp4 |      .918373     .0762706             0.0765       0.6373
+           Comp5 |      .842103      .217839             0.0702       0.7075
+           Comp6 |      .624264     .0128773             0.0520       0.7595
+           Comp7 |      .611386     .0127046             0.0509       0.8104
+           Comp8 |      .598682      .082267             0.0499       0.8603
+           Comp9 |      .516415       .08461             0.0430       0.9034
+          Comp10 |      .431805     .0475185             0.0360       0.9393
+          Comp11 |      .384286     .0406488             0.0320       0.9714
+          Comp12 |      .343637            .             0.0286       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    ----------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3 | Unexplained 
+    -------------+------------------------------+-------------
+    worry_tuit~n |   0.2730   -0.1931    0.6075 |       .1975 
+    worry_living |   0.3003   -0.1936    0.5428 |       .2285 
+    worry_acad~c |   0.3196   -0.2399   -0.1975 |       .4642 
+      worry_work |   0.3550   -0.2592   -0.0206 |       .4041 
+    worry_family |   0.3261   -0.1959   -0.1426 |       .5029 
+    worry_comm~y |   0.3066   -0.0883   -0.3825 |       .4457 
+      worry_away |   0.2469   -0.0932   -0.2584 |       .6691 
+    worry_supp~t |   0.3537   -0.0144   -0.2247 |       .4567 
+    worry_gender |   0.2488    0.4908    0.0297 |       .3625 
+        worry_so |   0.2337    0.4895    0.0437 |       .3914 
+      worry_race |   0.2709    0.3601    0.0978 |       .4916 
+    worry_reli~n |   0.1756    0.3677    0.0258 |        .657 
+    ----------------------------------------------------------
+
+. 
+. * store PCA eigenvector to construct indices
+. mat A = e(L) // A is 12 x 3 matrix of eigenvectors
+
+. cap drop A1 A2 A3
+
+. svmat A // generate A1, A2, A3 corresponds to three 12x1 eigenvectors
+
+. 
+. * gnerate three indices based on eigenvectors of comp1 - comp3
+. cap drop worry_index*
+
+. forval n = 1/3{
+  2.     gen worry_index`n' = worry_tuition * A`n'[1] + worry_living    * A`n'[2]  + worry_academic * A`n'[3]  + worry_work     * A`n'[4] + ///
+>                          worry_family  * A`n'[5] + worry_community * A`n'[6]  + worry_away     * A`n'[7]  + worry_support  * A`n'[8] + ///
+>                          worry_gender  * A`n'[9] + worry_so        * A`n'[10] + worry_race     * A`n'[11] + worry_religion * A`n'[12] 
+  3. 
+. }
+(1,524 missing values generated)
+(1,524 missing values generated)
+(1,524 missing values generated)
+
+. 
+. label var worry_index1 "general worries"
+
+. label var worry_index2 "worries about discrimination"
+
+. label var worry_index3 "worries about financial burdens"
+
+. 
+. **************************
+. * Index of HS experience *
+. **************************
+. 
+. * additive due to high reliablity (alpha > .7)
+. // notes hs_academic & hs_social range 1 to 5; hs_community, hs_teacher_case, hs_good_advising, hs_prepare_college range -2 to 2. SYN to all hsexp using -2 to 2 for easier interpreation
+. replace hs_academic = hs_academic - 3
+(7,847 real changes made)
+
+. replace hs_social = hs_social - 3
+(7,825 real changes made)
+
+. 
+. cap drop hsexp_index
+
+. egen hsexp_index = rowtotal($allhsexp) // range -12 to 12.
+
+. 
+. * set to missing if any of the hs experience is missing
+. foreach var in $hsexp{
+  2.     replace hsexp_index = . if mi(`var')
+  3. }
+(1,383 real changes made, 1,383 to missing)
+(22 real changes made, 22 to missing)
+(121 real changes made, 121 to missing)
+(9 real changes made, 9 to missing)
+(8 real changes made, 8 to missing)
+
+. 
+. label var hsexp_index "general HS experience"
+
+. 
+. ********************************
+. * Descriptive Stats of Indices *
+. ********************************
+. 
+. foreach var in $indices hsexp_index{
+  2.     tabstat `var', stat(N mean) by(gender_cat)
+  3. }
+
+Summary for variables: worry_index1
+Group variable: gender_cat (gender categories)
+
+      gender_cat |         N      Mean
+-----------------+--------------------
+         cis man |      2590  3.220379
+       cis woman |      4186  3.991372
+       trans man |        58  4.649433
+     trans woman |        20  4.002309
+       nonbinary |       259  4.967091
+gender diverse/q |        69  5.184995
+prefer not to sa |       137   4.67112
+-----------------+--------------------
+           Total |      7319  3.782288
+--------------------------------------
+
+Summary for variables: worry_index2
+Group variable: gender_cat (gender categories)
+
+      gender_cat |         N      Mean
+-----------------+--------------------
+         cis man |      2590 -1.337659
+       cis woman |      4186 -1.262973
+       trans man |        58  .2728562
+     trans woman |        20  .0425259
+       nonbinary |       259 -.3158128
+gender diverse/q |        69 -.5349495
+prefer not to sa |       137 -.5930744
+-----------------+--------------------
+           Total |      7319 -1.220743
+--------------------------------------
+
+Summary for variables: worry_index3
+Group variable: gender_cat (gender categories)
+
+      gender_cat |         N      Mean
+-----------------+--------------------
+         cis man |      2590  .6100973
+       cis woman |      4186  .6573869
+       trans man |        58   .427226
+     trans woman |        20  .9089023
+       nonbinary |       259  .6259196
+gender diverse/q |        69   .805566
+prefer not to sa |       137  .5137545
+-----------------+--------------------
+           Total |      7319  .6371106
+--------------------------------------
+
+Summary for variables: hsexp_index
+Group variable: gender_cat (gender categories)
+
+      gender_cat |         N      Mean
+-----------------+--------------------
+         cis man |      2659  4.271155
+       cis woman |      4269   3.78707
+       trans man |        59  2.423729
+     trans woman |        20      2.55
+       nonbinary |       267  2.318352
+gender diverse/q |        71  1.112676
+prefer not to sa |       138  2.231884
+-----------------+--------------------
+           Total |      7483  3.838567
+--------------------------------------
+
+. 
+. *********************************************************
+. * gen new label with subsamp mean to display on y-axis
+. *********************************************************
+. foreach y in $indices hsexp_index {
+  2.     label copy gender_cat_lbl gender_cat_`y' 
+  3.     label copy gender_cat_lbl gender_cat_`y'2
+  4. 
+.     forval i = 0/6{
+  5.         summ `y' if gender_cat == `i'
+  6.         local ybar: display  %3.2f `r(mean)' // ensure mean values show only two digits after decimal point, and 3 digits in total
+  7.         label define gender_cat_`y'  `i' "`:label gender_cat_lbl `i'' (mean=`ybar')", modify // add (mean=XXX) after gender cat
+  8.         label define gender_cat_`y'2 `i' `" "`:label gender_cat_lbl `i''" "(N=`r(N)', mean=`ybar')" "', modify // add (N=xx mean=xx) after gender cat in a separate line
+  9.     }
+ 10. }
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |      2,590    3.220379    1.695757          0   10.23042
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |      4,186    3.991372    1.833151          0   10.23042
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |         58    4.649433    1.780567   .9332916   8.150266
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |         20    4.002309    1.397612   .6006444   6.036522
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |        259    4.967091    1.841276   .6733251    9.87931
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |         69    5.184995    1.957049   .5733145    9.43286
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index1 |        137     4.67112    1.881309   .3065982   10.23042
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |      2,590   -1.337659    .9729763   -3.83286   5.124506
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |      4,186   -1.262973    1.010334   -3.83286   3.114314
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |         58    .2728562     1.01786   -2.60885   2.411257
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |         20    .0425259    1.134678  -2.029758   2.172953
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |        259   -.3158128    1.173886   -3.83286   4.395127
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |         69   -.5349495    1.100938  -3.166347    1.79486
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index2 |        137   -.5930744    1.260627   -3.32819   4.930905
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |      2,590    .6100973    1.127577  -3.537248    3.57448
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |      4,186    .6573869    1.123366  -3.637514   3.548664
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |         58     .427226    1.332554  -2.157034   3.239642
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |         20    .9089023    1.460158  -2.231983   2.916236
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |        259    .6259196    1.101509  -2.234008   3.146421
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |         69     .805566    .9978865  -1.673114   2.646099
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+worry_index3 |        137    .5137545    1.235584  -2.069638   2.961799
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |      2,659    4.271155    4.246961        -12         12
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |      4,269     3.78707    4.270259        -12         12
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |         59    2.423729    3.847092         -6         11
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |         20        2.55    4.817457         -9         11
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |        267    2.318352    4.454423        -11         11
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |         71    1.112676    4.317901         -7         11
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+ hsexp_index |        138    2.231884    4.413466        -12         11
+
+. 
+. **********************
+. * Summary Statistics *
+. **********************
+. * Export to DOC format
+. 
+. cd "/home/research/ca_ed_lab/projects/csac_survey2023/tab/share" // save to destiniation folder
+/home/research/ca_ed_lab/projects/csac_survey2023/tab/share
+
+. 
+. 
+. *** Demographics ***
+. asdoc tabulate gender_cat, nocf save(summstats.doc) replace title(Summary Statistics)
+
+         gender categories |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+                   cis man |      2,675       35.56       35.56
+                 cis woman |      4,289       57.02       92.58
+                 trans man |         59        0.78       93.37
+               trans woman |         20        0.27       93.63
+                 nonbinary |        267        3.55       97.18
+gender diverse/questioning |         71        0.94       98.13
+         prefer not to say |        141        1.87      100.00
+---------------------------+-----------------------------------
+                     Total |      7,522      100.00
+Click to Open File:  summstats.doc
+
+. foreach var in so_cat race_assn parent_edu {
+  2.     asdoc tabulate `var', nocf save(summstats.doc) append
+  3. }
+
+sexual orientation categories |      Freq.     Percent        Cum.
+------------------------------+-----------------------------------
+       straight/heterosexual  |      5,190       69.38       69.38
+               gay or lesbian |        330        4.41       73.79
+bisexual/pansexual/omnisexual |      1,139       15.23       89.01
+ asexual/aromantic/demisexual |        182        2.43       91.44
+      other/queer/questioning |        131        1.75       93.20
+            prefer not to say |        509        6.80      100.00
+------------------------------+-----------------------------------
+                        Total |      7,481      100.00
+Click to Open File:  summstats.doc
+
+ race/ethnicity with  assigned |
+  to single race following URM |
+                      hierachy |      Freq.     Percent        Cum.
+-------------------------------+-----------------------------------
+American Indian/Alaskan Native |        163        2.14        2.14
+        Black/African American |        532        6.99        9.13
+               Hispanic/Latinx |      3,793       49.82       58.95
+              Pacific Islander |         64        0.84       59.79
+                      Filipino |        235        3.09       62.88
+                         Asian |      1,146       15.05       77.93
+                         Other |        182        2.39       80.32
+            White/Non-Hispanic |      1,498       19.68      100.00
+-------------------------------+-----------------------------------
+                         Total |      7,613      100.00
+Click to Open File:  summstats.doc
+
+       highest level of education among |
+                                parents |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+           Did not complete high school |      1,373       18.11       18.11
+                    High school diploma |      1,578       20.81       38.92
+        Some college, no college degree |        975       12.86       51.77
+                       Associate degree |        452        5.96       57.73
+                      Bachelor's degree |      1,363       17.97       75.71
+Graduate/Professional degree beyond Bac |      1,455       19.19       94.90
+                             Don't know |        387        5.10      100.00
+----------------------------------------+-----------------------------------
+                                  Total |      7,583      100.00
+Click to Open File:  summstats.doc
+
+. 
+. *** Appendix: gender X so ***
+. asdoc tab gender_cat so_cat, row nofreq append 
+
+                      |                   sexual orientation categories
+    gender categories | straight/  gay or le  bisexual/  asexual/a  other/que  prefer no |     Total
+----------------------+------------------------------------------------------------------+----------
+              cis man |     85.03       4.03       5.09       0.75       0.57       4.52 |    100.00 
+            cis woman |     68.05       3.03      17.85       2.25       1.50       7.32 |    100.00 
+            trans man |      6.90      32.76      32.76       6.90      12.07       8.62 |    100.00 
+          trans woman |     20.00      40.00      25.00      10.00       0.00       5.00 |    100.00 
+            nonbinary |      1.92      18.77      50.19      13.41       9.58       6.13 |    100.00 
+gender diverse/questi |      2.90      13.04      50.72      14.49      18.84       0.00 |    100.00 
+    prefer not to say |      7.91       6.47      33.09      10.07       4.32      38.13 |    100.00 
+----------------------+------------------------------------------------------------------+----------
+                Total |     69.45       4.42      15.17       2.43       1.74       6.79 |    100.00 
+Click to Open File:  summstats.doc
+
+. 
+. /* Overall */
+. *** Intemized and Construct - Worries ***
+. asdoc tabstat $allworries worry_index1 worry_index2 worry_index3, stat(N mean) label abb(.) append title(College Worries Items and Constructs) // abb(.) allows lengthy label
+
+             |         N       Mean 
+-------------+---------------------
+worry_tuit~n |      7957   1.826693 
+worry_living |      7956   1.676471 
+worry_acad~c |      7958   1.501634 
+  worry_work |      7943   1.556591 
+worry_family |      7941   1.055283 
+worry_comm~y |      7934   1.315604 
+  worry_away |      7948   .9082788 
+worry_supp~t |      7944   1.126888 
+worry_gender |      7886   .4359625 
+    worry_so |      7876   .3325292 
+  worry_race |      7895   .5142495 
+worry_reli~n |      7891     .23229 
+worry_index1 |      7706   3.775831 
+worry_index2 |      7706  -1.219296 
+worry_index3 |      7706   .6336276 
+Click to Open File:  summstats.doc
+
+. 
+. *** Intemized and Construct - HS experience ***
+. asdoc tabstat $allhsexp hsexp_index, stat(N mean) label abb(.) append  title(High School Experience Items and Construct) // NOTE: times_bullied not included in the construct
+
+             |         N       Mean 
+-------------+---------------------
+ hs_academic |      7847   .6495476 
+   hs_social |      7825   .1147604 
+hs_communi~g |      7711   .5730774 
+hs_teacher~e |      7711   1.098431 
+hs_good_ad~g |      7713   .7278621 
+hs_prepare~e |      7709   .6600078 
+ hsexp_index |      7687   3.829192 
+Click to Open File:  summstats.doc
+
+. 
+. 
+. /* By Gender */
+. *asdoc tabstat $allhsexp, stat(mean) by(gender_cat) save(bygender.doc) replace title(High School Experience, by Gender)
+. *asdoc tabstat $worries6, stat(mean) by(gender_cat) append title(College Worries, by Gender)
+. *asdoc tabstat $worries12, stat(mean) by(gender_cat) append title(College Worries, by Gender (cont.)
+. 
+. 
+. * NOTE: asdoc tabstats, by() does work. It messes up the labelin of the gender variable!!
+. 
+. estpost tabstat hsexp_index, listwise stat(N mean) by(gender_cat) columns(statistics)
+
+Summary statistics: count mean
+     for variables: hsexp_index
+  by categories of: gender_cat
+
+  gender_cat |  e(count)    e(mean) 
+-------------+----------------------
+     cis_man |      2659   4.271155 
+   cis_woman |      4269    3.78707 
+   trans_man |        59   2.423729 
+ trans_woman |        20       2.55 
+   nonbinary |       267   2.318352 
+gender_div~g |        71   1.112676 
+prefer_not~y |       138   2.231884 
+-------------+----------------------
+       Total |      7483   3.838567 
+
+. esttab . using bygender.rtf, cells("N mean(fmt(a3))") replace 
+(output written to bygender.rtf)
+
+. 
+. 
+. *******************************
+. * Reg Worry Indices by Gender *
+. *******************************
+. // can't do crosstabs, too many values
+. 
+. * Change value lable from "Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)" to "Graduate degree" to make the results more readible
+. label def parent_edu 6 "Graduate degree", modify
+
+. 
+. * Check functional form of using hsexp_index as a regressor
+. foreach index in index1 index2 index3{
+  2.     twoway scatter worry_`index' hsexp_index
+  3.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/fn_form/`index'.png", replace
+  4. }
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/fn_form/index1.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/fn_form/index2.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/fn_form/index3.png written in PNG format
+
+. // Note: assuming linear - discuss if need a different functional form.
+. // Present the results using coefplot
+. * ssc install coefplot
+. 
+. foreach y in $indices {
+  2. 
+.     cap drop `y'_m1 `y'_m2 `y'_m3
+  3.     di "M1: only using gender to predict worry"
+  4.     reg `y' i.gender_cat
+  5.     est store `y'_m1
+  6.     * coefplot, drop(_cons) baselevels label // visualization
+.     * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m1.png", replace
+.     * predict `y'_m1 // potential post-estimation
+. 
+.     di "M2: using gender to predict worry, controlling for demographics"
+  7.     reg `y' i.gender_cat i.race_assn i.parent_edu
+  8.     est store `y'_m2
+  9.     * coefplot, drop(_cons *.race_assn *.parent_edu) baselevels label
+.     * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m2.png", replace
+.     * predict `y'_m2
+. 
+.     di "M3: using gender and hsexp index to predict worry, controlling for demographics"
+ 10.     reg `y' i.gender_cat c.hsexp_index i.race_assn i.parent_edu
+ 11.     est store `y'_m3
+ 12.     * coefplot, drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label
+.     * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m3.png", replace
+.     * predict `y'_m3
+. 
+.     label val gender_cat gender_cat_lbl
+ 13.     coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10))  , drop(_cons hsexp_index *.race_assn *.parent_edu) baselev
+> els label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(small)) // title( "`: var label `y''")
+ 14.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'.png", replace 
+ 15. 
+.     label val gender_cat gender_cat_`y'
+ 16.     coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons hsexp_index *.race_assn *.parent_edu) baseleve
+> ls label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+ 17.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_mean.png", replace 
+ 18. 
+.     label val gender_cat gender_cat_`y'2
+ 19.     coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons hsexp_index *.race_assn *.parent_edu) baseleve
+> ls label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+ 20.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_Nmean.png", replace 
+ 21. 
+. }
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,319
+-------------+----------------------------------   F(6, 7312)      =     86.29
+       Model |  1652.91575         6  275.485958   Prob > F        =    0.0000
+    Residual |  23342.6752     7,312  3.19237899   R-squared       =    0.0661
+-------------+----------------------------------   Adj R-squared   =    0.0654
+       Total |  24995.5909     7,318  3.41563145   Root MSE        =    1.7867
+
+---------------------------------------------------------------------------------------------
+               worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------+----------------------------------------------------------------
+                 gender_cat |
+                 cis woman  |   .7709925   .0446678    17.26   0.000     .6834308    .8585542
+                 trans man  |   1.429053   .2372206     6.02   0.000     .9640324    1.894074
+               trans woman  |   .7819296    .401063     1.95   0.051    -.0042696    1.568129
+                 nonbinary  |   1.746711   .1164404    15.00   0.000     1.518455    1.974968
+gender diverse/questioning  |   1.964616   .2179425     9.01   0.000     1.537385    2.391846
+         prefer not to say  |    1.45074   .1566353     9.26   0.000      1.14369    1.757791
+                            |
+                      _cons |   3.220379   .0351081    91.73   0.000     3.151557    3.289201
+---------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,300
+-------------+----------------------------------   F(19, 7280)     =     38.81
+       Model |  2293.47593        19   120.70926   Prob > F        =    0.0000
+    Residual |   22640.327     7,280  3.10993502   R-squared       =    0.0920
+-------------+----------------------------------   Adj R-squared   =    0.0896
+       Total |  24933.8029     7,299  3.41605739   Root MSE        =    1.7635
+
+--------------------------------------------------------------------------------------------------
+                    worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------------------------+----------------------------------------------------------------
+                      gender_cat |
+                      cis woman  |    .766527   .0442945    17.31   0.000     .6796969    .8533571
+                      trans man  |   1.616483   .2368176     6.83   0.000     1.152251    2.080714
+                    trans woman  |   .8869885   .3967558     2.24   0.025      .109232    1.664745
+                      nonbinary  |   1.786129   .1151466    15.51   0.000     1.560408    2.011849
+     gender diverse/questioning  |   2.058153   .2156292     9.54   0.000     1.635457    2.480849
+              prefer not to say  |   1.509832   .1555003     9.71   0.000     1.205007    1.814658
+                                 |
+                       race_assn |
+         Black/African American  |   .0095978   .1621571     0.06   0.953    -.3082773    .3274728
+                Hispanic/Latinx  |   .0623242   .1458217     0.43   0.669    -.2235286     .348177
+               Pacific Islander  |   .4752119   .2704536     1.76   0.079    -.0549556    1.005379
+                       Filipino  |   .3299515   .1844324     1.79   0.074    -.0315895    .6914924
+                          Asian  |   .2736659   .1524806     1.79   0.073    -.0252402     .572572
+                          Other  |  -.0971817   .1980309    -0.49   0.624    -.4853797    .2910163
+             White/Non-Hispanic  |  -.3164287   .1502212    -2.11   0.035    -.6109058   -.0219517
+                                 |
+                      parent_edu |
+            High school diploma  |   -.305571    .067135    -4.55   0.000    -.4371751   -.1739669
+Some college, no college degree  |   -.294965    .077347    -3.81   0.000    -.4465877   -.1433424
+               Associate degree  |  -.4049129   .1001987    -4.04   0.000    -.6013315   -.2084944
+              Bachelor's degree  |  -.4660399   .0757845    -6.15   0.000    -.6145995   -.3174803
+                Graduate degree  |  -.6129569   .0770042    -7.96   0.000    -.7639075   -.4620062
+                     Don't know  |  -.4321947   .1046034    -4.13   0.000    -.6372477   -.2271416
+                                 |
+                           _cons |   3.545225   .1542954    22.98   0.000     3.242761    3.847689
+--------------------------------------------------------------------------------------------------
+M3: using gender and hsexp index to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(20, 7255)     =     49.16
+       Model |  2965.25294        20  148.262647   Prob > F        =    0.0000
+    Residual |  21879.8583     7,255   3.0158316   R-squared       =    0.1193
+-------------+----------------------------------   Adj R-squared   =    0.1169
+       Total |  24845.1112     7,275  3.41513556   Root MSE        =    1.7366
+
+--------------------------------------------------------------------------------------------------
+                    worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+---------------------------------+----------------------------------------------------------------
+                      gender_cat |
+                      cis woman  |   .7354249   .0437453    16.81   0.000     .6496715    .8211784
+                      trans man  |   1.453654   .2334626     6.23   0.000     .9959995    1.911309
+                    trans woman  |   .7450218   .3908221     1.91   0.057    -.0211032    1.511147
+                      nonbinary  |   1.643449   .1137964    14.44   0.000     1.420375    1.866523
+     gender diverse/questioning  |   1.810763    .212982     8.50   0.000     1.393256     2.22827
+              prefer not to say  |   1.346931   .1540193     8.75   0.000     1.045009    1.648854
+                                 |
+                     hsexp_index |  -.0724329   .0048242   -15.01   0.000    -.0818898   -.0629759
+                                 |
+                       race_assn |
+         Black/African American  |   .0209498   .1598341     0.13   0.896    -.2923716    .3342713
+                Hispanic/Latinx  |    .049713   .1436159     0.35   0.729     -.231816    .3312419
+               Pacific Islander  |   .4352252   .2663454     1.63   0.102    -.0868894    .9573398
+                       Filipino  |   .3492628   .1816261     1.92   0.055    -.0067771    .7053027
+                          Asian  |   .2487428   .1501739     1.66   0.098    -.0456417    .5431272
+                          Other  |  -.1069513   .1950136    -0.55   0.583    -.4892347    .2753321
+             White/Non-Hispanic  |   -.304246   .1479452    -2.06   0.040    -.5942616   -.0142304
+                                 |
+                      parent_edu |
+            High school diploma  |   -.294643   .0662827    -4.45   0.000    -.4245764   -.1647096
+Some college, no college degree  |  -.2953183   .0762999    -3.87   0.000    -.4448883   -.1457483
+               Associate degree  |  -.3734416   .0988013    -3.78   0.000    -.5671209   -.1797623
+              Bachelor's degree  |  -.4016473    .074873    -5.36   0.000    -.5484202   -.2548743
+                Graduate degree  |  -.5267815   .0761238    -6.92   0.000    -.6760064   -.3775567
+                     Don't know  |  -.4586192   .1030556    -4.45   0.000    -.6606381   -.2566003
+                                 |
+                           _cons |   3.831513   .1531585    25.02   0.000     3.531277    4.131748
+--------------------------------------------------------------------------------------------------
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index1.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index1_w_mean.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index1_w_Nmean.png written in PNG format
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,319
+-------------+----------------------------------   F(6, 7312)      =     82.11
+       Model |  502.694065         6  83.7823442   Prob > F        =    0.0000
+    Residual |  7460.49246     7,312  1.02030805   R-squared       =    0.0631
+-------------+----------------------------------   Adj R-squared   =    0.0624
+       Total |  7963.18653     7,318  1.08816432   Root MSE        =    1.0101
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4186, mean=3.99)"   |   .0746862   .0252524     2.96   0.003     .0251841    .1241882
+                  "trans man" "(N=58, mean=4.65)"   |   1.610515   .1341099    12.01   0.000     1.347621    1.873409
+                "trans woman" "(N=20, mean=4.00)"   |   1.380185   .2267363     6.09   0.000     .9357162    1.824653
+                 "nonbinary" "(N=259, mean=4.97)"   |   1.021846   .0658282    15.52   0.000     .8928036    1.150888
+ "gender diverse/questioning" "(N=69, mean=5.18)"   |   .8027093   .1232113     6.51   0.000     .5611796    1.044239
+         "prefer not to say" "(N=137, mean=4.67)"   |   .7445844   .0885519     8.41   0.000     .5709971    .9181717
+                                                    |
+                                              _cons |  -1.337659    .019848   -67.40   0.000    -1.376566   -1.298751
+---------------------------------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,300
+-------------+----------------------------------   F(19, 7280)     =     39.73
+       Model |  745.532489        19  39.2385521   Prob > F        =    0.0000
+    Residual |  7190.37525     7,280  .987688908   R-squared       =    0.0939
+-------------+----------------------------------   Adj R-squared   =    0.0916
+       Total |  7935.90774     7,299  1.08725959   Root MSE        =    .99383
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4186, mean=3.99)"   |   .0845938   .0249623     3.39   0.001     .0356605    .1335272
+                  "trans man" "(N=58, mean=4.65)"   |   1.537127   .1334592    11.52   0.000     1.275508    1.798745
+                "trans woman" "(N=20, mean=4.00)"   |   1.293009   .2235928     5.78   0.000     .8547019    1.731315
+                 "nonbinary" "(N=259, mean=4.97)"   |    .999163   .0648912    15.40   0.000     .8719575    1.126368
+ "gender diverse/questioning" "(N=69, mean=5.18)"   |   .7602867   .1215184     6.26   0.000     .5220754     .998498
+         "prefer not to say" "(N=137, mean=4.67)"   |   .7279273   .0876326     8.31   0.000      .556142    .8997126
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .1963874   .0913841     2.15   0.032     .0172481    .3755267
+                                   Hispanic/Latinx  |   -.130174   .0821782    -1.58   0.113     -.291267    .0309191
+                                  Pacific Islander  |   .0998063   .1524148     0.65   0.513    -.1989709    .3985836
+                                          Filipino  |  -.0482087   .1039373    -0.46   0.643     -.251956    .1555386
+                                             Asian  |  -.0315044   .0859308    -0.37   0.714    -.1999537    .1369449
+                                             Other  |   .0373783   .1116008     0.33   0.738    -.1813917    .2561482
+                                White/Non-Hispanic  |  -.0415289   .0846575    -0.49   0.624    -.2074822    .1244243
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .1278751   .0378341     3.38   0.001     .0537093    .2020409
+                   Some college, no college degree  |   .1720382   .0435891     3.95   0.000     .0865909    .2574855
+                                  Associate degree  |   .1575912   .0564672     2.79   0.005      .046899    .2682834
+                                 Bachelor's degree  |   .2523462   .0427085     5.91   0.000     .1686251    .3360674
+                                   Graduate degree  |   .4301606   .0433959     9.91   0.000     .3450919    .5152292
+                                        Don't know  |   .1986544   .0589495     3.37   0.001     .0830962    .3142126
+                                                    |
+                                              _cons |  -1.472689   .0869536   -16.94   0.000    -1.643143   -1.302235
+---------------------------------------------------------------------------------------------------------------------
+M3: using gender and hsexp index to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(20, 7255)     =     39.54
+       Model |  777.883446        20  38.8941723   Prob > F        =    0.0000
+    Residual |  7135.83947     7,255  .983575393   R-squared       =    0.0983
+-------------+----------------------------------   Adj R-squared   =    0.0958
+       Total |  7913.72292     7,275  1.08779696   Root MSE        =    .99175
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4186, mean=3.99)"   |   .0910193   .0249822     3.64   0.000     .0420468    .1399917
+                  "trans man" "(N=58, mean=4.65)"   |   1.572088   .1333269    11.79   0.000     1.310728    1.833447
+                "trans woman" "(N=20, mean=4.00)"   |   1.323812   .2231924     5.93   0.000     .8862901    1.761334
+                 "nonbinary" "(N=259, mean=4.97)"   |    1.03001   .0649873    15.85   0.000     .9026163    1.157404
+ "gender diverse/questioning" "(N=69, mean=5.18)"   |   .8137522   .1216307     6.69   0.000     .5753207    1.052184
+         "prefer not to say" "(N=137, mean=4.67)"   |   .7792778    .087958     8.86   0.000     .6068545     .951701
+                                                    |
+                                        hsexp_index |   .0157209   .0027551     5.71   0.000     .0103202    .0211216
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .1913842   .0912788     2.10   0.036     .0124512    .3703172
+                                   Hispanic/Latinx  |   -.127127   .0820168    -1.55   0.121    -.2879038    .0336498
+                                  Pacific Islander  |   .1084053   .1521057     0.71   0.476    -.1897662    .4065768
+                                          Filipino  |  -.0525332   .1037238    -0.51   0.613    -.2558621    .1507956
+                                             Asian  |    -.02682   .0857619    -0.31   0.754    -.1949384    .1412984
+                                             Other  |   .0389692   .1113692     0.35   0.726    -.1793469    .2572853
+                                White/Non-Hispanic  |  -.0440805   .0844892    -0.52   0.602    -.2097039    .1215429
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .1235313    .037853     3.26   0.001     .0493284    .1977343
+                   Some college, no college degree  |   .1726639   .0435737     3.96   0.000     .0872468    .2580809
+                                  Associate degree  |   .1496341   .0564239     2.65   0.008     .0390269    .2602413
+                                 Bachelor's degree  |   .2359564   .0427588     5.52   0.000     .1521366    .3197761
+                                   Graduate degree  |   .4107753   .0434731     9.45   0.000     .3255554    .4959953
+                                        Don't know  |    .202558   .0588534     3.44   0.001     .0871882    .3179279
+                                                    |
+                                              _cons |  -1.533506   .0874664   -17.53   0.000    -1.704966   -1.362046
+---------------------------------------------------------------------------------------------------------------------
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index2.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index2_w_mean.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index2_w_Nmean.png written in PNG format
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,319
+-------------+----------------------------------   F(6, 7312)      =      1.54
+       Model |  11.7185068         6  1.95308447   Prob > F        =    0.1623
+    Residual |  9303.09411     7,312  1.27230499   R-squared       =    0.0013
+-------------+----------------------------------   Adj R-squared   =    0.0004
+       Total |  9314.81262     7,318  1.27286316   Root MSE        =     1.128
+
+----------------------------------------------------------------------------------------------------------------------
+                                        worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------------------------------------------+----------------------------------------------------------------
+                                          gender_cat |
+                "cis woman" "(N=4186, mean=-1.26)"   |   .0472896   .0281989     1.68   0.094    -.0079885    .1025676
+                   "trans man" "(N=58, mean=0.27)"   |  -.1828713   .1497582    -1.22   0.222    -.4764406    .1106981
+                 "trans woman" "(N=20, mean=0.04)"   |    .298805   .2531926     1.18   0.238    -.1975256    .7951355
+                 "nonbinary" "(N=259, mean=-0.32)"   |   .0158223   .0735093     0.22   0.830    -.1282771    .1599217
+ "gender diverse/questioning" "(N=69, mean=-0.53)"   |   .1954687   .1375879     1.42   0.155    -.0742433    .4651808
+         "prefer not to say" "(N=137, mean=-0.59)"   |  -.0963428   .0988845    -0.97   0.330    -.2901849    .0974993
+                                                     |
+                                               _cons |   .6100973   .0221639    27.53   0.000     .5666497    .6535449
+----------------------------------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,300
+-------------+----------------------------------   F(19, 7280)     =     25.80
+       Model |  586.421596        19  30.8642945   Prob > F        =    0.0000
+    Residual |   8709.5051     7,280  1.19636059   R-squared       =    0.0631
+-------------+----------------------------------   Adj R-squared   =    0.0606
+       Total |  9295.92669     7,299  1.27358908   Root MSE        =    1.0938
+
+----------------------------------------------------------------------------------------------------------------------
+                                        worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------------------------------------------+----------------------------------------------------------------
+                                          gender_cat |
+                "cis woman" "(N=4186, mean=-1.26)"   |    .024657    .027473     0.90   0.369    -.0291979     .078512
+                   "trans man" "(N=58, mean=0.27)"   |  -.1176093   .1468823    -0.80   0.423    -.4055411    .1703225
+                 "trans woman" "(N=20, mean=0.04)"   |    .338271   .2460814     1.37   0.169    -.1441198    .8206618
+                 "nonbinary" "(N=259, mean=-0.32)"   |   .0301007   .0714178     0.42   0.673    -.1098989    .1701003
+ "gender diverse/questioning" "(N=69, mean=-0.53)"   |   .1874201   .1337405     1.40   0.161    -.0747501    .4495903
+         "prefer not to say" "(N=137, mean=-0.59)"   |  -.0257481   .0964465    -0.27   0.790    -.2148112     .163315
+                                                     |
+                                           race_assn |
+                             Black/African American  |   -.127788   .1005753    -1.27   0.204    -.3249448    .0693689
+                                    Hispanic/Latinx  |  -.3521874   .0904435    -3.89   0.000    -.5294829   -.1748919
+                                   Pacific Islander  |  -.0295004   .1677445    -0.18   0.860    -.3583282    .2993274
+                                           Filipino  |  -.3660283   .1143912    -3.20   0.001    -.5902682   -.1417884
+                                              Asian  |  -.5613868   .0945736    -5.94   0.000    -.7467785   -.3759952
+                                              Other  |  -.3051797   .1228255    -2.48   0.013    -.5459532   -.0644062
+                                 White/Non-Hispanic  |  -.4479205   .0931722    -4.81   0.000    -.6305651   -.2652759
+                                                     |
+                                          parent_edu |
+                                High school diploma  |   .0315132   .0416394     0.76   0.449    -.0501121    .1131385
+                    Some college, no college degree  |  -.0064649   .0479732    -0.13   0.893    -.1005063    .0875766
+                                   Associate degree  |    -.10657   .0621466    -1.71   0.086    -.2283954    .0152554
+                                  Bachelor's degree  |  -.2638859   .0470041    -5.61   0.000    -.3560276   -.1717442
+                                    Graduate degree  |  -.5745344   .0477606   -12.03   0.000    -.6681591   -.4809097
+                                         Don't know  |  -.0848778   .0648786    -1.31   0.191    -.2120586     .042303
+                                                     |
+                                               _cons |   1.160012   .0956992    12.12   0.000     .9724135     1.34761
+----------------------------------------------------------------------------------------------------------------------
+M3: using gender and hsexp index to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(20, 7255)     =     24.73
+       Model |  590.614881        20  29.5307441   Prob > F        =    0.0000
+    Residual |  8664.26308     7,255  1.19424715   R-squared       =    0.0638
+-------------+----------------------------------   Adj R-squared   =    0.0612
+       Total |  9254.87796     7,275  1.27214817   Root MSE        =    1.0928
+
+----------------------------------------------------------------------------------------------------------------------
+                                        worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-----------------------------------------------------+----------------------------------------------------------------
+                                          gender_cat |
+                "cis woman" "(N=4186, mean=-1.26)"   |    .024479    .027528     0.89   0.374    -.0294839    .0784419
+                   "trans man" "(N=58, mean=0.27)"   |  -.1140193   .1469133    -0.78   0.438    -.4020121    .1739734
+                 "trans woman" "(N=20, mean=0.04)"   |   .3414339   .2459363     1.39   0.165    -.1406728    .8235407
+                 "nonbinary" "(N=259, mean=-0.32)"   |   .0320535   .0716097     0.45   0.654    -.1083224    .1724293
+ "gender diverse/questioning" "(N=69, mean=-0.53)"   |   .1930614   .1340252     1.44   0.150     -.069667    .4557897
+         "prefer not to say" "(N=137, mean=-0.59)"   |   -.021478   .0969212    -0.22   0.825    -.2114717    .1685157
+                                                     |
+                                         hsexp_index |   .0024268   .0030358     0.80   0.424    -.0035243    .0083778
+                                                     |
+                                           race_assn |
+                             Black/African American  |  -.1200869   .1005803    -1.19   0.233    -.3172537    .0770798
+                                    Hispanic/Latinx  |  -.3492906   .0903745    -3.86   0.000     -.526451   -.1721302
+                                   Pacific Islander  |  -.0281354   .1676057    -0.17   0.867    -.3566914    .3004206
+                                           Filipino  |  -.3666484   .1142936    -3.21   0.001     -.590697   -.1425998
+                                              Asian  |   -.556731   .0945013    -5.89   0.000    -.7419811   -.3714809
+                                              Other  |  -.3042979   .1227181    -2.48   0.013     -.544861   -.0637348
+                                 White/Non-Hispanic  |  -.4476063   .0930989    -4.81   0.000    -.6301072   -.2651054
+                                                     |
+                                          parent_edu |
+                                High school diploma  |   .0322666   .0417104     0.77   0.439    -.0494979     .114031
+                    Some college, no college degree  |  -.0036427   .0480139    -0.08   0.940     -.097764    .0904786
+                                   Associate degree  |   -.104921   .0621736    -1.69   0.092    -.2267994    .0169574
+                                  Bachelor's degree  |  -.2635774   .0471161    -5.59   0.000    -.3559386   -.1712162
+                                    Graduate degree  |  -.5797447   .0479032   -12.10   0.000    -.6736488   -.4858406
+                                         Don't know  |   -.085746   .0648508    -1.32   0.186    -.2128724    .0413803
+                                                     |
+                                               _cons |   1.150123   .0963795    11.93   0.000     .9611911    1.339055
+----------------------------------------------------------------------------------------------------------------------
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index3.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index3_w_mean.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/worry_index3_w_Nmean.png written in PNG format
+
+. 
+. 
+. **************************
+. * Reg HS index by Gender *
+. **************************
+. foreach y in hsexp_index {
+  2.     cap drop `y'_m1 `y'_m2 `y'_m3
+  3.     di "M1: only using gender to predict worry"
+  4.     reg `y' i.gender_cat
+  5.     est store `y'_m1
+  6.     * coefplot, drop(_cons) baselevels label // visualization
+.     * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m1.png", replace
+.     * predict `y'_m1 // potential post-estimation
+. 
+.     di "M2: using gender to predict worry, controlling for demographics"
+  7.     reg `y' i.gender_cat i.race_assn i.parent_edu
+  8.     est store `y'_m2
+  9.     * coefplot, drop(_cons *.race_assn *.parent_edu) baselevels label
+.     * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m2.png", replace
+.     * predict `y'_m2
+. 
+. // Change colors to be compatible with B&W prints
+.     label val gender_cat gender_cat_lbl
+ 10.     coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label leg
+> end(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(small))  // title( "`: var label `y''")
+ 11.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'.png", replace 
+ 12. 
+.     label val gender_cat gender_cat_`y'
+ 13.     coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label leg
+> end(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+ 14.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_mean.png", replace 
+ 15. 
+.     label val gender_cat gender_cat_`y'2
+ 16.     coefplot  (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label le
+> gend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+ 17.     graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_Nmean.png", replace
+ 18. 
+. }
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,483
+-------------+----------------------------------   F(6, 7476)      =     19.75
+       Model |  2161.07049         6  360.178415   Prob > F        =    0.0000
+    Residual |  136319.919     7,476  18.2343391   R-squared       =    0.0156
+-------------+----------------------------------   Adj R-squared   =    0.0148
+       Total |  138480.989     7,482  18.5085525   Root MSE        =    4.2702
+
+---------------------------------------------------------------------------------------------------------------------
+                                        hsexp_index | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4186, mean=0.66)"   |   -.484085   .1054937    -4.59   0.000    -.6908824   -.2772876
+                  "trans man" "(N=58, mean=0.43)"   |  -1.847426   .5620624    -3.29   0.001    -2.949226   -.7456252
+                "trans woman" "(N=20, mean=0.91)"   |  -1.721155   .9584229    -1.80   0.073    -3.599933    .1576241
+                 "nonbinary" "(N=259, mean=0.63)"   |  -1.952803   .2741368    -7.12   0.000    -2.490188   -1.415417
+ "gender diverse/questioning" "(N=69, mean=0.81)"   |  -3.158479   .5134971    -6.15   0.000    -4.165077    -2.15188
+         "prefer not to say" "(N=137, mean=0.51)"   |  -2.039271   .3728143    -5.47   0.000    -2.770091    -1.30845
+                                                    |
+                                              _cons |   4.271155   .0828106    51.58   0.000     4.108823    4.433487
+---------------------------------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,464
+-------------+----------------------------------   F(19, 7444)     =     13.79
+       Model |  4695.18127        19  247.114804   Prob > F        =    0.0000
+    Residual |  133372.368     7,444  17.9167609   R-squared       =    0.0340
+-------------+----------------------------------   Adj R-squared   =    0.0315
+       Total |  138067.549     7,463  18.5002746   Root MSE        =    4.2328
+
+---------------------------------------------------------------------------------------------------------------------
+                                        hsexp_index | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4186, mean=0.66)"   |  -.4573706   .1050832    -4.35   0.000    -.6633634   -.2513778
+                  "trans man" "(N=58, mean=0.43)"   |  -2.212905   .5634198    -3.93   0.000    -3.317367   -1.108443
+                "trans woman" "(N=20, mean=0.91)"   |   -1.91647   .9521168    -2.01   0.044    -3.782888    -.050052
+                 "nonbinary" "(N=259, mean=0.63)"   |  -2.029933   .2722833    -7.46   0.000    -2.563685    -1.49618
+ "gender diverse/questioning" "(N=69, mean=0.81)"   |  -3.287294   .5102026    -6.44   0.000    -4.287435   -2.287152
+         "prefer not to say" "(N=137, mean=0.51)"   |  -2.153511   .3716696    -5.79   0.000    -2.882088   -1.424933
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .0137329   .3819526     0.04   0.971    -.7350022    .7624681
+                                   Hispanic/Latinx  |  -.1436292   .3425221    -0.42   0.675    -.8150694     .527811
+                                  Pacific Islander  |  -.7380186   .6299165    -1.17   0.241    -1.972833    .4967959
+                                          Filipino  |   .2610391   .4352831     0.60   0.549    -.5922389    1.114317
+                                             Asian  |  -.2715909    .358208    -0.76   0.448    -.9737799    .4305981
+                                             Other  |  -.0473818   .4678474    -0.10   0.919     -.964495    .8697313
+                                White/Non-Hispanic  |   .1795559   .3528776     0.51   0.611    -.5121839    .8712957
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .0917909   .1591604     0.58   0.564    -.2202085    .4037903
+                   Some college, no college degree  |   .0264952   .1836079     0.14   0.885    -.3334281    .3864185
+                                  Associate degree  |   .4584473   .2381503     1.93   0.054    -.0083946    .9252892
+                                 Bachelor's degree  |   .9874003   .1797687     5.49   0.000     .6350029    1.339798
+                                   Graduate degree  |    1.17462   .1825248     6.44   0.000     .8168203    1.532421
+                                        Don't know  |  -.2722116   .2473133    -1.10   0.271    -.7570157    .2125925
+                                                    |
+                                              _cons |   3.904868   .3629215    10.76   0.000     3.193439    4.616297
+---------------------------------------------------------------------------------------------------------------------
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/hsexp_index.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/hsexp_index_w_mean.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/hsexp_index_w_Nmean.png written in PNG format
+
+. 
+. 
+. 
+. ************
+. * Appendix *
+. ************
+. * (results are not included in the current version of the papar but has been used to inform decisions) 
+. 
+. 
+. * PCA chose not to include
+. pca $allhsexp
+
+Principal components/correlation                 Number of obs    =      7,683
+                                                 Number of comp.  =          6
+                                                 Trace            =          6
+    Rotation: (unrotated = principal)            Rho              =     1.0000
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      2.67391      1.60892             0.4457       0.4457
+           Comp2 |      1.06499      .199323             0.1775       0.6231
+           Comp3 |      .865667      .270138             0.1443       0.7674
+           Comp4 |       .59553      .142338             0.0993       0.8667
+           Comp5 |      .453191      .106479             0.0755       0.9422
+           Comp6 |      .346713            .             0.0578       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    ----------------------------------------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3     Comp4     Comp5     Comp6 | Unexplained 
+    -------------+------------------------------------------------------------+-------------
+     hs_academic |   0.2624    0.6211    0.5819    0.3936    0.1266    0.1893 |           0 
+       hs_social |   0.3791    0.4656   -0.5168   -0.1560    0.4160   -0.4183 |           0 
+    hs_communi~g |   0.4737    0.1039   -0.4336    0.0394   -0.4886    0.5801 |           0 
+    hs_teacher~e |   0.4642   -0.3337    0.0871    0.4725   -0.3393   -0.5720 |           0 
+    hs_good_ad~g |   0.4185   -0.5235    0.0592    0.0869    0.6517    0.3393 |           0 
+    hs_prepare~e |   0.4152   -0.0355    0.4418   -0.7671   -0.1800   -0.1019 |           0 
+    ----------------------------------------------------------------------------------------
+
+. pca $allworries $allhsexp
+
+Principal components/correlation                 Number of obs    =      7,482
+                                                 Number of comp.  =         18
+                                                 Trace            =         18
+    Rotation: (unrotated = principal)            Rho              =     1.0000
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      4.15311      1.74553             0.2307       0.2307
+           Comp2 |      2.40758      .692133             0.1338       0.3645
+           Comp3 |      1.71545      .452686             0.0953       0.4598
+           Comp4 |      1.26276      .143876             0.0702       0.5299
+           Comp5 |      1.11888      .217964             0.0622       0.5921
+           Comp6 |       .90092      .043847             0.0501       0.6422
+           Comp7 |      .857073     .0855358             0.0476       0.6898
+           Comp8 |      .771538      .141078             0.0429       0.7326
+           Comp9 |      .630459    .00618494             0.0350       0.7677
+          Comp10 |      .624274     .0483546             0.0347       0.8023
+          Comp11 |       .57592     .0387674             0.0320       0.8343
+          Comp12 |      .537152     .0288815             0.0298       0.8642
+          Comp13 |      .508271     .0639421             0.0282       0.8924
+          Comp14 |      .444329     .0191194             0.0247       0.9171
+          Comp15 |      .425209     .0410653             0.0236       0.9407
+          Comp16 |      .384144     .0327774             0.0213       0.9621
+          Comp17 |      .351367     .0198088             0.0195       0.9816
+          Comp18 |      .331558            .             0.0184       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3     Comp4     Comp5     Comp6     Comp7     Comp8     Comp9    Comp10    Comp11    Comp12    Comp13    Comp14    Comp15    Comp16    Comp17    Comp18 | Unexplained 
+    -------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------
+    worry_tuit~n |   0.2561    0.0839   -0.2006    0.5604    0.0802   -0.2485    0.0030    0.0585    0.0989    0.0626   -0.1287    0.0577    0.0503    0.0453    0.0425    0.0232    0.4258    0.5288 |           0 
+    worry_living |   0.2725    0.1252   -0.1905    0.4952    0.1708   -0.2650   -0.0018   -0.0145   -0.0546    0.0612    0.0627    0.1120    0.0386   -0.0088   -0.0252    0.1195   -0.4371   -0.5461 |           0 
+    worry_acad~c |   0.3000    0.0938   -0.2423   -0.1848   -0.1670    0.2722    0.1035    0.1278    0.4381    0.0385    0.3663    0.1548   -0.0907    0.1953   -0.0659    0.5236   -0.0127    0.0526 |           0 
+      worry_work |   0.3258    0.1330   -0.2551   -0.0184   -0.1160    0.2391    0.1398    0.2591   -0.0001    0.0393    0.2836   -0.0498   -0.0922   -0.1416   -0.0095   -0.7340    0.0083   -0.0386 |           0 
+    worry_family |   0.2922    0.1512   -0.1849   -0.1324   -0.0591    0.2155   -0.0139    0.2650   -0.6590   -0.0688   -0.1838   -0.2590    0.2513   -0.0905    0.0406    0.3223    0.0447    0.0310 |           0 
+    worry_comm~y |   0.2829    0.1058   -0.0451   -0.4196    0.0793   -0.2097    0.0241    0.0598    0.2724    0.0677   -0.4970    0.2797    0.4496    0.1609    0.0431   -0.1793   -0.0965   -0.0285 |           0 
+      worry_away |   0.2043    0.1897   -0.0547   -0.2572    0.3870   -0.1748   -0.3172   -0.5048   -0.0797   -0.0319    0.4593   -0.1821    0.1999   -0.0058   -0.0576   -0.0474    0.0619    0.1284 |           0 
+    worry_supp~t |   0.3255    0.1284    0.0069   -0.2226    0.0963   -0.0902    0.0674   -0.2513   -0.1790    0.0074   -0.2895    0.1899   -0.7626   -0.0576    0.0501    0.0326    0.0478    0.0059 |           0 
+    worry_gender |   0.2304    0.0751    0.4802    0.0581   -0.0857    0.0006    0.3387   -0.1115    0.0286    0.0113    0.1715   -0.0196    0.1365   -0.1378    0.7081    0.0547   -0.0064    0.0026 |           0 
+        worry_so |   0.2130    0.0776    0.4626    0.0848   -0.1792    0.0261    0.3401   -0.1760   -0.1427    0.3356    0.0286   -0.0427    0.1102    0.1879   -0.6002   -0.0244    0.0633   -0.0026 |           0 
+      worry_race |   0.2393    0.1273    0.3444    0.1406   -0.0471    0.1172   -0.1893    0.0521    0.1640   -0.8036   -0.0851   -0.0067    0.0018   -0.0437   -0.2236   -0.0302   -0.0269   -0.0079 |           0 
+    worry_reli~n |   0.1490    0.0997    0.3545    0.0751   -0.0491    0.1825   -0.7275    0.2392    0.0677    0.4345   -0.0392    0.0263   -0.0951   -0.0009    0.0934   -0.0098   -0.0215   -0.0194 |           0 
+     hs_academic |  -0.0997    0.2461    0.2009   -0.1265    0.5364   -0.2149    0.2055    0.5259    0.1413    0.0242    0.0572   -0.3396   -0.1627    0.0969   -0.0519    0.0606    0.1578   -0.1190 |           0 
+       hs_social |  -0.1882    0.3153   -0.0028    0.1752    0.3640    0.5148    0.1049   -0.1237   -0.0816   -0.0005   -0.1114    0.1144   -0.0009    0.4084    0.1054   -0.0923   -0.3459    0.2691 |           0 
+    hs_communi~g |  -0.1917    0.4304   -0.0756    0.0725    0.0865    0.3226    0.0410   -0.2124    0.1517    0.0769   -0.1464    0.1550    0.1307   -0.4012   -0.0511    0.0645    0.4672   -0.3622 |           0 
+    hs_teacher~e |  -0.1367    0.4620   -0.0564   -0.0257   -0.2807   -0.1831    0.0334   -0.0503    0.2109    0.0966   -0.1234   -0.3393   -0.0527   -0.3942   -0.0877    0.0592   -0.4416    0.3155 |           0 
+    hs_good_ad~g |  -0.1415    0.4012   -0.0968    0.0060   -0.4433   -0.2021   -0.1095   -0.0950   -0.0532   -0.0979   -0.0010   -0.2026   -0.0687    0.5878    0.1884   -0.0909    0.2154   -0.2397 |           0 
+    hs_prepare~e |  -0.2283    0.3270    0.1139   -0.0907   -0.0841   -0.2652   -0.0157    0.2631   -0.3143   -0.0782    0.3131    0.6569    0.0387   -0.0894   -0.0616    0.0144   -0.0228    0.1563 |           0 
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. 
+. 
+. * Correlation between Worry & HS experience
+. forval n = 1/3{
+  2.     corr worry_index`n' hsexp_index
+  3. }
+(obs=7,486)
+
+             | worry_~1 hsexp_~x
+-------------+------------------
+worry_index1 |   1.0000
+ hsexp_index |  -0.2084   1.0000
+
+(obs=7,486)
+
+             | worry_~2 hsexp_~x
+-------------+------------------
+worry_index2 |   1.0000
+ hsexp_index |   0.0542   1.0000
+
+(obs=7,486)
+
+             | worry_~3 hsexp_~x
+-------------+------------------
+worry_index3 |   1.0000
+ hsexp_index |  -0.0155   1.0000
+
+
+. 
+. 
+. * Check alternative modeling choice for regression
+. foreach y in $indices {
+  2.     di "M1: only using gender to predict worry"
+  3.     reg `y' i.gender_cat
+  4.     di "M1b: using gender and hsexp to predict worry"
+  5.     reg `y' i.gender_cat c.hsexp_index
+  6.     di "M1c: using gender, hsexp, and hsexp^2 to predict worry"
+  7.     reg `y' i.gender_cat c.hsexp_index##c.hsexp_index
+  8.     di "M2: using gender to predict worry, controlling for demographics"
+  9.     reg `y' i.gender_cat i.race_assn i.parent_edu
+ 10.     di "M3: using gender and hsexp index to predict worry, controlling for demographics"
+ 11.     reg `y' i.gender_cat c.hsexp_index i.race_assn i.parent_edu 
+ 12.     di "M3b: using gender, hsexp, and hsexp^2 to predict worry, controlling for demographics"
+ 13.     reg `y' i.gender_cat c.hsexp_index##c.hsexp_index i.race_assn i.parent_edu 
+ 14. }
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,319
+-------------+----------------------------------   F(6, 7312)      =     86.29
+       Model |  1652.91575         6  275.485958   Prob > F        =    0.0000
+    Residual |  23342.6752     7,312  3.19237899   R-squared       =    0.0661
+-------------+----------------------------------   Adj R-squared   =    0.0654
+       Total |  24995.5909     7,318  3.41563145   Root MSE        =    1.7867
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .7709925   .0446678    17.26   0.000     .6834308    .8585542
+                  "trans man" "(N=59, mean=2.42)"   |   1.429053   .2372206     6.02   0.000     .9640324    1.894074
+                "trans woman" "(N=20, mean=2.55)"   |   .7819296    .401063     1.95   0.051    -.0042696    1.568129
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.746711   .1164404    15.00   0.000     1.518455    1.974968
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   1.964616   .2179425     9.01   0.000     1.537385    2.391846
+         "prefer not to say" "(N=138, mean=2.23)"   |    1.45074   .1566353     9.26   0.000      1.14369    1.757791
+                                                    |
+                                              _cons |   3.220379   .0351081    91.73   0.000     3.151557    3.289201
+---------------------------------------------------------------------------------------------------------------------
+M1b: using gender and hsexp to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,294
+-------------+----------------------------------   F(7, 7286)      =    113.40
+       Model |  2446.72828         7  349.532611   Prob > F        =    0.0000
+    Residual |  22457.4391     7,286  3.08227273   R-squared       =    0.0982
+-------------+----------------------------------   Adj R-squared   =    0.0974
+       Total |  24904.1674     7,293  3.41480425   Root MSE        =    1.7556
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .7363618   .0440203    16.73   0.000     .6500692    .8226544
+                  "trans man" "(N=59, mean=2.42)"   |   1.284075   .2332718     5.50   0.000     .8267945    1.741355
+                "trans woman" "(N=20, mean=2.55)"   |    .647553    .394177     1.64   0.100    -.1251481    1.420254
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.600179   .1147846    13.94   0.000     1.375168     1.82519
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   1.709593   .2147356     7.96   0.000      1.28865    2.130537
+         "prefer not to say" "(N=138, mean=2.23)"   |   1.283791   .1547562     8.30   0.000     .9804236    1.587158
+                                                    |
+                                        hsexp_index |  -.0778358   .0048233   -16.14   0.000    -.0872909   -.0683808
+                                              _cons |   3.553237    .040193    88.40   0.000     3.474447    3.632027
+---------------------------------------------------------------------------------------------------------------------
+M1c: using gender, hsexp, and hsexp^2 to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,294
+-------------+----------------------------------   F(8, 7285)      =     99.30
+       Model |  2448.67602         8  306.084502   Prob > F        =    0.0000
+    Residual |  22455.4914     7,285  3.08242847   R-squared       =    0.0983
+-------------+----------------------------------   Adj R-squared   =    0.0973
+       Total |  24904.1674     7,293  3.41480425   Root MSE        =    1.7557
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .7355933   .0440321    16.71   0.000     .6492777    .8219089
+                  "trans man" "(N=59, mean=2.42)"   |   1.280489   .2333213     5.49   0.000     .8231115    1.737866
+                "trans woman" "(N=20, mean=2.55)"   |    .648715   .3941897     1.65   0.100     -.124011    1.421441
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.599363   .1147921    13.93   0.000     1.374337    1.824388
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   1.710415   .2147435     7.96   0.000     1.289455    2.131374
+         "prefer not to say" "(N=138, mean=2.23)"   |   1.283346   .1547612     8.29   0.000     .9799696    1.586723
+                                                    |
+                                        hsexp_index |  -.0741634    .006679   -11.10   0.000    -.0872562   -.0610706
+                                                    |
+                        c.hsexp_index#c.hsexp_index |  -.0006619   .0008326    -0.79   0.427     -.002294    .0009703
+                                                    |
+                                              _cons |   3.561607   .0415501    85.72   0.000     3.480156    3.643057
+---------------------------------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,300
+-------------+----------------------------------   F(19, 7280)     =     38.81
+       Model |  2293.47593        19   120.70926   Prob > F        =    0.0000
+    Residual |   22640.327     7,280  3.10993502   R-squared       =    0.0920
+-------------+----------------------------------   Adj R-squared   =    0.0896
+       Total |  24933.8029     7,299  3.41605739   Root MSE        =    1.7635
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |    .766527   .0442945    17.31   0.000     .6796969    .8533571
+                  "trans man" "(N=59, mean=2.42)"   |   1.616483   .2368176     6.83   0.000     1.152251    2.080714
+                "trans woman" "(N=20, mean=2.55)"   |   .8869885   .3967558     2.24   0.025      .109232    1.664745
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.786129   .1151466    15.51   0.000     1.560408    2.011849
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   2.058153   .2156292     9.54   0.000     1.635457    2.480849
+         "prefer not to say" "(N=138, mean=2.23)"   |   1.509832   .1555003     9.71   0.000     1.205007    1.814658
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .0095978   .1621571     0.06   0.953    -.3082773    .3274728
+                                   Hispanic/Latinx  |   .0623242   .1458217     0.43   0.669    -.2235286     .348177
+                                  Pacific Islander  |   .4752119   .2704536     1.76   0.079    -.0549556    1.005379
+                                          Filipino  |   .3299515   .1844324     1.79   0.074    -.0315895    .6914924
+                                             Asian  |   .2736659   .1524806     1.79   0.073    -.0252402     .572572
+                                             Other  |  -.0971817   .1980309    -0.49   0.624    -.4853797    .2910163
+                                White/Non-Hispanic  |  -.3164287   .1502212    -2.11   0.035    -.6109058   -.0219517
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   -.305571    .067135    -4.55   0.000    -.4371751   -.1739669
+                   Some college, no college degree  |   -.294965    .077347    -3.81   0.000    -.4465877   -.1433424
+                                  Associate degree  |  -.4049129   .1001987    -4.04   0.000    -.6013315   -.2084944
+                                 Bachelor's degree  |  -.4660399   .0757845    -6.15   0.000    -.6145995   -.3174803
+                                   Graduate degree  |  -.6129569   .0770042    -7.96   0.000    -.7639075   -.4620062
+                                        Don't know  |  -.4321947   .1046034    -4.13   0.000    -.6372477   -.2271416
+                                                    |
+                                              _cons |   3.545225   .1542954    22.98   0.000     3.242761    3.847689
+---------------------------------------------------------------------------------------------------------------------
+M3: using gender and hsexp index to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(20, 7255)     =     49.16
+       Model |  2965.25294        20  148.262647   Prob > F        =    0.0000
+    Residual |  21879.8583     7,255   3.0158316   R-squared       =    0.1193
+-------------+----------------------------------   Adj R-squared   =    0.1169
+       Total |  24845.1112     7,275  3.41513556   Root MSE        =    1.7366
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .7354249   .0437453    16.81   0.000     .6496715    .8211784
+                  "trans man" "(N=59, mean=2.42)"   |   1.453654   .2334626     6.23   0.000     .9959995    1.911309
+                "trans woman" "(N=20, mean=2.55)"   |   .7450218   .3908221     1.91   0.057    -.0211032    1.511147
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.643449   .1137964    14.44   0.000     1.420375    1.866523
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   1.810763    .212982     8.50   0.000     1.393256     2.22827
+         "prefer not to say" "(N=138, mean=2.23)"   |   1.346931   .1540193     8.75   0.000     1.045009    1.648854
+                                                    |
+                                        hsexp_index |  -.0724329   .0048242   -15.01   0.000    -.0818898   -.0629759
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .0209498   .1598341     0.13   0.896    -.2923716    .3342713
+                                   Hispanic/Latinx  |    .049713   .1436159     0.35   0.729     -.231816    .3312419
+                                  Pacific Islander  |   .4352252   .2663454     1.63   0.102    -.0868894    .9573398
+                                          Filipino  |   .3492628   .1816261     1.92   0.055    -.0067771    .7053027
+                                             Asian  |   .2487428   .1501739     1.66   0.098    -.0456417    .5431272
+                                             Other  |  -.1069513   .1950136    -0.55   0.583    -.4892347    .2753321
+                                White/Non-Hispanic  |   -.304246   .1479452    -2.06   0.040    -.5942616   -.0142304
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   -.294643   .0662827    -4.45   0.000    -.4245764   -.1647096
+                   Some college, no college degree  |  -.2953183   .0762999    -3.87   0.000    -.4448883   -.1457483
+                                  Associate degree  |  -.3734416   .0988013    -3.78   0.000    -.5671209   -.1797623
+                                 Bachelor's degree  |  -.4016473    .074873    -5.36   0.000    -.5484202   -.2548743
+                                   Graduate degree  |  -.5267815   .0761238    -6.92   0.000    -.6760064   -.3775567
+                                        Don't know  |  -.4586192   .1030556    -4.45   0.000    -.6606381   -.2566003
+                                                    |
+                                              _cons |   3.831513   .1531585    25.02   0.000     3.531277    4.131748
+---------------------------------------------------------------------------------------------------------------------
+M3b: using gender, hsexp, and hsexp^2 to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(21, 7254)     =     46.83
+       Model |  2965.93596        21  141.235046   Prob > F        =    0.0000
+    Residual |  21879.1753     7,254  3.01615319   R-squared       =    0.1194
+-------------+----------------------------------   Adj R-squared   =    0.1168
+       Total |  24845.1112     7,275  3.41513556   Root MSE        =    1.7367
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index1 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |    .734952   .0437589    16.80   0.000     .6491718    .8207322
+                  "trans man" "(N=59, mean=2.42)"   |    1.45115   .2335344     6.21   0.000     .9933547    1.908945
+                "trans woman" "(N=20, mean=2.55)"   |   .7457052   .3908455     1.91   0.056    -.0204658    1.511876
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.642913    .113808    14.44   0.000     1.419816     1.86601
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   1.811131   .2129947     8.50   0.000     1.393599    2.228663
+         "prefer not to say" "(N=138, mean=2.23)"   |   1.346549   .1540296     8.74   0.000     1.044606    1.648492
+                                                    |
+                                        hsexp_index |  -.0702651   .0066353   -10.59   0.000    -.0832722   -.0572581
+                                                    |
+                        c.hsexp_index#c.hsexp_index |  -.0003935   .0008269    -0.48   0.634    -.0020145    .0012275
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .0213019   .1598444     0.13   0.894    -.2920397    .3346434
+                                   Hispanic/Latinx  |   .0493451   .1436256     0.34   0.731    -.2322029    .3308932
+                                  Pacific Islander  |    .432697   .2664126     1.62   0.104    -.0895493    .9549433
+                                          Filipino  |   .3482631   .1816479     1.92   0.055    -.0078197    .7043458
+                                             Asian  |   .2478134   .1501946     1.65   0.099    -.0466117    .5422385
+                                             Other  |  -.1060559   .1950331    -0.54   0.587    -.4883775    .2762657
+                                White/Non-Hispanic  |  -.3048735    .147959    -2.06   0.039    -.5949161   -.0148309
+                                                    |
+                                         parent_edu |
+                               High school diploma  |  -.2946849   .0662863    -4.45   0.000    -.4246254   -.1647444
+                   Some college, no college degree  |  -.2952896    .076304    -3.87   0.000    -.4448675   -.1457116
+                                  Associate degree  |  -.3731474   .0988085    -3.78   0.000    -.5668408    -.179454
+                                 Bachelor's degree  |  -.4005275    .074914    -5.35   0.000    -.5473807   -.2536742
+                                   Graduate degree  |  -.5255853   .0761694    -6.90   0.000    -.6748994   -.3762712
+                                        Don't know  |  -.4596279   .1030829    -4.46   0.000    -.6617003   -.2575555
+                                                    |
+                                              _cons |   3.836627   .1535432    24.99   0.000     3.535637    4.137616
+---------------------------------------------------------------------------------------------------------------------
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,319
+-------------+----------------------------------   F(6, 7312)      =     82.11
+       Model |  502.694065         6  83.7823442   Prob > F        =    0.0000
+    Residual |  7460.49246     7,312  1.02030805   R-squared       =    0.0631
+-------------+----------------------------------   Adj R-squared   =    0.0624
+       Total |  7963.18653     7,318  1.08816432   Root MSE        =    1.0101
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0746862   .0252524     2.96   0.003     .0251841    .1241882
+                  "trans man" "(N=59, mean=2.42)"   |   1.610515   .1341099    12.01   0.000     1.347621    1.873409
+                "trans woman" "(N=20, mean=2.55)"   |   1.380185   .2267363     6.09   0.000     .9357162    1.824653
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.021846   .0658282    15.52   0.000     .8928036    1.150888
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .8027093   .1232113     6.51   0.000     .5611796    1.044239
+         "prefer not to say" "(N=138, mean=2.23)"   |   .7445844   .0885519     8.41   0.000     .5709971    .9181717
+                                                    |
+                                              _cons |  -1.337659    .019848   -67.40   0.000    -1.376566   -1.298751
+---------------------------------------------------------------------------------------------------------------------
+M1b: using gender and hsexp to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,294
+-------------+----------------------------------   F(7, 7286)      =     78.66
+       Model |  557.966361         7  79.7094801   Prob > F        =    0.0000
+    Residual |  7383.01436     7,286  1.01331517   R-squared       =    0.0703
+-------------+----------------------------------   Adj R-squared   =    0.0694
+       Total |  7940.98072     7,293  1.08884968   Root MSE        =    1.0066
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0829176     .02524     3.29   0.001     .0334398    .1323954
+                  "trans man" "(N=59, mean=2.42)"   |   1.647109   .1337516    12.31   0.000     1.384917    1.909301
+                "trans woman" "(N=20, mean=2.55)"   |   1.414072   .2260102     6.26   0.000     .9710262    1.857117
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.058837   .0658143    16.09   0.000     .9298221    1.187852
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .8674049   .1231234     7.05   0.000     .6260473    1.108762
+         "prefer not to say" "(N=138, mean=2.23)"   |   .8028478   .0887329     9.05   0.000     .6289055    .9767901
+                                                    |
+                                        hsexp_index |   .0198766   .0027655     7.19   0.000     .0144553    .0252978
+                                              _cons |  -1.422231   .0230456   -61.71   0.000    -1.467407   -1.377055
+---------------------------------------------------------------------------------------------------------------------
+M1c: using gender, hsexp, and hsexp^2 to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,294
+-------------+----------------------------------   F(8, 7285)      =     70.99
+       Model |  574.316841         8  71.7896051   Prob > F        =    0.0000
+    Residual |  7366.66388     7,285  1.01120987   R-squared       =    0.0723
+-------------+----------------------------------   Adj R-squared   =    0.0713
+       Total |  7940.98072     7,293  1.08884968   Root MSE        =    1.0056
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0851442   .0252199     3.38   0.001      .035706    .1345825
+                  "trans man" "(N=59, mean=2.42)"   |   1.657499   .1336376    12.40   0.000      1.39553    1.919467
+                "trans woman" "(N=20, mean=2.55)"   |   1.410705   .2257768     6.25   0.000     .9681171    1.853293
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.061201   .0657485    16.14   0.000     .9323152    1.190087
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .8650253   .1229969     7.03   0.000     .6239157    1.106135
+         "prefer not to say" "(N=138, mean=2.23)"   |   .8041352   .0886413     9.07   0.000     .6303725    .9778978
+                                                    |
+                                        hsexp_index |   .0092362   .0038255     2.41   0.016     .0017372    .0167353
+                                                    |
+                        c.hsexp_index#c.hsexp_index |   .0019176   .0004769     4.02   0.000     .0009828    .0028524
+                                                    |
+                                              _cons |  -1.446479   .0237983   -60.78   0.000    -1.493131   -1.399828
+---------------------------------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,300
+-------------+----------------------------------   F(19, 7280)     =     39.73
+       Model |  745.532489        19  39.2385521   Prob > F        =    0.0000
+    Residual |  7190.37525     7,280  .987688908   R-squared       =    0.0939
+-------------+----------------------------------   Adj R-squared   =    0.0916
+       Total |  7935.90774     7,299  1.08725959   Root MSE        =    .99383
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0845938   .0249623     3.39   0.001     .0356605    .1335272
+                  "trans man" "(N=59, mean=2.42)"   |   1.537127   .1334592    11.52   0.000     1.275508    1.798745
+                "trans woman" "(N=20, mean=2.55)"   |   1.293009   .2235928     5.78   0.000     .8547019    1.731315
+                 "nonbinary" "(N=267, mean=2.32)"   |    .999163   .0648912    15.40   0.000     .8719575    1.126368
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .7602867   .1215184     6.26   0.000     .5220754     .998498
+         "prefer not to say" "(N=138, mean=2.23)"   |   .7279273   .0876326     8.31   0.000      .556142    .8997126
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .1963874   .0913841     2.15   0.032     .0172481    .3755267
+                                   Hispanic/Latinx  |   -.130174   .0821782    -1.58   0.113     -.291267    .0309191
+                                  Pacific Islander  |   .0998063   .1524148     0.65   0.513    -.1989709    .3985836
+                                          Filipino  |  -.0482087   .1039373    -0.46   0.643     -.251956    .1555386
+                                             Asian  |  -.0315044   .0859308    -0.37   0.714    -.1999537    .1369449
+                                             Other  |   .0373783   .1116008     0.33   0.738    -.1813917    .2561482
+                                White/Non-Hispanic  |  -.0415289   .0846575    -0.49   0.624    -.2074822    .1244243
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .1278751   .0378341     3.38   0.001     .0537093    .2020409
+                   Some college, no college degree  |   .1720382   .0435891     3.95   0.000     .0865909    .2574855
+                                  Associate degree  |   .1575912   .0564672     2.79   0.005      .046899    .2682834
+                                 Bachelor's degree  |   .2523462   .0427085     5.91   0.000     .1686251    .3360674
+                                   Graduate degree  |   .4301606   .0433959     9.91   0.000     .3450919    .5152292
+                                        Don't know  |   .1986544   .0589495     3.37   0.001     .0830962    .3142126
+                                                    |
+                                              _cons |  -1.472689   .0869536   -16.94   0.000    -1.643143   -1.302235
+---------------------------------------------------------------------------------------------------------------------
+M3: using gender and hsexp index to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(20, 7255)     =     39.54
+       Model |  777.883446        20  38.8941723   Prob > F        =    0.0000
+    Residual |  7135.83947     7,255  .983575393   R-squared       =    0.0983
+-------------+----------------------------------   Adj R-squared   =    0.0958
+       Total |  7913.72292     7,275  1.08779696   Root MSE        =    .99175
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0910193   .0249822     3.64   0.000     .0420468    .1399917
+                  "trans man" "(N=59, mean=2.42)"   |   1.572088   .1333269    11.79   0.000     1.310728    1.833447
+                "trans woman" "(N=20, mean=2.55)"   |   1.323812   .2231924     5.93   0.000     .8862901    1.761334
+                 "nonbinary" "(N=267, mean=2.32)"   |    1.03001   .0649873    15.85   0.000     .9026163    1.157404
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .8137522   .1216307     6.69   0.000     .5753207    1.052184
+         "prefer not to say" "(N=138, mean=2.23)"   |   .7792778    .087958     8.86   0.000     .6068545     .951701
+                                                    |
+                                        hsexp_index |   .0157209   .0027551     5.71   0.000     .0103202    .0211216
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .1913842   .0912788     2.10   0.036     .0124512    .3703172
+                                   Hispanic/Latinx  |   -.127127   .0820168    -1.55   0.121    -.2879038    .0336498
+                                  Pacific Islander  |   .1084053   .1521057     0.71   0.476    -.1897662    .4065768
+                                          Filipino  |  -.0525332   .1037238    -0.51   0.613    -.2558621    .1507956
+                                             Asian  |    -.02682   .0857619    -0.31   0.754    -.1949384    .1412984
+                                             Other  |   .0389692   .1113692     0.35   0.726    -.1793469    .2572853
+                                White/Non-Hispanic  |  -.0440805   .0844892    -0.52   0.602    -.2097039    .1215429
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .1235313    .037853     3.26   0.001     .0493284    .1977343
+                   Some college, no college degree  |   .1726639   .0435737     3.96   0.000     .0872468    .2580809
+                                  Associate degree  |   .1496341   .0564239     2.65   0.008     .0390269    .2602413
+                                 Bachelor's degree  |   .2359564   .0427588     5.52   0.000     .1521366    .3197761
+                                   Graduate degree  |   .4107753   .0434731     9.45   0.000     .3255554    .4959953
+                                        Don't know  |    .202558   .0588534     3.44   0.001     .0871882    .3179279
+                                                    |
+                                              _cons |  -1.533506   .0874664   -17.53   0.000    -1.704966   -1.362046
+---------------------------------------------------------------------------------------------------------------------
+M3b: using gender, hsexp, and hsexp^2 to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(21, 7254)     =     38.35
+       Model |  790.808916        21  37.6575674   Prob > F        =    0.0000
+    Residual |    7122.914     7,254  .981929143   R-squared       =    0.0999
+-------------+----------------------------------   Adj R-squared   =    0.0973
+       Total |  7913.72292     7,275  1.08779696   Root MSE        =    .99092
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index2 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0930767   .0249678     3.73   0.000     .0441326    .1420208
+                  "trans man" "(N=59, mean=2.42)"   |   1.582981   .1332491    11.88   0.000     1.321774    1.844188
+                "trans woman" "(N=20, mean=2.55)"   |   1.320839    .223007     5.92   0.000     .8836804    1.757998
+                 "nonbinary" "(N=267, mean=2.32)"   |   1.032343   .0649361    15.90   0.000     .9050489    1.159636
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .8121519   .1215296     6.68   0.000     .5739184    1.050385
+         "prefer not to say" "(N=138, mean=2.23)"   |   .7809396   .0878856     8.89   0.000     .6086583    .9532209
+                                                    |
+                                        hsexp_index |   .0062908   .0037859     1.66   0.097    -.0011307    .0137123
+                                                    |
+                        c.hsexp_index#c.hsexp_index |   .0017118   .0004718     3.63   0.000     .0007869    .0026368
+                                                    |
+                                          race_assn |
+                            Black/African American  |   .1898528   .0912033     2.08   0.037     .0110677    .3686379
+                                   Hispanic/Latinx  |  -.1255269   .0819493    -1.53   0.126    -.2861714    .0351176
+                                  Pacific Islander  |   .1194033   .1520086     0.79   0.432    -.1785778    .4173844
+                                          Filipino  |  -.0481842   .1036439    -0.46   0.642    -.2513564     .154988
+                                             Asian  |  -.0227771   .0856974    -0.27   0.790    -.1907689    .1452147
+                                             Other  |   .0350741   .1112812     0.32   0.753    -.1830694    .2532176
+                                White/Non-Hispanic  |  -.0413508   .0844218    -0.49   0.624    -.2068421    .1241405
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .1237136   .0378214     3.27   0.001     .0495727    .1978545
+                   Some college, no college degree  |   .1725388   .0435372     3.96   0.000     .0871932    .2578844
+                                  Associate degree  |    .148354   .0563777     2.63   0.009     .0378373    .2588708
+                                 Bachelor's degree  |   .2310851   .0427441     5.41   0.000     .1472942    .3148761
+                                   Graduate degree  |   .4055716   .0434604     9.33   0.000     .3203766    .4907667
+                                        Don't know  |   .2069459   .0588166     3.52   0.000     .0916483    .3222436
+                                                    |
+                                              _cons |  -1.555752   .0876081   -17.76   0.000     -1.72749   -1.384015
+---------------------------------------------------------------------------------------------------------------------
+M1: only using gender to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,319
+-------------+----------------------------------   F(6, 7312)      =      1.54
+       Model |  11.7185068         6  1.95308447   Prob > F        =    0.1623
+    Residual |  9303.09411     7,312  1.27230499   R-squared       =    0.0013
+-------------+----------------------------------   Adj R-squared   =    0.0004
+       Total |  9314.81262     7,318  1.27286316   Root MSE        =     1.128
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0472896   .0281989     1.68   0.094    -.0079885    .1025676
+                  "trans man" "(N=59, mean=2.42)"   |  -.1828713   .1497582    -1.22   0.222    -.4764406    .1106981
+                "trans woman" "(N=20, mean=2.55)"   |    .298805   .2531926     1.18   0.238    -.1975256    .7951355
+                 "nonbinary" "(N=267, mean=2.32)"   |   .0158223   .0735093     0.22   0.830    -.1282771    .1599217
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .1954687   .1375879     1.42   0.155    -.0742433    .4651808
+         "prefer not to say" "(N=138, mean=2.23)"   |  -.0963428   .0988845    -0.97   0.330    -.2901849    .0974993
+                                                    |
+                                              _cons |   .6100973   .0221639    27.53   0.000     .5666497    .6535449
+---------------------------------------------------------------------------------------------------------------------
+M1b: using gender and hsexp to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,294
+-------------+----------------------------------   F(7, 7286)      =      1.62
+       Model |  14.3688282         7  2.05268974   Prob > F        =    0.1260
+    Residual |   9259.2957     7,286  1.27083389   R-squared       =    0.0015
+-------------+----------------------------------   Adj R-squared   =    0.0006
+       Total |  9273.66452     7,293  1.27158433   Root MSE        =    1.1273
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0444787   .0282659     1.57   0.116    -.0109306     .099888
+                  "trans man" "(N=59, mean=2.42)"   |  -.1933224    .149786    -1.29   0.197    -.4869463    .1003015
+                "trans woman" "(N=20, mean=2.55)"   |   .2889723   .2531047     1.14   0.254    -.2071862    .7851307
+                 "nonbinary" "(N=267, mean=2.32)"   |   .0052805   .0737042     0.07   0.943    -.1392011    .1497621
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .1785988   .1378837     1.30   0.195    -.0916931    .4488908
+         "prefer not to say" "(N=138, mean=2.23)"   |  -.1079427   .0993704    -1.09   0.277    -.3027374    .0868521
+                                                    |
+                                        hsexp_index |  -.0045401   .0030971    -1.47   0.143    -.0106113     .001531
+                                              _cons |   .6315074   .0258083    24.47   0.000     .5809156    .6820991
+---------------------------------------------------------------------------------------------------------------------
+M1c: using gender, hsexp, and hsexp^2 to predict worry
+
+      Source |       SS           df       MS      Number of obs   =     7,294
+-------------+----------------------------------   F(8, 7285)      =      1.82
+       Model |  18.4992273         8  2.31240341   Prob > F        =    0.0684
+    Residual |   9255.1653     7,285  1.27044136   R-squared       =    0.0020
+-------------+----------------------------------   Adj R-squared   =    0.0009
+       Total |  9273.66452     7,293  1.27158433   Root MSE        =    1.1271
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0455979   .0282683     1.61   0.107    -.0098162    .1010119
+                  "trans man" "(N=59, mean=2.42)"   |  -.1881005   .1497908    -1.26   0.209    -.4817339    .1055329
+                "trans woman" "(N=20, mean=2.55)"   |   .2872802   .2530673     1.14   0.256     -.208805    .7833655
+                 "nonbinary" "(N=267, mean=2.32)"   |   .0064688   .0736958     0.09   0.930    -.1379963    .1509339
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .1774028    .137864     1.29   0.198    -.0928505    .4476561
+         "prefer not to say" "(N=138, mean=2.23)"   |  -.1072956   .0993557    -1.08   0.280    -.3020616    .0874703
+                                                    |
+                                        hsexp_index |  -.0098881   .0042879    -2.31   0.021    -.0182936   -.0014826
+                                                    |
+                        c.hsexp_index#c.hsexp_index |   .0009638   .0005345     1.80   0.071     -.000084    .0020116
+                                                    |
+                                              _cons |   .6193199   .0266749    23.22   0.000     .5670294    .6716104
+---------------------------------------------------------------------------------------------------------------------
+M2: using gender to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,300
+-------------+----------------------------------   F(19, 7280)     =     25.80
+       Model |  586.421596        19  30.8642945   Prob > F        =    0.0000
+    Residual |   8709.5051     7,280  1.19636059   R-squared       =    0.0631
+-------------+----------------------------------   Adj R-squared   =    0.0606
+       Total |  9295.92669     7,299  1.27358908   Root MSE        =    1.0938
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |    .024657    .027473     0.90   0.369    -.0291979     .078512
+                  "trans man" "(N=59, mean=2.42)"   |  -.1176093   .1468823    -0.80   0.423    -.4055411    .1703225
+                "trans woman" "(N=20, mean=2.55)"   |    .338271   .2460814     1.37   0.169    -.1441198    .8206618
+                 "nonbinary" "(N=267, mean=2.32)"   |   .0301007   .0714178     0.42   0.673    -.1098989    .1701003
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .1874201   .1337405     1.40   0.161    -.0747501    .4495903
+         "prefer not to say" "(N=138, mean=2.23)"   |  -.0257481   .0964465    -0.27   0.790    -.2148112     .163315
+                                                    |
+                                          race_assn |
+                            Black/African American  |   -.127788   .1005753    -1.27   0.204    -.3249448    .0693689
+                                   Hispanic/Latinx  |  -.3521874   .0904435    -3.89   0.000    -.5294829   -.1748919
+                                  Pacific Islander  |  -.0295004   .1677445    -0.18   0.860    -.3583282    .2993274
+                                          Filipino  |  -.3660283   .1143912    -3.20   0.001    -.5902682   -.1417884
+                                             Asian  |  -.5613868   .0945736    -5.94   0.000    -.7467785   -.3759952
+                                             Other  |  -.3051797   .1228255    -2.48   0.013    -.5459532   -.0644062
+                                White/Non-Hispanic  |  -.4479205   .0931722    -4.81   0.000    -.6305651   -.2652759
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .0315132   .0416394     0.76   0.449    -.0501121    .1131385
+                   Some college, no college degree  |  -.0064649   .0479732    -0.13   0.893    -.1005063    .0875766
+                                  Associate degree  |    -.10657   .0621466    -1.71   0.086    -.2283954    .0152554
+                                 Bachelor's degree  |  -.2638859   .0470041    -5.61   0.000    -.3560276   -.1717442
+                                   Graduate degree  |  -.5745344   .0477606   -12.03   0.000    -.6681591   -.4809097
+                                        Don't know  |  -.0848778   .0648786    -1.31   0.191    -.2120586     .042303
+                                                    |
+                                              _cons |   1.160012   .0956992    12.12   0.000     .9724135     1.34761
+---------------------------------------------------------------------------------------------------------------------
+M3: using gender and hsexp index to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(20, 7255)     =     24.73
+       Model |  590.614881        20  29.5307441   Prob > F        =    0.0000
+    Residual |  8664.26308     7,255  1.19424715   R-squared       =    0.0638
+-------------+----------------------------------   Adj R-squared   =    0.0612
+       Total |  9254.87796     7,275  1.27214817   Root MSE        =    1.0928
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |    .024479    .027528     0.89   0.374    -.0294839    .0784419
+                  "trans man" "(N=59, mean=2.42)"   |  -.1140193   .1469133    -0.78   0.438    -.4020121    .1739734
+                "trans woman" "(N=20, mean=2.55)"   |   .3414339   .2459363     1.39   0.165    -.1406728    .8235407
+                 "nonbinary" "(N=267, mean=2.32)"   |   .0320535   .0716097     0.45   0.654    -.1083224    .1724293
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .1930614   .1340252     1.44   0.150     -.069667    .4557897
+         "prefer not to say" "(N=138, mean=2.23)"   |   -.021478   .0969212    -0.22   0.825    -.2114717    .1685157
+                                                    |
+                                        hsexp_index |   .0024268   .0030358     0.80   0.424    -.0035243    .0083778
+                                                    |
+                                          race_assn |
+                            Black/African American  |  -.1200869   .1005803    -1.19   0.233    -.3172537    .0770798
+                                   Hispanic/Latinx  |  -.3492906   .0903745    -3.86   0.000     -.526451   -.1721302
+                                  Pacific Islander  |  -.0281354   .1676057    -0.17   0.867    -.3566914    .3004206
+                                          Filipino  |  -.3666484   .1142936    -3.21   0.001     -.590697   -.1425998
+                                             Asian  |   -.556731   .0945013    -5.89   0.000    -.7419811   -.3714809
+                                             Other  |  -.3042979   .1227181    -2.48   0.013     -.544861   -.0637348
+                                White/Non-Hispanic  |  -.4476063   .0930989    -4.81   0.000    -.6301072   -.2651054
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .0322666   .0417104     0.77   0.439    -.0494979     .114031
+                   Some college, no college degree  |  -.0036427   .0480139    -0.08   0.940     -.097764    .0904786
+                                  Associate degree  |   -.104921   .0621736    -1.69   0.092    -.2267994    .0169574
+                                 Bachelor's degree  |  -.2635774   .0471161    -5.59   0.000    -.3559386   -.1712162
+                                   Graduate degree  |  -.5797447   .0479032   -12.10   0.000    -.6736488   -.4858406
+                                        Don't know  |   -.085746   .0648508    -1.32   0.186    -.2128724    .0413803
+                                                    |
+                                              _cons |   1.150123   .0963795    11.93   0.000     .9611911    1.339055
+---------------------------------------------------------------------------------------------------------------------
+M3b: using gender, hsexp, and hsexp^2 to predict worry, controlling for demographics
+
+      Source |       SS           df       MS      Number of obs   =     7,276
+-------------+----------------------------------   F(21, 7254)     =     23.87
+       Model |  598.304349        21  28.4906833   Prob > F        =    0.0000
+    Residual |  8656.57361     7,254  1.19335175   R-squared       =    0.0646
+-------------+----------------------------------   Adj R-squared   =    0.0619
+       Total |  9254.87796     7,275  1.27214817   Root MSE        =    1.0924
+
+---------------------------------------------------------------------------------------------------------------------
+                                       worry_index3 | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+                "cis woman" "(N=4269, mean=3.79)"   |   .0260659   .0275248     0.95   0.344    -.0278907    .0800225
+                  "trans man" "(N=59, mean=2.42)"   |  -.1056172   .1468955    -0.72   0.472     -.393575    .1823407
+                "trans woman" "(N=20, mean=2.55)"   |   .3391409   .2458458     1.38   0.168    -.1427884    .8210701
+                 "nonbinary" "(N=267, mean=2.32)"   |   .0338523   .0715864     0.47   0.636    -.1064779    .1741824
+ "gender diverse/questioning" "(N=71, mean=1.11)"   |   .1918271   .1339758     1.43   0.152    -.0708045    .4544586
+         "prefer not to say" "(N=138, mean=2.23)"   |  -.0201962   .0968862    -0.21   0.835    -.2101212    .1697289
+                                                    |
+                                        hsexp_index |  -.0048467   .0041736    -1.16   0.246    -.0130282    .0033349
+                                                    |
+                        c.hsexp_index#c.hsexp_index |   .0013203   .0005201     2.54   0.011     .0003007      .00234
+                                                    |
+                                          race_assn |
+                            Black/African American  |  -.1212681   .1005437    -1.21   0.228     -.318363    .0758269
+                                   Hispanic/Latinx  |  -.3480564    .090342    -3.85   0.000    -.5251529   -.1709599
+                                  Pacific Islander  |  -.0196526   .1675762    -0.12   0.907    -.3481507    .3088455
+                                          Filipino  |   -.363294   .1142583    -3.18   0.001    -.5872736   -.1393144
+                                             Asian  |  -.5536127   .0944739    -5.86   0.000     -.738809   -.3684164
+                                             Other  |  -.3073022   .1226778    -2.50   0.012    -.5477863   -.0668181
+                                White/Non-Hispanic  |  -.4455008   .0930677    -4.79   0.000    -.6279405   -.2630611
+                                                    |
+                                         parent_edu |
+                               High school diploma  |   .0324071   .0416948     0.78   0.437    -.0493267     .114141
+                   Some college, no college degree  |  -.0037391    .047996    -0.08   0.938    -.0978252    .0903469
+                                  Associate degree  |  -.1059083   .0621515    -1.70   0.088    -.2277434    .0159268
+                                 Bachelor's degree  |  -.2673346   .0471217    -5.67   0.000    -.3597068   -.1749624
+                                   Graduate degree  |  -.5837583   .0479113   -12.18   0.000    -.6776784   -.4898382
+                                        Don't know  |  -.0823617   .0648401    -1.27   0.204    -.2094672    .0447439
+                                                    |
+                                              _cons |   1.132964   .0965802    11.73   0.000     .9436389     1.32229
+---------------------------------------------------------------------------------------------------------------------
+
+. 
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/paper_quant_analysis.txt
+  log type:  text
+ closed on:  28 May 2024, 13:22:34
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

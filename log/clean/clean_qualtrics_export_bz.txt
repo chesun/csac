@@ -1,11 +1,11 @@
------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_qualtrics_export_bz.txt
   log type:  text
- opened on:  28 Jul 2023, 15:33:21
-. }
+ opened on:  13 May 2024, 15:01:18
 
 . 
+.         
 . graph drop _all
 
 . set more off
@@ -25,18 +25,14 @@
 
 . 
 . 
-. 
-. // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not
->  data)
-. import delimited $csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv, varnames(1) rowrange(4:) clea
-> r
+. // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not data)
+. import delimited "$csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv", varnames(1) rowrange(4:) clear
 (encoding automatically selected: UTF-8)
 (249 vars, 19,238 obs)
 
 . 
 . // drop unused variables
-. drop status recipientfirstname recipientlastname recipientemail externalreference distributionchannel use
-> rlanguage
+. drop status recipientfirstname recipientlastname recipientemail externalreference distributionchannel userlanguage
 
 . drop *firstclick *lastclick *clickcount
 
@@ -80,26 +76,26 @@
 . 
 . 
 .         
+. /*
+> // preserve dataset: Only Christina has the access to raw data category. Baiyu commented it out.
+> preserve
+> 
+> 
+> keep id ipaddress latitude longitude email email_fall
+> 
+> label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
+> 
+> compress
+> save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
+> 
+> restore
+> 
+> */
 . 
-. // preserve dataset
-. preserve
-
-. 
-. if $user_cs == 1{ 
-. keep id ipaddress latitude longitude email email_fall
-. 
-. label data "Identifying information crosswalk for CSAC HS Senior survey 2023"
-. 
-. compress
-. save $csacrawdatadir/csac_hs_senior_2023_id_xwalk.dta, replace
-. 
-. }
-
 . //---------------------------------------------------------------------------
 . // clean the anonymized dataset
 . //---------------------------------------------------------------------------
-. restore
-
+. 
 . 
 . 
 . // drop personally identifiable information 
@@ -175,8 +171,7 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q8_pagesubmit t_hear_import_aid
 
-. label var t_hear_import_aid "time spent on 'how did you hear about the importance of fin aid app', in sec
-> onds"
+. label var t_hear_import_aid "time spent on 'how did you hear about the importance of fin aid app', in seconds"
 
 . rename q9 hear_import_aid
 
@@ -236,8 +231,7 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q20_pagesubmit t_college_contact_item
 
-. label var t_college_contact_item "time spent on 'has your college contacted about following about aid', i
-> n seconds"
+. label var t_college_contact_item "time spent on 'has your college contacted about following about aid', in seconds"
 
 . rename q21 college_contact_item
 
@@ -258,8 +252,7 @@ duration_sec: all characters numeric; replaced as long
 . // if idk college
 . rename q24_pagesubmit t_inf_no_college
 
-. label var t_inf_no_college "time spent on 'which might influence decision not to attend college', in seco
-> nds"
+. label var t_inf_no_college "time spent on 'which might influence decision not to attend college', in seconds"
 
 . rename q25 inf_no_college
 
@@ -467,17 +460,14 @@ duration_sec: all characters numeric; replaced as long
 . label var times_bullied "number of times bullied or harassed at school last 12 months"
 
 . 
-.     // reasons bullied was displayed only if number of times bullied in previous question was greater tha
-> n 0
+.     // reasons bullied was displayed only if number of times bullied in previous question was greater than 0
 .     rename q60_pagesubmit t_reasons_bullied
 
-.     label var t_reasons_bullied "time spent on 'were you bullied for any of following reasons', in second
-> s"
+.     label var t_reasons_bullied "time spent on 'were you bullied for any of following reasons', in seconds"
 
 .     rename q61 reasons_bullied
 
-.     label var reasons_bullied "in last 12 months were you harassed or bullied for any of the following re
-> asons"
+.     label var reasons_bullied "in last 12 months were you harassed or bullied for any of the following reasons"
 
 . 
 . // demographics
@@ -620,8 +610,7 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q91_pagesubmit t_college_challenge
 
-. label var t_college_challenge "time spent on 'what is the biggest challenge you'll face in college', in s
-> econds"
+. label var t_college_challenge "time spent on 'what is the biggest challenge you'll face in college', in seconds"
 
 . rename q92 college_challenge
 
@@ -1017,8 +1006,7 @@ delimiter now cr
 . rename plan_summer_class_temp plan_summer_class
 
 . 
-. ****** recode: After taking this information into account, how likely are you to take college classes thi
-> s summer?
+. ****** recode: After taking this information into account, how likely are you to take college classes this summer?
 . /*  this is the summer nudge question */
 . #delimit ;
 delimiter now ;
@@ -1112,8 +1100,7 @@ loan_pay_50k: all characters numeric; replaced as long
 (3530 missing values generated)
 
 . 
-. ****** recode: You indicated you plan to take out student loans. How much do you plan to borrow in studen
-> t loans?
+. ****** recode: You indicated you plan to take out student loans. How much do you plan to borrow in student loans?
 . #delimit ;
 delimiter now ;
 . label define loan_borrow_amount
@@ -1137,8 +1124,7 @@ delimiter now cr
 
 . 
 . 
-. ****** recode: What is the highest degree you hope to earn after you have completed all of your schooling
-> ?
+. ****** recode: What is the highest degree you hope to earn after you have completed all of your schooling?
 . #delimit ;
 delimiter now ;
 . label define highest_degree
@@ -1162,8 +1148,7 @@ delimiter now cr
 . 
 . 
 . ****** recode: When you think about college, how worried are you about the following? (matrix)
-. ****** recode: When you think about college, how worried are you about experiencing discrimination becaus
-> e of your: (matrix)
+. ****** recode: When you think about college, how worried are you about experiencing discrimination because of your: (matrix)
 . // define value label that's common to all questions in above two categories
 . #delimit ;
 delimiter now ;
@@ -1302,8 +1287,7 @@ delimiter now cr
 . rename times_bullied_temp times_bullied
 
 . 
-.     ****** recode: During the past 12 months, were you harassed or bullied for any of the following reaso
-> ns? 
+.     ****** recode: During the past 12 months, were you harassed or bullied for any of the following reasons? 
 .     /* (Check all that apply) this is only shown if time_bullied is not 0 */
 .     #delimit ;
 delimiter now ;
@@ -1883,8 +1867,7 @@ WOW, NOT REALLY RELEVANT TO FINANCIAL.. |          1        0.42      100.00
 >     includes mentions of transmasc, man, boy
 > ** NOTE: by coding nonbinary first, any mention of nonbinary transmasc/fem will be coded as nonbinary 
 > 7. CISGENDER/OTHER
->     includes any other responses not in the previous 6 categories, such as overtly queerphobic ones, e.g.
->  attack helicopter
+>     includes any other responses not in the previous 6 categories, such as overtly queerphobic ones, e.g. attack helicopter
 >     assume they are cisgender 
 > */
 . #delimit ;
@@ -1975,8 +1958,7 @@ delimiter now cr
 variable gender_clean was str17 now str18
 (90 real changes made)
 
-. // assume that people who responded irrelevant/quetab geerphobic text are cisgender, populate with assign
-> ed gender at birth 
+. // assume that people who responded irrelevant/quetab geerphobic text are cisgender, populate with assigned gender at birth 
 . replace gender_clean = agab if gender_other_clean=="CISGENDER/OTHER"
 (16 real changes made)
 
@@ -2003,15 +1985,13 @@ UNSURE/QUESTIONING |          8        0.10       43.13
 . rename gender_other gender_other_raw
 
 . 
-. // there are 5 observations which chose "other" for gender but did not write text response. assume they a
-> re cisgender
+. // there are 5 observations which chose "other" for gender but did not write text response. assume they are cisgender
 . replace gender_clean = agab if gender_clean=="OTHER"
 (5 real changes made)
 
 . 
 . 
-. // there are 14 observations didn't answer gender identity but answered assigned sex at birth. assume "pr
-> efer not to say"
+. // there are 14 observations didn't answer gender identity but answered assigned sex at birth. assume "prefer not to say"
 . replace gender_clean = "PREFER NOT TO SAY" if !mi(asab) & mi(gender_clean) == 1
 (14 real changes made)
 
@@ -2188,8 +2168,7 @@ delimiter now cr
 . 
 . 
 . 
-. ****** recode: What is the highest level of education completed among either of your parents (or those wh
-> o raised you)?
+. ****** recode: What is the highest level of education completed among either of your parents (or those who raised you)?
 . #delimit ;
 delimiter now ;
 . label define parent_edu
@@ -2316,10 +2295,10 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_20
 
 . 
 . di "Do file start date time: `date1' `time1'"
-Do file start date time: 28 Jul 2023 15:33:21
+Do file start date time: 13 May 2024 15:01:18
 
 . di "End date time: `date2' `time2'"
-End date time: 28 Jul 2023 15:33:27
+End date time: 13 May 2024 15:01:22
 
 . 
 . 
@@ -2327,5 +2306,5 @@ End date time: 28 Jul 2023 15:33:27
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_qualtrics_export_bz.txt
   log type:  text
- closed on:  28 Jul 2023, 15:33:27
------------------------------------------------------------------------------------------------------------
+ closed on:  13 May 2024, 15:01:22
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

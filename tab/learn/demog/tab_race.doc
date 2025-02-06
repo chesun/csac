@@ -1,0 +1,583 @@
+{\rtf1\ansi\deff0 {\fonttbl{\f0\fnil Garamond;}}
+{\info {\author .}{\company .}{\title .}}
+\deflang1033\plain\fs20
+{\footer\pard\qc\plain\f0\fs20\chpgn\par}
+{
+{
+{\b\qc\line Tabulation of race when race_num is 1 }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx9500
+\ql {race/ethnicity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\qr {Cum.}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000\cellx9500
+\ql {Black/African American}\cell
+\qr {320}\cell
+\qr {4.77}\cell
+\qr {4.77}\cell
+\row
+\ql {American Indian/Alaskan Native}\cell
+\qr {19}\cell
+\qr {0.28}\cell
+\qr {5.06}\cell
+\row
+\ql {Asian}\cell
+\qr {952}\cell
+\qr {14.20}\cell
+\qr {19.26}\cell
+\row
+\ql {Filipino}\cell
+\qr {119}\cell
+\qr {1.78}\cell
+\qr {21.03}\cell
+\row
+\ql {Hispanic/Latinx}\cell
+\qr {3564}\cell
+\qr {53.16}\cell
+\qr {74.19}\cell
+\row
+\ql {Pacific Islander}\cell
+\qr {26}\cell
+\qr {0.39}\cell
+\qr {74.58}\cell
+\row
+\ql {White/Non-Hispanic}\cell
+\qr {1553}\cell
+\qr {23.17}\cell
+\qr {97.75}\cell
+\row
+\ql {Other}\cell
+\qr {151}\cell
+\qr {2.25}\cell
+\qr {100.00}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000\clbrdrt\brdrw10\brdrs\cellx9500 
+\ql {Total}\cell
+\qr {6704}\cell
+\qr {100.00}\cell
+\qr {}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx9500\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race when race_num is 2 }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx9500
+\ql {race/ethnicity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\qr {Cum.}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000\cellx9500
+\ql {American Indian/Alaskan Native,Asian}\cell
+\qr {4}\cell
+\qr {0.36}\cell
+\qr {0.36}\cell
+\row
+\ql {American Indian/Alaskan Native,Hispanic/Latinx}\cell
+\qr {41}\cell
+\qr {3.73}\cell
+\qr {4.09}\cell
+\row
+\ql {American Indian/Alaskan Native,Pacific Islander}\cell
+\qr {1}\cell
+\qr {0.09}\cell
+\qr {4.19}\cell
+\row
+\ql {American Indian/Alaskan Native,White/Non-Hispanic}\cell
+\qr {24}\cell
+\qr {2.18}\cell
+\qr {6.37}\cell
+\row
+\ql {Asian,Filipino}\cell
+\qr {59}\cell
+\qr {5.37}\cell
+\qr {11.74}\cell
+\row
+\ql {Asian,Hispanic/Latinx}\cell
+\qr {44}\cell
+\qr {4.00}\cell
+\qr {15.74}\cell
+\row
+\ql {Asian,Other}\cell
+\qr {15}\cell
+\qr {1.36}\cell
+\qr {17.11}\cell
+\row
+\ql {Asian,Pacific Islander}\cell
+\qr {10}\cell
+\qr {0.91}\cell
+\qr {18.02}\cell
+\row
+\ql {Asian,White/Non-Hispanic}\cell
+\qr {189}\cell
+\qr {17.20}\cell
+\qr {35.21}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native}\cell
+\qr {9}\cell
+\qr {0.82}\cell
+\qr {36.03}\cell
+\row
+\ql {Black/African American,Asian}\cell
+\qr {18}\cell
+\qr {1.64}\cell
+\qr {37.67}\cell
+\row
+\ql {Black/African American,Filipino}\cell
+\qr {13}\cell
+\qr {1.18}\cell
+\qr {38.85}\cell
+\row
+\ql {Black/African American,Hispanic/Latinx}\cell
+\qr {85}\cell
+\qr {7.73}\cell
+\qr {46.59}\cell
+\row
+\ql {Black/African American,Other}\cell
+\qr {7}\cell
+\qr {0.64}\cell
+\qr {47.22}\cell
+\row
+\ql {Black/African American,Pacific Islander}\cell
+\qr {4}\cell
+\qr {0.36}\cell
+\qr {47.59}\cell
+\row
+\ql {Black/African American,White/Non-Hispanic}\cell
+\qr {71}\cell
+\qr {6.46}\cell
+\qr {54.05}\cell
+\row
+\ql {Filipino,Hispanic/Latinx}\cell
+\qr {27}\cell
+\qr {2.46}\cell
+\qr {56.51}\cell
+\row
+\ql {Filipino,Other}\cell
+\qr {3}\cell
+\qr {0.27}\cell
+\qr {56.78}\cell
+\row
+\ql {Filipino,Pacific Islander}\cell
+\qr {2}\cell
+\qr {0.18}\cell
+\qr {56.96}\cell
+\row
+\ql {Filipino,White/Non-Hispanic}\cell
+\qr {45}\cell
+\qr {4.09}\cell
+\qr {61.06}\cell
+\row
+\ql {Hispanic/Latinx,Other}\cell
+\qr {25}\cell
+\qr {2.27}\cell
+\qr {63.33}\cell
+\row
+\ql {Hispanic/Latinx,Pacific Islander}\cell
+\qr {10}\cell
+\qr {0.91}\cell
+\qr {64.24}\cell
+\row
+\ql {Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {339}\cell
+\qr {30.85}\cell
+\qr {95.09}\cell
+\row
+\ql {Pacific Islander,Other}\cell
+\qr {1}\cell
+\qr {0.09}\cell
+\qr {95.18}\cell
+\row
+\ql {Pacific Islander,White/Non-Hispanic}\cell
+\qr {6}\cell
+\qr {0.55}\cell
+\qr {95.72}\cell
+\row
+\ql {White/Non-Hispanic,Other}\cell
+\qr {47}\cell
+\qr {4.28}\cell
+\qr {100.00}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000\clbrdrt\brdrw10\brdrs\cellx9500 
+\ql {Total}\cell
+\qr {1099}\cell
+\qr {100.00}\cell
+\qr {}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx9500\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race when race_num is 3 }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx9500
+\ql {race/ethnicity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\qr {Cum.}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000\cellx9500
+\ql {American Indian/Alaskan Native,Filipino,Hispanic/Latinx}\cell
+\qr {2}\cell
+\qr {1.07}\cell
+\qr {1.07}\cell
+\row
+\ql {American Indian/Alaskan Native,Hispanic/Latinx,Other}\cell
+\qr {3}\cell
+\qr {1.60}\cell
+\qr {2.67}\cell
+\row
+\ql {American Indian/Alaskan Native,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {33}\cell
+\qr {17.65}\cell
+\qr {20.32}\cell
+\row
+\ql {American Indian/Alaskan Native,Pacific Islander,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {20.86}\cell
+\row
+\ql {American Indian/Alaskan Native,White/Non-Hispanic,Other}\cell
+\qr {3}\cell
+\qr {1.60}\cell
+\qr {22.46}\cell
+\row
+\ql {Asian,Filipino,Hispanic/Latinx}\cell
+\qr {2}\cell
+\qr {1.07}\cell
+\qr {23.53}\cell
+\row
+\ql {Asian,Filipino,Other}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {24.06}\cell
+\row
+\ql {Asian,Filipino,Pacific Islander}\cell
+\qr {5}\cell
+\qr {2.67}\cell
+\qr {26.74}\cell
+\row
+\ql {Asian,Filipino,White/Non-Hispanic}\cell
+\qr {17}\cell
+\qr {9.09}\cell
+\qr {35.83}\cell
+\row
+\ql {Asian,Hispanic/Latinx,Other}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {36.36}\cell
+\row
+\ql {Asian,Hispanic/Latinx,Pacific Islander}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {36.90}\cell
+\row
+\ql {Asian,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {19}\cell
+\qr {10.16}\cell
+\qr {47.06}\cell
+\row
+\ql {Asian,Pacific Islander,White/Non-Hispanic}\cell
+\qr {11}\cell
+\qr {5.88}\cell
+\qr {52.94}\cell
+\row
+\ql {Asian,White/Non-Hispanic,Other}\cell
+\qr {7}\cell
+\qr {3.74}\cell
+\qr {56.68}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Hispanic/Latinx}\cell
+\qr {5}\cell
+\qr {2.67}\cell
+\qr {59.36}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Other}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {59.89}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,White/Non-Hispanic}\cell
+\qr {10}\cell
+\qr {5.35}\cell
+\qr {65.24}\cell
+\row
+\ql {Black/African American,Asian,Filipino}\cell
+\qr {3}\cell
+\qr {1.60}\cell
+\qr {66.84}\cell
+\row
+\ql {Black/African American,Asian,Hispanic/Latinx}\cell
+\qr {4}\cell
+\qr {2.14}\cell
+\qr {68.98}\cell
+\row
+\ql {Black/African American,Asian,Pacific Islander}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {69.52}\cell
+\row
+\ql {Black/African American,Asian,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {1.07}\cell
+\qr {70.59}\cell
+\row
+\ql {Black/African American,Filipino,Hispanic/Latinx}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {71.12}\cell
+\row
+\ql {Black/African American,Filipino,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {1.07}\cell
+\qr {72.19}\cell
+\row
+\ql {Black/African American,Hispanic/Latinx,Other}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {72.73}\cell
+\row
+\ql {Black/African American,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {19}\cell
+\qr {10.16}\cell
+\qr {82.89}\cell
+\row
+\ql {Black/African American,Pacific Islander,Other}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {83.42}\cell
+\row
+\ql {Black/African American,Pacific Islander,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {83.96}\cell
+\row
+\ql {Black/African American,White/Non-Hispanic,Other}\cell
+\qr {2}\cell
+\qr {1.07}\cell
+\qr {85.03}\cell
+\row
+\ql {Filipino,Hispanic/Latinx,Other}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {85.56}\cell
+\row
+\ql {Filipino,Hispanic/Latinx,Pacific Islander}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {86.10}\cell
+\row
+\ql {Filipino,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {12}\cell
+\qr {6.42}\cell
+\qr {92.51}\cell
+\row
+\ql {Filipino,Pacific Islander,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {93.05}\cell
+\row
+\ql {Hispanic/Latinx,Pacific Islander,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {0.53}\cell
+\qr {93.58}\cell
+\row
+\ql {Hispanic/Latinx,White/Non-Hispanic,Other}\cell
+\qr {12}\cell
+\qr {6.42}\cell
+\qr {100.00}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000\clbrdrt\brdrw10\brdrs\cellx9500 
+\ql {Total}\cell
+\qr {187}\cell
+\qr {100.00}\cell
+\qr {}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx9500\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race when race_num is 4 }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx9500
+\ql {race/ethnicity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\qr {Cum.}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000\cellx9500
+\ql {American Indian/Alaskan Native,Asian,Filipino,Pacific Islander}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {3.12}\cell
+\row
+\ql {American Indian/Alaskan Native,Asian,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {5}\cell
+\qr {15.62}\cell
+\qr {18.75}\cell
+\row
+\ql {American Indian/Alaskan Native,Asian,White/Non-Hispanic,Other}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {21.88}\cell
+\row
+\ql {American Indian/Alaskan Native,Filipino,Hispanic/Latinx,Pacific Islander}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {25.00}\cell
+\row
+\ql {American Indian/Alaskan Native,Hispanic/Latinx,White/Non-Hispanic,Other}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {28.12}\cell
+\row
+\ql {Asian,Filipino,Hispanic/Latinx,Other}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {31.25}\cell
+\row
+\ql {Asian,Filipino,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {6.25}\cell
+\qr {37.50}\cell
+\row
+\ql {Asian,Filipino,Pacific Islander,White/Non-Hispanic}\cell
+\qr {5}\cell
+\qr {15.62}\cell
+\qr {53.12}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Asian,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {6.25}\cell
+\qr {59.38}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Hispanic/Latinx,Pacific Islander}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {62.50}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {5}\cell
+\qr {15.62}\cell
+\qr {78.12}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,White/Non-Hispanic,Other}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {81.25}\cell
+\row
+\ql {Black/African American,Asian,Filipino,Pacific Islander}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {84.38}\cell
+\row
+\ql {Black/African American,Asian,Filipino,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {87.50}\cell
+\row
+\ql {Black/African American,Hispanic/Latinx,Pacific Islander,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {90.62}\cell
+\row
+\ql {Black/African American,Hispanic/Latinx,White/Non-Hispanic,Other}\cell
+\qr {1}\cell
+\qr {3.12}\cell
+\qr {93.75}\cell
+\row
+\ql {Filipino,Hispanic/Latinx,Pacific Islander,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {6.25}\cell
+\qr {100.00}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000\clbrdrt\brdrw10\brdrs\cellx9500 
+\ql {Total}\cell
+\qr {32}\cell
+\qr {100.00}\cell
+\qr {}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx9500\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race when race_num is 5 }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx9500
+\ql {race/ethnicity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\qr {Cum.}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000\cellx9500
+\ql {American Indian/Alaskan Native,Asian,Filipino,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {14.29}\cell
+\qr {14.29}\cell
+\row
+\ql {American Indian/Alaskan Native,Asian,Filipino,Pacific Islander,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {28.57}\cell
+\qr {42.86}\cell
+\row
+\ql {Asian,Filipino,Hispanic/Latinx,Pacific Islander,White/Non-Hispanic}\cell
+\qr {2}\cell
+\qr {28.57}\cell
+\qr {71.43}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Asian,Hispanic/Latinx,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {14.29}\cell
+\qr {85.71}\cell
+\row
+\ql {Black/African American,American Indian/Alaskan Native,Hispanic/Latinx,White/Non-Hispanic,Other}\cell
+\qr {1}\cell
+\qr {14.29}\cell
+\qr {100.00}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000\clbrdrt\brdrw10\brdrs\cellx9500 
+\ql {Total}\cell
+\qr {7}\cell
+\qr {100.00}\cell
+\qr {}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx9500\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race when race_num is 6 }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx9500
+\ql {race/ethnicity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\qr {Cum.}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000\cellx9500
+\ql {American Indian/Alaskan Native,Asian,Filipino,Hispanic/Latinx,Pacific Islander,White/Non-Hispanic}\cell
+\qr {1}\cell
+\qr {100.00}\cell
+\qr {100.00}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000\clbrdrt\brdrw10\brdrs\cellx9500 
+\ql {Total}\cell
+\qr {1}\cell
+\qr {100.00}\cell
+\qr {}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx9500\cell
+\row}
+
+
+\writepositionforappend
+}}

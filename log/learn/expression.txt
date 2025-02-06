@@ -1,0 +1,315 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/expression.txt
+  log type:  text
+ opened on:  13 May 2024, 15:01:25
+
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. * Drop archives/duplicated categories
+. cap drop gender_clean
+
+. cap drop gender_missing
+
+. cap drop gender_cis
+
+. cap drop gender_woman
+
+. cap drop gender_man
+
+. cap drop gender_other
+
+. cap drop gender_unsure
+
+. cap drop gender_pnts
+
+. cap drop gender_brief
+
+. cap drop so_clean
+
+. cap drop so_missing
+
+. cap drop so_straight
+
+. cap drop so_queer
+
+. cap drop so_unsure
+
+. cap drop so_pnts
+
+. cap drop so_brief
+
+. cap drop agab
+
+. 
+. /* Tab of raw expressions */
+. 
+. *** Gender ***
+. 
+. * Fraction by listed options
+. tab gender_raw
+
+   current gender |
+         identity |      Freq.     Percent        Cum.
+------------------+-----------------------------------
+              MAN |      2,918       36.64       36.64
+        NONBINARY |        281        3.53       40.17
+            OTHER |         95        1.19       41.37
+PREFER NOT TO SAY |        153        1.92       43.29
+            WOMAN |      4,516       56.71      100.00
+------------------+-----------------------------------
+            Total |      7,963      100.00
+
+. tab asab
+
+   assigned |
+     sex at |
+   birth on |
+      birth |
+certificate |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |      4,973       62.49       62.49
+       Male |      2,985       37.51      100.00
+------------+-----------------------------------
+      Total |      7,958      100.00
+
+. tab asab gender_raw
+
+  assigned |
+    sex at |
+  birth on |
+     birth |
+certificat |                current gender identity
+         e |       MAN  NONBINARY      OTHER  PREFER ..      WOMAN |     Total
+-----------+-------------------------------------------------------+----------
+    Female |        60        244         64        108      4,488 |     4,964 
+      Male |     2,850         36         30         43         21 |     2,980 
+-----------+-------------------------------------------------------+----------
+     Total |     2,910        280         94        151      4,509 |     7,944 
+
+. 
+. * Tab of "other - specify"
+. tab gender_other_raw
+
+   current gender other: please specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                AGENDER |          5        5.56        5.56
+                              ANDROGYNE |          1        1.11        6.67
+                      ATTACK HELICOPTER |          1        1.11        7.78
+             BIGENDER (MALE AND FEMALE) |          1        1.11        8.89
+                               BISEXUAL |          1        1.11       10.00
+                                DEMIBOY |          1        1.11       11.11
+          DEMIBOY (NONBINARY MASCULINE) |          1        1.11       12.22
+                               DEMIGIRL |          4        4.44       16.67
+                       FEMALE/NONBINARY |          1        1.11       17.78
+                           GENDER FLUID |          6        6.67       24.44
+             GENDER NON CONFORMING MALE |          1        1.11       25.56
+                            GENDERFLUID |         29       32.22       57.78
+GENDERFLUID: FOR ONES GENDER TO BE FL.. |          1        1.11       58.89
+                            GENDERQUEER |          2        2.22       61.11
+                                   GIRL |          1        1.11       62.22
+                              HIM/ALPHA |          1        1.11       63.33
+                                 HOMBRE |          1        1.11       64.44
+                  I AM A STRAIGHT WOMAN |          1        1.11       65.56
+I DON'T KNOW, IM PRETTY CONFUSED MOST.. |          1        1.11       66.67
+        I DON'T PLAY THAT STUPID STUFF. |          1        1.11       67.78
+I WAS BORN A GIRL AND NO ONE CAN CHAN.. |          1        1.11       68.89
+I'M A MAN MALE I DON'T BELIVE IN THIS.. |          1        1.11       70.00
+IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.11       71.11
+I’M A DUDE THIS IS A BULLSHIT ASS QUE.. |          1        1.11       72.22
+                                 JEWISH |          1        1.11       73.33
+                                   MALE |          1        1.11       74.44
+                                  MALE. |          1        1.11       75.56
+       MAN WHO AT TIMES ACTS AS A WOMAN |          1        1.11       76.67
+                         MASC NONBINARY |          1        1.11       77.78
+     MEANT TO PUT MALE ON LAST QUESTION |          1        1.11       78.89
+                     NIGGER KILLER 5000 |          1        1.11       80.00
+            NO'); DROP TABLE RESPONSES; |          1        1.11       81.11
+                         NONBINARY MALE |          1        1.11       82.22
+                    NONBINARY TRANSMASC |          1        1.11       83.33
+                           NOT RELEVANT |          1        1.11       84.44
+                               NOT SURE |          1        1.11       85.56
+                            QUESTIONING |          1        1.11       86.67
+                            ROCKET SHIP |          1        1.11       87.78
+                    SHE/HER ; THEY/THEM |          1        1.11       88.89
+THERE IS NO SUCH THING AS A “GENDER I.. |          1        1.11       90.00
+          THIS SHOULD NOT BE A QUESTION |          1        1.11       91.11
+                             TRANSFEMME |          1        1.11       92.22
+                         TRANSMASCULINE |          2        2.22       94.44
+                             TWO SPIRIT |          1        1.11       95.56
+                              UNCERTAIN |          1        1.11       96.67
+                                UNKNOWN |          1        1.11       97.78
+                                 UNSURE |          2        2.22      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         90      100.00
+
+. 
+. 
+. *** Sexual Orientation ***
+. 
+. * Fraction by listed options
+. tab so_raw
+
+           sexual orientation |      Freq.     Percent        Cum.
+------------------------------+-----------------------------------
+                      ASEXUAL |        179        2.26        2.26
+                     BISEXUAL |      1,084       13.70       15.96
+               LESBIAN OR GAY |        349        4.41       20.37
+ OTHER (FEEL FREE TO SPECIFY) |        284        3.59       23.96
+            PREFER NOT TO SAY |        544        6.87       30.84
+STRAIGHT (NOT GAY OR LESBIAN) |      5,473       69.16      100.00
+------------------------------+-----------------------------------
+                        Total |      7,913      100.00
+
+. 
+. * Tab of "other - specify"
+. tab so_other_raw
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                             ABROSEXUAL |          1        0.42        0.42
+                            ANTROSEXUAL |          1        0.42        0.84
+                                ARO/ACR |          1        0.42        1.26
+                              AROMANTIC |          1        0.42        1.67
+                      AROMANTIC ASEXUAL |          2        0.84        2.51
+               ASEXUAL AND DEMIROMANTIC |          1        0.42        2.93
+                      ASEXUAL AND QUEER |          1        0.42        3.35
+                     ASEXUAL BIROMANTIC |          1        0.42        3.77
+                    ASEXUAL/ OMNISEXUAL |          1        0.42        4.18
+                      ASEXUAL/AROMANTIC |          1        0.42        4.60
+                          ASEXUAL/QUEER |          1        0.42        5.02
+                      ATTRACTED TO CARS |          1        0.42        5.44
+                              BICURIOUS |          2        0.84        6.28
+                         BIG TITTY JEWS |          1        0.42        6.69
+                  BIROMANTIC DEMISEXUAL |          1        0.42        7.11
+     BIROMANTIC. (BISEXUAL AND ASEXUAL) |          1        0.42        7.53
+                 BISEXUAL AND AROMANTIC |          1        0.42        7.95
+                       BISEXUAL ASEXUAL |          1        0.42        8.37
+CAN’T TELL IF I’M REALLY STRAIGHT OR .. |          1        0.42        8.79
+                            DEMI SEXUAL |          1        0.42        9.21
+                             DEMISEXUAL |          6        2.51       11.72
+              DEMISEXUAL AND POLYSEXUAL |          1        0.42       12.13
+                 DEMISEXUAL PANROMANTIC |          1        0.42       12.55
+                            HATE LABELS |          1        0.42       12.97
+                                 HETERO |          1        0.42       13.39
+                         HETEROFLEXIBLE |          1        0.42       13.81
+                           HETEROSEXUAL |          2        0.84       14.64
+I AM A MINOR. YOU SHOULD NOT BE ASKIN.. |          1        0.42       15.06
+                  I DO NOT LABEL MYSELF |          1        0.42       15.48
+                           I DON'T KNOW |          1        0.42       15.90
+                    I DON'T LIKE LABELS |          1        0.42       16.32
+           I HAVEN'T SWITCHED SIDES YET |          1        0.42       16.74
+                                    IDK |          1        0.42       17.15
+IM NOT SURE YET BUT I KNOW IM SOME TY.. |          1        0.42       17.57
+                           I’M NOT SURE |          1        0.42       17.99
+                                    MAN |          1        0.42       18.41
+MENTALLY ILL PEOPLE GOD WILL COME AND.. |          1        0.42       18.83
+                                  MUJER |          1        0.42       19.25
+                               NO LABEL |          1        0.42       19.67
+          NO LABELS, I JUST LIKE PEOPLE |          1        0.42       20.08
+                                 NO ONE |          1        0.42       20.50
+            NO'); DROP TABLE RESPONSES; |          1        0.42       20.92
+NOBODY’S BUSINESS BUT MINE. NOT AT AL.. |          1        0.42       21.34
+                                    NON |          2        0.84       22.18
+                            NON LABELED |          1        0.42       22.59
+                      NONE APPLY TO ME. |          1        0.42       23.01
+                                  NONE, |          1        0.42       23.43
+                                 NORMAL |          1        0.42       23.85
+                            NOT LABELED |          1        0.42       24.27
+                           NOT RELEVANT |          1        0.42       24.69
+NOT STRAIGHT BUT I ALSO DON'T CARE AB.. |          1        0.42       25.10
+                               NOT SURE |          1        0.42       25.52
+                             OMNISEXUAL |          7        2.93       28.45
+                  OMNISEXUAL DEMISEXUAL |          1        0.42       28.87
+       ON BOTH THE ARO AND ACE SPECTRUM |          1        0.42       29.29
+ON THE ASEXUAL SPECTRUM AND IM STILL .. |          1        0.42       29.71
+                                    PAN |          2        0.84       30.54
+                             PAN & DEMI |          1        0.42       30.96
+                             PAN SEXUAL |          2        0.84       31.80
+                            PANROMANTIC |          1        0.42       32.22
+                    PANROMANTIC ASEXUAL |          1        0.42       32.64
+                              PANSEXUAL |         92       38.49       71.13
+                   PANSEXUAL (EVERYONE) |          1        0.42       71.55
+                 PANSEXUAL DEMIROMANTIC |          1        0.42       71.97
+                     PANSEXUAL/BISEXUAL |          1        0.42       72.38
+                                  QUEE5 |          1        0.42       72.80
+                                  QUEER |         42       17.57       90.38
+                 QUEER (AKA DON'T CARE) |          1        0.42       90.79
+                          QUEER ARO ACE |          1        0.42       91.21
+                        QUEER/ NO LABEL |          1        0.42       91.63
+                            QUESTIONING |          4        1.67       93.31
+QUESTIONING LABELS BUT DEFINITELY QUEER |          1        0.42       93.72
+                               STRAIGHT |          2        0.84       94.56
+                  STRAIGHT AND ACE SPEC |          1        0.42       94.98
+            THIS IS PRIVATE INFORMATION |          1        0.42       95.40
+          THIS SHOULD NOT BE A QUESTION |          1        0.42       95.82
+                           TRANS FEMALE |          1        0.42       96.23
+                              UNLABELED |          2        0.84       97.07
+                UNLABELED, NOT STRAIGHT |          1        0.42       97.49
+                   UNLABELED/OMNISEXUAL |          1        0.42       97.91
+                                 UNSURE |          2        0.84       98.74
+   WHO EVEN KNOWS BUT IT'S NOT STRAIGHT |          1        0.42       99.16
+WHY THE FUCK DOES THIS MATTER I’M STR.. |          1        0.42       99.58
+WOW, NOT REALLY RELEVANT TO FINANCIAL.. |          1        0.42      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        239      100.00
+
+. 
+. *** Gender Identity X SO ***
+. tab so_raw gender_raw
+
+                      |                current gender identity
+   sexual orientation |       MAN  NONBINARY      OTHER  PREFER ..      WOMAN |     Total
+----------------------+-------------------------------------------------------+----------
+              ASEXUAL |        27         37          8         12         95 |       179 
+             BISEXUAL |       156        116         20         43        749 |     1,084 
+       LESBIAN OR GAY |       129         51         10         11        148 |       349 
+OTHER (FEEL FREE TO.. |        39         52         48         16        129 |       284 
+    PREFER NOT TO SAY |       132         16          0         59        335 |       542 
+STRAIGHT (NOT GAY O.. |     2,410          6          8         11      3,036 |     5,471 
+----------------------+-------------------------------------------------------+----------
+                Total |     2,893        278         94        152      4,492 |     7,909 
+
+. 
+. 
+. 
+. 
+. 
+. /* Export Raw Expression to Excel*/
+. 
+. * Gender Other
+. preserve
+
+. keep gender_other_raw
+
+. drop if gender_other_raw == ""
+(10,131 observations deleted)
+
+. export excel using "$csacprojdir//tab/learn/genderso/expression_raw.xls", sheet("gender_other") replace
+file /home/research/ca_ed_lab/projects/csac_survey2023//tab/learn/genderso/expression_raw.xls saved
+
+. restore
+
+. 
+. * SO Other
+. keep so_other_raw
+
+. drop if so_other_raw == ""
+(9,982 observations deleted)
+
+. export excel using "$csacprojdir//tab/learn/genderso/expression_raw.xls", sheet("so_other")
+file /home/research/ca_ed_lab/projects/csac_survey2023//tab/learn/genderso/expression_raw.xls saved
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/expression.txt
+  log type:  text
+ closed on:  13 May 2024, 15:01:25
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
