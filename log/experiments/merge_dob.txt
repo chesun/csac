@@ -1,0 +1,139 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> merge_dob.txt
+  log type:  text
+ opened on:   9 Mar 2025, 14:18:36
+
+. 
+. 
+. 
+. use $csacprojdir/dta/cln/csac_hs_senior_2023_brief_admin.dta, clear 
+
+. rename first_name name_first 
+
+. rename last_name name_last 
+
+. replace name_first = strtrim(stritrim(strupper(name_first)))
+(0 real changes made)
+
+. replace name_last = strtrim(stritrim(strupper(name_last)))
+(0 real changes made)
+
+. replace dob_date = strtrim(dob_date)
+(0 real changes made)
+
+. drop if mi(idunique)
+(1,142 observations deleted)
+
+. drop _merge
+
+. // first name last name and birth date uniquely identifies observations in ma
+> ster data but not using
+. merge 1:m name_first name_last dob_date using $csacprojdir/dta/cln/ccc_name_i
+> d_xwalk.dta, keep(1 3) nogen 
+(variable name_first was str12, now str278 to accommodate using data's
+       values)
+(variable name_last was str19, now str40 to accommodate using data's values)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         4,067
+        from master                     4,067  
+        from using                          0  
+
+    Matched                             9,593  
+    -----------------------------------------
+
+. // tag unique individuals, tag one obs per individual 
+. egen uniquetag = tag(student_ssn)
+
+. bysort idunique: egen num_indiv_matched = total(uniquetag)
+
+. 
+. // keep only unique matches
+. drop if num_indiv_matched>1
+(825 observations deleted)
+
+. 
+. // merge with the cleaned student-college-year level dataset, with calculated
+>  units and GPA info 
+. merge m:m college_id student_id using $cccclndatadir/SX_yearcollapsed, gen(sx
+> year_merge) keep(1 3)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         7,064
+        from master                     7,064  (sxyear_merge==1)
+        from using                          0  (sxyear_merge==2)
+
+    Matched                             9,873  (sxyear_merge==3)
+    -----------------------------------------
+
+. tab where_college sxyear_merge
+
+ where do you plan to | Matching result from
+  attend college this |         merge
+                 fall | Master on  Matched ( |     Total
+----------------------+----------------------+----------
+California Community  |     1,649      4,552 |     6,201 
+California State Univ |     1,554      1,147 |     2,701 
+University of Califor |     1,396      1,457 |     2,853 
+Private four-year col |       357        326 |       683 
+Vocational, technical |       141        139 |       280 
+College outside of Ca |       648        538 |     1,186 
+----------------------+----------------------+----------
+                Total |     5,745      8,159 |    13,904 
+
+. 
+. 
+. // merge with cleaned student financial award dataset
+. // drop the financial award variables from CSAC admin 
+. drop efc-su_sch 
+
+. merge m:1 college_id student_id year using $cccclndatadir/SFA_Collapsed_year,
+>  keep(1 3) gen(sfayear_merge)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                        13,396
+        from master                    13,396  (sfayear_merge==1)
+        from using                          0  (sfayear_merge==2)
+
+    Matched                             3,541  (sfayear_merge==3)
+    -----------------------------------------
+
+. 
+. tab sxyear_merge sfayear_merge 
+
+                      | Matching result from
+ Matching result from |         merge
+                merge | Master on  Matched ( |     Total
+----------------------+----------------------+----------
+      Master only (1) |     7,064          0 |     7,064 
+          Matched (3) |     6,332      3,541 |     9,873 
+----------------------+----------------------+----------
+                Total |    13,396      3,541 |    16,937 
+
+. 
+. lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique 
+> individual matches kept"
+note: label truncated to 80 characters
+
+. save $csacprojdir/dta/cln/csac_survey_ccc_merged_namedob.dta, replace 
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc
+    > _merged_namedob.dta saved
+
+. 
+. 
+end of do-file
+
+. do $csacprojdir/do/experiments/make_rct_data.do
+
+. /* analyze summer school RCT */
+. 
+. /* 
+> do $csacprojdir/do/experiments/make_rct_data.do
+>  */
+. cap log close _all

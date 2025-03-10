@@ -20,11 +20,23 @@ drop _merge
 merge 1:m name_first name_last dob_date using $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, keep(1 3) nogen 
 // tag unique individuals, tag one obs per individual 
 egen uniquetag = tag(student_ssn)
-bysort idunique: egen num_indiv_matched = sum(uniquetag)
+bysort idunique: egen num_indiv_matched = total(uniquetag)
+tab num_indiv_matched
+// keep only unique matches or non-matches 
+drop if num_indiv_matched>1
+
+// merge with the cleaned student-college-year level dataset, with calculated units and GPA info 
+merge m:m college_id student_id using $cccclndatadir/SX_yearcollapsed, gen(sxyear_merge) keep(1 3)
+tab where_college sxyear_merge
 
 
+// merge with cleaned student financial award dataset
+// drop the financial award variables from CSAC admin 
+drop efc-su_sch 
+merge m:1 college_id student_id year using $cccclndatadir/SFA_Collapsed_year, keep(1 3) gen(sfayear_merge)
 
-merge m:m college_id student_id using $csacprojdir/dta/raw/ccc_student_2023.dta, gen(ccc_merge) keep(1 3)
+tab sxyear_merge sfayear_merge 
 
+lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique individual matches kept"
 save $csacprojdir/dta/cln/csac_survey_ccc_merged_namedob.dta, replace 
 

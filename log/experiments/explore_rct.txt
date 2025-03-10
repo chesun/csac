@@ -1,0 +1,323 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> explore_rct.txt
+  log type:  text
+ opened on:   9 Mar 2025, 14:31:17
+
+. 
+. use $csacclndatadir/rct_collapsed_individual.dta, clear  
+(survey data merged to CCC credits, GPA, and SF Awards, only unique individual 
+> ma)
+
+. 
+. // observations for the summer school rct
+. count if !mi(treat_summer) & !mi(sum23enr)
+  7,992
+
+. 
+. // observations for the fall enrollment 
+. count if !mi(treat_summer) & !mi(treat_calgrant) & !mi(fall23enr)
+  2,589
+
+. 
+. /* // observations for the finaid receipt
+> count if !mi(treat_summer) & !mi(treat_calgrant)  */
+. 
+. //----------- summer school 2023
+. preserve 
+
+. drop if mi(treat_summer)
+(2,013 observations deleted)
+
+. di "Enrolled in summer school 2023"
+Enrolled in summer school 2023
+
+. bysort treat_summer: sum sum23enr
+
+-------------------------------------------------------------------------------
+-> treat_summer = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    sum23enr |      4,006    .1969546    .3977474          0          1
+
+-------------------------------------------------------------------------------
+-> treat_summer = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    sum23enr |      3,986     .193427    .3950344          0          1
+
+
+. 
+. 
+. di "units enrolled in summer 2023"
+units enrolled in summer 2023
+
+. bysort treat_summer: sum sum23units_att
+
+-------------------------------------------------------------------------------
+-> treat_summer = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+sum23units~t |        312    3.565064    2.881959          0         18
+
+-------------------------------------------------------------------------------
+-> treat_summer = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+sum23units~t |        360    3.709861    2.914376          0         17
+
+
+. 
+. di "units earned in summer 2023"
+units earned in summer 2023
+
+. bysort treat_summer: sum sum23units_earn
+
+-------------------------------------------------------------------------------
+-> treat_summer = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+sum23units~n |        312    3.008974    2.896341          0         18
+
+-------------------------------------------------------------------------------
+-> treat_summer = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+sum23units~n |        360    3.300139    2.718923          0         12
+
+
+. ttest sum23units_earn, by(treat_summer)
+
+Two-sample t test with equal variances
+------------------------------------------------------------------------------
+   Group |     Obs        Mean    Std. err.   Std. dev.   [95% conf. interval]
+---------+--------------------------------------------------------------------
+       0 |     312    3.008974     .163973    2.896341    2.686338    3.331611
+       1 |     360    3.300139    .1432998    2.718923    3.018326    3.581951
+---------+--------------------------------------------------------------------
+Combined |     672    3.164955    .1081802    2.804352    2.952543    3.377368
+---------+--------------------------------------------------------------------
+    diff |           -.2911645    .2167847               -.7168237    .1344946
+------------------------------------------------------------------------------
+    diff = mean(0) - mean(1)                                      t =  -1.3431
+H0: diff = 0                                     Degrees of freedom =      670
+
+    Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = 0.0898         Pr(|T| > |t|) = 0.1797          Pr(T > t) = 0.9102
+
+. 
+. di "summer 2023 GPA"
+summer 2023 GPA
+
+. bysort treat_summer: sum sum23gpa
+
+-------------------------------------------------------------------------------
+-> treat_summer = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    sum23gpa |        229    3.335209    1.121431          0          4
+
+-------------------------------------------------------------------------------
+-> treat_summer = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    sum23gpa |        289    3.486533    .9429952          0          4
+
+
+. 
+. 
+. //--------- cal grant 
+. restore, preserve 
+
+. drop if mi(treat_calgrant)
+(7,416 observations deleted)
+
+. 
+. 
+. // fall enrollment, units, GPA
+. 
+. di "fall 2023 enrolled"
+fall 2023 enrolled
+
+. bysort treat_calgrant: sum fall23enr
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   fall23enr |      1,294    .4567233    .4983162          0          1
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   fall23enr |      1,295    .4277992    .4949507          0          1
+
+
+. 
+. di "fall 2023 units enrolled"
+fall 2023 units enrolled
+
+. bysort treat_calgrant: sum fall23units_att
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fall23unit~t |        971    12.87639    3.903883          0         37
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fall23unit~t |        927    12.64617    3.642679          0         30
+
+
+. 
+. di "fall 2023 units earned"
+fall 2023 units earned
+
+. bysort treat_calgrant: sum fall23units_earn
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fall23unit~n |        971    9.521081    5.339605          0         22
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+fall23unit~n |        927    9.238943    5.241838          0         22
+
+
+. 
+. di "fall 2023 GPA"
+fall 2023 GPA
+
+. bysort treat_calgrant: sum fall23gpa
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   fall23gpa |        935    2.543108    1.279699          0          4
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   fall23gpa |        891    2.477271    1.283443          0          4
+
+
+. 
+. // financial aid receipt
+. di "fall 2023 CGB receipt"
+fall 2023 CGB receipt
+
+. bysort treat_calgrant: sum cgb23_f
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     cgb23_f |        886    .2957111    .4566195          0          1
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     cgb23_f |        865    .2913295    .4546378          0          1
+
+
+. 
+. di "fall 2923 SSCG receipt"
+fall 2923 SSCG receipt
+
+. bysort treat_calgrant: sum sscg23_f
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    sscg23_f |        886    .2302483    .4212295          0          1
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    sscg23_f |        865    .2265896     .418867          0          1
+
+
+. 
+. di "2023 year CGB receipt"
+2023 year CGB receipt
+
+. bysort treat_calgrant: sum cgb23
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+       cgb23 |        911    .2854007    .4518531          0          1
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+       cgb23 |        883    .2910532    .4545054          0          1
+
+
+. 
+. di "2023 year SSCG receipt"
+2023 year SSCG receipt
+
+. bysort treat_calgrant: sum sscg23
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      sscg23 |        911    .2436883    .4295426          0          1
+
+-------------------------------------------------------------------------------
+-> treat_calgrant = 1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      sscg23 |        883    .2434881    .4294304          0          1
+
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> explore_rct.txt
+  log type:  text
+ closed on:   9 Mar 2025, 14:31:18
+-------------------------------------------------------------------------------

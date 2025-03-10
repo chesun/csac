@@ -11,3 +11,4 @@ global csacrawdatadir "/home/research/ca_ed_lab/data/restricted_access/raw/csac_
 global csacclndatadir "/home/research/ca_ed_lab/data/restricted_access/clean/csac_survey/2023"
 
 global cccrawdatadir "/home/research/ca_ed_lab/data/restricted_access/raw/ccc"
+global cccclndatadir "/home/research/ca_ed_lab/data/restricted_access/clean/ccc"

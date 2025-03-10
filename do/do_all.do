@@ -41,8 +41,6 @@ if $user_cs == 1{
 
 /* To run this master do file, type:
 
-cd "/home/research/ca_ed_lab/users/chesun/gsr/csac"
-do %csacprojdir/do/do_all.do
 
  */
 

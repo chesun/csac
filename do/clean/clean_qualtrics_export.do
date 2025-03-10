@@ -720,6 +720,7 @@ encode ccc_ft_yn, generate(ccc_ft_yn_temp) label(ccc_ft_yn)
 label var ccc_ft_yn_temp "`: ccc_ft_yn'"
 drop ccc_ft_yn
 rename ccc_ft_yn_temp ccc_ft_yn
+lab var ccc_ft_yn "Did you know calgrant gives more money for 15units"
 
 ****** recode: How would you rate your academic performance in high school?
 ****** recode: How would you rate your social experience in high school?
