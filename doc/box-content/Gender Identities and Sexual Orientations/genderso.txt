@@ -1,0 +1,592 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/genderso.txt
+  log type:  text
+ opened on:   5 Feb 2024, 00:44:31
+
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. *** Keep college bound students ***
+. keep if college_fall == 1
+(991 observations deleted)
+
+. 
+. * Drop archives/duplicated/irelevant categories
+. cap drop gender_clean
+
+. cap drop gender_missing
+
+. cap drop gender_cis
+
+. cap drop gender_woman
+
+. cap drop gender_man
+
+. cap drop gender_other
+
+. cap drop gender_unsure
+
+. cap drop gender_pnts
+
+. cap drop gender_brief
+
+. cap drop so_clean
+
+. cap drop so_missing
+
+. cap drop so_straight
+
+. cap drop so_queer
+
+. cap drop so_unsure
+
+. cap drop so_pnts
+
+. cap drop so_brief
+
+. cap drop agab
+
+. cap drop lgbtq
+
+. 
+. 
+. * drop irrelevant variables
+. drop t_*
+
+. drop device_*
+
+. 
+. 
+. 
+. ****************************
+. * Create gender categories *
+. ****************************
+. /*  Notes:
+> gender_cat 
+> = 0: cis man (asab == M & gender_raw == M)
+> = 1: cis woman (asab == F & gender_raw == W)
+> = 2: transgender (binary transgender, (asab == M & gender_raw == W) OR (asab == F & gender_raw == M)) 
+> = 3: gender diverse/nonbinary/questioning (including respondents who entered attack helicopter/irrelevant answers into the blank.)
+> = 4: prefer not to say (gender_raw == "PREFER NOT TO SAY")
+> */
+. 
+. 
+. * Gen cleaned gender expression to store recoded "Other - specify"
+. gen gender_clean = gender_raw
+(1,679 missing values generated)
+
+. label var gender_clean "cleaned gender expression"
+
+. 
+. * Manually recode "other - specify" 
+. *** MAN if MALE or HOMBRE
+. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "MALE"
+(1 real change made)
+
+. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "MALE."
+(1 real change made)
+
+. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "HOMBRE"
+(1 real change made)
+
+. 
+. *** WOMAN if WOMAN or GIRL
+. replace gender_clean = "WOMAN" if gender_raw == "OTHER" & gender_other_raw == "I AM A STRAIGHT WOMAN"
+(1 real change made)
+
+. replace gender_clean = "WOMAN" if gender_raw == "OTHER" & gender_other_raw == "GIRL"
+(1 real change made)
+
+. 
+. *** Recode to transgender if text stated so 
+. replace gender_clean = "TRANS" if strpos(gender_other_raw, "TRANSFEMME") !=0
+(1 real change made)
+
+. replace gender_clean = "TRANS" if strpos(gender_other_raw, "TRANSMASCULINE") !=0
+(2 real changes made)
+
+. 
+. 
+. *** Recode to missing
+. replace asab = "Male" if strpos(gender_other_raw, "MEANT TO PUT MALE ON LAST QUESTION") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "MEANT TO PUT MALE ON LAST QUESTION") !=0
+variable gender_clean was str17 now str30
+(1 real change made)
+
+. 
+. *** Recode if malicious/unserious/irrelevant
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "ATTACK HELICOPTER") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "BISEXUAL") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "HIM/ALPHA") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I DON'T PLAY THAT STUPID STUFF") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I WAS BORN A GIRL AND NO ONE CAN ") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I'M A MAN MALE I DON'T BELIVE ") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I’M A DUDE THIS IS A BULLSHIT") !=0
+(0 real changes made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "JEWISH") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "NIGGER KILLER 5000") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "NOT RELEVANT") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "ROCKET SHIP") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "THERE IS NO SUCH THING AS A") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "THIS SHOULD NOT BE A QUESTION") !=0
+(1 real change made)
+
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "NO'); DROP TABLE RESPONSES;") !=0
+(1 real change made)
+
+. 
+. * Generate new var to store gender category
+. gen gender_cat = . 
+(9,230 missing values generated)
+
+. label var gender_cat "gender categories"
+
+. 
+. * Define gender categories value label
+. label define gender_cat_lbl 0 "cis man" 1 "cis woman" 2 "transgender" 3 "gender diverse/nonbinary/questioning" 4 "prefer not to say", replace
+
+. label val gender_cat gender_cat_lbl
+
+. 
+. * Categorization - 
+. /* cis man */
+. replace gender_cat = 0 if gender_clean == "MAN" & asab == "Male"
+(2,675 real changes made)
+
+. 
+. /* cis woman */
+. replace gender_cat = 1 if gender_clean == "WOMAN" & asab == "Female"
+(4,289 real changes made)
+
+. 
+. /* transgender */
+. replace gender_cat = 2 if gender_clean == "MAN" & asab == "Female"
+(59 real changes made)
+
+. replace gender_cat = 2 if gender_clean == "WOMAN" & asab == "Male"
+(20 real changes made)
+
+. replace gender_cat = 2 if gender_clean == "TRANS"
+(3 real changes made)
+
+. 
+. /* gender diverse/nonbinary/questioning */
+. replace gender_cat = 3 if  gender_clean == "NONBINARY"
+(267 real changes made)
+
+. replace gender_cat = 3 if  gender_clean == "OTHER"
+(68 real changes made)
+
+. 
+. /* prefer not to say */
+. replace gender_cat = 4 if gender_clean == "PREFER NOT TO SAY"
+(141 real changes made)
+
+. 
+. *** Check what's in Other/Nonbinary/Questioning
+. di "Free responses recoded into 'gender diverse/nonbinary/questioning' "
+Free responses recoded into 'gender diverse/nonbinary/questioning' 
+
+. tab gender_other_raw if gender_cat == 3
+
+   current gender other: please specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                AGENDER |          5        7.81        7.81
+                              ANDROGYNE |          1        1.56        9.38
+             BIGENDER (MALE AND FEMALE) |          1        1.56       10.94
+                                DEMIBOY |          1        1.56       12.50
+          DEMIBOY (NONBINARY MASCULINE) |          1        1.56       14.06
+                               DEMIGIRL |          4        6.25       20.31
+                       FEMALE/NONBINARY |          1        1.56       21.88
+                           GENDER FLUID |          4        6.25       28.12
+             GENDER NON CONFORMING MALE |          1        1.56       29.69
+                            GENDERFLUID |         29       45.31       75.00
+GENDERFLUID: FOR ONES GENDER TO BE FL.. |          1        1.56       76.56
+                            GENDERQUEER |          2        3.12       79.69
+I DON'T KNOW, IM PRETTY CONFUSED MOST.. |          1        1.56       81.25
+IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.56       82.81
+                         MASC NONBINARY |          1        1.56       84.38
+                         NONBINARY MALE |          1        1.56       85.94
+                    NONBINARY TRANSMASC |          1        1.56       87.50
+                               NOT SURE |          1        1.56       89.06
+                            QUESTIONING |          1        1.56       90.62
+                    SHE/HER ; THEY/THEM |          1        1.56       92.19
+                             TWO SPIRIT |          1        1.56       93.75
+                              UNCERTAIN |          1        1.56       95.31
+                                UNKNOWN |          1        1.56       96.88
+                                 UNSURE |          2        3.12      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         64      100.00
+
+. 
+. 
+. 
+. *******************************
+. * Create sexuality categories *
+. *******************************
+. /*  Notes:
+> so_cat 
+> = 0: Straight/Heterosexual 
+> = 1: Gay or lesbian
+> = 2: Bisexual/pansexual/omnisexual
+> = 3: Asexual/aromantic/demisexual
+> = 4: Other/queer/questioning (including respondents report more than one of the above categories, none of the above cateogries, attack helicopters, and irrelevan
+> t ansers)
+> = 5: prefer not to say 
+> */
+. 
+. * Drop archived cleaned gender
+. cap drop so_clean
+
+. 
+. * Gen cleaned gender expression to store recoded "Other - specify" (string)
+. gen so_clean = so_raw
+(1,723 missing values generated)
+
+. label var so_clean "cleaned sexual orientation"
+
+. replace so_clean = "BI/PAN/OMNISEXUAL" if so_raw == "BISEXUAL"
+(1,037 real changes made)
+
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if so_raw == "ASEXUAL"
+(172 real changes made)
+
+. replace so_clean = "OTHER/QUEER/QUESTIONING" if so_raw == "OTHER (FEEL FREE TO SPECIFY)"
+(274 real changes made)
+
+. 
+. * Manually recode text response
+. /* STRAIGHT/HETERO */
+. replace so_clean = "STRAIGHT" if so_raw == "STRAIGHT (NOT GAY OR LESBIAN)"
+(5,185 real changes made)
+
+. replace so_clean = "STRAIGHT" if so_other_raw == "STRAIGHT"
+(2 real changes made)
+
+. replace so_clean = "STRAIGHT" if so_other_raw == "HETERO"
+(1 real change made)
+
+. replace so_clean = "STRAIGHT" if so_other_raw == "HETEROSEXUAL"
+(2 real changes made)
+
+. 
+. /* BI/PAN/OMNI */
+. *** indicated BI but not others
+. replace so_clean = "BI/PAN/OMNISEXUAL" if so_other_raw == "BICURIOUS"
+(2 real changes made)
+
+. *** indicated PAN but not others
+. replace so_clean = "BI/PAN/OMNISEXUAL" if strpos(so_other_raw, "PAN")!=0 & strpos(so_other_raw, "DEMI")==0 & strpos(so_other_raw, "ASEX")==0 & strpos(so_other_ra
+> w, "AROM")==0 
+(94 real changes made)
+
+. *** indicated POLY but not others
+. replace so_clean = "BI/PAN/OMNISEXUAL" if strpos(so_other_raw, "POLY")!=0 & strpos(so_other_raw, "DEMI")==0 & strpos(so_other_raw, "ASEX")==0 & strpos(so_other_r
+> aw, "AROM")==0
+(0 real changes made)
+
+. *** indicated OMNI but not others
+. replace so_clean = "BI/PAN/OMNISEXUAL" if so_other_raw == "OMNISEXUAL"
+(7 real changes made)
+
+. 
+. 
+. /* A/DEMISEXUAL/ROMANTIC */
+. *** indicate ASEXUAL but not others
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ASEX")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_othe
+> r_raw, "OMNI")==0 & strpos(so_other_raw, "POLY")==0
+(5 real changes made)
+
+. *** indicate AROMANTIC but not others
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ARO")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other
+> _raw, "OMNI")==0 & strpos(so_other_raw, "POLY")==0
+(3 real changes made)
+
+. *** indicate DEMI* but not others
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "DEMI")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "PAN")==0 & strpos(so_other_
+> raw, "OMNI")==0 & strpos(so_other_raw, "POLY")==0 
+(7 real changes made)
+
+. 
+. /* Malicious/unserious/irrelevant */
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "ATTRACTED TO CARS")!=0
+variable so_clean was str29 now str30
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "BIG TITTY JEWS")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "I AM A MINOR. YOU SHOULD NOT BE ")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "MAN")!=0
+(13 real changes made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "MENTALLY ILL PEOPLE GOD WILL")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "MUJER")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NOBODY’S BUSINESS BUT MINE.")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NORMAL")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "THIS IS PRIVATE INFORMATION")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "THIS SHOULD NOT BE A QUESTION")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "TRANS FEMALE")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "WHY THE FUCK DOES THIS MATTER")!=0
+(0 real changes made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "WOW, NOT REALLY RELEVANT TO")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NO'); DROP TABLE RESPONSES;")!=0
+(1 real change made)
+
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NOT RELEVANT")!=0
+(1 real change made)
+
+. 
+. 
+. * Generate new var to store gender category
+. gen so_cat = . 
+(9,230 missing values generated)
+
+. label var so_cat "sexual orientation categories"
+
+. 
+. * Define gender categories value label
+. label define so_cat_lbl 0 "straight/heterosexual " 1 "gay or lesbian" 2 "bisexual/pansexual/omnisexual" 3 "asexual/aromantic/demisexual" 4 "other/queer/questioni
+> ng" 5 "prefer not to say", replace
+
+. label val so_cat so_cat_lbl
+
+. 
+. * Categorization (numeric)
+. replace so_cat = 0 if so_clean == "STRAIGHT"
+(5,190 real changes made)
+
+. replace so_cat = 1 if so_clean == "LESBIAN OR GAY"
+(330 real changes made)
+
+. replace so_cat = 2 if so_clean == "BI/PAN/OMNISEXUAL"
+(1,139 real changes made)
+
+. replace so_cat = 3 if so_clean == "A/DEMISEXUAL/ROMANTIC"
+(182 real changes made)
+
+. replace so_cat = 4 if so_clean == "OTHER/QUEER/QUESTIONING"
+(131 real changes made)
+
+. replace so_cat = 5 if so_clean == "PREFER NOT TO SAY"
+(509 real changes made)
+
+. 
+. *** Check what's in Other/queer/questioning
+. di "Free responses recoded into BI/PAN/OMNI"
+Free responses recoded into BI/PAN/OMNI
+
+. tab so_other_raw if so_cat == 2
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                              BICURIOUS |          2        1.96        1.96
+                             OMNISEXUAL |          7        6.86        8.82
+                                    PAN |          1        0.98        9.80
+                             PAN SEXUAL |          2        1.96       11.76
+                              PANSEXUAL |         88       86.27       98.04
+                   PANSEXUAL (EVERYONE) |          1        0.98       99.02
+                     PANSEXUAL/BISEXUAL |          1        0.98      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        102      100.00
+
+. di "Free responses recoded into A/DEMISEXUAL/ROMANTIC"
+Free responses recoded into A/DEMISEXUAL/ROMANTIC
+
+. tab so_other_raw if so_cat == 3
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                                ARO/ACR |          1       10.00       10.00
+                            DEMI SEXUAL |          1       10.00       20.00
+                             DEMISEXUAL |          6       60.00       80.00
+       ON BOTH THE ARO AND ACE SPECTRUM |          1       10.00       90.00
+ON THE ASEXUAL SPECTRUM AND IM STILL .. |          1       10.00      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         10      100.00
+
+. di "Free responses recoded into OTHER/QUEER/QUESTIONING"
+Free responses recoded into OTHER/QUEER/QUESTIONING
+
+. tab so_other_raw if so_cat == 4
+
+       sexual orientation other: please |
+                                specify |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                             ABROSEXUAL |          1        1.14        1.14
+                            ANTROSEXUAL |          1        1.14        2.27
+                      ASEXUAL AND QUEER |          1        1.14        3.41
+                    ASEXUAL/ OMNISEXUAL |          1        1.14        4.55
+                          ASEXUAL/QUEER |          1        1.14        5.68
+                       BISEXUAL ASEXUAL |          1        1.14        6.82
+CAN’T TELL IF I’M REALLY STRAIGHT OR .. |          1        1.14        7.95
+              DEMISEXUAL AND POLYSEXUAL |          1        1.14        9.09
+                         HETEROFLEXIBLE |          1        1.14       10.23
+                  I DO NOT LABEL MYSELF |          1        1.14       11.36
+                           I DON'T KNOW |          1        1.14       12.50
+                    I DON'T LIKE LABELS |          1        1.14       13.64
+           I HAVEN'T SWITCHED SIDES YET |          1        1.14       14.77
+                                    IDK |          1        1.14       15.91
+IM NOT SURE YET BUT I KNOW IM SOME TY.. |          1        1.14       17.05
+                           I’M NOT SURE |          1        1.14       18.18
+                               NO LABEL |          1        1.14       19.32
+          NO LABELS, I JUST LIKE PEOPLE |          1        1.14       20.45
+                                 NO ONE |          1        1.14       21.59
+                                    NON |          2        2.27       23.86
+                            NON LABELED |          1        1.14       25.00
+                      NONE APPLY TO ME. |          1        1.14       26.14
+                                  NONE, |          1        1.14       27.27
+                            NOT LABELED |          1        1.14       28.41
+NOT STRAIGHT BUT I ALSO DON'T CARE AB.. |          1        1.14       29.55
+                               NOT SURE |          1        1.14       30.68
+                  OMNISEXUAL DEMISEXUAL |          1        1.14       31.82
+                             PAN & DEMI |          1        1.14       32.95
+                                  QUEE5 |          1        1.14       34.09
+                                  QUEER |         42       47.73       81.82
+                 QUEER (AKA DON'T CARE) |          1        1.14       82.95
+                          QUEER ARO ACE |          1        1.14       84.09
+                        QUEER/ NO LABEL |          1        1.14       85.23
+                            QUESTIONING |          4        4.55       89.77
+QUESTIONING LABELS BUT DEFINITELY QUEER |          1        1.14       90.91
+                  STRAIGHT AND ACE SPEC |          1        1.14       92.05
+                              UNLABELED |          2        2.27       94.32
+                UNLABELED, NOT STRAIGHT |          1        1.14       95.45
+                   UNLABELED/OMNISEXUAL |          1        1.14       96.59
+                                 UNSURE |          2        2.27       98.86
+   WHO EVEN KNOWS BUT IT'S NOT STRAIGHT |          1        1.14      100.00
+----------------------------------------+-----------------------------------
+                                  Total |         88      100.00
+
+. 
+. 
+. 
+. ********************************
+. * Recode Segments by 2 or 4yrs *
+. ********************************
+. 
+. gen segment = .
+(9,230 missing values generated)
+
+. label var segment "plan to attend 2-yr or 4-yr schools this fall"
+
+. label def segment_lbl 0 "2-yr school" 1 "4-yr school", replace
+
+. label val segment segment_lbl
+
+. 
+. replace segment = 0 if inlist(where_college, 1,5)
+(3,719 real changes made)
+
+. replace segment = 1 if inlist(where_college, 2, 3, 4, 6)
+(5,453 real changes made)
+
+. 
+. **************************
+. * Save Cleaned Data sets *
+. **************************
+. 
+. * Quantitative analysis
+. *** Save Dataset
+. save "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", replace
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_genderso.dta saved
+
+. 
+. *** Create Codebook
+. codebookout "$csacprojdir/doc/genderso_codebook.xls", replace 
+file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_codebook.xls saved
+
+. 
+. * Qualitative analysis
+. *** Keep trans and gender-diverse students
+. keep if inlist(gender_cat, 2, 3)
+(8,813 observations deleted)
+
+. 
+. *** Keep obs answers open-ended questions about excitement and challenges
+. keep if college_excited != "" | college_challenge != ""
+(63 observations deleted)
+
+. 
+. *** Restructure some variables to simplify data structure
+. rename race race_raw
+
+. replace primary_lang = "English" if primary_english == 1
+(245 real changes made)
+
+. 
+. *** Keep id, open responses, demographics (gender, so, race, parental edu, primary language at home)
+. keep id college_excited college_challenge gender_cat so_cat race_assn parent_edu primary_lang asab gender_raw gender_other_raw so_raw so_other_raw race_raw
+
+. order id college_excited college_challenge gender_cat so_cat race_assn parent_edu primary_lang asab gender_raw gender_other_raw so_raw so_other_raw race_raw
+
+. 
+. *** Save Cleaned datasets
+. save "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso_qual.dta", replace
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_genderso_qual.dta saved
+
+. 
+. *** Export to Excel to Put Into Box
+. export excel using "$csacprojdir/tab/learn/genderso/qual.xls", first(var) sheet("non-cis") replace
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/learn/genderso/qual.xls saved
+
+. 
+. *** Create Codebook
+. codebookout "$csacprojdir/doc/genderso_qual_codebook.xls", replace 
+file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_qual_codebook.xls saved
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/genderso.txt
+  log type:  text
+ closed on:   5 Feb 2024, 00:44:31
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------

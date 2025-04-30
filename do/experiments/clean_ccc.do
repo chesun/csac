@@ -1,4 +1,4 @@
-/* clean CCC data */
+/* create a ssn - college+student id xwalk */
 
 /* First written by Christina Sun 01/30/2025 */
 
@@ -8,59 +8,106 @@ do $csacprojdir/do/experiments/clean_ccc.do
 
 cap log close _all
 log using $csacprojdir/log/experiments/clean_ccc.txt, text replace
-//---------------------------------------------------
-// CCC
 
-// get student data for 2023 and onwards
-use "$cccrawdatadir/STTERM.dta" if inrange(term_id, 230, 250), clear 
-save $csacprojdir/dta/raw/ccc_stterm_2023.dta, replace
-
- // merge dob from SBSTUDNT 
-merge m:1 college_id student_id using "$cccrawdatadir/SBSTUDNT.dta", keep(1 3) keepusing(birthdate) nogen 
-
-// get rid of leading and trailing blanks and collapse internal blanks in first and last name
-replace name_first = ustrtrim(strtrim(stritrim(strupper(name_first))))
-replace name_last = ustrtrim(strtrim(stritrim(strupper(name_last))))
-
-// create new var in str# format, compress does not work to convert strL to str#
-gen fname = name_first
-gen lname = name_last
-
-drop name_first name_last
-
-rename fname name_first
-rename lname name_last
-
-gen dob_date = subinstr(birthdate, "00:00:00", "", .)
-replace dob_date = strtrim(subinstr(dob_date, "-", "", .))
-
-// distinguish from survey race var
-rename race racestr
-compress 
-
-save $csacprojdir/dta/raw/ccc_student_2023.dta, replace 
-
-keep name_first name_last dob_date college_id student_id 
-collapse (firstnm) name_first name_last dob_date, by(college_id student_id)
-
-compress 
-
-// in this dataset collegeid + studentid does NOT uniquely identifies an individual
-save $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, replace 
-
-
-
-// create xwalk for student SSN to student ID + college id
+// ------------ create xwalk for student SSN to student ID + college id
 use $cccrawdatadir/HF_FIRST.dta, clear
 
 // student ssn uniquely identifies an individual, but some individual has multiple observations
 // observations are uniquely identified by collegeid + studentid 
-merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, keep(3) keepusing(dob_date name_first name_last) nogen 
  
-keep college_id student_id student_ssn dob_date name_first name_last
+keep college_id student_id student_ssn
 
 compress 
 // this dataset has one observation per each instance of a student in a college
-save $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, replace 
+save $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, replace 
+
+
+
+//--------------- clean SX_yearcollapsed
+use $cccclndatadir/SX_yearcollapsed, clear 
+// check that dataset is at college-student-year level 
+unique college_id student_id year 
+// a student may attend more than 1 college in 1 year
+keep if year == 2023
+// get the student ssn
+merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, nogen keep(3)
+
+unique student_ssn
+
+// create summer enrollment flag  and fall enrollment flag
+gen enr_su = (units_attempted_su > 0 & !mi(units_attempted_su)) 
+gen enr_f = (units_attempted_f > 0 & !mi(units_attempted_f)) 
+
+*** clean units and gpa
+sum units_attempted_su if enr_su==1
+sum units_attempted_f if enr_f==1
+// make sure units earned is non missing if enrolled
+mdesc units_su if enr_su==1
+mdesc units_f if enr_f==1
+assert !mi(units_su) if enr_su==1
+assert !mi(units_f) if enr_f==1
+
+// check if GPA is missing if enrolled and earned units: about 90000 obs has GPA missing but enrolled
+mdesc sem_GPA_su if enr_su==1 & !mi(units_su)
+sum units_su if mi(sem_GPA_su) & enr_su==1 
+sum units_su if mi(sem_GPA_su) & enr_su==1 & units_su>0
+
+
+// create a weighted GPA for each individual if enrolled in summer
+gen su_weighted = sem_GPA_su * units_su if !missing(sem_GPA_su, units_su) & enr_su==1
+gen f_weighted  = sem_GPA_f  * units_f  if !missing(sem_GPA_f, units_f) & enr_f==1 
+replace su_weighted = 0 if (mi(sem_GPA_su) | mi(units_su)) & enr_su==1
+replace f_weighted = 0 if (mi(sem_GPA_f) | mi(units_f)) & enr_f==1
+
+// collapse down to individual level, taking total units and weighted average GPA
+collapse (sum) su_weighted  f_weighted ///
+    units_earn_su=units_su units_earn_f=units_f ///
+    units_att_f = units_attempted_f units_att_su=units_attempted_su ///
+    (max) enr_su enr_f, by(student_ssn)
+
+gen gpa_su = su_weighted / units_earn_su if units_earn_su > 0
+gen gpa_f  = f_weighted  / units_earn_f  if units_earn_f > 0
+
+
+drop f_weighted su_weighted
+
+
+lab var gpa_su "Weighted avg summer GPA"
+lab var gpa_f  "Weighted avg fall GPA"
+
+lab var enr_su "enrolled in summer"
+lab var units_att_su "total summer units attempted"
+lab var units_earn_su "total summer units earned"
+lab var enr_f "enrolled in fall"
+lab var units_att_f "total fall units attempted"
+lab var units_earn_f "total fall units earned"
+
+label data "SX_yearcollapsed one copy per individual in 2023"
+
+save $csacprojdir/dta/cln/sx_2023_indiv_level.dta, replace 
+
+
+//------------- clean SFA_Collapsed_year
+use $cccclndatadir/SFA_Collapsed_year, clear 
+unique college_id student_id
+
+keep if year == 2023
+// get student ssn 
+merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, nogen keep(3)
+unique student_ssn
+// these financial award receipts are all dummies 
+sum cgb_f sscg_f cgb sscg 
+
+// collapse down to individual level
+collapse (max) cgb_f sscg_f cgb sscg, by(student_ssn)
+
+lab var cgb_f "receive CGB at any college in the fall"
+lab var sscg_f "receive SSCG at any college in the fall"
+lab var cgb "receive CGB at any college in 2023"
+lab var sscg "receive SSCG at any college in 2023"
+
+lab data "SFA year collapsed 2023 data one copy per individual"
+
+save $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, replace 
 
 log close 

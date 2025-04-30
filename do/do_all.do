@@ -74,9 +74,9 @@ ssc install ngram, replace
 
 // clean survey data exported from qualtrics 
 do $csacprojdir/do/clean/clean_qualtrics_export.do
+do $csacprojdir/do/experiments/make_csac_data.do
 
 do $csacprojdir/do/experiments/clean_ccc.do
-do $csacprojdir/do/experiments/make_csac_data.do
 do $csacprojdir/do/experiments/merge_ccc.do
 
 
