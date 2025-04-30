@@ -1,133 +1,265 @@
-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_ccc.t
-> xt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> clean_ccc.txt
   log type:  text
- opened on:   5 Feb 2025, 22:23:55
-
-. //---------------------------------------------------
-. // CCC
-. 
-. // get student data for 2023 and onwards
-. use "$cccrawdatadir/STTERM.dta" if inrange(term_id, 230, 250), clear 
-
-. save $csacprojdir/dta/raw/ccc_stterm_2023.dta, replace
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/raw/ccc_stterm_2023.dta saved
+ opened on:  30 Apr 2025, 14:58:05
 
 . 
-.  // merge dob from SBSTUDNT 
-. merge m:1 college_id student_id using "$cccrawdatadir/SBSTUDNT.dta", keep(1 3) keepusing
-> (birthdate) nogen 
-
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                         1,194
-        from master                     1,194  
-        from using                          0  
-
-    Matched                        19,251,597  
-    -----------------------------------------
-
-. 
-. // get rid of leading and trailing blanks and collapse internal blanks in first and last
->  name
-. replace name_first = ustrtrim(strtrim(stritrim(strupper(name_first))))
-(19,252,683 real changes made)
-
-. replace name_last = ustrtrim(strtrim(stritrim(strupper(name_last))))
-(19,252,745 real changes made)
-
-. 
-. // create new var in str# format, compress does not work to convert strL to str#
-. gen fname = name_first
-(7 missing values generated)
-
-. gen lname = name_last
-(11 missing values generated)
-
-. 
-. drop name_first name_last
-
-. 
-. rename fname name_first
-
-. rename lname name_last
-
-. 
-. gen dob_date = subinstr(birthdate, "00:00:00", "", .)
-(1,194 missing values generated)
-
-. replace dob_date = strtrim(subinstr(dob_date, "-", "", .))
-(19,251,597 real changes made)
-
-. 
-. // distinguish from survey race var
-. rename race racestr
-
-. compress 
-  variable dob_date was str11 now str8
-  expanded_ethnicity is strL now coalesced
-  dependents is strL now coalesced
-  (172,294,191 bytes saved)
-
-. 
-. save $csacprojdir/dta/raw/ccc_student_2023.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/raw/ccc_student_2023.dta
-    saved
-
-. 
-. keep name_first name_last dob_date college_id student_id 
-
-. collapse (firstnm) name_first name_last dob_date, by(college_id student_id)
-
-. 
-. compress 
-  variable name_first was str283 now str278
-  (39,497,815 bytes saved)
-
-. 
-. // in this dataset collegeid + studentid does NOT uniquely identifies an individual
-. save $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/ccc_name_id_xwalk.dta
-    saved
-
-. 
-. 
-. 
-. // create xwalk for student SSN to student ID + college id
+. // ------------ create xwalk for student SSN to student ID + college id
 . use $cccrawdatadir/HF_FIRST.dta, clear
 
 . 
-. // student ssn uniquely identifies an individual, but some individual has multiple obser
-> vations
+. // student ssn uniquely identifies an individual, but some individual has mul
+> tiple observations
 . // observations are uniquely identified by collegeid + studentid 
-. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, keep(3
-> ) keepusing(dob_date name_first name_last) nogen 
+.  
+. keep college_id student_id student_ssn
+
+. 
+. compress 
+  (0 bytes saved)
+
+. // this dataset has one observation per each instance of a student in a colle
+> ge
+. save $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, replace 
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/ccc_ssn_id_xwal
+    > k.dta saved
+
+. 
+. 
+. 
+. //--------------- clean SX_yearcollapsed
+. use $cccclndatadir/SX_yearcollapsed, clear 
+
+. // check that dataset is at college-student-year level 
+. unique college_id student_id year 
+Number of unique values of college_id student_id year is  84251662
+Number of records is  84251662
+
+. // a student may attend more than 1 college in 1 year
+. keep if year == 2023
+(81,811,808 observations deleted)
+
+. // get the student ssn
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
+> ta, nogen keep(3)
 
     Result                      Number of obs
     -----------------------------------------
     Not matched                             0
-    Matched                         5,976,180  
+    Matched                         2,419,064  
     -----------------------------------------
 
-.  
-. keep college_id student_id student_ssn dob_date name_first name_last
+. 
+. unique student_ssn
+Number of unique values of student_ssn is  2110352
+Number of records is  2419064
 
 . 
-. compress 
-  variable student_ssn was str10 now str9
-  (5,976,180 bytes saved)
+. // create summer enrollment flag  and fall enrollment flag
+. gen enr_su = (units_attempted_su > 0 & !mi(units_attempted_su)) 
 
-. // this dataset has one observation per each instance of a student in a college
-. save $csacprojdir/dta/cln/ccc_name_id_xwalk.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/ccc_name_id_xwalk.dta
-    saved
+. gen enr_f = (units_attempted_f > 0 & !mi(units_attempted_f)) 
+
+. 
+. *** clean units and gpa
+. sum units_attempted_su if enr_su==1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+units_atte~u |    648,598    4.646006    2.908022        .05         59
+
+. sum units_attempted_f if enr_f==1
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+units_atte~f |  1,371,672    7.974899    4.935984        .05         80
+
+. 
+. replace units_attempted_su = 0 if enr_su==0
+(1,642,657 real changes made)
+
+. replace units_su = 0 if enr_su == 0
+(1,642,657 real changes made)
+
+. replace units_attempted_f = 0 if enr_f == 0
+(887,789 real changes made)
+
+. replace units_f = 0 if enr_f==0
+(887,789 real changes made)
+
+. 
+. // make sure units earned is non missing if enrolled
+. mdesc units_su if enr_su==1
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+       units_su |           0        648,598           0.00
+----------------+-----------------------------------------------
+
+. mdesc units_f if enr_f==1
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+        units_f |           0      1,371,672           0.00
+----------------+-----------------------------------------------
+
+. assert !mi(units_su) if enr_su==1
+
+. assert !mi(units_f) if enr_f==1
+
+. 
+. // check if GPA is missing if enrolled and earned units: about 90000 obs has 
+> GPA missing but enrolled
+. mdesc sem_GPA_su if enr_su==1 & !mi(units_su)
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+     sem_GPA_su |      88,428        648,598          13.63
+----------------+-----------------------------------------------
+
+. sum units_su if mi(sem_GPA_su) & enr_su==1 
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    units_su |     88,428    .4669027     1.62327          0       34.5
+
+. sum units_su if mi(sem_GPA_su) & enr_su==1 & units_su>0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    units_su |     26,609    1.551628    2.659667         .1       34.5
+
+. 
+. 
+. // create a weighted GPA for each individual if enrolled in summer
+. gen su_weighted = sem_GPA_su * units_su if !missing(sem_GPA_su, units_su) & e
+> nr_su==1
+(1,858,894 missing values generated)
+
+. gen f_weighted  = sem_GPA_f  * units_f  if !missing(sem_GPA_f, units_f) & enr
+> _f==1 
+(1,215,275 missing values generated)
+
+. replace su_weighted = 0 if (mi(sem_GPA_su) | mi(units_su)) & enr_su==1
+(88,428 real changes made)
+
+. replace f_weighted = 0 if (mi(sem_GPA_f) | mi(units_f)) & enr_f==1
+(167,883 real changes made)
+
+. 
+. // collapse down to individual level, taking total units and weighted average
+>  GPA
+. collapse (sum) su_weighted  f_weighted ///
+>     units_earn_su=units_su units_earn_f=units_f ///
+>     units_att_f = units_attempted_f units_att_su=units_attempted_su ///
+>     (max) enr_su enr_f, by(student_ssn)
+
+. 
+. gen gpa_su = su_weighted / units_earn_su if units_earn_su > 0
+(1,598,593 missing values generated)
+
+. gen gpa_f  = f_weighted  / units_earn_f  if units_earn_f > 0
+(1,062,975 missing values generated)
+
+. 
+. 
+. drop f_weighted su_weighted
+
+. 
+. 
+. lab var gpa_su "Weighted avg summer GPA"
+
+. lab var gpa_f  "Weighted avg fall GPA"
+
+. 
+. lab var enr_su "enrolled in summer"
+
+. lab var units_att_su "total summer units attempted"
+
+. lab var units_earn_su "total summer units earned"
+
+. lab var enr_f "enrolled in fall"
+
+. lab var units_att_f "total fall units attempted"
+
+. lab var units_earn_f "total fall units earned"
+
+. 
+. label data "SX_yearcollapsed one copy per individual in 2023"
+
+. 
+. save $csacprojdir/dta/cln/sx_2023_indiv_level.dta, replace 
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sx_2023_indiv_l
+    > evel.dta saved
+
+. 
+. 
+. //------------- clean SFA_Collapsed_year
+. use $cccclndatadir/SFA_Collapsed_year, clear 
+
+. unique college_id student_id
+Number of unique values of college_id student_id is  11620268
+Number of records is  25907307
+
+. 
+. keep if year == 2023
+(24,868,674 observations deleted)
+
+. // get student ssn 
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
+> ta, nogen keep(3)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                         1,019,624  
+    -----------------------------------------
+
+. unique student_ssn
+Number of unique values of student_ssn is  851945
+Number of records is  1019624
+
+. // these financial award receipts are all dummies 
+. sum cgb_f sscg_f cgb sscg 
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+       cgb_f |    729,039    .1870531    .3899544          0          1
+      sscg_f |    729,039    .1130996    .3167147          0          1
+         cgb |  1,019,624    .1465383    .3536453          0          1
+        sscg |  1,019,624     .098092    .2974392          0          1
+
+. 
+. // collapse down to individual level
+. collapse (max) cgb_f sscg_f cgb sscg, by(student_ssn)
+
+. 
+. lab var cgb_f "receive CGB at any college in the fall"
+
+. lab var sscg_f "receive SSCG at any college in the fall"
+
+. lab var cgb "receive CGB at any college in 2023"
+
+. lab var sscg "receive SSCG at any college in 2023"
+
+. 
+. lab data "SFA year collapsed 2023 data one copy per individual"
+
+. 
+. save $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, replace 
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sfa_2023_indiv_
+    > level.dta saved
 
 . 
 . log close 
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_ccc.t
-> xt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> clean_ccc.txt
   log type:  text
- closed on:   5 Feb 2025, 22:58:19
-------------------------------------------------------------------------------------------
+ closed on:  30 Apr 2025, 15:02:50
+-------------------------------------------------------------------------------

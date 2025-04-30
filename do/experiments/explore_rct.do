@@ -21,10 +21,11 @@ tab where_college sx_merge, row
 tab where_college sfa_merge, row
 
 di "merge success for both sx and sfa"
-tab sx_merge sfa_merge
+tab sx_merge sfa_merge, row 
 
 //----------- summer school 2023
 preserve 
+mdesc treat_summer
 drop if mi(treat_summer)
 di "******************* summer school nudge*******************"
 
@@ -61,6 +62,7 @@ ttest gpa_su, by(treat_summer)
 
 //--------- cal grant 
 restore, preserve 
+mdesc treat_calgrant
 drop if mi(treat_calgrant)
 // fall enrollment, units, GPA
 di "***************** cal grant ********************"

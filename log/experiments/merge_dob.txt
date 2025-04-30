@@ -3,7 +3,7 @@
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
 > merge_dob.txt
   log type:  text
- opened on:   9 Mar 2025, 14:18:36
+ opened on:   3 Apr 2025, 17:19:39
 
 . 
 . 
@@ -31,17 +31,14 @@
 . // first name last name and birth date uniquely identifies observations in ma
 > ster data but not using
 . merge 1:m name_first name_last dob_date using $csacprojdir/dta/cln/ccc_name_i
-> d_xwalk.dta, keep(1 3) nogen 
+> d_xwalk.dta, keep(3) nogen 
 (variable name_first was str12, now str278 to accommodate using data's
        values)
 (variable name_last was str19, now str40 to accommodate using data's values)
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         4,067
-        from master                     4,067  
-        from using                          0  
-
+    Not matched                             0
     Matched                             9,593  
     -----------------------------------------
 
@@ -50,21 +47,40 @@
 
 . bysort idunique: egen num_indiv_matched = total(uniquetag)
 
-. 
-. // keep only unique matches
+. tab num_indiv_matched
+
+num_indiv_m |
+     atched |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |          1        0.01        0.01
+          1 |      8,767       91.39       91.40
+          2 |        750        7.82       99.22
+          3 |         54        0.56       99.78
+          4 |          4        0.04       99.82
+          5 |         10        0.10       99.93
+          6 |          7        0.07      100.00
+------------+-----------------------------------
+      Total |      9,593      100.00
+
+. // number of individuals with more than 1 matches 
+. unique student_ssn if num_indiv_matched>1
+Number of unique values of student_ssn is  591
+Number of records is  825
+
+. // keep only unique matches or non-matches 
 . drop if num_indiv_matched>1
 (825 observations deleted)
 
 . 
 . // merge with the cleaned student-college-year level dataset, with calculated
 >  units and GPA info 
-. merge m:m college_id student_id using $cccclndatadir/SX_yearcollapsed, gen(sx
+. merge 1:m college_id student_id using $cccclndatadir/SX_yearcollapsed, gen(sx
 > year_merge) keep(1 3)
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         7,064
-        from master                     7,064  (sxyear_merge==1)
+    Not matched                         2,997
+        from master                     2,997  (sxyear_merge==1)
         from using                          0  (sxyear_merge==2)
 
     Matched                             9,873  (sxyear_merge==3)
@@ -76,64 +92,230 @@
   attend college this |         merge
                  fall | Master on  Matched ( |     Total
 ----------------------+----------------------+----------
-California Community  |     1,649      4,552 |     6,201 
-California State Univ |     1,554      1,147 |     2,701 
-University of Califor |     1,396      1,457 |     2,853 
-Private four-year col |       357        326 |       683 
-Vocational, technical |       141        139 |       280 
-College outside of Ca |       648        538 |     1,186 
+California Community  |     1,089      4,552 |     5,641 
+California State Univ |       568      1,147 |     1,715 
+University of Califor |       444      1,457 |     1,901 
+Private four-year col |        88        326 |       414 
+Vocational, technical |        78        139 |       217 
+College outside of Ca |       137        538 |       675 
 ----------------------+----------------------+----------
-                Total |     5,745      8,159 |    13,904 
+                Total |     2,404      8,159 |    10,563 
 
 . 
-. 
-. // merge with cleaned student financial award dataset
-. // drop the financial award variables from CSAC admin 
-. drop efc-su_sch 
+. keep if year==2023
+(8,863 observations deleted)
 
-. merge m:1 college_id student_id year using $cccclndatadir/SFA_Collapsed_year,
->  keep(1 3) gen(sfayear_merge)
+. 
+. unique college_id student_id year 
+Number of unique values of college_id student_id year is  4007
+Number of records is  4007
+
+. unique idunique year 
+Number of unique values of idunique year is  3564
+Number of records is  4007
+
+. unique student_ssn year 
+Number of unique values of student_ssn year is  3564
+Number of records is  4007
+
+. 
+. tempfile csac_sx
+
+. save `csac_sx', replace 
+(file /home/tmp/St135937.000001 not found)
+file /home/tmp/St135937.000001 saved as .dta format
+
+. 
+. // collapse down to individual-year level, taking weight average of GPA
+. gen su_weighted = sem_GPA_su * units_su if !missing(sem_GPA_su, units_su)
+(3,335 missing values generated)
+
+. gen f_weighted  = sem_GPA_f  * units_f  if !missing(sem_GPA_f, units_f)
+(877 missing values generated)
+
+. 
+. collapse (sum) su_weighted units_su f_weighted units_f units_attempted_f unit
+> s_attempted_su (firstnm) college_id student_id, by(idunique year)
+
+. 
+. gen sem_GPA_su = su_weighted / units_su if units_su > 0
+(2,903 missing values generated)
+
+. gen sem_GPA_f  = f_weighted  / units_f  if units_f > 0
+(843 missing values generated)
+
+. 
+. drop su_weighted f_weighted
+
+. 
+. lab var sem_GPA_su "Weighted Average summer GPA over all colleges"
+
+. lab var sem_GPA_f  "Weighted average fall GPA over all colleges"
+
+. 
+. unique idunique year 
+Number of unique values of idunique year is  3564
+Number of records is  3564
+
+. unique student_ssn year 
+variable student_ssn not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. use $cccclndatadir/SX_yearcollapsed, clear 
+
+. unique college_id student_id year 
+Number of unique values of college_id student_id year is  84251662
+Number of records is  84251662
+
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
+> ta, nogen keep(3)
+variables college_id student_id do not uniquely identify observations in the
+    master data
+r(459);
+
+. keep if year == 2023
+(81,811,808 observations deleted)
+
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
+> ta, nogen keep(3)
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                        13,396
-        from master                    13,396  (sfayear_merge==1)
-        from using                          0  (sfayear_merge==2)
-
-    Matched                             3,541  (sfayear_merge==3)
+    Not matched                             0
+    Matched                         2,419,064  
     -----------------------------------------
 
+. unique student_ssn
+Number of unique values of student_ssn is  2110352
+Number of records is  2419064
+
+. gen su_weighted = sem_GPA_su * units_su if !missing(sem_GPA_su, units_su)
+(1,858,894 missing values generated)
+
+. gen f_weighted  = sem_GPA_f  * units_f  if !missing(sem_GPA_f, units_f)
+(1,215,275 missing values generated)
+
+. mdesc sem_GPA
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+        sem_GPA |     552,760      2,419,064          22.85
+----------------+-----------------------------------------------
+
+. mdesc sem_GPA_su
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+     sem_GPA_su |   1,858,894      2,419,064          76.84
+----------------+-----------------------------------------------
+
+. sum units_su
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    units_su |    776,407    2.997845    2.891997          0         49
+
+. sum sem_GPA_su if units_su == 0
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+  sem_GPA_su |     46,363           0           0          0          0
+
+. collapse (sum) su_weighted units_su f_weighted units_f units_attempted_f unit
+> s_attempted_su, by(student_ssn)
+
+. gen sem_GPA_su = su_weighted / units_su if units_su > 0
+(1,598,593 missing values generated)
+
+. gen sem_GPA_f  = f_weighted  / units_f  if units_f > 0
+(1,062,975 missing values generated)
+
+. replace sem_GPA_su = 0 if units_su == 0
+(1,598,593 real changes made)
+
+. replace sem_GPA_f = 0 if units_f == 0
+(1,062,975 real changes made)
+
+. drop f_weighted su_weighted
+
+. lab var sem_GPA_su "Weighted avg summer GPA"
+
+. lab var sem_GPA_f  "Weighted avg fall GPA"
+
 . 
-. tab sxyear_merge sfayear_merge 
-
-                      | Matching result from
- Matching result from |         merge
-                merge | Master on  Matched ( |     Total
-----------------------+----------------------+----------
-      Master only (1) |     7,064          0 |     7,064 
-          Matched (3) |     6,332      3,541 |     9,873 
-----------------------+----------------------+----------
-                Total |    13,396      3,541 |    16,937 
+. label data "SX_yearcollapsed one copy per individual in 2023"
 
 . 
-. lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique 
-> individual matches kept"
-note: label truncated to 80 characters
-
-. save $csacprojdir/dta/cln/csac_survey_ccc_merged_namedob.dta, replace 
+. save $csacprojdir/dta/cln/sx_2023_indiv_level.dta, replace 
+(file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sx_2023_indiv_l
+    > evel.dta not found)
 file
-    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc
-    > _merged_namedob.dta saved
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sx_2023_indiv_l
+    > evel.dta saved
+
+. use $cccclndatadir/SFA_Collapsed_year, clear 
+
+. unique college_id student_id
+Number of unique values of college_id student_id is  11620268
+Number of records is  25907307
+
+. keep if year == 2023
+(24,868,674 observations deleted)
+
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
+> ta, nogen keep(3)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                         1,019,624  
+    -----------------------------------------
+
+. unique student_ssn
+Number of unique values of student_ssn is  851945
+Number of records is  1019624
+
+. sum cgb_f sscg_f cgb sscg 
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+       cgb_f |    729,039    .1870531    .3899544          0          1
+      sscg_f |    729,039    .1130996    .3167147          0          1
+         cgb |  1,019,624    .1465383    .3536453          0          1
+        sscg |  1,019,624     .098092    .2974392          0          1
+
+. collapse (max) cgb_f sscg_f cgb sscg, by(student_ssn)
+
+. lab var cgb_f "receive CGB at any college in the fall"
+
+. lab var sscg_f "receive SSCG at any college in the fall"
+
+. lab var cgb "receive CGB at any college in 2023"
+
+. lab var sscg "receive SSCG at any college in 2023"
 
 . 
+. lab data "SFA year collapsed 2023 data one copy per individual"
+
 . 
-end of do-file
+. save $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, replace 
+(file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sfa_2023_indiv_
+    > level.dta not found)
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sfa_2023_indiv_
+    > level.dta saved
 
-. do $csacprojdir/do/experiments/make_rct_data.do
+. do $csacprojdir/do/experiments/merge_ccc.do
 
-. /* analyze summer school RCT */
+. /* merge CCC student data to survey data */
 . 
 . /* 
-> do $csacprojdir/do/experiments/make_rct_data.do
+> do $csacprojdir/do/experiments/merge_ccc.do
 >  */
 . cap log close _all

@@ -41,6 +41,12 @@ gen enr_f = (units_attempted_f > 0 & !mi(units_attempted_f))
 *** clean units and gpa
 sum units_attempted_su if enr_su==1
 sum units_attempted_f if enr_f==1
+
+replace units_attempted_su = 0 if enr_su==0
+replace units_su = 0 if enr_su == 0
+replace units_attempted_f = 0 if enr_f == 0
+replace units_f = 0 if enr_f==0
+
 // make sure units earned is non missing if enrolled
 mdesc units_su if enr_su==1
 mdesc units_f if enr_f==1
