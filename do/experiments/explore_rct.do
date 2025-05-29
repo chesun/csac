@@ -7,6 +7,8 @@ do $csacprojdir/do/experiments/explore_rct.do
 cap log close _all
 log using $csacprojdir/log/experiments/explore_rct.txt, text replace
 
+local figdir $csacprojdir/fig/experiments
+
 use $csacprojdir/dta/cln/csac_survey_ccc_merged.dta, clear  
 
 di "************* merge rates***************"
@@ -98,5 +100,104 @@ ttest cgb, by(treat_calgrant)
 di "2023 year SSCG receipt"
 bysort treat_calgrant: sum sscg
 ttest sscg, by(treat_calgrant)
+
+
+
+
+//----------------------------------------------------
+// additional analyses
+
+//--------------- Summer Nudge
+*** S1. Treatment balance for summer plans
+di "Summer nudge treatment balance: first question on summer plan"
+tab plan_summer_class treat_summer, chi2 
+
+*** S2. treatment balance for summer nudge: demographics
+di "summer nudge treatment balance: demographics"
+gen lgbtq_dummy = 0
+replace lgbtq_dummy = 1 if lgbtq==1
+tabstat race_simp gender_woman gender_man lgbtq_dummy primary_eng parent_edu hs_type, by(treat_summer) s(mean sd)
+
+
+*** S3: Histogram for number of units enrolled in summer
+hist units_att_su, width(0.25) by(treat_summer)
+graph export `figdir'/hist_units_att_su.png, replace 
+
+*** S4: effect of summer nudge on fall enrollment
+di "summer nudge effect on fall enrollment"
+bysort treat_summer: sum enr_f
+
+*** S5: effect on fall units
+di "summer nudge effect on fall units enrolled"
+bysort treat_summer: sum units_att_f
+ttest units_att_f, by(treat_summer)
+
+di "summer nudge effect on fall units earned"
+bysort treat_summer: sum units_earn_f
+ttest units_earn_f, by(treat_summer)
+
+*** S6: regressions on summer enrollment
+lab define where_college 1 "CCC" 2 "CSU" 3 "UC" 4 "Private" 5 "Vocational" 6 "Outside", replace 
+
+local controls i.race_simp i.gender_brief i.hs_type i.lgbtq i.primary_eng i.parent_edu
+
+
+// sensitivity to demographic controls
+di "summer enrollment: sensitivity to demographic controls"
+reg enr_su i.treat_summer 
+
+reg enr_su i.treat_summer `controls'
+
+// heterogeneity by college plans 
+di "summer enrollment: heterogeneity by college plan"
+reg enr_su i.treat_summer##i.where_college 
+
+reg enr_su i.treat_summer##i.where_college  `controls'
+
+
+// heterogeneity by baseline stated summer class intention
+di "summer enrollment: heterogeneity by baseline summer class intention"
+gen base_su_plan = plan_summer_class+2
+lab def base_su_plan 0 "Definitely Not" 1 "Probably Not" 2 "Not Sure" 3 "Probably Yes" 4 "Definitely Yes"
+lab val base_su_plan base_su_plan
+
+reg enr_su i.treat_summer##i.base_su_plan
+reg enr_su i.treat_summer##i.base_su_plan `controls'
+
+*** S7: regressions on summer units enrolled
+// sensitivity to demographic controls
+di "summer units enrolled: sensitivity to demographic controls"
+reg units_att_su i.treat_summer 
+
+reg units_att_su i.treat_summer `controls'
+
+// heterogeneity by college plans 
+di "summer units enrolled: heterogeneity by college plan"
+reg units_att_su i.treat_summer##i.where_college 
+reg units_att_su i.treat_summer##i.where_college `controls'
+
+// heterogeneity by baseline stated summer class intention
+di "summer units enrolled: heterogeneity by baseline summer class intention"
+
+reg units_att_su i.treat_summer##i.base_su_plan
+reg units_att_su i.treat_summer##i.base_su_plan `controls'
+
+*** S8: regressions on summer units earned
+// sensitivity to demographic controls
+di "summer units enrolled: sensitivity to demographic controls"
+reg units_earn_su i.treat_summer 
+
+reg units_earn_su i.treat_summer `controls'
+
+di "summer units enrolled: heterogeneity by college plan"
+reg units_earn_su i.treat_summer##i.where_college 
+reg units_earn_su i.treat_summer##i.where_college `controls'
+
+
+// heterogeneity by baseline stated summer class intention
+di "summer units earned: heterogeneity by baseline summer class intention"
+
+reg units_earn_su i.treat_summer##i.base_su_plan
+reg units_earn_su i.treat_summer##i.base_su_plan `controls'
 
 log close 
