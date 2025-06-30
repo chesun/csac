@@ -1,0 +1,273 @@
+--------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_csac_admin.txt
+  log type:  text
+ opened on:  27 Jun 2025, 11:07:19
+
+. 
+. use $csacprojdir/dta/cln/csac_survey_ccc_merged.dta, clear
+(survey data merged to CCC credits, GPA, and SF Awards, only unique individual ma)
+
+. 
+. // high school GPA
+. destring stdt_gpa, replace 
+stdt_gpa: all characters numeric; replaced as double
+(41 missing values generated)
+
+. rename stdt_gpa hs_gpa
+
+. lab var hs_gpa "High School GPA (0-4)"
+
+. 
+. // student adjusted gross income
+. destring stdt_agi, replace 
+stdt_agi: all characters numeric; replaced as long
+(9156 missing values generated)
+
+. rename stdt_agi student_inc
+
+. lab var student_inc "Student adjusted gross income"
+
+. 
+. // parent adjusted income 
+. destring par_agi, replace 
+par_agi: all characters numeric; replaced as long
+(1025 missing values generated)
+
+. rename par_agi parent_inc 
+
+. lab var parent_inc "parent adjusted gross income"
+
+. 
+. // derived income and assets
+. destring derived_income derived_assets, replace 
+derived_income: all characters numeric; replaced as long
+(288 missing values generated)
+derived_assets: all characters numeric; replaced as long
+(693 missing values generated)
+
+. lab var derived_income "CSAC derived income"
+
+. lab var derived_assets "CSAC derived assets"
+
+. 
+. ********** categorical income variables 
+. foreach var in student_inc parent_inc derived_income derived_assets {
+  2.     gen `var'_cat = .
+  3.     replace `var'_cat = 99 if mi(`var')
+  4.     replace `var'_cat = 1 if `var' <  -1000000 & !mi(`var')
+  5.     replace `var'_cat = 2 if `var' >= -1000000 & `var' < -500000 & !mi(`var')
+  6.     replace `var'_cat = 3 if `var' >= -500000 & `var' < -300000 & !mi(`var')
+  7.     replace `var'_cat = 4 if `var' >= -300000 & `var' < -100000 & !mi(`var')
+  8.     replace `var'_cat = 5 if `var' >= -100000 & `var' < -75000 & !mi(`var')
+  9.     replace `var'_cat = 6 if `var' >= -75000 & `var' < -50000 & !mi(`var')
+ 10.     replace `var'_cat = 7 if `var' >= -50000 & `var' < -25000 & !mi(`var')
+ 11.     replace `var'_cat = 8 if `var' >= -25000 & `var' < 0 & !mi(`var')
+ 12.     replace `var'_cat = 9 if `var' >= 0 & `var' < 25000 & !mi(`var')
+ 13.     replace `var'_cat = 10 if `var' >= 25000 & `var' < 50000 & !mi(`var')
+ 14.     replace `var'_cat = 11 if `var' >= 50000 & `var' < 75000 & !mi(`var')
+ 15.     replace `var'_cat = 12 if `var' >= 75000 & `var' < 100000 & !mi(`var')
+ 16.     replace `var'_cat = 13 if `var' >= 100000 & `var' < 300000 & !mi(`var')
+ 17.     replace `var'_cat = 14 if `var' >= 300000 & `var' < 500000 & !mi(`var')
+ 18.     replace `var'_cat = 15 if `var' >= 500000 & `var' < 1000000 & !mi(`var')
+ 19.     replace `var'_cat = 16 if `var' >= 1000000 & !mi(`var')
+ 20. 
+.     lab def `var'_cat 1 "< -1M" 2 "-1M to -500K" 3 "-500K to -300K" 4 "-300K to -100K" ///
+>         5 "-100K to -75K" 6 "-75K to -50K" 7 "-50K to -25K" 8 "-25K to 0" ///
+>         9 "0 to 25K" 10 "25K to 50K" 11 "50K to 75K" 12 "75K to 100K" ///
+>         13 "100K to 300K" 14 "300K to 500K" 15 "500K to 1M" ///
+>         16 ">1M" 99 "Missing"
+ 21.     lab val `var'_cat `var'_cat
+ 22. }
+(10,289 missing values generated)
+(9,156 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(1 real change made)
+(2 real changes made)
+(1,060 real changes made)
+(33 real changes made)
+(12 real changes made)
+(10 real changes made)
+(14 real changes made)
+(0 real changes made)
+(0 real changes made)
+(1 real change made)
+(10,289 missing values generated)
+(1,025 real changes made)
+(1 real change made)
+(0 real changes made)
+(0 real changes made)
+(6 real changes made)
+(1 real change made)
+(0 real changes made)
+(4 real changes made)
+(19 real changes made)
+(1,425 real changes made)
+(2,167 real changes made)
+(1,442 real changes made)
+(1,033 real changes made)
+(2,476 real changes made)
+(396 real changes made)
+(207 real changes made)
+(87 real changes made)
+(10,289 missing values generated)
+(288 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(1 real change made)
+(0 real changes made)
+(0 real changes made)
+(3 real changes made)
+(2,308 real changes made)
+(2,034 real changes made)
+(1,404 real changes made)
+(1,007 real changes made)
+(2,466 real changes made)
+(439 real changes made)
+(240 real changes made)
+(99 real changes made)
+(10,289 missing values generated)
+(693 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(0 real changes made)
+(7,270 real changes made)
+(343 real changes made)
+(223 real changes made)
+(114 real changes made)
+(514 real changes made)
+(249 real changes made)
+(331 real changes made)
+(552 real changes made)
+
+. 
+. 
+. // family size
+. destring family_size, replace 
+family_size: all characters numeric; replaced as byte
+(56 missing values generated)
+
+. lab var family_size "Family size"
+
+. 
+. // expected family contribution 
+. destring efc, replace 
+efc: all characters numeric; replaced as long
+(290 missing values generated)
+
+. lab var efc "Expected family contribution"
+
+. 
+. gen efc_cat = .
+(10,289 missing values generated)
+
+. replace efc_cat = 99 if mi(efc)
+(290 real changes made)
+
+. replace efc_cat = 1 if inrange(efc, 0, 25000)
+(7,715 real changes made)
+
+. replace efc_cat = 2 if inrange(efc, 25000, 50000)
+(855 real changes made)
+
+. replace efc_cat = 3 if inrange(efc, 50000, 75000)
+(426 real changes made)
+
+. replace efc_cat = 4 if inrange(efc, 75000, 100000)
+(248 real changes made)
+
+. replace efc_cat = 5 if inrange(efc, 100000, 300000)
+(578 real changes made)
+
+. replace efc_cat = 6 if inrange(efc, 300000, 500000)
+(106 real changes made)
+
+. replace efc_cat = 7 if efc > 500000 & !mi(efc)
+(71 real changes made)
+
+. 
+. lab def efc_cat 1 "0-25k" 2 "25k-50k" 3 "50k-75k" 4 "75k-100k" ///
+>     5 "100k-300k" 6 "300k-500k" 7 ">500k" 99 "Missing"
+
+. 
+. lab val efc_cat efc_cat
+
+. 
+. // calgrant
+. foreach g in cga cgb cgc {
+  2.     destring `g'_awd_status, replace 
+  3.     gen `g'_cat = 0
+  4.     replace `g'_cat = 1 if inlist(`g'_awd_status, 45, 50)
+  5.     lab def `g'_cat 0 "Missing, Ineligible or withdrawn" 1 "Qualified/Accepted"
+  6.     lab val `g'_cat `g'_cat
+  7.     lab var `g'_cat "cal grant `g' status"
+  8. }
+cga_awd_status: all characters numeric; replaced as byte
+(1182 missing values generated)
+(4,219 real changes made)
+cgb_awd_status: all characters numeric; replaced as byte
+(1180 missing values generated)
+(4,542 real changes made)
+cgc_awd_status: all characters numeric; replaced as byte
+(1182 missing values generated)
+(0 real changes made)
+
+. 
+. // marital status 
+. destring sfc_mar_stat_code pfc_mar_stat_code, replace 
+sfc_mar_stat_code: all characters numeric; replaced as byte
+(1180 missing values generated)
+pfc_mar_stat_code: all characters numeric; replaced as byte
+(1487 missing values generated)
+
+. rename sfc_mar_stat_code student_marital
+
+. rename pfc_mar_stat_code parent_marital
+
+. lab var student_marital "student marital status"
+
+. lab var parent_marital "parent marital status"
+
+. replace student_marital = 99 if mi(student_marital)
+(1,180 real changes made)
+
+. replace parent_marital = 99 if mi(parent_marital)
+(1,487 real changes made)
+
+. 
+. lab def student_marital 1 "Single" 2 "Married/remarried" 3 "Separated" 4 "Divorced or widowed" 99 "Missing"
+
+. lab def parent_marital 1 "Married/remarried" 2 "Never married" 3 "Divorced/separated" ///
+>     4 "Widowed" 5 "Unmarried and both parents living together" 99 "Missing"
+
+. 
+. lab val student_marital student_marital
+
+. lab val parent_marital parent_marital
+
+. 
+. save $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, replace 
+(file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged_clean.dta not found)
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged_clean.dta saved
+
+. 
+. 
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_csac_admin.txt
+  log type:  text
+ closed on:  27 Jun 2025, 11:07:19
+--------------------------------------------------------------------------------------------------------------------------------------------

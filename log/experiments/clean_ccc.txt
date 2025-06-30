@@ -1,17 +1,15 @@
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
-> clean_ccc.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_ccc.txt
   log type:  text
- opened on:  30 Apr 2025, 14:58:05
+ opened on:  27 Jun 2025, 10:58:33
 
 . 
 . // ------------ create xwalk for student SSN to student ID + college id
 . use $cccrawdatadir/HF_FIRST.dta, clear
 
 . 
-. // student ssn uniquely identifies an individual, but some individual has mul
-> tiple observations
+. // student ssn uniquely identifies an individual, but some individual has multiple observations
 . // observations are uniquely identified by collegeid + studentid 
 .  
 . keep college_id student_id student_ssn
@@ -20,12 +18,9 @@
 . compress 
   (0 bytes saved)
 
-. // this dataset has one observation per each instance of a student in a colle
-> ge
+. // this dataset has one observation per each instance of a student in a college
 . save $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, replace 
-file
-    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/ccc_ssn_id_xwal
-    > k.dta saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/ccc_ssn_id_xwalk.dta saved
 
 . 
 . 
@@ -43,8 +38,7 @@ Number of records is  84251662
 (81,811,808 observations deleted)
 
 . // get the student ssn
-. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
-> ta, nogen keep(3)
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, nogen keep(3)
 
     Result                      Number of obs
     -----------------------------------------
@@ -111,8 +105,7 @@ units_atte~f |  1,371,672    7.974899    4.935984        .05         80
 . assert !mi(units_f) if enr_f==1
 
 . 
-. // check if GPA is missing if enrolled and earned units: about 90000 obs has 
-> GPA missing but enrolled
+. // check if GPA is missing if enrolled and earned units: about 90000 obs has GPA missing but enrolled
 . mdesc sem_GPA_su if enr_su==1 & !mi(units_su)
 
     Variable    |     Missing          Total     Percent Missing
@@ -135,12 +128,10 @@ units_atte~f |  1,371,672    7.974899    4.935984        .05         80
 . 
 . 
 . // create a weighted GPA for each individual if enrolled in summer
-. gen su_weighted = sem_GPA_su * units_su if !missing(sem_GPA_su, units_su) & e
-> nr_su==1
+. gen su_weighted = sem_GPA_su * units_su if !missing(sem_GPA_su, units_su) & enr_su==1
 (1,858,894 missing values generated)
 
-. gen f_weighted  = sem_GPA_f  * units_f  if !missing(sem_GPA_f, units_f) & enr
-> _f==1 
+. gen f_weighted  = sem_GPA_f  * units_f  if !missing(sem_GPA_f, units_f) & enr_f==1 
 (1,215,275 missing values generated)
 
 . replace su_weighted = 0 if (mi(sem_GPA_su) | mi(units_su)) & enr_su==1
@@ -150,8 +141,7 @@ units_atte~f |  1,371,672    7.974899    4.935984        .05         80
 (167,883 real changes made)
 
 . 
-. // collapse down to individual level, taking total units and weighted average
->  GPA
+. // collapse down to individual level, taking total units and weighted average GPA
 . collapse (sum) su_weighted  f_weighted ///
 >     units_earn_su=units_su units_earn_f=units_f ///
 >     units_att_f = units_attempted_f units_att_su=units_attempted_su ///
@@ -192,9 +182,7 @@ units_atte~f |  1,371,672    7.974899    4.935984        .05         80
 
 . 
 . save $csacprojdir/dta/cln/sx_2023_indiv_level.dta, replace 
-file
-    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sx_2023_indiv_l
-    > evel.dta saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sx_2023_indiv_level.dta saved
 
 . 
 . 
@@ -210,8 +198,7 @@ Number of records is  25907307
 (24,868,674 observations deleted)
 
 . // get student ssn 
-. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.d
-> ta, nogen keep(3)
+. merge 1:1 college_id student_id using $csacprojdir/dta/cln/ccc_ssn_id_xwalk.dta, nogen keep(3)
 
     Result                      Number of obs
     -----------------------------------------
@@ -251,15 +238,12 @@ Number of records is  1019624
 
 . 
 . save $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, replace 
-file
-    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sfa_2023_indiv_
-    > level.dta saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/sfa_2023_indiv_level.dta saved
 
 . 
 . log close 
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
-> clean_ccc.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_ccc.txt
   log type:  text
- closed on:  30 Apr 2025, 15:02:50
--------------------------------------------------------------------------------
+ closed on:  27 Jun 2025, 11:07:16
+--------------------------------------------------------------------------------------------------------------------------------------------
