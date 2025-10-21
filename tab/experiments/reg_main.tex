@@ -1,0 +1,16 @@
+{
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{8}{c}}
+\toprule
+                    &\multicolumn{1}{c}{Enrollment}&\multicolumn{1}{c}{Enrollment}&\multicolumn{1}{c}{Units Enrolled}&\multicolumn{1}{c}{Units Enrolled}&\multicolumn{1}{c}{Units Earned}&\multicolumn{1}{c}{Units Earned}&\multicolumn{1}{c}{GPA}&\multicolumn{1}{c}{GPA}\\
+\midrule
+Summer Nudge Treatment&       0.012\sym{**} &       0.013\sym{**} &       0.055\sym{*}  &       0.057\sym{*}  &       0.062\sym{**} &       0.066\sym{**} &       0.081         &      -0.088         \\
+                    &     (0.006)         &     (0.006)         &     (0.030)         &     (0.032)         &     (0.027)         &     (0.030)         &     (0.100)         &     (0.113)         \\
+\midrule
+Mean of Y           &           0         &           0         &           0         &           0         &           0         &           0         &           3         &           3         \\
+SD of Y             &           0         &           0         &           1         &           1         &           1         &           1         &           1         &           1         \\
+Individual Controls &          No         &         Yes         &          No         &         Yes         &          No         &         Yes         &          No         &         Yes         \\
+Observations        &        8226         &        6840         &        8226         &        6840         &        8226         &        6840         &         512         &         427         \\
+\bottomrule
+\end{tabular}
+}
