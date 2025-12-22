@@ -110,6 +110,11 @@ lab def parent_marital 1 "Married/remarried" 2 "Never married" 3 "Divorced/separ
 lab val student_marital student_marital
 lab val parent_marital parent_marital
 
+// first generation: parents did not attend college
+gen first_gen = .
+replace first_gen = inlist(parent_edu, 1, 2) if !mi(parent_edu)
+lab var first_gen "First-Gen College Student"
+
 save $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, replace 
 
 

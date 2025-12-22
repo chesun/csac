@@ -1,8 +1,8 @@
---------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/merge_ccc.txt
   log type:  text
- opened on:  27 Jun 2025, 11:07:17
+ opened on:  11 Dec 2025, 14:08:36
 
 . 
 . 
@@ -37,7 +37,8 @@ ccc_ft_nudge: all characters numeric; treat_calgrant generated as byte
 (7585 missing values generated)
 
 . // merge to the winnie xwalk
-. merge 1:1 idunique using $csacprojdir/dta/cln/ccc_xwalk_winnie.dta, keep(1 3) gen(xwalk_merge) 
+. merge 1:1 idunique using $csacprojdir/dta/cln/ccc_xwalk_winnie.dta, keep(1 3) gen(xwalk_me
+> rge) 
 
     Result                      Number of obs
     -----------------------------------------
@@ -59,7 +60,8 @@ ccc_ft_nudge: all characters numeric; treat_calgrant generated as byte
 (5,588 observations deleted)
 
 . save $csacprojdir/dta/cln/csac_survey_noxwalk.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwalk.dta saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwalk.dta
+    saved
 
 . restore 
 
@@ -69,7 +71,8 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwa
 
 . 
 . // merge to individual level sx data
-. merge 1:1 student_ssn using $csacprojdir/dta/cln/sx_2023_indiv_level.dta, gen(sx_merge) keep(1 3)
+. merge 1:1 student_ssn using $csacprojdir/dta/cln/sx_2023_indiv_level.dta, gen(sx_merge) ke
+> ep(1 3)
 
     Result                      Number of obs
     -----------------------------------------
@@ -82,7 +85,8 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwa
 
 . 
 . // merge to individual level sfa data
-. merge 1:1 student_ssn using $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, gen(sfa_merge) keep(1 3)
+. merge 1:1 student_ssn using $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, gen(sfa_merge) 
+> keep(1 3)
 
     Result                      Number of obs
     -----------------------------------------
@@ -202,24 +206,24 @@ Survey Only |     6,797         28 |     6,825
 (6,825 real changes made)
 
 . 
-. lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique individual matches kept"
+. lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique individual ma
+> tches kept"
 note: label truncated to 80 characters
 
 . save $csacprojdir/dta/cln/csac_survey_ccc_merged.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged.dta saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged.dta
+    saved
 
 . 
 . 
 end of do-file
 
-. do $csacprojdir/do/experiments/clean_csac_admin.do
+. do $csacprojdir/do/experiments/explore_rct.do
 
-. /* clean CSAC admin variables */
+. /* explore the RCT results  */
 . 
-. /* usage:
-> do $csacprojdir/do/experiments/clean_csac_admin.do
-> 
+. 
+. /* 
+> do $csacprojdir/do/experiments/explore_rct.do
 >  */
-. 
-. 
 . cap log close _all

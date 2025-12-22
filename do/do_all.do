@@ -74,6 +74,8 @@ ssc install ngram, replace
 
 // clean survey data exported from qualtrics 
 do $csacprojdir/do/clean/clean_qualtrics_export.do
+
+do "$csacprojdir/do/clean/prep_brief.do"
 do $csacprojdir/do/experiments/make_csac_data.do
 
 do $csacprojdir/do/experiments/clean_ccc.do
@@ -82,7 +84,8 @@ do $csacprojdir/do/experiments/clean_csac_admin.do
 
 do $csacprojdir/do/experiments/explore_rct.do
 
-
+do $csacprojdir/do/experiments/sum_stats.do
+do $csacprojdir/do/experiments/reg_tab.do
 
 
 local date2 = c(current_date)

@@ -1,8 +1,8 @@
---------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_csac_admin.txt
   log type:  text
- opened on:  27 Jun 2025, 11:07:19
+ opened on:  11 Dec 2025, 18:20:58
 
 . 
 . use $csacprojdir/dta/cln/csac_survey_ccc_merged.dta, clear
@@ -258,8 +258,17 @@ pfc_mar_stat_code: all characters numeric; replaced as byte
 . lab val parent_marital parent_marital
 
 . 
+. // first generation: parents did not attend college
+. gen first_gen = .
+(10,289 missing values generated)
+
+. replace first_gen = inlist(parent_edu, 1, 2) if !mi(parent_edu)
+(7,383 real changes made)
+
+. lab var first_gen "First-Gen College Student"
+
+. 
 . save $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, replace 
-(file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged_clean.dta not found)
 file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged_clean.dta saved
 
 . 
@@ -269,5 +278,5 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_m
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_csac_admin.txt
   log type:  text
- closed on:  27 Jun 2025, 11:07:19
---------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  11 Dec 2025, 18:20:58
+-------------------------------------------------------------------------------------------------------------

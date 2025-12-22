@@ -1,0 +1,250 @@
+----------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/sum
+> _stats.txt
+  log type:  text
+ opened on:  19 Oct 2025, 21:26:05
+
+. 
+. local figdir $csacprojdir/fig/experiments
+
+. local tabdir $csacprojdir/tab/experiments
+
+. 
+. use $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, clear  
+(survey data merged to CCC credits, GPA, and SF Awards, only unique individual ma)
+
+. 
+. 
+. keep if !mi(treat_summer)
+(2,063 observations deleted)
+
+. 
+. // race variables
+. gen black = .
+(8,226 missing values generated)
+
+. replace black = (race_simp == 1) if !mi(race_simp)
+(7,029 real changes made)
+
+. lab var black "Black"
+
+. 
+. gen asian_filipino = .
+(8,226 missing values generated)
+
+. replace asian_filipino = inlist(race_simp, 3, 4)  if !mi(race_simp)
+(7,029 real changes made)
+
+. lab var asian_filipino "Asian/Filipino"
+
+. 
+. gen hispanic = .
+(8,226 missing values generated)
+
+. replace hispanic = (race_simp == 5) if !mi(race_simp)
+(7,029 real changes made)
+
+. lab var hispanic "Hispanic"
+
+. 
+. gen white = .
+(8,226 missing values generated)
+
+. replace white = (race_simp == 7) if !mi(race_simp)
+(7,029 real changes made)
+
+. lab var white "White"
+
+. 
+. gen tworaces = .
+(8,226 missing values generated)
+
+. replace tworaces = (race_simp == 9) if !mi(race_simp)
+(7,029 real changes made)
+
+. lab var tworaces "Two or More Races"
+
+. 
+. // gender
+. lab var gender_woman "Woman"
+
+. lab var gender_man "Man"
+
+. 
+. // LGBTQ
+. gen is_lgbtq = .
+(8,226 missing values generated)
+
+. replace is_lgbtq = (lgbtq == 1) if !mi(lgbtq)
+(6,895 real changes made)
+
+. lab var is_lgbtq "LGBTQ+"
+
+. 
+. // HS type
+. gen hs_public = .
+(8,226 missing values generated)
+
+. replace hs_public = (hs_type == 1) & !mi(hs_type)
+(8,226 real changes made)
+
+. lab var hs_public "Public High School"
+
+. 
+. gen hs_private = .
+(8,226 missing values generated)
+
+. replace hs_private = (hs_type == 2) & !mi(hs_type)
+(8,226 real changes made)
+
+. lab var hs_private "Private High School"
+
+. 
+. gen hs_home = .
+(8,226 missing values generated)
+
+. replace hs_home = (hs_type == 3) & !mi(hs_type)
+(8,226 real changes made)
+
+. lab var hs_home "Home School"
+
+. 
+. // parent edu
+. // first generation: parents did not attend college
+. gen first_gen = .
+(8,226 missing values generated)
+
+. replace first_gen = inlist(parent_edu, 1, 2) if !mi(parent_edu)
+(7,003 real changes made)
+
+. lab var first_gen "First-Gen College Student"
+
+. 
+. // derived income in thousands
+. gen derived_income_thousand = derived_income/1000
+(167 missing values generated)
+
+. lab var derived_income_thousand "Derived Income (Thousands)"
+
+. 
+. // EFC in thousands
+. gen efc_thousand = efc/1000
+(169 missing values generated)
+
+. lab var efc_thousand "Expected Family Contribution (Thousands)"
+
+. 
+. // parents married
+. gen parent_married = .
+(8,226 missing values generated)
+
+. replace parent_married = (parent_marital == 1) & !mi(parent_marital)
+(8,226 real changes made)
+
+. lab var parent_married "Parents Married/Remarried"
+
+. // there are on 10 percent married, is strange
+. 
+. 
+. local covars black asian_filipino hispanic white tworaces gender_woman gender_ma
+> n ///
+>     is_lgbtq hs_public hs_private hs_home first_gen derived_income_thousand ///
+>     efc_thousand parent_married
+
+. 
+. di "local content: `covars'"
+local content: black asian_filipino hispanic white tworaces gender_woman gender_ma
+> n     is_lgbtq hs_public hs_private hs_home first_gen derived_income_thousand   
+>   efc_thousand parent_married
+
+. 
+. eststo m0: estpost tabstat `covars' if treat_summer == 0, ///
+>          stat(mean sd count) columns(statistics)  
+
+Summary statistics: mean sd count
+     for variables: black asian_filipino hispanic white tworaces gender_woman gend
+> er_man is_lgbtq hs_public hs_private hs_home first_gen derived_income_thousand e
+> fc_thousand parent_married
+
+             |   e(mean)      e(sd)   e(count) 
+-------------+---------------------------------
+       black |  .0344828   .1824916       3509 
+asian_fili~o |  .1416358   .3487259       3509 
+    hispanic |  .4317469   .4953902       3509 
+       white |  .2017669   .4013763       3509 
+    tworaces |  .1664292   .3725185       3509 
+gender_woman |  .5806359   .4935257       3491 
+  gender_man |  .3534804   .4781187       3491 
+    is_lgbtq |  .2353453    .424276       3446 
+   hs_public |  .8140496   .3891139       4114 
+  hs_private |  .0333009    .179443       4114 
+     hs_home |  .0111813   .1051618       4114 
+   first_gen |  .3781465   .4849938       3496 
+derived_in~d |   131.867   330.0822       4030 
+efc_thousand |  32.64088    94.6693       4029 
+parent_mar~d |   .114001   .3178511       4114 
+
+. 
+. eststo m1: estpost tabstat `covars' if treat_summer == 1, ///
+>          stat(mean sd count) columns(statistics)  
+
+Summary statistics: mean sd count
+     for variables: black asian_filipino hispanic white tworaces gender_woman gend
+> er_man is_lgbtq hs_public hs_private hs_home first_gen derived_income_thousand e
+> fc_thousand parent_married
+
+             |   e(mean)      e(sd)   e(count) 
+-------------+---------------------------------
+       black |  .0417614   .2000718       3520 
+asian_fili~o |  .1380682   .3450205       3520 
+    hispanic |  .4264205   .4946267       3520 
+       white |   .203125   .4023819       3520 
+    tworaces |  .1693182    .375086       3520 
+gender_woman |  .5663616   .4956475       3496 
+  gender_man |  .3689931   .4826011       3496 
+    is_lgbtq |  .2412293   .4278911       3449 
+   hs_public |  .8202821    .383999       4112 
+  hs_private |  .0313716   .1743411       4112 
+     hs_home |  .0116732    .107423       4112 
+   first_gen |  .3906473    .487965       3507 
+derived_in~d |  130.0711   338.8693       4029 
+efc_thousand |  31.60013   86.90502       4028 
+parent_mar~d |  .1181907    .322873       4112 
+
+. 
+. 
+. esttab m* using `tabdir'/sum_stats.tex, replace ///
+>         main(mean %8.3fc)  ///
+>         collabels(none) ///
+>         nonumbers unstack booktabs ///
+>         parentheses  ///
+>         mtitles("Control" "Treatment") ///
+>         label  noobs nostar scalars("N Observations") ///
+>         nonotes
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/experimen
+> ts/sum_stats.tex)
+
+. 
+. esttab m* using `tabdir'/sum_stats.csv, replace ///
+>         main(mean %8.3fc)  ///
+>         collabels(none) ///
+>         nonumbers unstack ///
+>         parentheses  ///
+>         mtitles("Control" "Treatment") ///
+>         label  noobs nostar scalars("N Observations") ///
+>         nonotes
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/experimen
+> ts/sum_stats.csv)
+
+. est clear 
+
+. 
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/sum
+> _stats.txt
+  log type:  text
+ closed on:  19 Oct 2025, 21:26:05
+----------------------------------------------------------------------------------

@@ -81,7 +81,7 @@ lab var parent_married "Parents Married/Remarried"
 
 
 local covars black asian_filipino hispanic white tworaces gender_woman gender_man ///
-    is_lgbtq hs_public hs_private hs_home first_gen derived_income_thousand ///
+     hs_public hs_private hs_home first_gen hs_gpa derived_income_thousand ///
     efc_thousand parent_married
 
 di "local content: `covars'"

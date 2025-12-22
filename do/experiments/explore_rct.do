@@ -27,8 +27,8 @@ di "merge success for both sx and sfa"
 tab sx_merge sfa_merge, row 
 
 
-local controls_svy i.race_simp i.gender_brief i.hs_type i.lgbtq i.primary_eng i.parent_edu
-local controls_csac i.derived_income_cat hs_gpa i.efc_cat i.parent_marital 
+local controls_svy i.race_simp i.gender_brief i.hs_type i.primary_english i.parent_edu
+local controls_csac i.derived_income_cat hs_gpa i.efc_cat 
 local controls_all `controls_svy' `controls_csac'
 
 //----------- summer school 2023
@@ -154,7 +154,7 @@ tab plan_summer_class treat_summer, chi2
 di "summer nudge treatment balance: demographics"
 gen lgbtq_dummy = 0
 replace lgbtq_dummy = 1 if lgbtq==1
-tabstat race_simp gender_woman gender_man lgbtq_dummy primary_eng parent_edu hs_type, by(treat_summer) s(mean sd)
+tabstat race_simp gender_woman gender_man primary_english parent_edu hs_type, by(treat_summer) s(mean sd)
 
 *** S2.1 treatment balance regressions
 di "summer nudge treatment balance: regressing treatment on covariates"
@@ -300,5 +300,9 @@ di "summer units earned: heterogeneity by baseline summer class intention"
 
 reg units_earn_su i.treat_summer##i.base_su_plan
 reg units_earn_su i.treat_summer##i.base_su_plan `controls_all'
+
+
+
+
 
 log close 

@@ -1,0 +1,446 @@
+-----------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/reg_share.
+> txt
+  log type:  text
+ opened on:  20 Dec 2025, 20:10:06
+
+. 
+. local figdir $csacprojdir/fig/experiments
+
+. 
+. use $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, clear  
+(survey data merged to CCC credits, GPA, and SF Awards, only unique individual ma)
+
+. 
+. local controls i.race_simp i.gender_brief i.hs_type i.primary_english ///
+>      i.parent_edu derived_income hs_gpa efc
+
+. 
+. /* balance test of demographics */
+. 
+. di "balance test"
+balance test
+
+. 
+. 
+. reg treat_summer `controls', robust
+
+Linear regression                               Number of obs     =      6,787
+                                                F(25, 6761)       =       0.70
+                                                Prob > F          =     0.8604
+                                                R-squared         =     0.0026
+                                                Root MSE          =     .50032
+
+----------------------------------------------------------------------------------------
+                       |               Robust
+          treat_summer | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------------+----------------------------------------------------------------
+             race_simp |
+American Indian/Ala..  |  -.1185756      .1387    -0.85   0.393    -.3904712    .1533201
+                Asian  |  -.0672581   .0371635    -1.81   0.070    -.1401102     .005594
+             Filipino  |  -.1024365   .0597086    -1.72   0.086    -.2194842    .0146113
+      Hispanic/Latinx  |   -.062129   .0341588    -1.82   0.069    -.1290909    .0048329
+     Pacific Islander  |  -.0195777   .1215681    -0.16   0.872    -.2578894    .2187341
+   White/Non-Hispanic  |  -.0489871   .0347343    -1.41   0.158    -.1170772     .019103
+                Other  |  -.0745121     .05667    -1.31   0.189    -.1856031    .0365789
+          Two or more  |  -.0438041   .0349438    -1.25   0.210     -.112305    .0246968
+                       |
+          gender_brief |
+              cis man  |   .0182282   .0131312     1.39   0.165    -.0075132    .0439696
+         binary trans  |   .0563675   .0573494     0.98   0.326    -.0560554    .1687903
+                other  |  -.0075443   .0305675    -0.25   0.805    -.0674663    .0523777
+               unsure  |   .1357141   .1726595     0.79   0.432     -.202753    .4741812
+    prefer not to say  |   .0132616   .0427311     0.31   0.756    -.0705048     .097028
+                       |
+               hs_type |
+Private/Parochial h..  |  -.0103769   .0326118    -0.32   0.750    -.0743062    .0535524
+          Home school  |   .0265218   .0535906     0.49   0.621    -.0785327    .1315764
+                       |
+       primary_english |
+                  Yes  |  -.0226344   .0155174    -1.46   0.145    -.0530533    .0077846
+                       |
+            parent_edu |
+  High school diploma  |   .0244822   .0205595     1.19   0.234    -.0158209    .0647852
+Some college, no co..  |  -.0107639    .023848    -0.45   0.652    -.0575134    .0359856
+     Associate degree  |   .0061277   .0306176     0.20   0.841    -.0538925    .0661479
+    Bachelor's degree  |    .000862   .0240037     0.04   0.971    -.0461929    .0479168
+Graduate/Professio..)  |     .00104   .0247127     0.04   0.966    -.0474047    .0494848
+           Don't know  |   .0130545   .0324563     0.40   0.688    -.0505702    .0766791
+                       |
+        derived_income |   2.00e-08   2.80e-08     0.72   0.474    -3.49e-08    7.50e-08
+                hs_gpa |     .02039   .0095227     2.14   0.032     .0017226    .0390575
+                   efc |  -1.16e-07   1.13e-07    -1.02   0.307    -3.37e-07    1.06e-07
+                 _cons |   .4892208   .0474195    10.32   0.000     .3962637     .582178
+----------------------------------------------------------------------------------------
+
+. 
+. 
+. /* HS GPA and baseline intention descriptives */
+. gen base_no = .
+(10,289 missing values generated)
+
+. replace base_no = (plan_summer_class == -2 | plan_summer_class == -1) & !mi(plan_summer
+> _class)
+(10,289 real changes made)
+
+. 
+. gen base_notsure = .
+(10,289 missing values generated)
+
+. replace base_notsure = (plan_summer_class == 0) & !mi(plan_summer_class)
+(10,289 real changes made)
+
+. 
+. gen base_yes = .
+(10,289 missing values generated)
+
+. replace base_yes = (plan_summer_class == 1 | plan_summer_class == 2) & !mi(plan_summer_
+> class)
+(10,289 real changes made)
+
+. 
+. tabstat hs_gpa base_*, by(treat_summer)
+
+Summary statistics: Mean
+Group variable: treat_summer (in summer class nudge treatment)
+
+treat_summer |    hs_gpa   base_no  base_n~e  base_yes
+-------------+----------------------------------------
+           0 |  3.267342  .5651434  .2384541  .1959164
+           1 |  3.292812  .5683366  .2310311  .2001459
+-------------+----------------------------------------
+       Total |   3.28006  .5667396  .2347435  .1980306
+------------------------------------------------------
+
+. 
+. 
+. /* results for summer school intentions */
+. 
+. //----------- summer school 2023
+. preserve 
+
+. mdesc treat_summer
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+   treat_summer |       2,063         10,289          20.05
+----------------+-----------------------------------------------
+
+. drop if mi(treat_summer)
+(2,063 observations deleted)
+
+. 
+. // pre/post summer intention questions in long form
+. expand 2 if treat_summer==1, generate(post_treat_summer)
+(4,112 observations created)
+
+. lab def post_treat_summer 0 "Pre" 1 "Post"
+
+. lab val post_treat_summer post_treat_summer
+
+. gen summer_question = plan_summer_class if post_treat_summer==0
+(4,116 missing values generated)
+
+. replace summer_question = likely_summer_class if post_treat_summer==1
+(4,052 real changes made)
+
+. 
+. 
+. gen plan_no = .
+(12,338 missing values generated)
+
+. replace plan_no = (summer_question == -2 | summer_question == -1) & !mi(summer_question
+> )
+(12,338 real changes made)
+
+. 
+. gen plan_notsure = .
+(12,338 missing values generated)
+
+. replace plan_notsure = (summer_question == 0) & !mi(summer_question)
+(12,338 real changes made)
+
+. 
+. gen plan_yes = .
+(12,338 missing values generated)
+
+. replace plan_yes = (summer_question == 1 | summer_question == 2) & !mi(summer_question)
+(12,338 real changes made)
+
+. 
+. reg plan_yes i.post_treat_summer, robust
+
+Linear regression                               Number of obs     =     12,338
+                                                F(1, 12336)       =     406.19
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0361
+                                                Root MSE          =     .42889
+
+-----------------------------------------------------------------------------------
+                  |               Robust
+         plan_yes | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+post_treat_summer |
+            Post  |   .1759966   .0087325    20.15   0.000     .1588795    .1931137
+            _cons |   .1980306   .0043943    45.07   0.000     .1894172    .2066441
+-----------------------------------------------------------------------------------
+
+. 
+. tabstat plan_yes, by(post_treat_summer)
+
+Summary for variables: plan_yes
+Group variable: post_treat_summer (Expanded observation type)
+
+post_treat_summer |      Mean
+------------------+----------
+              Pre |  .1980306
+             Post |  .3740272
+------------------+----------
+            Total |  .2566867
+-----------------------------
+
+. 
+. restore
+
+. 
+. 
+. /* regression results, with robust SE */
+. 
+. foreach v in enr_su units_att_su units_earn_su {
+  2. 
+.     di "mean of Y var for control group"
+  3. 
+.     sum `v' if treat_summer==0
+  4. 
+.     di "regression without controls"
+  5. 
+.     reg `v' i.treat_summer, robust 
+  6. 
+. 
+.     di "regression with controls"
+  7. 
+.     reg `v' i.treat_summer `controls', robust 
+  8. }
+mean of Y var for control group
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+      enr_su |      4,114    .0631988    .2433498          0          1
+regression without controls
+
+Linear regression                               Number of obs     =      8,226
+                                                F(1, 8224)        =       4.56
+                                                Prob > F          =     0.0328
+                                                R-squared         =     0.0006
+                                                Root MSE          =     .25371
+
+--------------------------------------------------------------------------------
+               |               Robust
+        enr_su | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+1.treat_summer |   .0119471   .0055947     2.14   0.033     .0009801     .022914
+         _cons |   .0631988    .003794    16.66   0.000     .0557616    .0706361
+--------------------------------------------------------------------------------
+regression with controls
+
+Linear regression                               Number of obs     =      6,787
+                                                F(26, 6760)       =       9.43
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0088
+                                                Root MSE          =     .25721
+
+----------------------------------------------------------------------------------------
+                       |               Robust
+                enr_su | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------------+----------------------------------------------------------------
+        1.treat_summer |     .01254   .0062578     2.00   0.045     .0002726    .0248073
+                       |
+             race_simp |
+American Indian/Ala..  |  -.0646095   .0171539    -3.77   0.000    -.0982366   -.0309824
+                Asian  |   .0265691    .019933     1.33   0.183     -.012506    .0656441
+             Filipino  |  -.0417038   .0239723    -1.74   0.082    -.0886971    .0052895
+      Hispanic/Latinx  |     .00965   .0179351     0.54   0.591    -.0255085    .0448084
+     Pacific Islander  |  -.0210365   .0548778    -0.38   0.701    -.1286143    .0865412
+   White/Non-Hispanic  |  -.0185558   .0177606    -1.04   0.296    -.0533721    .0162605
+                Other  |   .0279945    .031739     0.88   0.378     -.034224    .0902129
+          Two or more  |   .0060437   .0182454     0.33   0.740    -.0297229    .0418104
+                       |
+          gender_brief |
+              cis man  |   .0163907    .006972     2.35   0.019     .0027234     .030058
+         binary trans  |   .0037666   .0287976     0.13   0.896    -.0526857    .0602189
+                other  |  -.0206752   .0130524    -1.58   0.113    -.0462621    .0049117
+               unsure  |  -.0609716   .0102184    -5.97   0.000    -.0810029   -.0409402
+    prefer not to say  |   .0044148   .0219924     0.20   0.841    -.0386972    .0475269
+                       |
+               hs_type |
+Private/Parochial h..  |  -.0243463   .0138883    -1.75   0.080    -.0515717    .0028791
+          Home school  |    .010907   .0297293     0.37   0.714    -.0473719    .0691858
+                       |
+       primary_english |
+                  Yes  |   .0007436   .0087516     0.08   0.932    -.0164124    .0178995
+                       |
+            parent_edu |
+  High school diploma  |   .0159739   .0100663     1.59   0.113    -.0037594    .0357071
+Some college, no co..  |   .0345717   .0125487     2.75   0.006     .0099722    .0591712
+     Associate degree  |   .0643484   .0183188     3.51   0.000     .0284377    .1002591
+    Bachelor's degree  |    .021084   .0121133     1.74   0.082    -.0026619    .0448299
+Graduate/Professio..)  |   .0277344   .0123639     2.24   0.025     .0034971    .0519716
+           Don't know  |   .0006659   .0153809     0.04   0.965    -.0294855    .0308173
+                       |
+        derived_income |  -1.27e-08   8.43e-09    -1.51   0.132    -2.92e-08    3.83e-09
+                hs_gpa |   9.96e-06   .0043421     0.00   0.998    -.0085019    .0085219
+                   efc |   2.43e-08   5.31e-08     0.46   0.648    -7.99e-08    1.28e-07
+                 _cons |   .0362276   .0238833     1.52   0.129    -.0105912    .0830464
+----------------------------------------------------------------------------------------
+mean of Y var for control group
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+units_att_su |      4,114    .2725571    1.266551          0         18
+regression without controls
+
+Linear regression                               Number of obs     =      8,226
+                                                F(1, 8224)        =       3.41
+                                                Prob > F          =     0.0649
+                                                R-squared         =     0.0004
+                                                Root MSE          =     1.3401
+
+--------------------------------------------------------------------------------
+               |               Robust
+  units_att_su | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+1.treat_summer |   .0545586   .0295519     1.85   0.065    -.0033706    .1124879
+         _cons |   .2725571   .0197465    13.80   0.000      .233849    .3112653
+--------------------------------------------------------------------------------
+regression with controls
+
+Linear regression                               Number of obs     =      6,787
+                                                F(26, 6760)       =       6.31
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0104
+                                                Root MSE          =     1.3577
+
+----------------------------------------------------------------------------------------
+                       |               Robust
+          units_att_su | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------------+----------------------------------------------------------------
+        1.treat_summer |   .0560493   .0330028     1.70   0.089    -.0086466    .1207452
+                       |
+             race_simp |
+American Indian/Ala..  |  -.2091646   .0732594    -2.86   0.004    -.3527762    -.065553
+                Asian  |   .2408899      .0958     2.51   0.012     .0530917    .4286882
+             Filipino  |  -.0584207   .1378263    -0.42   0.672    -.3286035    .2117622
+      Hispanic/Latinx  |   .0702728   .0768513     0.91   0.361      -.08038    .2209256
+     Pacific Islander  |  -.0328106   .2211527    -0.15   0.882    -.4663396    .4007185
+   White/Non-Hispanic  |  -.0124713   .0778192    -0.16   0.873    -.1650215    .1400789
+                Other  |   .3716751   .1889362     1.97   0.049     .0013006    .7420496
+          Two or more  |    .144765   .0844227     1.71   0.086    -.0207301    .3102602
+                       |
+          gender_brief |
+              cis man  |   .0753341   .0368614     2.04   0.041     .0030741     .147594
+         binary trans  |   .0752062   .1612121     0.47   0.641    -.2408204    .3912327
+                other  |  -.0434693   .0821942    -0.53   0.597    -.2045959    .1176574
+               unsure  |  -.2797673    .058314    -4.80   0.000    -.3940811   -.1654535
+    prefer not to say  |  -.0091532   .1069781    -0.09   0.932    -.2188639    .2005575
+                       |
+               hs_type |
+Private/Parochial h..  |  -.0739635   .0947848    -0.78   0.435    -.2597716    .1118447
+          Home school  |   .1455563   .1969354     0.74   0.460    -.2404992    .5316117
+                       |
+       primary_english |
+                  Yes  |  -.0428997    .045376    -0.95   0.344    -.1318508    .0460515
+                       |
+            parent_edu |
+  High school diploma  |   .0686065   .0489743     1.40   0.161    -.0273986    .1646116
+Some college, no co..  |   .1759678   .0663808     2.65   0.008     .0458405    .3060951
+     Associate degree  |   .3062429   .1037745     2.95   0.003     .1028122    .5096737
+    Bachelor's degree  |   .0562501   .0582621     0.97   0.334     -.057962    .1704621
+Graduate/Professio..)  |   .1783129   .0681852     2.62   0.009     .0446483    .3119775
+           Don't know  |  -.0344432   .0633167    -0.54   0.586    -.1585639    .0896775
+                       |
+        derived_income |  -3.90e-08   4.40e-08    -0.89   0.375    -1.25e-07    4.71e-08
+                hs_gpa |   .0245053   .0227343     1.08   0.281    -.0200611    .0690716
+                   efc |  -3.71e-08   2.72e-07    -0.14   0.892    -5.71e-07    4.96e-07
+                 _cons |   .0223517   .1137179     0.20   0.844    -.2005712    .2452746
+----------------------------------------------------------------------------------------
+mean of Y var for control group
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+units_earn~u |      4,114     .231721    1.168524          0         18
+regression without controls
+
+Linear regression                               Number of obs     =      8,226
+                                                F(1, 8224)        =       5.26
+                                                Prob > F          =     0.0219
+                                                R-squared         =     0.0006
+                                                Root MSE          =     1.2275
+
+--------------------------------------------------------------------------------
+               |               Robust
+ units_earn_su | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+1.treat_summer |   .0620777   .0270695     2.29   0.022     .0090146    .1151407
+         _cons |    .231721   .0182182    12.72   0.000     .1960087    .2674332
+--------------------------------------------------------------------------------
+regression with controls
+
+Linear regression                               Number of obs     =      6,787
+                                                F(26, 6760)       =       5.42
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0117
+                                                Root MSE          =     1.2482
+
+----------------------------------------------------------------------------------------
+                       |               Robust
+         units_earn_su | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------------+----------------------------------------------------------------
+        1.treat_summer |   .0642147   .0302679     2.12   0.034       .00488    .1235493
+                       |
+             race_simp |
+American Indian/Ala..  |  -.1580758   .0634043    -2.49   0.013    -.2823682   -.0337835
+                Asian  |   .2475653   .0854577     2.90   0.004     .0800414    .4150892
+             Filipino  |  -.0076659   .1319139    -0.06   0.954    -.2662586    .2509268
+      Hispanic/Latinx  |   .0770748   .0648908     1.19   0.235    -.0501317    .2042812
+     Pacific Islander  |   .0147806   .2168011     0.07   0.946    -.4102178    .4397791
+   White/Non-Hispanic  |   .0205698   .0665244     0.31   0.757     -.109839    .1509787
+                Other  |   .3594187   .1765139     2.04   0.042     .0133958    .7054415
+          Two or more  |   .1450855   .0718551     2.02   0.044     .0042269    .2859441
+                       |
+          gender_brief |
+              cis man  |   .0594506   .0335786     1.77   0.077    -.0063741    .1252754
+         binary trans  |  -.0080013   .1249504    -0.06   0.949    -.2529435     .236941
+                other  |  -.0901002   .0730848    -1.23   0.218    -.2333693     .053169
+               unsure  |  -.2720102   .0566245    -4.80   0.000     -.383012   -.1610083
+    prefer not to say  |  -.0106159   .1028668    -0.10   0.918    -.2122672    .1910354
+                       |
+               hs_type |
+Private/Parochial h..  |  -.0550574   .0943311    -0.58   0.559    -.2399761    .1298613
+          Home school  |   .0800513    .183116     0.44   0.662    -.2789137    .4390163
+                       |
+       primary_english |
+                  Yes  |  -.0500544   .0419697    -1.19   0.233    -.1323282    .0322193
+                       |
+            parent_edu |
+  High school diploma  |   .0489442   .0442719     1.11   0.269    -.0378428    .1357311
+Some college, no co..  |   .1724322   .0610859     2.82   0.005     .0526845    .2921798
+     Associate degree  |   .2548388   .0871077     2.93   0.003     .0840803    .4255974
+    Bachelor's degree  |    .054838   .0544755     1.01   0.314    -.0519511    .1616271
+Graduate/Professio..)  |   .1858489   .0650079     2.86   0.004      .058413    .3132848
+           Don't know  |  -.0565836   .0530898    -1.07   0.287    -.1606563    .0474891
+                       |
+        derived_income |  -2.02e-08   4.10e-08    -0.49   0.622    -1.01e-07    6.01e-08
+                hs_gpa |   .0405482   .0201721     2.01   0.044     .0010046    .0800918
+                   efc |  -1.48e-07   2.50e-07    -0.59   0.553    -6.39e-07    3.42e-07
+                 _cons |  -.0632529   .0985631    -0.64   0.521    -.2564675    .1299618
+----------------------------------------------------------------------------------------
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/reg_share.
+> txt
+  log type:  text
+ closed on:  20 Dec 2025, 20:10:06
+-----------------------------------------------------------------------------------------
