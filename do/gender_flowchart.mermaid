@@ -1,0 +1,20 @@
+flowchart TB
+  A([Start]) --> B{Current gender response?}
+
+  %% Prefer not to say / invalid responses
+  B -->|"Prefer not to say / Attack helicopters"| P[Prefer not to say]
+  B -->|"Non-binary / Self describe / Questioning"| NB["Non-binary / Gender Diverse / Questioning"]
+
+  %% Binary responses route to assigned sex at birth
+  B -->|Man| M{Assigned sex at birth?}
+  B -->|Woman| W{Assigned sex at birth?}
+
+  %% Man branch
+  M -->|Male| CM[Cisgender Man]
+  M -->|Female| TM[Transgender Man]
+  %%M -->|"Other / Missing / Prefer not to say"| U1["Unclassifiable / Missing ASAB"]
+
+  %% Woman branch
+  W -->|Female| CW[Cisgender Woman]
+  W -->|Male| TW[Transgender Woman]
+  %%W -->|Other / Missing / Prefer not to say| U2["Unclassifiable / Missing ASAB"]

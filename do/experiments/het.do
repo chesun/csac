@@ -92,9 +92,9 @@ coefplot (all, aseq("Full Sample")) ///
     (race_asian, aseq("Asian")) ///
     , keep(1.treat_summer) vertical ciopts(recast(rcap) lcolor(gray)) yline(0) ///
     xlabel(, angle(vertical)) swapnames legend(off) ///
-    mcolor(black)
+    mcolor(black) 
 graph export `figdir'/het_coef.png, replace 
-
+graph export `figdir'/het_coef.eps, replace 
 
 
 log close 

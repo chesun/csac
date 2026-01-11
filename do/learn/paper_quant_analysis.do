@@ -5,6 +5,9 @@ PROGRAM: Gender/SO Paper
 WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
 DATE CREATED: March 26, 2024
 
+EDITED BY: Christina Sun (ucsun@ucdavis.edu)
+DATE EDITED: Jan 1, 2026
+
 To Run This Dofile:
 do "/home/research/ca_ed_lab/projects/csac_survey2023/do/learn/paper_quant_analysis.do"
 *******************************************************************************/
@@ -37,10 +40,45 @@ label var reasons_bullied_igenderso "being bullied because of gender or sexual o
 label def reasons_bullied_lbl 0 "No" 1 "Yes", replace
 label val reasons_bullied_igenderso reasons_bullied_lbl
 
+*** consolidated gender/so categories
+gen gender_queer = .
+replace gender_queer = 0 if inlist(gender_cat, 0, 1)
+replace gender_queer = 1 if inrange(gender_cat, 2, 5)
+replace gender_queer = 2 if gender_cat==6
+
+lab def gender_queer 0 "Cisgender" 1 "Non-cisgender" 2 "Prefer not to say"
+lab val gender_queer gender_queer
+
+gen so_queer = .
+replace so_queer = 0 if so_cat==0
+replace so_queer = 1 if inrange(so_cat, 1, 4)
+replace so_queer = 2 if so_cat==5
+
+lab def so_queer 0 "Heterosexual" 1 "Non-heterosexual" 2 "Prefer not to say"
+lab val so_queer so_queer
+
+gen gender_cat2 = .
+replace gender_cat2 = 0 if gender_cat == 0
+replace gender_cat2 = 1 if gender_cat == 1
+replace gender_cat2 = 2 if inlist(gender_cat, 2,3)
+replace gender_cat2 = 3 if gender_cat==4
+replace gender_cat2 = 4 if gender_cat==5
+replace gender_cat2 = 5 if gender_cat==6
+
+lab def gender_cat2 0 "cis man" 1 "cis woman" 2 "transgender" 3 "non-binary" 4 "gender diverse/questioning" 5 "prefer not to say"
+lab val gender_cat2 gender_cat2
 
 ***************
 * Macro Setup *
 ***************
+// color macros 
+local aggieblue "0 74 168"   
+local aggiegold "255 191 0"
+local tabblue "78 121 167"
+local taborange "242 142 43"
+local mdgray "118 118 118"   
+
+
 // Note: decided to focus on gender
 * crosstab caterogies: gender (sexual orientation)
 global xtab gender_cat // so_cat
@@ -156,14 +194,16 @@ foreach var in $indices hsexp_index{
 * gen new label with subsamp mean to display on y-axis
 *********************************************************
 foreach y in $indices hsexp_index {
-    label copy gender_cat_lbl gender_cat_`y' 
-    label copy gender_cat_lbl gender_cat_`y'2
+    foreach cat in gender so {
+        label copy `cat'_cat_lbl `cat'_cat_`y' 
+        label copy `cat'_cat_lbl `cat'_cat_`y'2
 
-    forval i = 0/6{
-        summ `y' if gender_cat == `i'
-        local ybar: display  %3.2f `r(mean)' // ensure mean values show only two digits after decimal point, and 3 digits in total
-        label define gender_cat_`y'  `i' "`:label gender_cat_lbl `i'' (mean=`ybar')", modify // add (mean=XXX) after gender cat
-        label define gender_cat_`y'2 `i' `" "`:label gender_cat_lbl `i''" "(N=`r(N)', mean=`ybar')" "', modify // add (N=xx mean=xx) after gender cat in a separate line
+        forval i = 0/6{
+            summ `y' if `cat'_cat == `i'
+            local ybar: display  %3.2f `r(mean)' // ensure mean values show only two digits after decimal point, and 3 digits in total
+            label define `cat'_cat_`y'  `i' "`:label `cat'_cat_lbl `i'' (mean=`ybar')", modify // add (mean=XXX) after gender cat
+            label define `cat'_cat_`y'2 `i' `" "`:label `cat'_cat_lbl `i''" "(N=`r(N)', mean=`ybar')" "', modify // add (N=xx mean=xx) after gender cat in a separate line
+        }
     }
 }
 
@@ -222,40 +262,81 @@ foreach index in index1 index2 index3{
 * ssc install coefplot
 
 foreach y in $indices {
+    foreach cat in gender so {
 
-    cap drop `y'_m1 `y'_m2 `y'_m3
-    di "M1: only using gender to predict worry"
-    reg `y' i.gender_cat
-    est store `y'_m1
-    * coefplot, drop(_cons) baselevels label // visualization
-    * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m1.png", replace
-    * predict `y'_m1 // potential post-estimation
+        if "`cat'"=="gender" {
+            local lgbtq_ctrl "so_cat"
+            local legend_str "sexual orientation"
+        }
+        if "`cat'"=="so" {
+            local lgbtq_ctrl "gender_cat"
+            local legend_str "gender identity"
 
-    di "M2: using gender to predict worry, controlling for demographics"
-    reg `y' i.gender_cat i.race_assn i.parent_edu
-    est store `y'_m2
-    * coefplot, drop(_cons *.race_assn *.parent_edu) baselevels label
-    * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m2.png", replace
-    * predict `y'_m2
+        }
 
-    di "M3: using gender and hsexp index to predict worry, controlling for demographics"
-    reg `y' i.gender_cat c.hsexp_index i.race_assn i.parent_edu
-    est store `y'_m3
-    * coefplot, drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label
-    * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m3.png", replace
-    * predict `y'_m3
+        cap drop `y'_m1 `y'_m2 `y'_m3
+        di "M1: only using gender to predict worry"
+        reg `y' i.`cat'_cat
+        est store `y'_m1
+        * coefplot, drop(_cons) baselevels label // visualization
+        * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m1.png", replace
+        * predict `y'_m1 // potential post-estimation
 
-    label val gender_cat gender_cat_lbl
-    coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10))  , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(small)) // title( "`: var label `y''")
-    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'.png", replace 
+        di "M2: using gender to predict worry, controlling for demographics"
+        reg `y' i.`cat'_cat i.race_assn i.parent_edu
+        est store `y'_m2
+        * coefplot, drop(_cons *.race_assn *.parent_edu) baselevels label
+        * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m2.png", replace
+        * predict `y'_m2
 
-    label val gender_cat gender_cat_`y'
-    coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
-    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_mean.png", replace 
+        di "M3: using gender and hsexp index to predict worry, controlling for demographics"
+        reg `y' i.`cat'_cat c.hsexp_index i.race_assn i.parent_edu
+        est store `y'_m3
+        * coefplot, drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label
+        * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m3.png", replace
+        * predict `y'_m3
 
-    label val gender_cat gender_cat_`y'2
-    coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
-    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_Nmean.png", replace 
+         di "M4: using gender, so, and hsexp index to predict worry, controlling for demographics"
+        reg `y' i.`cat'_cat i.`lgbtq_ctrl' c.hsexp_index i.race_assn i.parent_edu
+        est store `y'_m4
+
+        label val `cat'_cat `cat'_cat_lbl
+        coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10))  , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(small)) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'.png", replace 
+
+        * includes mean for each gender category 
+        label val `cat'_cat `cat'_cat_`y'
+        coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_mean.png", replace 
+
+        * includes mean and N for each gender category 
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m3, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean.png", replace 
+
+        * includes mean and N for each gender category, in color 
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot ///
+         (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+         (`y'_m3, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+         , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label ///
+         legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) ///
+          xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_color.png", replace width(1600) 
+
+
+        * includes mean and N for each gender category, in color , includes model controlling for sexual orientation
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot ///
+         (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+         (`y'_m3, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+                  (`y'_m4, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+         , drop(_cons hsexp_index *.race_assn *.parent_edu *.`lgbtq_ctrl') baselevels label ///
+         legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "control for demographics & HS index & `legend_str'") span size(small) cols(1) region(lwidth(none))) ///
+          xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_lgbtq_ctrl_color.png", replace width(1600) 
+        
+    }
 
 }
 
@@ -264,33 +345,40 @@ foreach y in $indices {
 * Reg HS index by Gender *
 **************************
 foreach y in hsexp_index {
-    cap drop `y'_m1 `y'_m2 `y'_m3
-    di "M1: only using gender to predict worry"
-    reg `y' i.gender_cat
-    est store `y'_m1
-    * coefplot, drop(_cons) baselevels label // visualization
-    * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m1.png", replace
-    * predict `y'_m1 // potential post-estimation
+    foreach cat in gender so {   
+         cap drop `y'_m1 `y'_m2 `y'_m3
+        di "M1: only using gender to predict worry"
+        reg `y' i.`cat'_cat
+        est store `y'_m1
+        * coefplot, drop(_cons) baselevels label // visualization
+        * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m1.png", replace
+        * predict `y'_m1 // potential post-estimation
 
-    di "M2: using gender to predict worry, controlling for demographics"
-    reg `y' i.gender_cat i.race_assn i.parent_edu
-    est store `y'_m2
-    * coefplot, drop(_cons *.race_assn *.parent_edu) baselevels label
-    * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m2.png", replace
-    * predict `y'_m2
+        di "M2: using gender to predict worry, controlling for demographics"
+        reg `y' i.`cat'_cat i.race_assn i.parent_edu
+        est store `y'_m2
+        * coefplot, drop(_cons *.race_assn *.parent_edu) baselevels label
+        * graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_m2.png", replace
+        * predict `y'_m2
 
-// Change colors to be compatible with B&W prints
-    label val gender_cat gender_cat_lbl
-    coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(small))  // title( "`: var label `y''")
-    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'.png", replace 
+    // Change colors to be compatible with B&W prints
+        label val `cat'_cat `cat'_cat_lbl
+        coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(small))  // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'.png", replace 
 
-    label val gender_cat gender_cat_`y'
-    coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
-    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_mean.png", replace 
+        label val `cat'_cat `cat'_cat_`y'
+        coefplot (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_mean.png", replace 
 
-    label val gender_cat gender_cat_`y'2
-    coefplot  (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
-    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_w_Nmean.png", replace
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot  (`y'_m1, msymbol(O) ciopts( lwidth(*2) color(black)) mcolor(black) ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color(gs10)) mcolor(gs10)) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean.png", replace
+
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot  (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_color.png", replace width(1600)
+    
+    }
 
 }
 
