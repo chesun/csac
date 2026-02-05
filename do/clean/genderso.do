@@ -13,7 +13,10 @@ GOAL: Prep data for gender paper
 WRITTEN BY: Baiyu Zhou (baizhou@ucdavis.edu)
 DATE CREATED: Jan 29, 2024
 
-To run this: do "/home/research/ca_ed_lab/projects/csac_survey2023/do/clean/genderso.do"
+02/05/2026 CS: edited gender and so labels for capitalization
+
+To run this: 
+do "/home/research/ca_ed_lab/projects/csac_survey2023/do/clean/genderso.do"
 *******************************************************************************/
 * Set settings
 version 17.0
@@ -130,7 +133,7 @@ gen gender_cat = .
 label var gender_cat "gender categories"
 
 * Define gender categories value label
-label define gender_cat_lbl 0 "cis man" 1 "cis woman" 2 "trans man" 3 "trans woman" 4 "nonbinary" 5 "gender diverse/questioning" 6 "prefer not to say", replace
+label define gender_cat_lbl 0 "Cisgender Man" 1 "Cisgender Woman" 2 "Transgender Man" 3 "Transgender Woman" 4 "Non-binary" 5 "Gender Diverse/Questioning" 6 "Prefer Not to Say", replace
 label val gender_cat gender_cat_lbl
 
 * Categorization - 
@@ -233,7 +236,7 @@ gen so_cat = .
 label var so_cat "sexual orientation categories"
 
 * Define gender categories value label
-label define so_cat_lbl 0 "straight/heterosexual " 1 "gay or lesbian" 2 "bisexual/pansexual/omnisexual" 3 "asexual/aromantic/demisexual" 4 "other/queer/questioning" 5 "prefer not to say", replace
+label define so_cat_lbl 0 "Straight/Heterosexual " 1 "Gay or Lesbian" 2 "Bisexual/Pansexual/Omnisexual" 3 "Asexual/Aromantic/Demisexual" 4 "Other/Queer/Questioning" 5 "Prefer Not to Say", replace
 label val so_cat so_cat_lbl
 
 * Categorization (numeric)
