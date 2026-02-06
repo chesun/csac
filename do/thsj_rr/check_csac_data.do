@@ -39,7 +39,7 @@ tab csac_merge if so_queer==1 | gender_queer==1
 // check csac variables missingness
     
 mdesc nces_sch_code stdt_gpa derived_income derived_assets ///
-    stdt_dep_stat_code pfc_mar_stat_code ///
+    sfc_mar_stat_code pfc_mar_stat_code ///
     family_size efc stdt_ca_res_flag us_ctzn_elig_nonctzn if so_queer==1 | gender_queer == 1
 
 // check who are missing these variables
@@ -48,7 +48,7 @@ tab so_cat if mi(derived_income) & lgbtq==1
 
 tab gender_cat if  mi(stdt_gpa) & lgbtq==1
 
-local csacvars  nces_sch_code stdt_gpa derived_income derived_assets stdt_dep_stat_code pfc_mar_stat_code family_size efc stdt_ca_res_flag us_ctzn_elig_nonctzn
+local csacvars  nces_sch_code stdt_gpa derived_income derived_assets sfc_mar_stat_code pfc_mar_stat_code family_size efc stdt_ca_res_flag us_ctzn_elig_nonctzn
 
 foreach var of local csacvars {
     di "missing `var'"

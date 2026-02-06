@@ -1,0 +1,327 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/hsexp_worry_tab.txt
+  log type:  text
+ opened on:   5 Feb 2026, 18:35:06
+
+. 
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. 
+. * outcomes
+. * hs experience & bullying 
+. local allhsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college 
+
+. local bully    times_bullied reasons_bullied_igenderso
+
+. 
+. * college plans
+. local plans    college_fall segment major highest_degree
+
+. 
+. * college worries
+. local allworries worry_tuition worry_living worry_academic worry_work worry_family worry_community worry_away worry_support worry_gender worry_so worry_race worry_religion
+
+. 
+. // gender labels
+. local gender_0_str "Cisgender Man" 
+
+. local gender_1_str "Cisgender Woman" 
+
+. local gender_2_str "Transgender Man" 
+
+. local gender_3_str "Transgender Woman" 
+
+. local gender_4_str "Non-binary" 
+
+. local gender_5_str "Gender Diverse/Questioning" 
+
+. local gender_6_str "Prefer Not to Say"
+
+. 
+. // SO labels
+. local so_0_str "Straight/Heterosexual" 
+
+. local so_1_str "Gay or Lesbian" 
+
+. local so_2_str "Bisexual/Pansexual/Omnisexual" 
+
+. local so_3_str "Asexual/Aromantic/Demisexual" 
+
+. local so_4_str "Other/Queer/Questioning" 
+
+. local so_5_str "Prefer Not to Say"
+
+. 
+. 
+. //----- Survey item table, by gender
+. foreach items in hsexp worries {
+  2.     foreach demo in gender so {
+  3.         table (var) `demo'_cat, statistic(mean `all`items'') statistic(count `all`items'') 
+  4.         * Customize formatting
+.         collect style cell result[mean], nformat(%9.3f)
+  5.         collect style cell result[count], nformat(%9.0fc)
+  6. 
+.         * Rename the count label to "N"
+.         collect label levels result mean "Mean", modify
+  7.         collect label levels result count "N", modify
+  8. 
+.         * Add spacing between variables
+.         collect style row stack, spacer
+  9.         
+.         collect export $csacprojdir/tab/thsj_rr/`items'_`demo'.docx, replace
+ 10.     }
+ 11. }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                 |                                                                  Gender Identity                                                               
+                                                 |  Cisgender Man   Cisgender Woman   Transgender Man   Transgender Woman   Non-binary   Gender Diverse/Questioning   Prefer Not to Say      Total
+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------
+how do you rate HS academic experience           |                                                                                                                                                
+  Mean                                           |       3.593271          3.694101          3.864407                3.35     3.674157                     3.380282            3.539007   3.652087
+  Number of nonmissing values                    |          2,675             4,289                59                  20          267                           71                 141      7,522
+how do you rate your HS social experience        |                                                                                                                                                
+  Mean                                           |       3.258511          3.079795          2.644068                 2.5      2.70412                     2.591549            2.678571   3.112959
+  Number of nonmissing values                    |          2,673             4,286                59                  20          267                           71                 140      7,516
+I belong in my high school community             |                                                                                                                                                
+  Mean                                           |       .7034121          .5619159          .0169492                   0     .1086142                     -.056338            .1582734   .5769692
+  Number of nonmissing values                    |          2,667             4,280                59                  20          267                           71                 139      7,503
+teachers and staff at my HS care about my future |                                                                                                                                                
+  Mean                                           |       1.147732          1.093203          1.033898                 1.1     1.007491                     .8591549            .9352518   1.103945
+  Number of nonmissing values                    |          2,667             4,281                59                  20          267                           71                 139      7,504
+I received good advising from HS about college   |                                                                                                                                                
+  Mean                                           |       .8087739          .7213919          .2881356                 .75     .3970037                     .3943662            .4357143     .72915
+  Number of nonmissing values                    |          2,667             4,282                59                  20          267                           71                 140      7,506
+I feel prepared for college                      |                                                                                                                                                
+  Mean                                           |       .7544057          .6386358          .5762712                 .85     .4269663                     -.056338             .381295   .6609808
+  Number of nonmissing values                    |          2,667             4,281                59                  20          267                           71                 139      7,504
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+(collection Table exported to file /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/hsexp_gender.docx)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> ----------
+                                                 |                                                                        Sexual Orientation                                                            
+>           
+                                                 |  Straight/Heterosexual   Gay or Lesbian   Bisexual/Pansexual/Omnisexual   Asexual/Aromantic/Demisexual   Other/Queer/Questioning   Prefer Not to Say 
+>      Total
+-------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------
+> ----------
+how do you rate HS academic experience           |                                                                                                                                                      
+>           
+  Mean                                           |               3.644123         3.775758                        3.608428                       3.983516                  3.687023            3.605108 
+>   3.650849
+  Number of nonmissing values                    |                  5,190              330                           1,139                            182                       131                 509 
+>      7,481
+how do you rate your HS social experience        |                                                                                                                                                      
+>           
+  Mean                                           |               3.203239         3.006061                        2.932337                        2.78022                  2.916031            2.858268 
+>   3.114515
+  Number of nonmissing values                    |                  5,186              330                           1,138                            182                       131                 508 
+>      7,475
+I belong in my high school community             |                                                                                                                                                      
+>           
+  Mean                                           |                .672787         .3757576                        .3646749                       .3956044                  .3358779            .3491124 
+>   .5779952
+  Number of nonmissing values                    |                  5,174              330                           1,138                            182                       131                 507 
+>      7,462
+teachers and staff at my HS care about my future |                                                                                                                                                      
+>           
+  Mean                                           |               1.114954         1.158055                        1.059754                       1.186813                  1.152672             1.00789 
+>   1.103578
+  Number of nonmissing values                    |                  5,176              329                           1,138                            182                       131                 507 
+>      7,463
+I received good advising from HS about college   |                                                                                                                                                      
+>           
+  Mean                                           |               .7885692         .6200608                        .5799649                       .6538462                  .5461538            .5759369 
+>   .7273945
+  Number of nonmissing values                    |                  5,179              329                           1,138                            182                       130                 507 
+>      7,465
+I feel prepared for college                      |                                                                                                                                                      
+>           
+  Mean                                           |               .7011783         .6212121                        .5769569                       .6758242                  .5343511            .4802372 
+>   .6601903
+  Number of nonmissing values                    |                  5,177              330                           1,137                            182                       131                 506 
+>      7,463
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> ----------
+(collection Table exported to file /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/hsexp_so.docx)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> -------------------------
+                                                                                |                                                                  Gender Identity                                      
+>                          
+                                                                                |  Cisgender Man   Cisgender Woman   Transgender Man   Transgender Woman   Non-binary   Gender Diverse/Questioning   Pre
+> fer Not to Say      Total
+--------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------
+> -------------------------
+how worried are you about affording tuition fees                                |                                                                                                                       
+>                          
+  Mean                                                                          |       1.649399          1.933146          1.711864                1.55     1.984962                     2.242857      
+>       1.877698   1.833244
+  Number of nonmissing values                                                   |          2,664             4,278                59                  20          266                           70      
+>            139      7,496
+how worried are you about living expenses                                       |                                                                                                                       
+>                          
+  Mean                                                                          |       1.522539          1.763262          1.542373                1.85     1.898876                     1.971831      
+>       1.769784   1.683207
+  Number of nonmissing values                                                   |          2,662             4,279                59                  20          267                           71      
+>            139      7,497
+how worried are you about performing well academically                          |                                                                                                                       
+>                          
+  Mean                                                                          |       1.384673          1.567422          1.491525                1.05     1.689139                     1.802817      
+>       1.676259   1.509137
+  Number of nonmissing values                                                   |          2,662             4,279                59                  20          267                           71      
+>            139      7,497
+how worried are you about balancing work obligations                            |                                                                                                                       
+>                          
+  Mean                                                                          |       1.412937           1.61868          1.482759                 1.7     1.811321                     2.056338      
+>       1.805755   1.559193
+  Number of nonmissing values                                                   |          2,659             4,272                58                  20          265                           71      
+>            139      7,484
+how worried are you about balancing family obligations                          |                                                                                                                       
+>                          
+  Mean                                                                          |       .9615964          1.091271          1.152542                 .75     1.229323                     1.342857      
+>       1.253623   1.055065
+  Number of nonmissing values                                                   |          2,656             4,273                59                  20          266                           70      
+>            138      7,482
+how worried are you about finding community                                     |                                                                                                                       
+>                          
+  Mean                                                                          |        1.14049          1.393308          1.576271                 .95     1.623574                     1.704225      
+>       1.589928    1.31854
+  Number of nonmissing values                                                   |          2,655             4,274                59                  20          263                           71      
+>            139      7,481
+how worried are you about living away from home                                 |                                                                                                                       
+>                          
+  Mean                                                                          |       .8045113          .9796396          .8135593                 .45      .906015                     .8169014      
+>       .8776978   .9086538
+  Number of nonmissing values                                                   |          2,660             4,273                59                  20          266                           71      
+>            139      7,488
+how worried about having adequate support for emotional and mental health needs |                                                                                                                       
+>                          
+  Mean                                                                          |       .8466165           1.23356          1.627119                 1.6     1.715356                     1.619718      
+>       1.597122   1.127787
+  Number of nonmissing values                                                   |          2,660             4,273                59                  20          267                           71      
+>            139      7,489
+how worried about discrimination based on gender                                |                                                                                                                       
+>                          
+  Mean                                                                          |       .1212008           .500939          2.186441                 1.8     1.565543                     1.352113      
+>       1.050725   .4386364
+  Number of nonmissing values                                                   |          2,665             4,260                59                  20          267                           71      
+>            138      7,480
+how worried about discrimination based on sexual orientation                    |                                                                                                                       
+>                          
+  Mean                                                                          |       .1799699          .2963833          1.457627                1.35      1.41573                     1.323944      
+>       1.144928   .3324408
+  Number of nonmissing values                                                   |          2,656             4,258                59                  20          267                           71      
+>            138      7,469
+how worried about discrimination based on race                                  |                                                                                                                       
+>                          
+  Mean                                                                          |        .375188          .5809546          .5932203                  .4     .7228464                     .7323944      
+>       .7338129   .5168224
+  Number of nonmissing values                                                   |          2,660             4,274                59                  20          267                           71      
+>            139      7,490
+how worried about discrimination based on religion                              |                                                                                                                       
+>                          
+  Mean                                                                          |         .18924          .2508776          .2372881                   0     .2284644                     .4366197      
+>       .3115942   .2302966
+  Number of nonmissing values                                                   |          2,658             4,273                59                  20          267                           71      
+>            138      7,486
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> -------------------------
+(collection Table exported to file /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/worries_gender.docx)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> -----------------------------------------
+                                                                                |                                                                        Sexual Orientation                             
+>                                          
+                                                                                |  Straight/Heterosexual   Gay or Lesbian   Bisexual/Pansexual/Omnisexual   Asexual/Aromantic/Demisexual   Other/Queer/Q
+> uestioning   Prefer Not to Say      Total
+--------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------
+> -----------------------------------------
+how worried are you about affording tuition fees                                |                                                                                                                       
+>                                          
+  Mean                                                                          |               1.807075         1.821212                        1.926056                       1.657459                
+>   1.976923            1.923077   1.833043
+  Number of nonmissing values                                                   |                  5,173              330                           1,136                            181                
+>        130                 507      7,457
+how worried are you about living expenses                                       |                                                                                                                       
+>                                          
+  Mean                                                                          |               1.638508         1.815152                        1.810906                            1.5                
+>   1.823077            1.800395   1.683427
+  Number of nonmissing values                                                   |                  5,173              330                           1,137                            182                
+>        130                 506      7,458
+how worried are you about performing well academically                          |                                                                                                                       
+>                                          
+  Mean                                                                          |                1.46432         1.636364                        1.605101                       1.549451                
+>   1.553846            1.637081   1.508784
+  Number of nonmissing values                                                   |                  5,171              330                           1,137                            182                
+>        130                 507      7,457
+how worried are you about balancing work obligations                            |                                                                                                                       
+>                                          
+  Mean                                                                          |                1.49371         1.680851                        1.723742                       1.686813                
+>        1.7             1.70297   1.559495
+  Number of nonmissing values                                                   |                  5,167              329                           1,133                            182                
+>        130                 505      7,446
+how worried are you about balancing family obligations                          |                                                                                                                       
+>                                          
+  Mean                                                                          |               1.021293            1.125                        1.112875                       1.055249                
+>   1.209302            1.162376   1.053473
+  Number of nonmissing values                                                   |                  5,166              328                           1,134                            181                
+>        129                 505      7,443
+how worried are you about finding community                                     |                                                                                                                       
+>                                          
+  Mean                                                                          |               1.235385         1.490909                        1.495146                       1.466667                
+>   1.534884            1.516832   1.316136
+  Number of nonmissing values                                                   |                  5,166              330                           1,133                            180                
+>        129                 505      7,443
+how worried are you about living away from home                                 |                                                                                                                       
+>                                          
+  Mean                                                                          |                .898046         .8723404                        .9391534                       .9230769                
+>   .9461538            .9346535   .9071016
+  Number of nonmissing values                                                   |                  5,169              329                           1,134                            182                
+>        130                 505      7,449
+how worried about having adequate support for emotional and mental health needs |                                                                                                                       
+>                                          
+  Mean                                                                          |               .9864525         1.472727                         1.48285                       1.497238                
+>   1.488372            1.316206   1.127248
+  Number of nonmissing values                                                   |                  5,167              330                           1,137                            181                
+>        129                 506      7,450
+how worried about discrimination based on gender                                |                                                                                                                       
+>                                          
+  Mean                                                                          |               .2608105         .8151515                        .8283451                       1.005525                
+>   1.137405            .7114625   .4362317
+  Number of nonmissing values                                                   |                  5,157              330                           1,136                            181                
+>        131                 506      7,441
+how worried about discrimination based on sexual orientation                    |                                                                                                                       
+>                                          
+  Mean                                                                          |                .095784         1.332317                        .8251318                       .7967033                
+>   1.076336            .5793651   .3293405
+  Number of nonmissing values                                                   |                  5,147              328                           1,138                            182                
+>        131                 504      7,430
+how worried about discrimination based on race                                  |                                                                                                                       
+>                                          
+  Mean                                                                          |               .4535244         .5545455                         .667252                       .6153846                
+>   .6461538            .7193676   .5160381
+  Number of nonmissing values                                                   |                  5,164              330                           1,139                            182                
+>        130                 506      7,451
+how worried about discrimination based on religion                              |                                                                                                                       
+>                                          
+  Mean                                                                          |               .2231485         .1636364                        .2396839                       .1923077                
+>   .3282443             .298419   .2292506
+  Number of nonmissing values                                                   |                  5,158              330                           1,139                            182                
+>        131                 506      7,446
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+> -----------------------------------------
+(collection Table exported to file /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/worries_so.docx)
+
+. 
+. 
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/hsexp_worry_tab.txt
+  log type:  text
+ closed on:   5 Feb 2026, 18:35:08
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -130,7 +130,7 @@ replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_r
 
 * Generate new var to store gender category
 gen gender_cat = . 
-label var gender_cat "gender categories"
+label var gender_cat "Gender Identity"
 
 * Define gender categories value label
 label define gender_cat_lbl 0 "Cisgender Man" 1 "Cisgender Woman" 2 "Transgender Man" 3 "Transgender Woman" 4 "Non-binary" 5 "Gender Diverse/Questioning" 6 "Prefer Not to Say", replace
@@ -182,7 +182,7 @@ cap drop so_clean
 
 * Gen cleaned gender expression to store recoded "Other - specify" (string)
 gen so_clean = so_raw
-label var so_clean "cleaned sexual orientation"
+label var so_clean "Sexual Orientation"
 replace so_clean = "BI/PAN/OMNISEXUAL" if so_raw == "BISEXUAL"
 replace so_clean = "A/DEMISEXUAL/ROMANTIC" if so_raw == "ASEXUAL"
 replace so_clean = "OTHER/QUEER/QUESTIONING" if so_raw == "OTHER (FEEL FREE TO SPECIFY)"
@@ -233,7 +233,7 @@ replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NOT
 
 * Generate new var to store gender category
 gen so_cat = . 
-label var so_cat "sexual orientation categories"
+label var so_cat "Sexual Orientation"
 
 * Define gender categories value label
 label define so_cat_lbl 0 "Straight/Heterosexual " 1 "Gay or Lesbian" 2 "Bisexual/Pansexual/Omnisexual" 3 "Asexual/Aromantic/Demisexual" 4 "Other/Queer/Questioning" 5 "Prefer Not to Say", replace

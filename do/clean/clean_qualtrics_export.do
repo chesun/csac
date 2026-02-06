@@ -244,35 +244,35 @@ rename q44_pagesubmit t_worry
 label var t_worry "time spent on 'how worried about following in college' (not discrim), in seconds"
 
 rename tuition worry_tuition
-label var worry_tuition "how worried are you about affording tuition fees"
+label var worry_tuition "How worried are you about affording tuition fees"
 rename living worry_living
-label var worry_living "how worried are you about living expenses"
+label var worry_living "How worried are you about living expenses"
 rename academic worry_academic
-label var worry_academic "how worried are you about performing well academically"
+label var worry_academic "How worried are you about performing well academically"
 rename work worry_work
-label var worry_work "how worried are you about balancing work obligations"
+label var worry_work "How worried are you about balancing work obligations"
 rename family worry_family
-label var worry_family "how worried are you about balancing family obligations"
+label var worry_family "How worried are you about balancing family obligations"
 rename community worry_community
-label var worry_community "how worried are you about finding community"
+label var worry_community "How worried are you about finding community"
 rename living_away worry_away
-label var worry_away "how worried are you about living away from home"
+label var worry_away "How worried are you about living away from home"
 rename support worry_support
-label var worry_support "how worried about having adequate support for emotional and mental health needs"
+label var worry_support "How worried about having adequate support for emotional and mental health needs"
 
 // note: there is not a timing question for worry about discrimination in college
 rename race worry_race
-label var worry_race "how worried about discrimination based on race"
+label var worry_race "How worried about discrimination based on race"
 rename gender worry_gender
-label var worry_gender "how worried about discrimination based on gender"
+label var worry_gender "How worried about discrimination based on gender"
 rename so worry_so
-label var worry_so "how worried about discrimination based on sexual orientation"
+label var worry_so "How worried about discrimination based on sexual orientation"
 rename religion worry_religion
-label var worry_religion "how worried about discrimination based on religion"
+label var worry_religion "How worried about discrimination based on religion"
 
 // note: there is no timing question for the number of online class question
 rename q47 prop_online_class
-label var prop_online_class "how many college classes do you plan to take online"
+label var prop_online_class "How many college classes do you plan to take online"
 
 // CCC full time nudge
 rename q48_pagesubmit t_ccc_ft
@@ -285,20 +285,20 @@ label var ccc_ft_yn "did you know cal grant $8000 for 15 credits"
 rename q52_pagesubmit t_hs_academic
 label var t_hs_academic "time spent on 'how do you rate HS academic experience', in seconds"
 rename q53 hs_academic
-label var hs_academic "how do you rate HS academic experience"
+label var hs_academic "How do you rate HS academic experience"
 
 rename q54_pagesubmit t_hs_social
 label var t_hs_social "time spent on 'how do you rate HS social experience', in seconds"
 rename q55 hs_social
-label var hs_social "how do you rate your HS social experience"
+label var hs_social "How do you rate your HS social experience"
 
 // high school belonging
 rename q56_pagesubmit t_hs_belong
-label var t_hs_belong "time spent on high school belonging questions, in seconds"
+label var t_hs_belong "Time spent on high school belonging questions, in seconds"
 rename q57_1 hs_community_belong
 label var hs_community_belong "I belong in my high school community"
 rename q57_2 hs_teacher_care
-label var hs_teacher_care "teachers and staff at my HS care about my future"
+label var hs_teacher_care "Teachers and staff at my HS care about my future"
 rename q57_3 hs_good_advising
 label var hs_good_advising "I received good advising from HS about college"
 rename q57_4 hs_prepared_college
@@ -308,13 +308,13 @@ label var hs_prepared_college "I feel prepared for college"
 rename q58_pagesubmit t_times_bullied
 label var t_times_bullied "time spent on 'in last 12 months how many times were you bullied', in seconds"
 rename q59 times_bullied
-label var times_bullied "number of times bullied or harassed at school last 12 months"
+label var times_bullied "Number of times bullied or harassed at school last 12 months"
 
     // reasons bullied was displayed only if number of times bullied in previous question was greater than 0
     rename q60_pagesubmit t_reasons_bullied
     label var t_reasons_bullied "time spent on 'were you bullied for any of following reasons', in seconds"
     rename q61 reasons_bullied
-    label var reasons_bullied "in last 12 months were you harassed or bullied for any of the following reasons"
+    label var reasons_bullied "In last 12 months were you harassed or bullied for any of the following reasons"
 
 // demographics
 rename q62_pagesubmit t_hs_type

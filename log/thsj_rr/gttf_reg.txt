@@ -1,0 +1,282 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/gttf_reg.txt
+  log type:  text
+ opened on:   5 Feb 2026, 19:21:15
+
+. 
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. local controls i.race_assn i.parent_edu
+
+. 
+. //******** 2year vs 4year college, Figure 3
+. // segment is a dummy for attending 4 year
+. logit segment b0.gender_cat 
+
+Iteration 0:  Log likelihood = -5048.3722  
+Iteration 1:  Log likelihood = -5037.6998  
+Iteration 2:  Log likelihood = -5037.6931  
+Iteration 3:  Log likelihood = -5037.6931  
+
+Logistic regression                                     Number of obs =  7,522
+                                                        LR chi2(6)    =  21.36
+                                                        Prob > chi2   = 0.0016
+Log likelihood = -5037.6931                             Pseudo R2     = 0.0021
+
+---------------------------------------------------------------------------------------------
+                    segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+----------------------------+----------------------------------------------------------------
+                 gender_cat |
+           Cisgender Woman  |   .1787333   .0501937     3.56   0.000     .0803555    .2771111
+           Transgender Man  |     .51652    .285441     1.81   0.070    -.0429341    1.075974
+         Transgender Woman  |   .5406175   .4895161     1.10   0.269    -.4188164    1.500051
+                Non-binary  |    .336317   .1345905     2.50   0.012     .0725244    .6001097
+Gender Diverse/Questioning  |  -.2785095   .2405826    -1.16   0.247    -.7500426    .1930237
+         Prefer Not to Say  |   .1106192    .176501     0.63   0.531    -.2353164    .4565549
+                            |
+                      _cons |   .3066804    .039125     7.84   0.000     .2299968    .3833639
+---------------------------------------------------------------------------------------------
+
+. estimates store segment1
+
+. estadd local demo_controls "No"
+
+added macro:
+      e(demo_controls) : "No"
+
+. 
+. logit segment b0.gender_cat `controls'
+
+Iteration 0:  Log likelihood = -5030.7731  
+Iteration 1:  Log likelihood =  -4605.568  
+Iteration 2:  Log likelihood = -4599.3539  
+Iteration 3:  Log likelihood = -4599.3452  
+Iteration 4:  Log likelihood = -4599.3452  
+
+Logistic regression                                     Number of obs =  7,498
+                                                        LR chi2(19)   = 862.86
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4599.3452                             Pseudo R2     = 0.0858
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                             segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------------------------------------------------------------+----------------------------------------------------------------
+                                                                          gender_cat |
+                                                                    Cisgender Woman  |   .2484105   .0535413     4.64   0.000     .1434716    .3533495
+                                                                    Transgender Man  |   .3925732   .3038717     1.29   0.196    -.2030044    .9881508
+                                                                  Transgender Woman  |   .4160585   .5186597     0.80   0.422    -.6004957    1.432613
+                                                                         Non-binary  |   .2932015    .142033     2.06   0.039      .014822     .571581
+                                                         Gender Diverse/Questioning  |   -.384067   .2560554    -1.50   0.134    -.8859264    .1177924
+                                                                  Prefer Not to Say  |   .0950865    .192374     0.49   0.621    -.2819597    .4721326
+                                                                                     |
+                                                                           race_assn |
+                                                             Black/African American  |   .3053935   .1902791     1.60   0.108    -.0675466    .6783336
+                                                                    Hispanic/Latinx  |  -.0462287   .1692526    -0.27   0.785    -.3779577    .2855003
+                                                                   Pacific Islander  |   .2033381   .3218295     0.63   0.528     -.427436    .8341122
+                                                                           Filipino  |   .0076259   .2178559     0.04   0.972    -.4193638    .4346156
+                                                                              Asian  |   .8066489    .182164     4.43   0.000     .4496139    1.163684
+                                                                              Other  |  -.0744926   .2335347    -0.32   0.750    -.5322122     .383227
+                                                                 White/Non-Hispanic  |   .1865432   .1759885     1.06   0.289    -.1583879    .5314744
+                                                                                     |
+                                                                          parent_edu |
+                                                                High school diploma  |  -.0768334   .0756578    -1.02   0.310    -.2251199    .0714531
+                                                    Some college, no college degree  |   .1723734   .0878772     1.96   0.050     .0001372    .3446096
+                                                                   Associate degree  |  -.1702277    .113913    -1.49   0.135     -.393493    .0530376
+                                                                  Bachelor's degree  |   .8312878    .090645     9.17   0.000     .6536268    1.008949
+Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)  |   1.385052   .0998623    13.87   0.000     1.189326    1.580778
+                                                                         Don't know  |   -.615057   .1217072    -5.05   0.000    -.8535987   -.3765154
+                                                                                     |
+                                                                               _cons |  -.1874703   .1790052    -1.05   0.295     -.538314    .1633735
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. estimates store segment2 
+
+. estadd local demo_controls "Yes"
+
+added macro:
+      e(demo_controls) : "Yes"
+
+. 
+. 
+. * Export to Word showing only gender coefficients
+. esttab segment1 segment2 using $csacprojdir/tab/thsj_rr/segment_models.rtf, ///
+>     keep(*gender_cat*) ///
+>     nobaselevels ///
+>     b(%9.3f) se(%9.3f) ///
+>     star(* 0.10 ** 0.05 *** 0.01) ///
+>     title("Logit Models: Intent to Attend 4-Year College") ///
+>     nomtitles ///
+>     scalars("N Observations" "demo_controls Demographic Controls") ///
+>     label replace
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/segment_models.rtf)
+
+. 
+. //---------- margins plot
+. * Model 1: Gender only
+. logit segment i.gender_cat
+
+Iteration 0:  Log likelihood = -5048.3722  
+Iteration 1:  Log likelihood = -5037.6998  
+Iteration 2:  Log likelihood = -5037.6931  
+Iteration 3:  Log likelihood = -5037.6931  
+
+Logistic regression                                     Number of obs =  7,522
+                                                        LR chi2(6)    =  21.36
+                                                        Prob > chi2   = 0.0016
+Log likelihood = -5037.6931                             Pseudo R2     = 0.0021
+
+---------------------------------------------------------------------------------------------
+                    segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+----------------------------+----------------------------------------------------------------
+                 gender_cat |
+           Cisgender Woman  |   .1787333   .0501937     3.56   0.000     .0803555    .2771111
+           Transgender Man  |     .51652    .285441     1.81   0.070    -.0429341    1.075974
+         Transgender Woman  |   .5406175   .4895161     1.10   0.269    -.4188164    1.500051
+                Non-binary  |    .336317   .1345905     2.50   0.012     .0725244    .6001097
+Gender Diverse/Questioning  |  -.2785095   .2405826    -1.16   0.247    -.7500426    .1930237
+         Prefer Not to Say  |   .1106192    .176501     0.63   0.531    -.2353164    .4565549
+                            |
+                      _cons |   .3066804    .039125     7.84   0.000     .2299968    .3833639
+---------------------------------------------------------------------------------------------
+
+. margins gender_cat
+
+Adjusted predictions                                     Number of obs = 7,522
+Model VCE: OIM
+
+Expression: Pr(segment), predict()
+
+---------------------------------------------------------------------------------------------
+                            |            Delta-method
+                            |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+----------------------------+----------------------------------------------------------------
+                 gender_cat |
+             Cisgender Man  |   .5760748   .0095548    60.29   0.000     .5573477    .5948019
+           Cisgender Woman  |   .6190254   .0074152    83.48   0.000     .6044918     .633559
+           Transgender Man  |   .6949153   .0599446    11.59   0.000      .577426    .8124045
+         Transgender Woman  |         .7   .1024695     6.83   0.000     .4991635    .9008365
+                Non-binary  |   .6554307   .0290835    22.54   0.000     .5984282    .7124332
+Gender Diverse/Questioning  |   .5070423   .0593332     8.55   0.000     .3907513    .6233332
+         Prefer Not to Say  |   .6028369   .0412074    14.63   0.000     .5220719    .6836018
+---------------------------------------------------------------------------------------------
+
+. marginsplot, name(m1, replace) ///
+>     title("Predicted Probability of Attending 4-Year College: No Controls", size(med)) ///
+>     ytitle("Predicted Probability") ylabel(0(0.1)1)
+
+Variables that uniquely identify margins: gender_cat
+(note:  named style med not found in class gsize, default attributes used)
+
+. graph export $csacprojdir/fig/thsj_rr/segment_comparison_nocontrols.png, replace width(2000)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/segment_comparison_nocontrols.png written in PNG format
+
+. 
+. * Model 2: With controls
+. logit segment i.gender_cat `controls'
+
+Iteration 0:  Log likelihood = -5030.7731  
+Iteration 1:  Log likelihood =  -4605.568  
+Iteration 2:  Log likelihood = -4599.3539  
+Iteration 3:  Log likelihood = -4599.3452  
+Iteration 4:  Log likelihood = -4599.3452  
+
+Logistic regression                                     Number of obs =  7,498
+                                                        LR chi2(19)   = 862.86
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4599.3452                             Pseudo R2     = 0.0858
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                             segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------------------------------------------------------------------------------+----------------------------------------------------------------
+                                                                          gender_cat |
+                                                                    Cisgender Woman  |   .2484105   .0535413     4.64   0.000     .1434716    .3533495
+                                                                    Transgender Man  |   .3925732   .3038717     1.29   0.196    -.2030044    .9881508
+                                                                  Transgender Woman  |   .4160585   .5186597     0.80   0.422    -.6004957    1.432613
+                                                                         Non-binary  |   .2932015    .142033     2.06   0.039      .014822     .571581
+                                                         Gender Diverse/Questioning  |   -.384067   .2560554    -1.50   0.134    -.8859264    .1177924
+                                                                  Prefer Not to Say  |   .0950865    .192374     0.49   0.621    -.2819597    .4721326
+                                                                                     |
+                                                                           race_assn |
+                                                             Black/African American  |   .3053935   .1902791     1.60   0.108    -.0675466    .6783336
+                                                                    Hispanic/Latinx  |  -.0462287   .1692526    -0.27   0.785    -.3779577    .2855003
+                                                                   Pacific Islander  |   .2033381   .3218295     0.63   0.528     -.427436    .8341122
+                                                                           Filipino  |   .0076259   .2178559     0.04   0.972    -.4193638    .4346156
+                                                                              Asian  |   .8066489    .182164     4.43   0.000     .4496139    1.163684
+                                                                              Other  |  -.0744926   .2335347    -0.32   0.750    -.5322122     .383227
+                                                                 White/Non-Hispanic  |   .1865432   .1759885     1.06   0.289    -.1583879    .5314744
+                                                                                     |
+                                                                          parent_edu |
+                                                                High school diploma  |  -.0768334   .0756578    -1.02   0.310    -.2251199    .0714531
+                                                    Some college, no college degree  |   .1723734   .0878772     1.96   0.050     .0001372    .3446096
+                                                                   Associate degree  |  -.1702277    .113913    -1.49   0.135     -.393493    .0530376
+                                                                  Bachelor's degree  |   .8312878    .090645     9.17   0.000     .6536268    1.008949
+Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)  |   1.385052   .0998623    13.87   0.000     1.189326    1.580778
+                                                                         Don't know  |   -.615057   .1217072    -5.05   0.000    -.8535987   -.3765154
+                                                                                     |
+                                                                               _cons |  -.1874703   .1790052    -1.05   0.295     -.538314    .1633735
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. margins gender_cat, atmeans
+
+Adjusted predictions                                     Number of obs = 7,498
+Model VCE: OIM
+
+Expression: Pr(segment), predict()
+At: 0.gender_cat = .3556949 (mean)
+    1.gender_cat = .5702854 (mean)
+    2.gender_cat = .0077354 (mean)
+    3.gender_cat = .0026674 (mean)
+    4.gender_cat = .0356095 (mean)
+    5.gender_cat = .0094692 (mean)
+    6.gender_cat = .0185383 (mean)
+    1.race_assn  = .0216058 (mean)
+    2.race_assn  = .0689517 (mean)
+    3.race_assn  = .4995999 (mean)
+    4.race_assn  = .0085356 (mean)
+    5.race_assn  = .0309416 (mean)
+    6.race_assn  = .1503067 (mean)
+    7.race_assn  = .0222726 (mean)
+    8.race_assn  = .1977861 (mean)
+    1.parent_edu = .1820485 (mean)
+    2.parent_edu = .2081889 (mean)
+    3.parent_edu = .1284342 (mean)
+    4.parent_edu = .0594825 (mean)
+    5.parent_edu = .1792478 (mean)
+    6.parent_edu = .1915177 (mean)
+    7.parent_edu = .0510803 (mean)
+
+---------------------------------------------------------------------------------------------
+                            |            Delta-method
+                            |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+----------------------------+----------------------------------------------------------------
+                 gender_cat |
+             Cisgender Man  |    .586087   .0101901    57.52   0.000     .5661148    .6060592
+           Cisgender Woman  |   .6447917   .0078301    82.35   0.000      .629445    .6601385
+           Transgender Man  |   .6770802   .0657942    10.29   0.000      .548126    .8060344
+         Transgender Woman  |   .6821936   .1120761     6.09   0.000     .4625286    .9018586
+                Non-binary  |   .6549827   .0306936    21.34   0.000     .5948244     .715141
+Gender Diverse/Questioning  |   .4909374   .0631295     7.78   0.000     .3672059    .6146689
+         Prefer Not to Say  |   .6089496   .0447307    13.61   0.000      .521279    .6966202
+---------------------------------------------------------------------------------------------
+
+. marginsplot, name(m2, replace) ///
+>     title("Predicted Probability of Attending 4-Year College: With Controls", size(med)) ///
+>     ytitle("Predicted Probability") ylabel(0(0.1)1)
+
+Variables that uniquely identify margins: gender_cat
+(note:  named style med not found in class gsize, default attributes used)
+
+. graph export $csacprojdir/fig/thsj_rr/segment_comparison_withcontrols.png, replace width(2000)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/segment_comparison_withcontrols.png written in PNG format
+
+. 
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/gttf_reg.txt
+  log type:  text
+ closed on:   5 Feb 2026, 19:21:17
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,288 @@
+-----------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/check_csac_data.txt
+  log type:  text
+ opened on:   5 Feb 2026, 20:12:16
+
+. 
+. * Load fully cleaned data
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. merge 1:1 id using  $csacprojdir/dta/cln/csac_admin, keep(1 3) gen(csac_merge)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                           776
+        from master                       776  (csac_merge==1)
+        from using                          0  (csac_merge==2)
+
+    Matched                             8,454  (csac_merge==3)
+    -----------------------------------------
+
+. 
+. gen gender_queer = .
+(9,230 missing values generated)
+
+. replace gender_queer = 0 if inlist(gender_cat, 0, 1)
+(6,964 real changes made)
+
+. replace gender_queer = 1 if inrange(gender_cat, 2, 5)
+(417 real changes made)
+
+. replace gender_queer = 2 if gender_cat==6
+(141 real changes made)
+
+. 
+. lab def gender_queer 0 "Cisgender" 1 "Non-cisgender" 2 "Prefer not to say"
+
+. lab val gender_queer gender_queer
+
+. 
+. gen so_queer = .
+(9,230 missing values generated)
+
+. replace so_queer = 0 if so_cat==0
+(5,190 real changes made)
+
+. replace so_queer = 1 if inrange(so_cat, 1, 4)
+(1,782 real changes made)
+
+. replace so_queer = 2 if so_cat==5
+(509 real changes made)
+
+. 
+. lab def so_queer 0 "Heterosexual" 1 "Non-heterosexual" 2 "Prefer not to say"
+
+. lab val so_queer so_queer
+
+. 
+. gen lgbtq = (gender_queer == 1 | so_queer == 1)
+
+. 
+. 
+. // check csac merge status 
+. tab csac_merge if so_queer==1 | gender_queer==1
+
+   Matching result from |
+                  merge |      Freq.     Percent        Cum.
+------------------------+-----------------------------------
+        Master only (1) |        126        6.89        6.89
+            Matched (3) |      1,702       93.11      100.00
+------------------------+-----------------------------------
+                  Total |      1,828      100.00
+
+. 
+. // check csac variables missingness
+.     
+. mdesc nces_sch_code stdt_gpa derived_income derived_assets ///
+>     sfc_mar_stat_code pfc_mar_stat_code ///
+>     family_size efc stdt_ca_res_flag us_ctzn_elig_nonctzn if so_queer==1 | gender_queer == 1
+
+    Variable    |     Missing          Total     Percent Missing
+----------------+-----------------------------------------------
+   nces_sch_c~e |         168          1,828           9.19
+       stdt_gpa |         131          1,828           7.17
+   derived_in~e |         149          1,828           8.15
+   derived_as~s |         193          1,828          10.56
+   sfc_mar_st~e |         273          1,828          14.93
+   pfc_mar_st~e |         321          1,828          17.56
+    family_size |         131          1,828           7.17
+            efc |         150          1,828           8.21
+   stdt_ca_re~g |         132          1,828           7.22
+   us_ctzn_el~n |         126          1,828           6.89
+----------------+-----------------------------------------------
+
+. 
+. // check who are missing these variables
+. tab gender_cat if mi(derived_income) & lgbtq==1
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         25       16.78       16.78
+           Cisgender Woman |         84       56.38       73.15
+           Transgender Man |          3        2.01       75.17
+         Transgender Woman |          3        2.01       77.18
+                Non-binary |         20       13.42       90.60
+Gender Diverse/Questioning |          4        2.68       93.29
+         Prefer Not to Say |         10        6.71      100.00
+---------------------------+-----------------------------------
+                     Total |        149      100.00
+
+. tab so_cat if mi(derived_income) & lgbtq==1
+
+           Sexual Orientation |      Freq.     Percent        Cum.
+------------------------------+-----------------------------------
+       Straight/Heterosexual  |          3        2.01        2.01
+               Gay or Lesbian |         18       12.08       14.09
+Bisexual/Pansexual/Omnisexual |         99       66.44       80.54
+ Asexual/Aromantic/Demisexual |         16       10.74       91.28
+      Other/Queer/Questioning |         11        7.38       98.66
+            Prefer Not to Say |          2        1.34      100.00
+------------------------------+-----------------------------------
+                        Total |        149      100.00
+
+. 
+. tab gender_cat if  mi(stdt_gpa) & lgbtq==1
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         17       12.98       12.98
+           Cisgender Woman |         77       58.78       71.76
+           Transgender Man |          2        1.53       73.28
+         Transgender Woman |          3        2.29       75.57
+                Non-binary |         20       15.27       90.84
+Gender Diverse/Questioning |          3        2.29       93.13
+         Prefer Not to Say |          9        6.87      100.00
+---------------------------+-----------------------------------
+                     Total |        131      100.00
+
+. 
+. local csacvars  nces_sch_code stdt_gpa derived_income derived_assets sfc_mar_stat_code pfc_mar_stat_code family_size efc stdt_ca_
+> res_flag us_ctzn_elig_nonctzn
+
+. 
+. foreach var of local csacvars {
+  2.     di "missing `var'"
+  3.     tab gender_cat if mi(`var') & lgbtq==1
+  4. }
+missing nces_sch_code
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         22       13.10       13.10
+           Cisgender Woman |         96       57.14       70.24
+           Transgender Man |          4        2.38       72.62
+         Transgender Woman |          4        2.38       75.00
+                Non-binary |         27       16.07       91.07
+Gender Diverse/Questioning |          6        3.57       94.64
+         Prefer Not to Say |          9        5.36      100.00
+---------------------------+-----------------------------------
+                     Total |        168      100.00
+missing stdt_gpa
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         17       12.98       12.98
+           Cisgender Woman |         77       58.78       71.76
+           Transgender Man |          2        1.53       73.28
+         Transgender Woman |          3        2.29       75.57
+                Non-binary |         20       15.27       90.84
+Gender Diverse/Questioning |          3        2.29       93.13
+         Prefer Not to Say |          9        6.87      100.00
+---------------------------+-----------------------------------
+                     Total |        131      100.00
+missing derived_income
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         25       16.78       16.78
+           Cisgender Woman |         84       56.38       73.15
+           Transgender Man |          3        2.01       75.17
+         Transgender Woman |          3        2.01       77.18
+                Non-binary |         20       13.42       90.60
+Gender Diverse/Questioning |          4        2.68       93.29
+         Prefer Not to Say |         10        6.71      100.00
+---------------------------+-----------------------------------
+                     Total |        149      100.00
+missing derived_assets
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         30       15.54       15.54
+           Cisgender Woman |        109       56.48       72.02
+           Transgender Man |          5        2.59       74.61
+         Transgender Woman |          5        2.59       77.20
+                Non-binary |         27       13.99       91.19
+Gender Diverse/Questioning |          5        2.59       93.78
+         Prefer Not to Say |         12        6.22      100.00
+---------------------------+-----------------------------------
+                     Total |        193      100.00
+missing sfc_mar_stat_code
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         37       13.55       13.55
+           Cisgender Woman |        154       56.41       69.96
+           Transgender Man |         11        4.03       73.99
+         Transgender Woman |          8        2.93       76.92
+                Non-binary |         41       15.02       91.94
+Gender Diverse/Questioning |          8        2.93       94.87
+         Prefer Not to Say |         14        5.13      100.00
+---------------------------+-----------------------------------
+                     Total |        273      100.00
+missing pfc_mar_stat_code
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         44       13.71       13.71
+           Cisgender Woman |        177       55.14       68.85
+           Transgender Man |         14        4.36       73.21
+         Transgender Woman |          9        2.80       76.01
+                Non-binary |         53       16.51       92.52
+Gender Diverse/Questioning |          9        2.80       95.33
+         Prefer Not to Say |         15        4.67      100.00
+---------------------------+-----------------------------------
+                     Total |        321      100.00
+missing family_size
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         19       14.50       14.50
+           Cisgender Woman |         76       58.02       72.52
+           Transgender Man |          2        1.53       74.05
+         Transgender Woman |          3        2.29       76.34
+                Non-binary |         20       15.27       91.60
+Gender Diverse/Questioning |          3        2.29       93.89
+         Prefer Not to Say |          8        6.11      100.00
+---------------------------+-----------------------------------
+                     Total |        131      100.00
+missing efc
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         25       16.67       16.67
+           Cisgender Woman |         85       56.67       73.33
+           Transgender Man |          3        2.00       75.33
+         Transgender Woman |          3        2.00       77.33
+                Non-binary |         20       13.33       90.67
+Gender Diverse/Questioning |          4        2.67       93.33
+         Prefer Not to Say |         10        6.67      100.00
+---------------------------+-----------------------------------
+                     Total |        150      100.00
+missing stdt_ca_res_flag
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         18       13.64       13.64
+           Cisgender Woman |         79       59.85       73.48
+           Transgender Man |          2        1.52       75.00
+         Transgender Woman |          4        3.03       78.03
+                Non-binary |         18       13.64       91.67
+Gender Diverse/Questioning |          3        2.27       93.94
+         Prefer Not to Say |          8        6.06      100.00
+---------------------------+-----------------------------------
+                     Total |        132      100.00
+missing us_ctzn_elig_nonctzn
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+             Cisgender Man |         17       13.49       13.49
+           Cisgender Woman |         75       59.52       73.02
+           Transgender Man |          2        1.59       74.60
+         Transgender Woman |          3        2.38       76.98
+                Non-binary |         18       14.29       91.27
+Gender Diverse/Questioning |          3        2.38       93.65
+         Prefer Not to Say |          8        6.35      100.00
+---------------------------+-----------------------------------
+                     Total |        126      100.00
+
+. 
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/check_csac_data.txt
+  log type:  text
+ closed on:   5 Feb 2026, 20:12:16
+-----------------------------------------------------------------------------------------------------------------------------------

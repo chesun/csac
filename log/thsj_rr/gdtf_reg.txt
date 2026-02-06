@@ -1,0 +1,1171 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/gdtf
+> _reg.txt
+  log type:  text
+ opened on:   5 Feb 2026, 19:38:51
+
+. 
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. local controls i.race_assn i.parent_edu
+
+. 
+. 
+. *============================================================================
+> ===
+. * 2 year vs 4 year, Figure 3
+. *============================================================================
+> ===
+. 
+. // segment is a dummy for attending 4 year
+. foreach demo in gender so {
+  2.     logit segment b0.`demo'_cat 
+  3.     estimates store segment1
+  4.     estadd local demo_controls "No"
+  5. 
+.     logit segment b0.`demo'_cat `controls'
+  6.     estimates store segment2 
+  7.     estadd local demo_controls "Yes"
+  8. 
+. 
+.     * Export to Word showing only gender coefficients
+.     esttab segment1 segment2 using $csacprojdir/tab/thsj_rr/segment_models_`d
+> emo'.rtf, ///
+>         keep(*`demo'_cat*) ///
+>         nobaselevels ///
+>         b(%9.3f) se(%9.3f) ///
+>         star(* 0.10 ** 0.05 *** 0.01) ///
+>         title("Logit Models: Intent to Attend 4-Year College") ///
+>         nomtitles ///
+>         scalars("N Observations" "demo_controls Demographic Controls") ///
+>         label replace
+  9. 
+. }
+
+Iteration 0:  Log likelihood = -5048.3722  
+Iteration 1:  Log likelihood = -5037.6998  
+Iteration 2:  Log likelihood = -5037.6931  
+Iteration 3:  Log likelihood = -5037.6931  
+
+Logistic regression                                     Number of obs =  7,522
+                                                        LR chi2(6)    =  21.36
+                                                        Prob > chi2   = 0.0016
+Log likelihood = -5037.6931                             Pseudo R2     = 0.0021
+
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .1787333   .0501937     3.56   0.000     .0803555    .2771111
+Transgend..  |     .51652    .285441     1.81   0.070    -.0429341    1.075974
+Transgend..  |   .5406175   .4895161     1.10   0.269    -.4188164    1.500051
+ Non-binary  |    .336317   .1345905     2.50   0.012     .0725244    .6001097
+Gender Di..  |  -.2785095   .2405826    -1.16   0.247    -.7500426    .1930237
+Prefer No..  |   .1106192    .176501     0.63   0.531    -.2353164    .4565549
+             |
+       _cons |   .3066804    .039125     7.84   0.000     .2299968    .3833639
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "No"
+
+Iteration 0:  Log likelihood = -5030.7731  
+Iteration 1:  Log likelihood =  -4605.568  
+Iteration 2:  Log likelihood = -4599.3539  
+Iteration 3:  Log likelihood = -4599.3452  
+Iteration 4:  Log likelihood = -4599.3452  
+
+Logistic regression                                     Number of obs =  7,498
+                                                        LR chi2(19)   = 862.86
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4599.3452                             Pseudo R2     = 0.0858
+
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .2484105   .0535413     4.64   0.000     .1434716    .3533495
+Transgend..  |   .3925732   .3038717     1.29   0.196    -.2030044    .9881508
+Transgend..  |   .4160585   .5186597     0.80   0.422    -.6004957    1.432613
+ Non-binary  |   .2932015    .142033     2.06   0.039      .014822     .571581
+Gender Di..  |   -.384067   .2560554    -1.50   0.134    -.8859264    .1177924
+Prefer No..  |   .0950865    .192374     0.49   0.621    -.2819597    .4721326
+             |
+   race_assn |
+Black/Afr..  |   .3053935   .1902791     1.60   0.108    -.0675466    .6783336
+Hispanic/~x  |  -.0462287   .1692526    -0.27   0.785    -.3779577    .2855003
+Pacific I..  |   .2033381   .3218295     0.63   0.528     -.427436    .8341122
+   Filipino  |   .0076259   .2178559     0.04   0.972    -.4193638    .4346156
+      Asian  |   .8066489    .182164     4.43   0.000     .4496139    1.163684
+      Other  |  -.0744926   .2335347    -0.32   0.750    -.5322122     .383227
+White/Non~c  |   .1865432   .1759885     1.06   0.289    -.1583879    .5314744
+             |
+  parent_edu |
+High scho..  |  -.0768334   .0756578    -1.02   0.310    -.2251199    .0714531
+Some coll..  |   .1723734   .0878772     1.96   0.050     .0001372    .3446096
+Associate..  |  -.1702277    .113913    -1.49   0.135     -.393493    .0530376
+Bachelor'..  |   .8312878    .090645     9.17   0.000     .6536268    1.008949
+Graduate..)  |   1.385052   .0998623    13.87   0.000     1.189326    1.580778
+ Don't know  |   -.615057   .1217072    -5.05   0.000    -.8535987   -.3765154
+             |
+       _cons |  -.1874703   .1790052    -1.05   0.295     -.538314    .1633735
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "Yes"
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/segment_models_gender.rtf)
+
+Iteration 0:  Log likelihood = -5019.6719  
+Iteration 1:  Log likelihood = -4994.8605  
+Iteration 2:  Log likelihood = -4994.8219  
+Iteration 3:  Log likelihood = -4994.8219  
+
+Logistic regression                                     Number of obs =  7,481
+                                                        LR chi2(5)    =  49.70
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4994.8219                             Pseudo R2     = 0.0050
+
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |    .525694   .1237219     4.25   0.000     .2832035    .7681845
+Bisexual/~l  |   .3439305   .0687488     5.00   0.000     .2091853    .4786757
+Asexual/A~l  |   .4748543   .1630532     2.91   0.004      .155276    .7944326
+Other/Que~g  |   .3456426   .1871208     1.85   0.065    -.0211075    .7123927
+Prefer No..  |     .00107   .0942161     0.01   0.991    -.1835901    .1857301
+             |
+       _cons |   .3360759   .0281546    11.94   0.000     .2808939    .3912579
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "No"
+
+Iteration 0:  Log likelihood = -5001.9925  
+Iteration 1:  Log likelihood = -4581.9245  
+Iteration 2:  Log likelihood = -4575.6854  
+Iteration 3:  Log likelihood = -4575.6766  
+Iteration 4:  Log likelihood = -4575.6766  
+
+Logistic regression                                     Number of obs =  7,456
+                                                        LR chi2(18)   = 852.63
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -4575.6766                             Pseudo R2     = 0.0852
+
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .4040548   .1306972     3.09   0.002      .147893    .6602166
+Bisexual/~l  |   .2981335   .0725879     4.11   0.000     .1558638    .4404033
+Asexual/A~l  |    .173558   .1746529     0.99   0.320    -.1687554    .5158714
+Other/Que~g  |   .1703491   .1985799     0.86   0.391    -.2188604    .5595585
+Prefer No..  |  -.1069448   .1011511    -1.06   0.290    -.3051973    .0913078
+             |
+   race_assn |
+Black/Afr..  |   .3404614   .1906746     1.79   0.074    -.0332539    .7141768
+Hispanic/~x  |  -.0145073   .1698143    -0.09   0.932    -.3473372    .3183226
+Pacific I..  |   .2351736   .3229236     0.73   0.466     -.397745    .8680922
+   Filipino  |   .0058766   .2183694     0.03   0.979    -.4221196    .4338727
+      Asian  |   .8486875   .1828643     4.64   0.000       .49028    1.207095
+      Other  |   .0408915    .234282     0.17   0.861    -.4182928    .5000758
+White/Non~c  |   .2093677   .1766289     1.19   0.236    -.1368185    .5555539
+             |
+  parent_edu |
+High scho..  |   -.094891    .075925    -1.25   0.211    -.2437013    .0539194
+Some coll..  |   .1496708   .0881504     1.70   0.090    -.0231007    .3224424
+Associate..  |  -.1955674   .1142951    -1.71   0.087    -.4195816    .0284468
+Bachelor'..  |   .7833465   .0906612     8.64   0.000     .6056539    .9610391
+Graduate..)  |    1.33997   .1001131    13.38   0.000     1.143752    1.536188
+ Don't know  |  -.6417493   .1221728    -5.25   0.000    -.8812035    -.402295
+             |
+       _cons |  -.1000102   .1766248    -0.57   0.571    -.4461885    .2461681
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "Yes"
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/segment_models_so.rtf)
+
+. 
+. *============================================================================
+> ===
+. * DEGREE COMPLETION BY GENDER, FIGURE 4
+. *============================================================================
+> ===
+. 
+. foreach demo in gender so {
+  2.     * Model 1: Gender only
+.     ologit highest_degree i.`demo'_cat
+  3.     estimates store deg_`demo'1
+  4.     estadd local demo_controls "No"
+  5. 
+.     * Model 2: Gender with controls
+.     ologit highest_degree i.`demo'_cat `controls'
+  6.     estimates store deg_`demo'2
+  7.     estadd local demo_controls "Yes"
+  8. 
+.     * Export to Word
+.     esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/thsj_rr/degree_`dem
+> o'.rtf, ///
+>         keep(*`demo'_cat*) ///
+>         nobaselevels ///
+>         b(%9.3f) se(%9.3f) ///
+>         star(* 0.10 ** 0.05 *** 0.01) ///
+>         title("Ordered Logit Models: Highest Degree Plans") ///
+>         nomtitles ///
+>         scalars("N Observations" "demo_controls Demographic Controls") ///
+>         label replace
+  9.     
+.     *========================================================================
+> ===
+.     * VISUALIZATION FOR MODEL WITH CONTROLS
+.     *========================================================================
+> ===
+.     
+.     * Re-run model with controls for visualization
+.     ologit highest_degree i.`demo'_cat `controls'
+ 10.     
+.     * Create separate margins plots for each degree level
+.     local outcomes `" "Certificate" "Associate" "Bachelor's" "Master's" "Doct
+> oral" "'
+ 11.     local outcome_num = 1
+ 12.     
+.     foreach outcome of local outcomes {
+ 13.         margins `demo'_cat, predict(outcome(`outcome_num')) atmeans
+ 14.         marginsplot, ///
+>             name(deg_`demo'_`outcome_num', replace) ///
+>             title("`outcome'") ///
+>             ytitle("Predicted Probability") ///
+>             xtitle("") ///
+>             recast(bar) ///
+>             plotopts(barwidth(0.6) fcolor(navy%70) lcolor(navy)) ///
+>             ciopts(color(black) lwidth(medium)) ///
+>             ylabel(0(0.1)1, format(%3.1f)) ///
+>             scheme(s2color)
+ 15.         
+.         local ++outcome_num
+ 16.     }
+ 17.     
+.     * Combine all degree levels into one graph
+.     if "`demo'" == "gender" {
+ 18.         local demo_title "Gender"
+ 19.     }
+ 20.     else {
+ 21.         local demo_title "Sexual Orientation"
+ 22.     }
+ 23.     
+.     graph combine deg_`demo'_1 deg_`demo'_2 deg_`demo'_3 deg_`demo'_4 deg_`de
+> mo'_5, ///
+>         title("Predicted Probability of Degree Aspirations by `demo_title'", 
+> size(med)) ///
+>         cols(3) ///
+>         scheme(s2color) ///
+>         ycommon
+ 24.     
+.     graph export $csacprojdir/fig/thsj_rr/degree_`demo'_combined.png, replace
+>  width(4000)
+ 25.     
+.     * Alternative: Focus on highest degree (Doctoral) only
+.     margins `demo'_cat, predict(outcome(5)) atmeans
+ 26.     marginsplot, ///
+>         title("Predicted Probability of Aspiring to Doctoral Degree by `demo_
+> title'", size(med)) ///
+>         ytitle("Predicted Probability") ///
+>         xtitle("`demo_title' Category") ///
+>         recast(bar) ///
+>         plotopts(barwidth(0.6) fcolor(navy%70) lcolor(navy)) ///
+>         ciopts(color(black) lwidth(medium)) ///
+>         ylabel(0(0.1)0.5, format(%3.1f)) ///
+>         xlabel(, angle(45) labsize(small)) ///
+>         scheme(s2color)
+ 27.     
+.     graph export $csacprojdir/fig/thsj_rr/degree_`demo'_doctoral.png, replace
+>  width(3000)
+ 28. 
+.     * Alternative: Focus on master's degree only
+.     margins `demo'_cat, predict(outcome(4)) atmeans
+ 29.     marginsplot, ///
+>         title("Predicted Probability of Aspiring to Master's Degree by `demo_
+> title'", size(med)) ///
+>         ytitle("Predicted Probability") ///
+>         xtitle("`demo_title' Category") ///
+>         recast(bar) ///
+>         plotopts(barwidth(0.6) fcolor(navy%70) lcolor(navy)) ///
+>         ciopts(color(black) lwidth(medium)) ///
+>         ylabel(0(0.1)0.5, format(%3.1f)) ///
+>         xlabel(, angle(45) labsize(small)) ///
+>         scheme(s2color)
+ 30.     
+.     graph export $csacprojdir/fig/thsj_rr/degree_`demo'_master.png, replace w
+> idth(3000)
+ 31. 
+. }
+
+Iteration 0:  Log likelihood = -10200.884  
+Iteration 1:  Log likelihood =  -10138.27  
+Iteration 2:  Log likelihood = -10138.203  
+Iteration 3:  Log likelihood = -10138.203  
+
+Ordered logistic regression                             Number of obs =  7,497
+                                                        LR chi2(6)    = 125.36
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -10138.203                             Pseudo R2     = 0.0061
+
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .4867148   .0451069    10.79   0.000     .3983069    .5751228
+Transgend..  |    .552505   .2341497     2.36   0.018       .09358     1.01143
+Transgend..  |   .1775823   .3978035     0.45   0.655    -.6020982    .9572628
+ Non-binary  |   .5866291   .1160372     5.06   0.000     .3592004    .8140577
+Gender Di..  |   .4600353   .2230186     2.06   0.039     .0229269    .8971436
+Prefer No..  |   .3134698   .1575549     1.99   0.047     .0046679    .6222717
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.074041   .0690198                     -3.209317   -2.938765
+       /cut2 |  -1.919021   .0465269                     -2.010212    -1.82783
+       /cut3 |   .1159815   .0364759                      .0444901     .187473
+       /cut4 |   1.553101   .0408821                      1.472974    1.633228
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "No"
+
+Iteration 0:  Log likelihood = -10170.226  
+Iteration 1:  Log likelihood = -9800.4779  
+Iteration 2:  Log likelihood = -9798.1559  
+Iteration 3:  Log likelihood = -9798.1545  
+Iteration 4:  Log likelihood = -9798.1545  
+
+Ordered logistic regression                             Number of obs =  7,475
+                                                        LR chi2(19)   = 744.14
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -9798.1545                             Pseudo R2     = 0.0366
+
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .5501552   .0457234    12.03   0.000      .460539    .6397714
+Transgend..  |   .5077049   .2427962     2.09   0.037      .031833    .9835768
+Transgend..  |   .0491151   .4023996     0.12   0.903    -.7395736    .8378037
+ Non-binary  |   .6035797   .1179628     5.12   0.000     .3723768    .8347826
+Gender Di..  |   .4323706   .2285071     1.89   0.058    -.0154952    .8802363
+Prefer No..  |   .2594948   .1612515     1.61   0.108    -.0565522    .5755419
+             |
+   race_assn |
+Black/Afr..  |  -.1282557   .1690473    -0.76   0.448    -.4595823    .2030708
+Hispanic/~x  |  -.1601002   .1526962    -1.05   0.294    -.4593792    .1391788
+Pacific I..  |   .1569254   .2708532     0.58   0.562    -.3739371     .687788
+   Filipino  |  -.3353415   .1913865    -1.75   0.080    -.7104522    .0397693
+      Asian  |   .1930629    .159034     1.21   0.225     -.118638    .5047638
+      Other  |   .1199616   .2068644     0.58   0.562    -.2854852    .5254084
+White/Non~c  |  -.2423034   .1568195    -1.55   0.122    -.5496639    .0650572
+             |
+  parent_edu |
+High scho..  |  -.0333412   .0703651    -0.47   0.636    -.1712541    .1045718
+Some coll..  |   .1813314   .0799387     2.27   0.023     .0246544    .3380085
+Associate..  |   .1977141   .1052036     1.88   0.060    -.0084812    .4039095
+Bachelor'..  |   .6624567   .0782272     8.47   0.000     .5091342    .8157792
+Graduate..)  |   1.161119   .0798749    14.54   0.000     1.004567    1.317671
+ Don't know  |   -.563318     .11264    -5.00   0.000    -.7840883   -.3425478
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.929327   .1719913                     -3.266424    -2.59223
+       /cut2 |  -1.752302   .1643096                     -2.074343   -1.430261
+       /cut3 |   .3875474     .16207                      .0698961    .7051987
+       /cut4 |   1.911107   .1635501                      1.590555    2.231659
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "Yes"
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/degree_gender.rtf)
+
+Iteration 0:  Log likelihood = -10170.226  
+Iteration 1:  Log likelihood = -9800.4779  
+Iteration 2:  Log likelihood = -9798.1559  
+Iteration 3:  Log likelihood = -9798.1545  
+Iteration 4:  Log likelihood = -9798.1545  
+
+Ordered logistic regression                             Number of obs =  7,475
+                                                        LR chi2(19)   = 744.14
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -9798.1545                             Pseudo R2     = 0.0366
+
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .5501552   .0457234    12.03   0.000      .460539    .6397714
+Transgend..  |   .5077049   .2427962     2.09   0.037      .031833    .9835768
+Transgend..  |   .0491151   .4023996     0.12   0.903    -.7395736    .8378037
+ Non-binary  |   .6035797   .1179628     5.12   0.000     .3723768    .8347826
+Gender Di..  |   .4323706   .2285071     1.89   0.058    -.0154952    .8802363
+Prefer No..  |   .2594948   .1612515     1.61   0.108    -.0565522    .5755419
+             |
+   race_assn |
+Black/Afr..  |  -.1282557   .1690473    -0.76   0.448    -.4595823    .2030708
+Hispanic/~x  |  -.1601002   .1526962    -1.05   0.294    -.4593792    .1391788
+Pacific I..  |   .1569254   .2708532     0.58   0.562    -.3739371     .687788
+   Filipino  |  -.3353415   .1913865    -1.75   0.080    -.7104522    .0397693
+      Asian  |   .1930629    .159034     1.21   0.225     -.118638    .5047638
+      Other  |   .1199616   .2068644     0.58   0.562    -.2854852    .5254084
+White/Non~c  |  -.2423034   .1568195    -1.55   0.122    -.5496639    .0650572
+             |
+  parent_edu |
+High scho..  |  -.0333412   .0703651    -0.47   0.636    -.1712541    .1045718
+Some coll..  |   .1813314   .0799387     2.27   0.023     .0246544    .3380085
+Associate..  |   .1977141   .1052036     1.88   0.060    -.0084812    .4039095
+Bachelor'..  |   .6624567   .0782272     8.47   0.000     .5091342    .8157792
+Graduate..)  |   1.161119   .0798749    14.54   0.000     1.004567    1.317671
+ Don't know  |   -.563318     .11264    -5.00   0.000    -.7840883   -.3425478
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.929327   .1719913                     -3.266424    -2.59223
+       /cut2 |  -1.752302   .1643096                     -2.074343   -1.430261
+       /cut3 |   .3875474     .16207                      .0698961    .7051987
+       /cut4 |   1.911107   .1635501                      1.590555    2.231659
+------------------------------------------------------------------------------
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==1), predict(outcome(1))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |    .040817   .0027146    15.04   0.000     .0354964    .0461376
+Cisgender..  |   .0239595   .0016035    14.94   0.000     .0208168    .0271023
+Transgend..  |   .0249726   .0060414     4.13   0.000     .0131317    .0368134
+Transgend..  |   .0389369   .0151698     2.57   0.010     .0092046    .0686692
+ Non-binary  |   .0227414   .0028619     7.95   0.000     .0171323    .0283506
+Gender Di..  |    .026874   .0061197     4.39   0.000     .0148797    .0388683
+Prefer No..  |   .0317845   .0051961     6.12   0.000     .0216003    .0419686
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==2), predict(outcome(2))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .0805063   .0039132    20.57   0.000     .0728366     .088176
+Cisgender..  |   .0498144   .0024441    20.38   0.000      .045024    .0546048
+Transgend..  |    .051755   .0113684     4.55   0.000     .0294733    .0740368
+Transgend..  |   .0772472    .026336     2.93   0.003     .0256295    .1288649
+ Non-binary  |    .047464   .0052366     9.06   0.000     .0372005    .0577276
+Gender Di..  |   .0553634   .0113662     4.87   0.000     .0330861    .0776407
+Prefer No..  |   .0644787   .0092183     6.99   0.000     .0464113    .0825461
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==3), predict(outcome(3))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .4185646   .0074618    56.09   0.000     .4039397    .4331895
+Cisgender..  |   .3298799   .0063255    52.15   0.000     .3174821    .3422778
+Transgend..  |   .3371852   .0414418     8.14   0.000     .2559607    .4184097
+Transgend..  |   .4114818   .0589798     6.98   0.000     .2958834    .5270801
+ Non-binary  |   .3206571   .0198118    16.19   0.000     .2818266    .3594875
+Gender Di..  |   .3500612   .0385909     9.07   0.000     .2744244     .425698
+Prefer No..  |   .3788566   .0259965    14.57   0.000     .3279045    .4298087
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==4), predict(outcome(4))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |    .303473   .0061955    48.98   0.000     .2913301    .3156159
+Cisgender..  |   .3527928   .0059906    58.89   0.000     .3410514    .3645342
+Transgend..  |   .3502693   .0160191    21.87   0.000     .3188724    .3816662
+Transgend..  |   .3090969   .0453994     6.81   0.000     .2201158    .3980781
+ Non-binary  |   .3556071   .0080134    44.38   0.000     .3399011    .3713132
+Gender Di..  |   .3451882   .0172696    19.99   0.000     .3113404    .3790361
+Prefer No..  |   .3308381   .0155351    21.30   0.000     .3003899    .3612864
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==5), predict(outcome(5))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |    .156639   .0055538    28.20   0.000     .1457539    .1675242
+Cisgender..  |   .2435534   .0061562    39.56   0.000     .2314874    .2556193
+Transgend..  |   .2358179   .0434023     5.43   0.000      .150751    .3208848
+Transgend..  |   .1632372   .0548363     2.98   0.003       .05576    .2707145
+ Non-binary  |   .2535303   .0215309    11.78   0.000     .2113306    .2957301
+Gender Di..  |   .2225131   .0391788     5.68   0.000      .145724    .2993023
+Prefer No..  |   .1940421   .0248268     7.82   0.000     .1453826    .2427016
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+(note:  named style med not found in class gsize, default attributes used)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_gende
+> r_combined.png written in PNG format
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==5), predict(outcome(5))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |    .156639   .0055538    28.20   0.000     .1457539    .1675242
+Cisgender..  |   .2435534   .0061562    39.56   0.000     .2314874    .2556193
+Transgend..  |   .2358179   .0434023     5.43   0.000      .150751    .3208848
+Transgend..  |   .1632372   .0548363     2.98   0.003       .05576    .2707145
+ Non-binary  |   .2535303   .0215309    11.78   0.000     .2113306    .2957301
+Gender Di..  |   .2225131   .0391788     5.68   0.000      .145724    .2993023
+Prefer No..  |   .1940421   .0248268     7.82   0.000     .1453826    .2427016
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+(note:  named style med not found in class gsize, default attributes used)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_gende
+> r_doctoral.png written in PNG format
+
+Adjusted predictions                                     Number of obs = 7,475
+Model VCE: OIM
+
+Expression: Pr(highest_degree==4), predict(outcome(4))
+At: 0.gender_cat = .3558528 (mean)
+    1.gender_cat = .5701672 (mean)
+    2.gender_cat = .0077592 (mean)
+    3.gender_cat = .0026756 (mean)
+    4.gender_cat = .0357191 (mean)
+    5.gender_cat = .0093645 (mean)
+    6.gender_cat = .0184615 (mean)
+    1.race_assn  = .0216722 (mean)
+    2.race_assn  = .0691639 (mean)
+    3.race_assn  = .4989967 (mean)
+    4.race_assn  = .0085619 (mean)
+    5.race_assn  = .0310368 (mean)
+    6.race_assn  = .1505017 (mean)
+    7.race_assn  = .0222074 (mean)
+    8.race_assn  = .1978595 (mean)
+    1.parent_edu =  .181806 (mean)
+    2.parent_edu = .2081605 (mean)
+    3.parent_edu = .1286957 (mean)
+    4.parent_edu = .0596656 (mean)
+    5.parent_edu = .1796656 (mean)
+    6.parent_edu = .1918395 (mean)
+    7.parent_edu = .0501672 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |    .303473   .0061955    48.98   0.000     .2913301    .3156159
+Cisgender..  |   .3527928   .0059906    58.89   0.000     .3410514    .3645342
+Transgend..  |   .3502693   .0160191    21.87   0.000     .3188724    .3816662
+Transgend..  |   .3090969   .0453994     6.81   0.000     .2201158    .3980781
+ Non-binary  |   .3556071   .0080134    44.38   0.000     .3399011    .3713132
+Gender Di..  |   .3451882   .0172696    19.99   0.000     .3113404    .3790361
+Prefer No..  |   .3308381   .0155351    21.30   0.000     .3003899    .3612864
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: gender_cat
+(note:  named style med not found in class gsize, default attributes used)
+(file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_gend
+> er_master.png not found)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_gende
+> r_master.png written in PNG format
+
+Iteration 0:  Log likelihood = -10140.534  
+Iteration 1:  Log likelihood =  -10097.49  
+Iteration 2:  Log likelihood =  -10097.46  
+Iteration 3:  Log likelihood =  -10097.46  
+
+Ordered logistic regression                             Number of obs =  7,456
+                                                        LR chi2(5)    =  86.15
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -10097.46                              Pseudo R2     = 0.0042
+
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .4234546    .102397     4.14   0.000     .2227602    .6241489
+Bisexual/~l  |   .4919911   .0601107     8.18   0.000     .3741762    .6098059
+Asexual/A~l  |   .4200237   .1350131     3.11   0.002     .1554028    .6846446
+Other/Que~g  |   .3645009   .1580994     2.31   0.021     .0546317    .6743701
+Prefer No..  |   .1503102   .0840325     1.79   0.074    -.0143906    .3150109
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.269906   .0657958                     -3.398863   -3.140948
+       /cut2 |  -2.107008   .0407232                     -2.186825   -2.027192
+       /cut3 |  -.0740959   .0271083                     -.1272272   -.0209646
+       /cut4 |   1.359305   .0317886                      1.297001     1.42161
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "No"
+
+Iteration 0:  Log likelihood =  -10108.85  
+Iteration 1:  Log likelihood = -9785.1866  
+Iteration 2:  Log likelihood = -9783.4498  
+Iteration 3:  Log likelihood =  -9783.449  
+
+Ordered logistic regression                             Number of obs =  7,433
+                                                        LR chi2(18)   = 650.80
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -9783.449                              Pseudo R2     = 0.0322
+
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3277766   .1047026     3.13   0.002     .1225632    .5329899
+Bisexual/~l  |   .4617494   .0610205     7.57   0.000     .3421515    .5813474
+Asexual/A~l  |   .2240304   .1375953     1.63   0.103    -.0456514    .4937123
+Other/Que~g  |   .2571525   .1621811     1.59   0.113    -.0607166    .5750215
+Prefer No..  |   .0477741   .0854285     0.56   0.576    -.1196627    .2152108
+             |
+   race_assn |
+Black/Afr..  |  -.1346146   .1686566    -0.80   0.425    -.4651754    .1959462
+Hispanic/~x  |  -.1641522   .1522661    -1.08   0.281    -.4625883    .1342839
+Pacific I..  |   .1203365   .2710979     0.44   0.657    -.4110056    .6516786
+   Filipino  |  -.3812761   .1914915    -1.99   0.046    -.7565924   -.0059597
+      Asian  |    .184948   .1586614     1.17   0.244    -.1260226    .4959187
+      Other  |   .1491988   .2063715     0.72   0.470    -.2552819    .5536795
+White/Non~c  |  -.2483019    .156462    -1.59   0.113    -.5549619    .0583581
+             |
+  parent_edu |
+High scho..  |  -.0687786   .0704839    -0.98   0.329    -.2069246    .0693673
+Some coll..  |   .1447876   .0799569     1.81   0.070    -.0119251    .3015003
+Associate..  |   .1464487   .1053412     1.39   0.164    -.0600162    .3529137
+Bachelor'..  |   .5858865   .0781243     7.50   0.000     .4327658    .7390072
+Graduate..)  |   1.081365   .0799205    13.53   0.000     .9247233    1.238006
+ Don't know  |  -.6277384   .1133222    -5.54   0.000    -.8498458   -.4056309
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.222213    .169907                     -3.555225   -2.889202
+       /cut2 |  -2.040437   .1618709                     -2.357699   -1.723176
+       /cut3 |   .0865439    .159135                      -.225355    .3984429
+       /cut4 |   1.599993   .1602778                      1.285854    1.914132
+------------------------------------------------------------------------------
+
+added macro:
+      e(demo_controls) : "Yes"
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/degree_so.rtf)
+
+Iteration 0:  Log likelihood =  -10108.85  
+Iteration 1:  Log likelihood = -9785.1866  
+Iteration 2:  Log likelihood = -9783.4498  
+Iteration 3:  Log likelihood =  -9783.449  
+
+Ordered logistic regression                             Number of obs =  7,433
+                                                        LR chi2(18)   = 650.80
+                                                        Prob > chi2   = 0.0000
+Log likelihood = -9783.449                              Pseudo R2     = 0.0322
+
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3277766   .1047026     3.13   0.002     .1225632    .5329899
+Bisexual/~l  |   .4617494   .0610205     7.57   0.000     .3421515    .5813474
+Asexual/A~l  |   .2240304   .1375953     1.63   0.103    -.0456514    .4937123
+Other/Que~g  |   .2571525   .1621811     1.59   0.113    -.0607166    .5750215
+Prefer No..  |   .0477741   .0854285     0.56   0.576    -.1196627    .2152108
+             |
+   race_assn |
+Black/Afr..  |  -.1346146   .1686566    -0.80   0.425    -.4651754    .1959462
+Hispanic/~x  |  -.1641522   .1522661    -1.08   0.281    -.4625883    .1342839
+Pacific I..  |   .1203365   .2710979     0.44   0.657    -.4110056    .6516786
+   Filipino  |  -.3812761   .1914915    -1.99   0.046    -.7565924   -.0059597
+      Asian  |    .184948   .1586614     1.17   0.244    -.1260226    .4959187
+      Other  |   .1491988   .2063715     0.72   0.470    -.2552819    .5536795
+White/Non~c  |  -.2483019    .156462    -1.59   0.113    -.5549619    .0583581
+             |
+  parent_edu |
+High scho..  |  -.0687786   .0704839    -0.98   0.329    -.2069246    .0693673
+Some coll..  |   .1447876   .0799569     1.81   0.070    -.0119251    .3015003
+Associate..  |   .1464487   .1053412     1.39   0.164    -.0600162    .3529137
+Bachelor'..  |   .5858865   .0781243     7.50   0.000     .4327658    .7390072
+Graduate..)  |   1.081365   .0799205    13.53   0.000     .9247233    1.238006
+ Don't know  |  -.6277384   .1133222    -5.54   0.000    -.8498458   -.4056309
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.222213    .169907                     -3.555225   -2.889202
+       /cut2 |  -2.040437   .1618709                     -2.357699   -1.723176
+       /cut3 |   .0865439    .159135                      -.225355    .3984429
+       /cut4 |   1.599993   .1602778                      1.285854    1.914132
+------------------------------------------------------------------------------
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==1), predict(outcome(1))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .0324112   .0020815    15.57   0.000     .0283315    .0364909
+Gay or Le..  |   .0235665   .0027483     8.57   0.000     .0181799    .0289531
+Bisexual/~l  |   .0206727   .0017008    12.15   0.000     .0173392    .0240061
+Asexual/A~l  |   .0260756   .0037823     6.89   0.000     .0186625    .0334887
+Other/Que~g  |   .0252475   .0042326     5.97   0.000     .0169518    .0335433
+Prefer No..  |    .030946   .0030636    10.10   0.000     .0249415    .0369505
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==2), predict(outcome(2))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .0660423   .0030118    21.93   0.000     .0601393    .0719452
+Gay or Le..  |   .0493787   .0049815     9.91   0.000     .0396151    .0591423
+Bisexual/~l  |   .0437151   .0028911    15.12   0.000     .0380486    .0493816
+Asexual/A~l  |   .0542037   .0069186     7.83   0.000     .0406435     .067764
+Other/Que~g  |     .05262   .0078686     6.69   0.000     .0371978    .0680422
+Prefer No..  |   .0633476   .0051829    12.22   0.000     .0531893     .073506
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==3), predict(outcome(3))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .3796739   .0063129    60.14   0.000     .3673008     .392047
+Gay or Le..  |   .3246913   .0178788    18.16   0.000     .2896495    .3597331
+Bisexual/~l  |     .30164   .0102044    29.56   0.000     .2816398    .3216403
+Asexual/A~l  |   .3424506   .0233754    14.65   0.000     .2966357    .3882656
+Other/Que~g  |    .336801   .0276679    12.17   0.000     .2825729    .3910292
+Prefer No..  |   .3719278   .0141003    26.38   0.000     .3442918    .3995638
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==4), predict(outcome(4))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .3281347   .0057142    57.42   0.000     .3169351    .3393343
+Gay or Le..  |   .3522723   .0078467    44.89   0.000     .3368931    .3676515
+Bisexual/~l  |   .3579247   .0062266    57.48   0.000     .3457208    .3701286
+Asexual/A~l  |   .3461277   .0105861    32.70   0.000     .3253794    .3668761
+Other/Que~g  |   .3482505   .0114177    30.50   0.000     .3258723    .3706287
+Prefer No..  |   .3324688   .0089084    37.32   0.000     .3150087    .3499289
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==5), predict(outcome(5))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .1937379   .0051055    37.95   0.000     .1837313    .2037445
+Gay or Le..  |   .2500912   .0192984    12.96   0.000      .212267    .2879154
+Bisexual/~l  |   .2760474   .0114913    24.02   0.000     .2535249      .29857
+Asexual/A~l  |   .2311423   .0242386     9.54   0.000     .1836356    .2786491
+Other/Que~g  |    .237081   .0291499     8.13   0.000     .1799483    .2942136
+Prefer No..  |   .2013097   .0134951    14.92   0.000     .1748599    .2277596
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+(note:  named style med not found in class gsize, default attributes used)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_so_co
+> mbined.png written in PNG format
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==5), predict(outcome(5))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .1937379   .0051055    37.95   0.000     .1837313    .2037445
+Gay or Le..  |   .2500912   .0192984    12.96   0.000      .212267    .2879154
+Bisexual/~l  |   .2760474   .0114913    24.02   0.000     .2535249      .29857
+Asexual/A~l  |   .2311423   .0242386     9.54   0.000     .1836356    .2786491
+Other/Que~g  |    .237081   .0291499     8.13   0.000     .1799483    .2942136
+Prefer No..  |   .2013097   .0134951    14.92   0.000     .1748599    .2277596
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+(note:  named style med not found in class gsize, default attributes used)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_so_do
+> ctoral.png written in PNG format
+
+Adjusted predictions                                     Number of obs = 7,433
+Model VCE: OIM
+
+Expression: Pr(highest_degree==4), predict(outcome(4))
+At: 0.so_cat     = .6939325 (mean)
+    1.so_cat     = .0441275 (mean)
+    2.so_cat     = .1524284 (mean)
+    3.so_cat     = .0243509 (mean)
+    4.so_cat     = .0174896 (mean)
+    5.so_cat     = .0676712 (mean)
+    1.race_assn  = .0216602 (mean)
+    2.race_assn  = .0698238 (mean)
+    3.race_assn  = .4991255 (mean)
+    4.race_assn  = .0086103 (mean)
+    5.race_assn  = .0310776 (mean)
+    6.race_assn  = .1497377 (mean)
+    7.race_assn  = .0223328 (mean)
+    8.race_assn  = .1976322 (mean)
+    1.parent_edu = .1812189 (mean)
+    2.parent_edu = .2087986 (mean)
+    3.parent_edu = .1291538 (mean)
+    4.parent_edu = .0597336 (mean)
+    5.parent_edu = .1793354 (mean)
+    6.parent_edu = .1918472 (mean)
+    7.parent_edu = .0499126 (mean)
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Straight/..  |   .3281347   .0057142    57.42   0.000     .3169351    .3393343
+Gay or Le..  |   .3522723   .0078467    44.89   0.000     .3368931    .3676515
+Bisexual/~l  |   .3579247   .0062266    57.48   0.000     .3457208    .3701286
+Asexual/A~l  |   .3461277   .0105861    32.70   0.000     .3253794    .3668761
+Other/Que~g  |   .3482505   .0114177    30.50   0.000     .3258723    .3706287
+Prefer No..  |   .3324688   .0089084    37.32   0.000     .3150087    .3499289
+------------------------------------------------------------------------------
+
+Variables that uniquely identify margins: so_cat
+(note:  named style med not found in class gsize, default attributes used)
+(file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_so_m
+> aster.png not found)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/degree_so_ma
+> ster.png written in PNG format
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/gdtf
+> _reg.txt
+  log type:  text
+ closed on:   5 Feb 2026, 19:39:11
+-------------------------------------------------------------------------------
