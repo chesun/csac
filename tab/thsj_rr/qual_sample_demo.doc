@@ -1,0 +1,180 @@
+{\rtf1\ansi\deff0 {\fonttbl{\f0\fnil Garamond;}}
+{\info {\author .}{\company .}{\title .}}
+\deflang1033\plain\fs20
+{\footer\pard\qc\plain\f0\fs20\chpgn\par}
+{
+{
+{\b\qc\line Summary Statistics for Qualitative Response Sample }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {Gender Identity}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {Transgender Man}\cell
+\qr {50}\cell
+\qr {14.45}\cell
+\row
+\ql {Transgender Woman}\cell
+\qr {17}\cell
+\qr {4.91}\cell
+\row
+\ql {Non-binary}\cell
+\qr {215}\cell
+\qr {62.14}\cell
+\row
+\ql {Gender Diverse/Questioning}\cell
+\qr {64}\cell
+\qr {18.50}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {346}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{
+{\b\qc\line Tabulation of so_cat  }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {Sexual Orientation}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {Straight/Heterosexual}\cell
+\qr {12}\cell
+\qr {3.47}\cell
+\row
+\ql {Gay or Lesbian}\cell
+\qr {69}\cell
+\qr {19.94}\cell
+\row
+\ql {Bisexual/Pansexual/Omnisexual}\cell
+\qr {166}\cell
+\qr {47.98}\cell
+\row
+\ql {Asexual/Aromantic/Demisexual}\cell
+\qr {41}\cell
+\qr {11.85}\cell
+\row
+\ql {Other/Queer/Questioning}\cell
+\qr {38}\cell
+\qr {10.98}\cell
+\row
+\ql {Prefer Not to Say}\cell
+\qr {20}\cell
+\qr {5.78}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {346}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{
+{\b\qc\line Tabulation of race_assn  }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {race/ethnicity with  assigned to single race following URM hierachy}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {American Indian/Alaskan Native}\cell
+\qr {13}\cell
+\qr {3.76}\cell
+\row
+\ql {Black/African American}\cell
+\qr {27}\cell
+\qr {7.80}\cell
+\row
+\ql {Hispanic/Latinx}\cell
+\qr {143}\cell
+\qr {41.33}\cell
+\row
+\ql {Pacific Islander}\cell
+\qr {5}\cell
+\qr {1.45}\cell
+\row
+\ql {Filipino}\cell
+\qr {18}\cell
+\qr {5.20}\cell
+\row
+\ql {Asian}\cell
+\qr {43}\cell
+\qr {12.43}\cell
+\row
+\ql {Other}\cell
+\qr {3}\cell
+\qr {0.87}\cell
+\row
+\ql {White/Non-Hispanic}\cell
+\qr {94}\cell
+\qr {27.17}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {346}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+{
+{\b\qc\line Tabulation of parent_edu  }{\par}
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
+\ql {highest level of education among parents}\cell
+\qr {Freq.}\cell
+\qr {Percent}\cell
+\row
+\trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
+\ql {Did not complete high school}\cell
+\qr {42}\cell
+\qr {12.14}\cell
+\row
+\ql {High school diploma}\cell
+\qr {63}\cell
+\qr {18.21}\cell
+\row
+\ql {Some college, no college degree}\cell
+\qr {59}\cell
+\qr {17.05}\cell
+\row
+\ql {Associate degree}\cell
+\qr {25}\cell
+\qr {7.23}\cell
+\row
+\ql {Bachelor's degree}\cell
+\qr {57}\cell
+\qr {16.47}\cell
+\row
+\ql {Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)}\cell
+\qr {86}\cell
+\qr {24.86}\cell
+\row
+\ql {Don't know}\cell
+\qr {14}\cell
+\qr {4.05}\cell
+\row
+\trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs\cellx5000\clbrdrt\brdrw10\brdrs\cellx6500\clbrdrt\brdrw10\brdrs\cellx8000
+\ql {Total}\cell
+\qr {346}\cell
+\qr {100.00}\cell
+\row
+}
+{\trowd\trgaph108\trleft-108
+\clbrdrt\brdrw15\brdrs\cellx8000\cell
+\row}
+
+
+\writepositionforappend
+}}

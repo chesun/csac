@@ -321,7 +321,7 @@ foreach y in $indices {
          (`y'_m3, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
          , drop(_cons hsexp_index *.race_assn *.parent_edu) baselevels label ///
          legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) ///
-          xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
+          xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
         graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_color.png", replace width(1600) 
 
 
@@ -333,7 +333,7 @@ foreach y in $indices {
                   (`y'_m4, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
          , drop(_cons hsexp_index *.race_assn *.parent_edu *.`lgbtq_ctrl') baselevels label ///
          legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "control for demographics & HS index & `legend_str'") span size(small) cols(1) region(lwidth(none))) ///
-          xlabel(-.5(1)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
+          xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
         graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_lgbtq_ctrl_color.png", replace width(1600) 
         
     }
