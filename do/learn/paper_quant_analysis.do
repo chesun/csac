@@ -338,7 +338,34 @@ foreach y in $indices {
         
     }
 
+    **************************
+    * Reg worry index by interaction of Gender and SO to check double whammy effect *
+    **************************
+    di "M1: using interaction of gender and SO to predict worry"
+    reg `y' i.gender_queer##i.so_queer 
+    eststo `y'_inter1
+
+    di "M2: using interaction of gender and SO to predict worry, controlling for demographics "
+    reg `y' i.gender_queer##i.so_queer i.race_assn i.parent_edu
+    eststo `y'_inter2
+
+    di "M3: using interaction of gender and SO to predict worry, controlling for demographics and HS exp"
+    reg `y' i.gender_queer##i.so_queer c.hsexp_index i.race_assn i.parent_edu
+    eststo `y'_inter3
+
+    coefplot ///
+        (`y'_inter1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+        (`y'_inter2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+                (`y'_inter3, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+        , drop(_cons hsexp_index *.race_assn *.parent_edu ) baselevels label ///
+        legend(order(2 "unconditional" 4 "control for demographics" 6 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) ///
+        xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
+    graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_interaction_w_Nmean_color.png", replace width(1600) 
+
+    ***** Nothing from the interactions
+
 }
+
 
 
 **************************
