@@ -36,17 +36,17 @@ lab def highest_degree_2 1 "Certificate in vocational/technical field" 2 "Associ
 
 // segment is a dummy for attending 4 year
 foreach demo in gender so {
-    logit segment b0.`demo'_cat 
-    estimates store segment1
+    logit segment b0.`demo'_cat
+    estimates store segment_`demo'1
     estadd local demo_controls "No"
 
     logit segment b0.`demo'_cat `controls'
-    estimates store segment2 
+    estimates store segment_`demo'2
     estadd local demo_controls "Yes"
 
 
     * Export to Word showing only gender coefficients
-    esttab segment1 segment2 using $csacprojdir/tab/thsj_rr/segment_models_`demo'.rtf, ///
+    esttab segment_`demo'1 segment_`demo'2 using $csacprojdir/tab/thsj_rr/segment_models_`demo'.rtf, ///
         keep(*`demo'_cat*) ///
         nobaselevels ///
         b(%9.3f) se(%9.3f) ///
@@ -110,97 +110,292 @@ foreach demo in gender so {
         label replace
     
     *===========================================================================
-    * VISUALIZATION FOR MODEL WITH CONTROLS
+    * ODDS RATIO TABLES (reviewer request)
     *===========================================================================
-    
-    * Re-run model with controls for visualization
-    ologit highest_degree i.`demo'_cat `controls'
-    
-    * Create separate margins plots for each degree level
-    local outcomes `" "Certificate" "Associate" "Bachelor's" "Master's" "Doctoral" "'
-    local outcome_num = 1
-    
-    foreach outcome of local outcomes {
-        margins `demo'_cat, predict(outcome(`outcome_num')) atmeans
-        marginsplot, ///
-            name(deg_`demo'_`outcome_num', replace) ///
-            title("`outcome'") ///
-            ytitle("Predicted Probability") ///
-            xtitle("") ///
-            recast(bar) ///
-            plotopts(barwidth(0.6) fcolor("`aggieblue'%70") lcolor("`aggieblue'")) ///
-            ciopts(color(black) lwidth(medium)) ///
-            ylabel(0(0.1)1, format(%3.1f)) ///
-            scheme(white_tableau)
-        
-        local ++outcome_num
-    }
-    
-    * Combine all degree levels into one graph
+
+    * Re-export ordered logit tables with odds ratios and CIs
+    esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/getting_down_to_facts/degree_or_`demo'.rtf, ///
+        keep(*`demo'_cat*) ///
+        nobaselevels ///
+        eform ///
+        b(%9.3f) ci(%9.3f) ///
+        star(* 0.10 ** 0.05 *** 0.01) ///
+        title("Ordered Logit Models: Highest Degree Plans (Odds Ratios)") ///
+        nomtitles ///
+        scalars("N Observations" "demo_controls Demographic Controls") ///
+        label replace
+
+    esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/getting_down_to_facts/degree_or_`demo'.csv, ///
+        keep(*`demo'_cat*) ///
+        nobaselevels ///
+        eform ///
+        b(%9.3f) ci(%9.3f) ///
+        star(* 0.10 ** 0.05 *** 0.01) ///
+        nomtitles ///
+        scalars("N Observations" "demo_controls Demographic Controls") ///
+        label replace
+
+    * Also export 4-year segment logit as odds ratios
+    esttab segment_`demo'1 segment_`demo'2 using $csacprojdir/tab/getting_down_to_facts/segment_or_`demo'.rtf, ///
+        keep(*`demo'_cat*) ///
+        nobaselevels ///
+        eform ///
+        b(%9.3f) ci(%9.3f) ///
+        star(* 0.10 ** 0.05 *** 0.01) ///
+        title("Logit Models: Intent to Attend 4-Year College (Odds Ratios)") ///
+        nomtitles ///
+        scalars("N Observations" "demo_controls Demographic Controls") ///
+        label replace
+
+    *===========================================================================
+    * STACKED BAR: Predicted probability of each degree level by group
+    *===========================================================================
+
     if "`demo'" == "gender" {
-        local demo_title "Gender"
+        local demo_title "Gender Identity"
     }
     else {
         local demo_title "Sexual Orientation"
     }
-    
-    graph combine deg_`demo'_1 deg_`demo'_2 deg_`demo'_3 deg_`demo'_4 deg_`demo'_5, ///
-        title("Predicted Probability of Degree Aspirations by `demo_title'", size(med)) ///
-        cols(3) ///
+
+    * Run model with controls
+    ologit highest_degree i.`demo'_cat `controls'
+
+    * Extract category info and sample sizes from estimation sample before margins overwrites e()
+    qui levelsof `demo'_cat, local(catvals)
+    local ncat : word count `catvals'
+    local i = 1
+    foreach c of local catvals {
+        local lab`i' : label (`demo'_cat) `c'
+        qui count if `demo'_cat == `c' & e(sample)
+        local n`i' = r(N)
+        local lab`i' "`lab`i'' (N=`n`i'')"
+        local ++i
+    }
+
+    * Get predicted probabilities for all outcomes at each category level
+    margins `demo'_cat, predict(outcome(1)) predict(outcome(2)) ///
+        predict(outcome(3)) predict(outcome(4)) predict(outcome(5)) atmeans ///
+        post
+
+    * Extract margins into a temporary dataset for plotting
+    preserve
+
+    * Build dataset of predicted probabilities
+    clear
+    set obs `ncat'
+    gen group = .
+    gen str60 group_lab = ""
+    gen pr_cert = .
+    gen pr_assoc = .
+    gen pr_bach = .
+    gen pr_mast = .
+    gen pr_doct = .
+
+    local i = 1
+    foreach c of local catvals {
+        qui replace group = `c' in `i'
+        qui replace group_lab = "`lab`i''" in `i'
+        * Margins stores results in order: outcome1 for all cats, then outcome2, etc.
+        * Row index for cat `i', outcome j = (`j'-1)*ncat + `i'
+        local r1 = 0*`ncat' + `i'
+        local r2 = 1*`ncat' + `i'
+        local r3 = 2*`ncat' + `i'
+        local r4 = 3*`ncat' + `i'
+        local r5 = 4*`ncat' + `i'
+
+        matrix b = e(b)
+        qui replace pr_cert  = b[1, `r1'] in `i'
+        qui replace pr_assoc = b[1, `r2'] in `i'
+        qui replace pr_bach  = b[1, `r3'] in `i'
+        qui replace pr_mast  = b[1, `r4'] in `i'
+        qui replace pr_doct  = b[1, `r5'] in `i'
+
+        local ++i
+    }
+
+    * Convert to percentage for readability
+    foreach v in pr_cert pr_assoc pr_bach pr_mast pr_doct {
+        replace `v' = `v' * 100
+    }
+
+    * Compute cumulative positions for stacked bars
+    gen cum0 = 0
+    gen cum1 = pr_cert
+    gen cum2 = cum1 + pr_assoc
+    gen cum3 = cum2 + pr_bach
+    gen cum4 = cum3 + pr_mast
+    gen cum5 = cum4 + pr_doct
+
+    * Midpoints for label placement
+    gen mid1 = (cum0 + cum1) / 2
+    gen mid2 = (cum1 + cum2) / 2
+    gen mid3 = (cum2 + cum3) / 2
+    gen mid4 = (cum3 + cum4) / 2
+    gen mid5 = (cum4 + cum5) / 2
+
+    * Y position (reverse so first group is at top)
+    gen ypos = _N - _n + 1
+
+    * Format labels — only show if segment >= 5% (otherwise too cramped)
+    gen str8 slab1 = string(pr_cert, "%4.1f") + "%" if pr_cert >= 10
+    gen str8 slab2 = string(pr_assoc, "%4.1f") + "%" if pr_assoc >= 10
+    gen str8 slab3 = string(pr_bach, "%4.1f") + "%" if pr_bach >= 10
+    gen str8 slab4 = string(pr_mast, "%4.1f") + "%" if pr_mast >= 10
+    gen str8 slab5 = string(pr_doct, "%4.1f") + "%" if pr_doct >= 10
+
+    * Collect y-axis labels for manual labeling
+    local ylabels ""
+    forvalues j = 1/`ncat' {
+        local yval = _N - `j' + 1
+        local glab = group_lab[`j']
+        local ylabels `"`ylabels' `yval' "`glab'""'
+    }
+
+    * Stacked horizontal bar chart with text labels
+    twoway ///
+        (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum3 cum4 ypos, horizontal fcolor("145 191 219") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum4 cum5 ypos, horizontal fcolor("`aggieblue'") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
+        (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
+        (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) ///
+        (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) ///
+        (scatter ypos mid5, msymbol(none) mlabel(slab5) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
+        , ///
+        title("Adjusted Predicted Probability of Degree Aspirations" "by `demo_title'", size(medium)) ///
+        xtitle("Predicted Probability (%)", size(small)) ///
+        xlabel(0(20)100, format(%3.0f)) ///
+        ytitle("") ///
+        ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
+        legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's" 5 "Doctoral") ///
+            rows(1) size(small) position(6)) ///
+        note("Predicted probabilities from ordered logit with demographic controls, evaluated at sample means.", size(vsmall)) ///
         scheme(white_tableau) ///
-        ycommon
-    
-    graph export $csacprojdir/fig/thsj_rr/degree_`demo'_combined.png, replace width(4000)
-    
-    * Alternative: Focus on highest degree (Doctoral) only
-    margins `demo'_cat, predict(outcome(5)) atmeans
-    marginsplot, ///
-        title("Predicted Probability of Aspiring to Doctoral Degree", size(med)) ///
-        ytitle("Predicted Probability") ///
-        xtitle("`demo_title' Category", size(med)) ///
-        recast(bar) ///
-        plotopts(barwidth(0.6) fcolor("`aggieblue'%70") lcolor("`aggieblue'")) ///
-        ciopts(color(black) lwidth(medium)) ///
-        ylabel(0(0.1)0.5, format(%3.1f)) ///
-        xlabel(, angle(45) labsize(small)) ///
-        scheme(white_tableau)
-    
-    graph export $csacprojdir/fig/thsj_rr/degree_`demo'_doctoral.png, replace width(3000)
+        graphregion(margin(l+18))
 
-    * Alternative: Focus on master's degree only
-    margins `demo'_cat, predict(outcome(4)) atmeans
-    marginsplot, ///
-        title("Predicted Probability of Aspiring to Master's Degree", size(med)) ///
-        ytitle("Predicted Probability") ///
-        xtitle("`demo_title' Category", size(med)) ///
-        recast(bar) ///
-        plotopts(barwidth(0.6) fcolor("`aggieblue'%70") lcolor("`aggieblue'")) ///
-        ciopts(color(black) lwidth(medium)) ///
-        ylabel(0(0.1)0.5, format(%3.1f)) ///
-        xlabel(, angle(45) labsize(small)) ///
-        scheme(white_tableau)
-    
-    graph export $csacprojdir/fig/thsj_rr/degree_`demo'_master.png, replace width(3000)
+    graph export $csacprojdir/fig/getting_down_to_facts/degree_`demo'_stacked.png, replace width(4000)
 
+    * Also export the predicted probabilities as a CSV table
+    export delimited group_lab pr_cert pr_assoc pr_bach pr_mast pr_doct ///
+        using $csacprojdir/tab/getting_down_to_facts/degree_margins_`demo'.csv, replace
 
+    restore
 
+    *===========================================================================
+    * COLLAPSED CATEGORY: Stacked bar for 4-category version
+    *===========================================================================
 
-    ************** collapsed category margins plot
     ologit highest_degree_2 i.`demo'_cat `controls'
 
-    margins `demo'_cat, predict(outcome(4)) atmeans
-    marginsplot, ///
-        title("Predicted Probability of Aspiring to Master's/Doctoral Degree", size(med)) ///
-        ytitle("Predicted Probability") ///
-        xtitle("`demo_title' Category", size(med)) ///
-        recast(bar) ///
-        plotopts(barwidth(0.6) fcolor("`aggieblue'%70") lcolor("`aggieblue'")) ///
-        ciopts(color(black) lwidth(medium)) ///
-        ylabel(0(0.1)0.5, format(%3.1f)) ///
-        xlabel(, angle(45) labsize(small)) ///
-        scheme(white_tableau)
-    
-    graph export $csacprojdir/fig/thsj_rr/degree2_`demo'_master.png, replace width(3000)
+    * Extract category info and sample sizes from estimation sample
+    qui levelsof `demo'_cat, local(catvals)
+    local ncat : word count `catvals'
+    local i = 1
+    foreach c of local catvals {
+        local lab`i' : label (`demo'_cat) `c'
+        qui count if `demo'_cat == `c' & e(sample)
+        local n`i' = r(N)
+        local lab`i' "`lab`i'' (N=`n`i'')"
+        local ++i
+    }
+
+    margins `demo'_cat, predict(outcome(1)) predict(outcome(2)) ///
+        predict(outcome(3)) predict(outcome(4)) atmeans ///
+        post
+
+    preserve
+
+    clear
+    set obs `ncat'
+    gen group = .
+    gen str60 group_lab = ""
+    gen pr_cert = .
+    gen pr_assoc = .
+    gen pr_bach = .
+    gen pr_mastdoct = .
+
+    local i = 1
+    foreach c of local catvals {
+        qui replace group = `c' in `i'
+        qui replace group_lab = "`lab`i''" in `i'
+        local r1 = 0*`ncat' + `i'
+        local r2 = 1*`ncat' + `i'
+        local r3 = 2*`ncat' + `i'
+        local r4 = 3*`ncat' + `i'
+
+        matrix b = e(b)
+        qui replace pr_cert     = b[1, `r1'] in `i'
+        qui replace pr_assoc    = b[1, `r2'] in `i'
+        qui replace pr_bach     = b[1, `r3'] in `i'
+        qui replace pr_mastdoct = b[1, `r4'] in `i'
+
+        local ++i
+    }
+
+    foreach v in pr_cert pr_assoc pr_bach pr_mastdoct {
+        replace `v' = `v' * 100
+    }
+
+    * Compute cumulative positions for stacked bars
+    gen cum0 = 0
+    gen cum1 = pr_cert
+    gen cum2 = cum1 + pr_assoc
+    gen cum3 = cum2 + pr_bach
+    gen cum4 = cum3 + pr_mastdoct
+
+    * Midpoints for label placement
+    gen mid1 = (cum0 + cum1) / 2
+    gen mid2 = (cum1 + cum2) / 2
+    gen mid3 = (cum2 + cum3) / 2
+    gen mid4 = (cum3 + cum4) / 2
+
+    * Y position (reverse so first group is at top)
+    gen ypos = _N - _n + 1
+
+    * Format labels — only show if segment >= 5%
+    gen str8 slab1 = string(pr_cert, "%4.1f") + "%" if pr_cert >= 10
+    gen str8 slab2 = string(pr_assoc, "%4.1f") + "%" if pr_assoc >= 10
+    gen str8 slab3 = string(pr_bach, "%4.1f") + "%" if pr_bach >= 10
+    gen str8 slab4 = string(pr_mastdoct, "%4.1f") + "%" if pr_mastdoct >= 10
+
+    * Collect y-axis labels
+    local ylabels ""
+    forvalues j = 1/`ncat' {
+        local yval = _N - `j' + 1
+        local glab = group_lab[`j']
+        local ylabels `"`ylabels' `yval' "`glab'""'
+    }
+
+    twoway ///
+        (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (rbar cum3 cum4 ypos, horizontal fcolor("`aggieblue'") lcolor(white) lwidth(vthin) barwidth(0.7)) ///
+        (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
+        (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
+        (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) ///
+        (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
+        , ///
+        title("Adjusted Predicted Probability of Degree Aspirations" "by `demo_title'", size(medium)) ///
+        xtitle("Predicted Probability (%)", size(small)) ///
+        xlabel(0(20)100, format(%3.0f)) ///
+        ytitle("") ///
+        ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
+        legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's/Doctoral") ///
+            rows(1) size(small) position(6)) ///
+        note("Predicted probabilities from ordered logit with demographic controls, evaluated at sample means.", size(vsmall)) ///
+        scheme(white_tableau) ///
+        graphregion(margin(l+18))
+
+    graph export $csacprojdir/fig/getting_down_to_facts/degree2_`demo'_stacked.png, replace width(4000)
+
+    export delimited group_lab pr_cert pr_assoc pr_bach pr_mastdoct ///
+        using $csacprojdir/tab/getting_down_to_facts/degree2_margins_`demo'.csv, replace
+
+    restore
 
 
 

@@ -256,6 +256,9 @@ di "Free responses recoded into OTHER/QUEER/QUESTIONING"
 tab so_other_raw if so_cat == 4
 
 
+********************************
+* assigned sex at birth coding *
+********************************
 
 
 ********************************

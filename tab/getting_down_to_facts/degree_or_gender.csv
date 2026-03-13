@@ -1,0 +1,27 @@
+
+="",="(1)",="(2)"
+
+="what is the highest degree you hope to complete",="",=""
+="Cisgender Woman",="1.627***",="1.734***"
+="",="[1.489,1.777]",="[1.585,1.896]"
+
+="Transgender Man",="1.738**",="1.661**"
+="",="[1.098,2.750]",="[1.032,2.674]"
+
+="Transgender Woman",="1.194",="1.050"
+="",="[0.548,2.605]",="[0.477,2.311]"
+
+="Non-binary",="1.798***",="1.829***"
+="",="[1.432,2.257]",="[1.451,2.304]"
+
+="Gender Diverse/Questioning",="1.584**",="1.541*"
+="",="[1.023,2.453]",="[0.985,2.411]"
+
+="Prefer Not to Say",="1.368**",="1.296"
+="",="[1.005,1.863]",="[0.945,1.778]"
+
+="Observations",="7497",="7475"
+="Demographic Controls",="No",="Yes"
+
+="Exponentiated coefficients; 95% confidence intervals in brackets"
+="* p<0.10, ** p<0.05, *** p<0.01"

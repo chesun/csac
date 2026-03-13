@@ -1,0 +1,157 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/qual
+> _demo_tab.txt
+  log type:  text
+ opened on:   6 Feb 2026, 20:13:35
+
+. 
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. // SO is the lowest common denominator for missing demographics - results in 
+> smaller sample size, so use that sample
+. gen qual_sample = 1 if inrange(gender_cat, 2, 5) & (!mi(college_challenge) | 
+> !mi(college_excited) ) & !mi(so_cat, race_assn, parent_edu)
+(8,884 missing values generated)
+
+. 
+. asdoc tabulate gender_cat if qual_sample==1, nocf save($csacprojdir/tab/thsj_
+> rr/qual_sample_demo.doc) replace title(Summary Statistics for Qualitative Res
+> ponse Sample)
+
+           Gender Identity |      Freq.     Percent        Cum.
+---------------------------+-----------------------------------
+           Transgender Man |         50       14.45       14.45
+         Transgender Woman |         17        4.91       19.36
+                Non-binary |        215       62.14       81.50
+Gender Diverse/Questioning |         64       18.50      100.00
+---------------------------+-----------------------------------
+                     Total |        346      100.00
+Click to Open File:  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj
+> _rr/qual_sample_demo.doc
+
+. foreach var in so_cat race_assn parent_edu {
+  2.     asdoc tabulate `var' if qual_sample==1, nocf save($csacprojdir/tab/ths
+> j_rr/qual_sample_demo.doc) append
+  3. }
+
+           Sexual Orientation |      Freq.     Percent        Cum.
+------------------------------+-----------------------------------
+       Straight/Heterosexual  |         12        3.47        3.47
+               Gay or Lesbian |         69       19.94       23.41
+Bisexual/Pansexual/Omnisexual |        166       47.98       71.39
+ Asexual/Aromantic/Demisexual |         41       11.85       83.24
+      Other/Queer/Questioning |         38       10.98       94.22
+            Prefer Not to Say |         20        5.78      100.00
+------------------------------+-----------------------------------
+                        Total |        346      100.00
+Click to Open File:  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj
+> _rr/qual_sample_demo.doc
+
+ race/ethnicity with  assigned |
+  to single race following URM |
+                      hierachy |      Freq.     Percent        Cum.
+-------------------------------+-----------------------------------
+American Indian/Alaskan Native |         13        3.76        3.76
+        Black/African American |         27        7.80       11.56
+               Hispanic/Latinx |        143       41.33       52.89
+              Pacific Islander |          5        1.45       54.34
+                      Filipino |         18        5.20       59.54
+                         Asian |         43       12.43       71.97
+                         Other |          3        0.87       72.83
+            White/Non-Hispanic |         94       27.17      100.00
+-------------------------------+-----------------------------------
+                         Total |        346      100.00
+Click to Open File:  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj
+> _rr/qual_sample_demo.doc
+
+       highest level of education among |
+                                parents |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+           Did not complete high school |         42       12.14       12.14
+                    High school diploma |         63       18.21       30.35
+        Some college, no college degree |         59       17.05       47.40
+                       Associate degree |         25        7.23       54.62
+                      Bachelor's degree |         57       16.47       71.10
+Graduate/Professional degree beyond Bac |         86       24.86       95.95
+                             Don't know |         14        4.05      100.00
+----------------------------------------+-----------------------------------
+                                  Total |        346      100.00
+Click to Open File:  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj
+> _rr/qual_sample_demo.doc
+
+. 
+. //-----use estpost and esttab
+. * Store frequencies for each variable
+. foreach var in gender_cat so_cat race_assn parent_edu {
+  2.     estpost tabulate `var' if qual_sample==1
+  3.     estimates store demo_`var'
+  4. }
+
+  gender_cat |      e(b)     e(pct)  e(cumpct) 
+-------------+---------------------------------
+Transgende~n |        50   14.45087   14.45087 
+Transgende~n |        17   4.913295   19.36416 
+  Non-binary |       215   62.13873   81.50289 
+Gender_Div~g |        64   18.49711        100 
+-------------+---------------------------------
+       Total |       346        100            
+
+      so_cat |      e(b)     e(pct)  e(cumpct) 
+-------------+---------------------------------
+Straight/H~l |        12   3.468208   3.468208 
+Gay_or_Les~n |        69    19.9422    23.4104 
+Bisexual/P~l |       166   47.97688   71.38728 
+Asexual/Ar~l |        41   11.84971   83.23699 
+Other/Quee~g |        38   10.98266   94.21965 
+Prefer_Not~y |        20   5.780347        100 
+-------------+---------------------------------
+       Total |       346        100            
+
+   race_assn |      e(b)     e(pct)  e(cumpct) 
+-------------+---------------------------------
+American_I~e |        13   3.757225   3.757225 
+Black/Afri~n |        27   7.803468   11.56069 
+Hispanic/L~x |       143   41.32948   52.89017 
+Pacific_Is~r |         5   1.445087   54.33526 
+    Filipino |        18   5.202312   59.53757 
+       Asian |        43   12.42775   71.96532 
+       Other |         3    .867052   72.83237 
+White/Non-~c |        94   27.16763        100 
+-------------+---------------------------------
+       Total |       346        100            
+
+  parent_edu |      e(b)     e(pct)  e(cumpct) 
+-------------+---------------------------------
+           1 |        42   12.13873   12.13873 
+           2 |        63   18.20809   30.34682 
+           3 |        59   17.05202   47.39884 
+           4 |        25   7.225434   54.62428 
+           5 |        57   16.47399   71.09827 
+           6 |        86   24.85549   95.95376 
+           7 |        14   4.046243        100 
+-------------+---------------------------------
+       Total |       346        100            
+
+row labels saved in macro e(labels)
+
+. 
+. * Export all in one table
+. esttab demo_gender_cat demo_so_cat demo_race_assn demo_parent_edu ///
+>     using $csacprojdir/tab/thsj_rr/qual_sample_demo.rtf, ///
+>     cells("b(label(Frequency)) pct(fmt(1) label(Percent))") ///
+>     title("Summary Statistics for Qualitative Response Sample") ///
+>     collabels("N" "%") ///
+>     label replace noobs
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/qual_sample_demo.rtf)
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/qual
+> _demo_tab.txt
+  log type:  text
+ closed on:   6 Feb 2026, 20:13:35
+-------------------------------------------------------------------------------

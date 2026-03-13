@@ -1,8 +1,8 @@
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/genderso.txt
   log type:  text
- opened on:  13 May 2024, 15:01:25
+ opened on:   5 Feb 2026, 18:35:03
 
 . 
 . * Load fully cleaned data
@@ -178,11 +178,11 @@ variable gender_clean was str17 now str30
 . gen gender_cat = . 
 (9,230 missing values generated)
 
-. label var gender_cat "gender categories"
+. label var gender_cat "Gender Identity"
 
 . 
 . * Define gender categories value label
-. label define gender_cat_lbl 0 "cis man" 1 "cis woman" 2 "trans man" 3 "trans woman" 4 "nonbinary" 5 "gender diverse/questioning" 6 "prefer not to say", replace
+. label define gender_cat_lbl 0 "Cisgender Man" 1 "Cisgender Woman" 2 "Transgender Man" 3 "Transgender Woman" 4 "Non-binary" 5 "Gender Diverse/Questioning" 6 "Prefer Not to Say", replace
 
 . label val gender_cat gender_cat_lbl
 
@@ -284,7 +284,7 @@ IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.49       79.10
 . gen so_clean = so_raw
 (1,723 missing values generated)
 
-. label var so_clean "cleaned sexual orientation"
+. label var so_clean "Sexual Orientation"
 
 . replace so_clean = "BI/PAN/OMNISEXUAL" if so_raw == "BISEXUAL"
 (1,037 real changes made)
@@ -332,18 +332,18 @@ IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.49       79.10
 . 
 . /* A/DEMISEXUAL/ROMANTIC */
 . *** indicate ASEXUAL but not others
-. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ASEX")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so
-> _other_raw, "POLY")==0
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ASEX")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_other_r
+> aw, "POLY")==0
 (5 real changes made)
 
 . *** indicate AROMANTIC but not others
-. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ARO")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_
-> other_raw, "POLY")==0
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ARO")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_other_ra
+> w, "POLY")==0
 (3 real changes made)
 
 . *** indicate DEMI* but not others
-. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "DEMI")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "PAN")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_o
-> ther_raw, "POLY")==0 
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "DEMI")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "PAN")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_other_raw
+> , "POLY")==0 
 (7 real changes made)
 
 . 
@@ -400,12 +400,11 @@ variable so_clean was str29 now str30
 . gen so_cat = . 
 (9,230 missing values generated)
 
-. label var so_cat "sexual orientation categories"
+. label var so_cat "Sexual Orientation"
 
 . 
 . * Define gender categories value label
-. label define so_cat_lbl 0 "straight/heterosexual " 1 "gay or lesbian" 2 "bisexual/pansexual/omnisexual" 3 "asexual/aromantic/demisexual" 4 "other/queer/questioning" 5 "prefer not to say", re
-> place
+. label define so_cat_lbl 0 "Straight/Heterosexual " 1 "Gay or Lesbian" 2 "Bisexual/Pansexual/Omnisexual" 3 "Asexual/Aromantic/Demisexual" 4 "Other/Queer/Questioning" 5 "Prefer Not to Say", replace
 
 . label val so_cat so_cat_lbl
 
@@ -526,28 +525,28 @@ QUESTIONING LABELS BUT DEFINITELY QUEER |          1        1.14       90.91
 . ********************************
 . tab gender_cat
 
-         gender categories |      Freq.     Percent        Cum.
+           Gender Identity |      Freq.     Percent        Cum.
 ---------------------------+-----------------------------------
-                   cis man |      2,675       35.56       35.56
-                 cis woman |      4,289       57.02       92.58
-                 trans man |         59        0.78       93.37
-               trans woman |         20        0.27       93.63
-                 nonbinary |        267        3.55       97.18
-gender diverse/questioning |         71        0.94       98.13
-         prefer not to say |        141        1.87      100.00
+             Cisgender Man |      2,675       35.56       35.56
+           Cisgender Woman |      4,289       57.02       92.58
+           Transgender Man |         59        0.78       93.37
+         Transgender Woman |         20        0.27       93.63
+                Non-binary |        267        3.55       97.18
+Gender Diverse/Questioning |         71        0.94       98.13
+         Prefer Not to Say |        141        1.87      100.00
 ---------------------------+-----------------------------------
                      Total |      7,522      100.00
 
 . tab so_cat
 
-sexual orientation categories |      Freq.     Percent        Cum.
+           Sexual Orientation |      Freq.     Percent        Cum.
 ------------------------------+-----------------------------------
-       straight/heterosexual  |      5,190       69.38       69.38
-               gay or lesbian |        330        4.41       73.79
-bisexual/pansexual/omnisexual |      1,139       15.23       89.01
- asexual/aromantic/demisexual |        182        2.43       91.44
-      other/queer/questioning |        131        1.75       93.20
-            prefer not to say |        509        6.80      100.00
+       Straight/Heterosexual  |      5,190       69.38       69.38
+               Gay or Lesbian |        330        4.41       73.79
+Bisexual/Pansexual/Omnisexual |      1,139       15.23       89.01
+ Asexual/Aromantic/Demisexual |        182        2.43       91.44
+      Other/Queer/Questioning |        131        1.75       93.20
+            Prefer Not to Say |        509        6.80      100.00
 ------------------------------+-----------------------------------
                         Total |      7,481      100.00
 
@@ -561,34 +560,34 @@ bisexual/pansexual/omnisexual |      1,139       15.23       89.01
 | column percentage |
 +-------------------+
 
-                      |                   sexual orientation categories
-    gender categories | straight/  gay or le  bisexual/  asexual/a  other/que  prefer no |     Total
+                      |                        Sexual Orientation
+      Gender Identity | Straight/  Gay or Le  Bisexual/  Asexual/A  Other/Que  Prefer No |     Total
 ----------------------+------------------------------------------------------------------+----------
-              cis man |     2,255        107        135         20         15        120 |     2,652 
+        Cisgender Man |     2,255        107        135         20         15        120 |     2,652 
                       |     85.03       4.03       5.09       0.75       0.57       4.52 |    100.00 
                       |     43.52      32.42      11.93      11.05      11.54      23.67 |     35.54 
 ----------------------+------------------------------------------------------------------+----------
-            cis woman |     2,901        129        761         96         64        312 |     4,263 
+      Cisgender Woman |     2,901        129        761         96         64        312 |     4,263 
                       |     68.05       3.03      17.85       2.25       1.50       7.32 |    100.00 
                       |     55.98      39.09      67.23      53.04      49.23      61.54 |     57.13 
 ----------------------+------------------------------------------------------------------+----------
-            trans man |         4         19         19          4          7          5 |        58 
+      Transgender Man |         4         19         19          4          7          5 |        58 
                       |      6.90      32.76      32.76       6.90      12.07       8.62 |    100.00 
                       |      0.08       5.76       1.68       2.21       5.38       0.99 |      0.78 
 ----------------------+------------------------------------------------------------------+----------
-          trans woman |         4          8          5          2          0          1 |        20 
+    Transgender Woman |         4          8          5          2          0          1 |        20 
                       |     20.00      40.00      25.00      10.00       0.00       5.00 |    100.00 
                       |      0.08       2.42       0.44       1.10       0.00       0.20 |      0.27 
 ----------------------+------------------------------------------------------------------+----------
-            nonbinary |         5         49        131         35         25         16 |       261 
+           Non-binary |         5         49        131         35         25         16 |       261 
                       |      1.92      18.77      50.19      13.41       9.58       6.13 |    100.00 
                       |      0.10      14.85      11.57      19.34      19.23       3.16 |      3.50 
 ----------------------+------------------------------------------------------------------+----------
-gender diverse/questi |         2          9         35         10         13          0 |        69 
+Gender Diverse/Questi |         2          9         35         10         13          0 |        69 
                       |      2.90      13.04      50.72      14.49      18.84       0.00 |    100.00 
                       |      0.04       2.73       3.09       5.52      10.00       0.00 |      0.92 
 ----------------------+------------------------------------------------------------------+----------
-    prefer not to say |        11          9         46         14          6         53 |       139 
+    Prefer Not to Say |        11          9         46         14          6         53 |       139 
                       |      7.91       6.47      33.09      10.07       4.32      38.13 |    100.00 
                       |      0.21       2.73       4.06       7.73       4.62      10.45 |      1.86 
 ----------------------+------------------------------------------------------------------+----------
@@ -661,5 +660,5 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_qual_codeboo
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/genderso.txt
   log type:  text
- closed on:  13 May 2024, 15:01:25
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:   5 Feb 2026, 18:35:03
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

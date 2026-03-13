@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/het.txt
   log type:  text
- opened on:  20 Dec 2025, 18:07:55
+ opened on:   9 Jan 2026, 18:08:01
 
 . 
 . local figdir $csacprojdir/fig/experiments
@@ -53,8 +53,8 @@
 . gen base_su_plan = plan_summer_class+2
 (2,067 missing values generated)
 
-. lab def base_su_plan 0 "Definitely Not" 1 "Probably Not" 2 "Not Sure" 3 "Probably Yes" 
-> 4 "Definitely Yes"
+. lab def base_su_plan 0 "Definitely Not" 1 "Probably Not" 2 "Not Sure" 3 "Probably Yes" 4
+>  "Definitely Yes"
 
 . lab val base_su_plan base_su_plan
 
@@ -369,15 +369,20 @@
 >     mcolor(black)
 
 . graph export `figdir'/het_coef.png, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/experiments/het_coef.png writt
-> en in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/experiments/het_coef.png writte
+> n in PNG format
 
-. 
+. graph export `figdir'/het_coef.eps, replace 
+(file /home/research/ca_ed_lab/projects/csac_survey2023/fig/experiments/het_coef.eps not
+    found)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/experiments/het_coef.eps
+    saved as EPS format
+
 . 
 . 
 . log close 
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/het.txt
   log type:  text
- closed on:  20 Dec 2025, 18:07:55
------------------------------------------------------------------------------------------
+ closed on:   9 Jan 2026, 18:08:02
+------------------------------------------------------------------------------------------
