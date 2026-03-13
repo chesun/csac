@@ -259,7 +259,9 @@ tab so_other_raw if so_cat == 4
 ********************************
 * assigned sex at birth coding *
 ********************************
-
+lab def afab 0 "Male" 1 "Female"
+encode asab, gen(afab) label(afab)
+lab var afab "Assigned Female at Birth"
 
 ********************************
 * Tab Expression *

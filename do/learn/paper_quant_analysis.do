@@ -334,8 +334,25 @@ foreach y in $indices {
          , drop(_cons hsexp_index *.race_assn *.parent_edu *.`lgbtq_ctrl') baselevels label ///
          legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "control for demographics & HS index & `legend_str'") span size(small) cols(1) region(lwidth(none))) ///
           xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
-        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_lgbtq_ctrl_color.png", replace width(1600) 
-        
+        graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_lgbtq_ctrl_color.png", replace width(1600)
+
+        * SO only: model controlling for assigned sex at birth
+        if "`cat'" == "so" {
+            di "M5: using SO, hsexp index, and assigned sex at birth to predict worry, controlling for demographics"
+            reg `y' i.`cat'_cat c.hsexp_index i.race_assn i.parent_edu i.afab
+            est store `y'_m5
+
+            label val `cat'_cat `cat'_cat_`y'2
+            coefplot ///
+             (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+             (`y'_m3, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+             (`y'_m5, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+             , drop(_cons hsexp_index *.race_assn *.parent_edu *.afab) baselevels label ///
+             legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "control for demographics & HS index & assigned sex at birth") span size(small) cols(1) region(lwidth(none))) ///
+              xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0)
+            graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_afab_color.png", replace width(1600)
+        }
+
     }
 
     **************************
@@ -404,7 +421,24 @@ foreach y in hsexp_index {
         label val `cat'_cat `cat'_cat_`y'2
         coefplot  (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
         graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_color.png", replace width(1600)
-    
+
+        * SO only: model controlling for assigned sex at birth
+        if "`cat'" == "so" {
+            di "M3: using SO and assigned sex at birth to predict HS experience, controlling for demographics"
+            reg `y' i.`cat'_cat i.race_assn i.parent_edu i.afab
+            est store `y'_m3
+
+            label val `cat'_cat `cat'_cat_`y'2
+            coefplot ///
+             (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+             (`y'_m2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+             (`y'_m3, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+             , drop(_cons *.race_assn *.parent_edu *.afab) baselevels label ///
+             legend(order(2 "unconditional" 4 "control for demographics" 6 "control for demographics & assigned sex at birth") span size(small) cols(1) region(lwidth(none))) ///
+              xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0)
+            graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_afab_color.png", replace width(1600)
+        }
+
     }
 
 }

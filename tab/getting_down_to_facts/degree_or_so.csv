@@ -1,24 +1,25 @@
 
-="",="(1)",="(2)"
+="",="(1)",="(2)",="(3)"
 
-="what is the highest degree you hope to complete",="",=""
-="Gay or Lesbian",="1.527***",="1.388***"
-="",="[1.250,1.867]",="[1.130,1.704]"
+="what is the highest degree you hope to complete",="",="",=""
+="Gay or Lesbian",="1.527***",="1.388***",="1.353***"
+="",="[1.250,1.867]",="[1.130,1.704]",="[1.101,1.663]"
 
-="Bisexual/Pansexual/Omnisexual",="1.636***",="1.587***"
-="",="[1.454,1.840]",="[1.408,1.788]"
+="Bisexual/Pansexual/Omnisexual",="1.636***",="1.587***",="1.386***"
+="",="[1.454,1.840]",="[1.408,1.788]",="[1.226,1.566]"
 
-="Asexual/Aromantic/Demisexual",="1.522***",="1.251"
-="",="[1.168,1.983]",="[0.955,1.638]"
+="Asexual/Aromantic/Demisexual",="1.522***",="1.251",="1.079"
+="",="[1.168,1.983]",="[0.955,1.638]",="[0.822,1.416]"
 
-="Other/Queer/Questioning",="1.440**",="1.293"
-="",="[1.056,1.963]",="[0.941,1.777]"
+="Other/Queer/Questioning",="1.440**",="1.293",="1.117"
+="",="[1.056,1.963]",="[0.941,1.777]",="[0.811,1.537]"
 
-="Prefer Not to Say",="1.162*",="1.049"
-="",="[0.986,1.370]",="[0.887,1.240]"
+="Prefer Not to Say",="1.162*",="1.049",="0.957"
+="",="[0.986,1.370]",="[0.887,1.240]",="[0.808,1.132]"
 
-="Observations",="7456",="7433"
-="Demographic Controls",="No",="Yes"
+="Observations",="7456",="7433",="7423"
+="Demographic Controls",="No",="Yes",="Yes"
+="Assigned Sex at Birth",="No",="No",="Yes"
 
 ="Exponentiated coefficients; 95% confidence intervals in brackets"
 ="* p<0.10, ** p<0.05, *** p<0.01"
