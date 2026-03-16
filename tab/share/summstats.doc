@@ -6,36 +6,36 @@
 {
 {\b\qc\line Summary Statistics }{\par}
 \trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
-\ql {gender categories}\cell
+\ql {Gender Identity}\cell
 \qr {Freq.}\cell
 \qr {Percent}\cell
 \row
 \trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
-\ql {cis man}\cell
+\ql {Cisgender Man}\cell
 \qr {2675}\cell
 \qr {35.56}\cell
 \row
-\ql {cis woman}\cell
+\ql {Cisgender Woman}\cell
 \qr {4289}\cell
 \qr {57.02}\cell
 \row
-\ql {trans man}\cell
+\ql {Transgender Man}\cell
 \qr {59}\cell
 \qr {0.78}\cell
 \row
-\ql {trans woman}\cell
+\ql {Transgender Woman}\cell
 \qr {20}\cell
 \qr {0.27}\cell
 \row
-\ql {nonbinary}\cell
+\ql {Non-binary}\cell
 \qr {267}\cell
 \qr {3.55}\cell
 \row
-\ql {gender diverse/questioning}\cell
+\ql {Gender Diverse/Questioning}\cell
 \qr {71}\cell
 \qr {0.94}\cell
 \row
-\ql {prefer not to say}\cell
+\ql {Prefer Not to Say}\cell
 \qr {141}\cell
 \qr {1.87}\cell
 \row
@@ -52,32 +52,32 @@
 {
 {\b\qc\line Tabulation of so_cat  }{\par}
 \trowd\trgaph108\trleft-108\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx5000\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx6500\clbrdrt\brdrw10\brdrs \clbrdrb\brdrw25\brdrs\cellx8000
-\ql {sexual orientation categories}\cell
+\ql {Sexual Orientation}\cell
 \qr {Freq.}\cell
 \qr {Percent}\cell
 \row
 \trowd\trgaph108\trleft-108\cellx5000\cellx6500\cellx8000
-\ql {straight/heterosexual}\cell
+\ql {Straight/Heterosexual}\cell
 \qr {5190}\cell
 \qr {69.38}\cell
 \row
-\ql {gay or lesbian}\cell
+\ql {Gay or Lesbian}\cell
 \qr {330}\cell
 \qr {4.41}\cell
 \row
-\ql {bisexual/pansexual/omnisexual}\cell
+\ql {Bisexual/Pansexual/Omnisexual}\cell
 \qr {1139}\cell
 \qr {15.23}\cell
 \row
-\ql {asexual/aromantic/demisexual}\cell
+\ql {Asexual/Aromantic/Demisexual}\cell
 \qr {182}\cell
 \qr {2.43}\cell
 \row
-\ql {other/queer/questioning}\cell
+\ql {Other/Queer/Questioning}\cell
 \qr {131}\cell
 \qr {1.75}\cell
 \row
-\ql {prefer not to say}\cell
+\ql {Prefer Not to Say}\cell
 \qr {509}\cell
 \qr {6.80}\cell
 \row
@@ -190,9 +190,9 @@
 {\b\qc\line Tabulation of gender_cat so_cat  }{\par}
 {\trowd\trgaph108\trleft-108
 \clvmgf \clvertalb \clbrdrr\brdrw10\brdrs \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx3000
-\fs20\pard\intbl\ql {gender categories}\cell
+\fs20\pard\intbl\ql {Gender Identity}\cell
 \clmgf \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx4000
-\fs20\pard\intbl\qc {sexual orientation categories}\cell
+\fs20\pard\intbl\qc {Sexual Orientation}\cell
 \clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx5000
 \fs20\pard\intbl\qr {}\cell
 \clmrg \clbrdrt\brdrw10\brdrs \clbrdrb\brdrw10\brdrs\cellx6000
@@ -210,23 +210,23 @@
 \clvmrg  \clvertalb \clbrdrr\brdrw10\brdrs \cellx3000
 \fs20\pard\intbl\ql {}\cell
 \cellx4000
-\fs20\pard\intbl\qr {straight/heterosexual}\cell
+\fs20\pard\intbl\qr {Straight/Heterosexual}\cell
 \cellx5000
-\fs20\pard\intbl\qr {gay or lesbian}\cell
+\fs20\pard\intbl\qr {Gay or Lesbian}\cell
 \cellx6000
-\fs20\pard\intbl\qr {bisexual/pansexual/omnisexual}\cell
+\fs20\pard\intbl\qr {Bisexual/Pansexual/Omnisexual}\cell
 \cellx7000
-\fs20\pard\intbl\qr {asexual/aromantic/demisexual}\cell
+\fs20\pard\intbl\qr {Asexual/Aromantic/Demisexual}\cell
 \cellx8000
-\fs20\pard\intbl\qr {other/queer/questioning}\cell
+\fs20\pard\intbl\qr {Other/Queer/Questioning}\cell
 \cellx9000
-\fs20\pard\intbl\qr {prefer not to say}\cell
+\fs20\pard\intbl\qr {Prefer Not to Say}\cell
 \cellx10000
 \fs20\pard\intbl\qr {Total}\cell
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \clbrdrt\brdrw25\brdrs\cellx3000
-\fs20\pard\intbl\ql {cis man}\cell
+\fs20\pard\intbl\ql {Cisgender Man}\cell
 \clbrdrt\brdrw25\brdrs\cellx4000
 \fs20\pard\intbl\qr {85.03}\cell
 \clbrdrt\brdrw25\brdrs\cellx5000
@@ -244,7 +244,7 @@
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \cellx3000
-\fs20\pard\intbl\ql {cis woman}\cell
+\fs20\pard\intbl\ql {Cisgender Woman}\cell
 \cellx4000
 \fs20\pard\intbl\qr {68.05}\cell
 \cellx5000
@@ -262,7 +262,7 @@
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \cellx3000
-\fs20\pard\intbl\ql {trans man}\cell
+\fs20\pard\intbl\ql {Transgender Man}\cell
 \cellx4000
 \fs20\pard\intbl\qr {6.90}\cell
 \cellx5000
@@ -280,7 +280,7 @@
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \cellx3000
-\fs20\pard\intbl\ql {trans woman}\cell
+\fs20\pard\intbl\ql {Transgender Woman}\cell
 \cellx4000
 \fs20\pard\intbl\qr {20.00}\cell
 \cellx5000
@@ -298,7 +298,7 @@
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \cellx3000
-\fs20\pard\intbl\ql {nonbinary}\cell
+\fs20\pard\intbl\ql {Non-binary}\cell
 \cellx4000
 \fs20\pard\intbl\qr {1.92}\cell
 \cellx5000
@@ -316,7 +316,7 @@
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \cellx3000
-\fs20\pard\intbl\ql {gender diverse/questioning}\cell
+\fs20\pard\intbl\ql {Gender Diverse/Questioning}\cell
 \cellx4000
 \fs20\pard\intbl\qr {2.90}\cell
 \cellx5000
@@ -334,7 +334,7 @@
 \row}
 {\trowd\trgaph108\trleft-108
 \clbrdrr\brdrw10\brdrs \cellx3000
-\fs20\pard\intbl\ql {prefer not to say}\cell
+\fs20\pard\intbl\ql {Prefer Not to Say}\cell
 \cellx4000
 \fs20\pard\intbl\qr {7.91}\cell
 \cellx5000
