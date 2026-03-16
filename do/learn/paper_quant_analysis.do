@@ -121,12 +121,13 @@ foreach y in $plans { //  $worries $hsexp $bully
 
 * All
 alpha $allworries, item
+// alpha = 0.8049
 
 /* HS Experience */
 
 * All
 alpha $allhsexp, item
-
+// alpha = 0.7403
 
 ********************************
 * Principle Component Analysis *
@@ -162,6 +163,8 @@ forval n = 1/3{
 label var worry_index1 "general worries"
 label var worry_index2 "worries about discrimination"
 label var worry_index3 "worries about financial burdens"
+
+sum worry_index*
 
 **************************
 * Index of HS experience *
@@ -240,8 +243,84 @@ asdoc tabstat $allhsexp hsexp_index, stat(N mean) label abb(.) append  title(Hig
 
 * NOTE: asdoc tabstats, by() does work. It messes up the labelin of the gender variable!!
 
+* HS experience index by gender and SO
 estpost tabstat hsexp_index, listwise stat(N mean) by(gender_cat) columns(statistics)
-esttab . using bygender.rtf, cells("N mean(fmt(a3))") replace 
+esttab . using bygender.rtf, cells("count(fmt(%9.0f)) mean(fmt(a3))") replace
+
+estpost tabstat hsexp_index, listwise stat(N mean) by(so_cat) columns(statistics)
+esttab . using byso.rtf, cells("count(fmt(%9.0f)) mean(fmt(a3))") replace
+
+* HS experience items by gender (items as rows, gender categories as columns)
+estimates clear
+levelsof gender_cat, local(gcats)
+local mtitles_g ""
+foreach c of local gcats {
+    local lab : label gender_cat_lbl `c'
+    estpost tabstat $allhsexp if gender_cat == `c', stat(mean N) columns(statistics)
+    est store g`c'
+    local mtitles_g `"`mtitles_g' "`lab'""'
+}
+estpost tabstat $allhsexp, stat(mean N) columns(statistics)
+est store gtotal
+local mtitles_g `"`mtitles_g' "Total""'
+esttab g* using hsexp_items_bygender.rtf, ///
+    cells("mean(fmt(%3.1f))" "count(fmt(%9.0f))") ///
+    mtitles(`mtitles_g') label nonum noobs replace ///
+    title("High School Experience Items by Gender Identity")
+
+* HS experience items by SO (items as rows, SO categories as columns)
+estimates clear
+levelsof so_cat, local(scats)
+local mtitles_s ""
+foreach c of local scats {
+    local lab : label so_cat_lbl `c'
+    estpost tabstat $allhsexp if so_cat == `c', stat(mean N) columns(statistics)
+    est store s`c'
+    local mtitles_s `"`mtitles_s' "`lab'""'
+}
+estpost tabstat $allhsexp, stat(mean N) columns(statistics)
+est store stotal
+local mtitles_s `"`mtitles_s' "Total""'
+esttab s* using hsexp_items_byso.rtf, ///
+    cells("mean(fmt(%3.1f))" "count(fmt(%9.0f))") ///
+    mtitles(`mtitles_s') label nonum noobs replace ///
+    title("High School Experience Items by Sexual Orientation")
+
+* College concern items by gender (items as rows, gender categories as columns)
+estimates clear
+levelsof gender_cat, local(gcats)
+local mtitles_g ""
+foreach c of local gcats {
+    local lab : label gender_cat_lbl `c'
+    estpost tabstat $allworries if gender_cat == `c', stat(mean N) columns(statistics)
+    est store g`c'
+    local mtitles_g `"`mtitles_g' "`lab'""'
+}
+estpost tabstat $allworries, stat(mean N) columns(statistics)
+est store gtotal
+local mtitles_g `"`mtitles_g' "Total""'
+esttab g* using worry_items_bygender.rtf, ///
+    cells("mean(fmt(%3.1f))" "count(fmt(%9.0f))") ///
+    mtitles(`mtitles_g') label nonum noobs replace ///
+    title("College Concern Items by Gender Identity")
+
+* College concern items by SO (items as rows, SO categories as columns)
+estimates clear
+levelsof so_cat, local(scats)
+local mtitles_s ""
+foreach c of local scats {
+    local lab : label so_cat_lbl `c'
+    estpost tabstat $allworries if so_cat == `c', stat(mean N) columns(statistics)
+    est store s`c'
+    local mtitles_s `"`mtitles_s' "`lab'""'
+}
+estpost tabstat $allworries, stat(mean N) columns(statistics)
+est store stotal
+local mtitles_s `"`mtitles_s' "Total""'
+esttab s* using worry_items_byso.rtf, ///
+    cells("mean(fmt(%3.1f))" "count(fmt(%9.0f))") ///
+    mtitles(`mtitles_s') label nonum noobs replace ///
+    title("College Concern Items by Sexual Orientation")
 
 
 *******************************
@@ -478,6 +557,6 @@ foreach y in $indices {
     reg `y' i.gender_cat c.hsexp_index##c.hsexp_index i.race_assn i.parent_edu 
 }
 
-
+save "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso_constructs.dta", replace 
 
 log close

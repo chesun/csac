@@ -589,16 +589,16 @@ foreach demo in gender so {
             (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) ///
             (scatter ypos mid5, msymbol(none) mlabel(slab5) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
             , ///
-            title("Adjusted Predicted Probability of Degree Aspirations" "by Sexual Orientation (Controlling for Assigned Sex at Birth)", size(medium)) ///
+            title("Adjusted Predicted Probability of Degree Aspirations" "by Sexual Orientation (Controlling for Assigned Sex at Birth)", size(small)) ///
             xtitle("Predicted Probability (%)", size(small)) ///
             xlabel(0(20)100, format(%3.0f)) ///
             ytitle("") ///
             ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
             legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's" 5 "Doctoral") ///
                 rows(1) size(small) position(6)) ///
-            note("Predicted probabilities from ordered logit with demographic controls and assigned sex at birth, evaluated at sample means.", size(vsmall)) ///
+            note("Predicted probabilities from ordered logit with demographic controls" "and assigned sex at birth, evaluated at sample means.", size(vsmall)) ///
             scheme(white_tableau) ///
-            graphregion(margin(l+18))
+            graphregion(margin(l+18 r+5))
 
         graph export $csacprojdir/fig/getting_down_to_facts/degree_so_stacked_afab.png, replace width(4000)
 
@@ -693,16 +693,16 @@ foreach demo in gender so {
             (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) ///
             (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) ///
             , ///
-            title("Adjusted Predicted Probability of Degree Aspirations" "by Sexual Orientation (Controlling for Assigned Sex at Birth)", size(medium)) ///
+            title("Adjusted Predicted Probability of Degree Aspirations" "by Sexual Orientation (Controlling for Assigned Sex at Birth)", size(small)) ///
             xtitle("Predicted Probability (%)", size(small)) ///
             xlabel(0(20)100, format(%3.0f)) ///
             ytitle("") ///
             ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
             legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's/Doctoral") ///
                 rows(1) size(small) position(6)) ///
-            note("Predicted probabilities from ordered logit with demographic controls and assigned sex at birth, evaluated at sample means.", size(vsmall)) ///
+            note("Predicted probabilities from ordered logit with demographic controls" "and assigned sex at birth, evaluated at sample means.", size(vsmall)) ///
             scheme(white_tableau) ///
-            graphregion(margin(l+18))
+            graphregion(margin(l+18 r+5))
 
         graph export $csacprojdir/fig/getting_down_to_facts/degree2_so_stacked_afab.png, replace width(4000)
 
