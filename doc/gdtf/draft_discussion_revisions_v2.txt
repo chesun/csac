@@ -1,0 +1,112 @@
+PROPOSED EDITS TO DISCUSSION AND CONCLUSION (v2)
+==================================================
+Based on the current draft as of 3/16. Edits focus on coherence,
+removing redundancy, and tightening the logical flow. Changes are
+described inline with [EDIT] tags; clean revised text follows each.
+
+
+ISSUE 1: Paragraph 1 opens with "This may be associated with
+gender-related victimization" but paragraph 2 presents regression
+results that directly confirm the role of bullying. The hedging
+in paragraph 1 undercuts the stronger evidence that follows.
+
+[EDIT: Replace "This may be associated with" → "Our analyses
+confirm that this is partly attributable to". Move the descriptive
+bullying stats after the regression evidence so the argument builds
+from tested claim → supporting descriptive detail, rather than
+descriptive detail → hedged speculation → regression confirmation.]
+
+REVISED PARAGRAPHS 1-2 (merged for flow):
+
+The transition from high school to college is an important one, and the high school experiences of LGBTQ+ students can influence their educational expectations and later attainment. Results revealed a statistically significant difference between the experiences of cisgender students compared to trans and gender expansive students, who reported less positive high school experiences overall. Our regression analyses confirm that identity-based victimization is a meaningful driver of this gap: controlling for the frequency of bullying substantially attenuates the gender identity differences in high school experience, reducing the coefficient for gender diverse/questioning students from -3.29 to -2.46 and for nonbinary students from -2.03 to -1.44. Descriptively, only 35% of transgender students and 54% of nonbinary and gender diverse/questioning students reported no bullying in the past year, compared to 84% of cisgender men, and among those who were bullied, 100% of transgender students and 88% of nonbinary and gender diverse/questioning students attributed the bullying to their gender identity or sexual orientation -- consistent with prior research on gender-related victimization in high school (Hatchel et al., 2018; McBride, 2021). However, significant differences in high school experience persist even after accounting for bullying, indicating that the challenges these students face extend beyond victimization alone -- potentially including institutional climate, lack of representation, or navigating cis-normative policies and spaces. Similarly, by sexual orientation, controlling for bullying renders the coefficient for gay or lesbian students non-significant, while bisexual/pansexual/omnisexual students and those who prefer not to disclose their sexual orientation continue to report significantly lower high school experiences even after accounting for bullying.
+
+
+ISSUE 2: Paragraph 3 (college worries) and paragraph 4 (energy
+navigating adverse experiences) overlap in their discussion of
+discrimination worries. Paragraph 4 opens with "This increased
+concern then likely played a role..." which reads as a non sequitur
+after the bullying mediation discussion in paragraph 3. These
+should be consolidated.
+
+[EDIT: Merge paragraphs 3 and 4 into one paragraph. Cut the
+transitional sentence "This increased concern then likely played
+a role..." which is vague. Instead, flow directly from the
+bullying-mediation finding into the forward-looking discrimination
+insight.]
+
+REVISED PARAGRAPH 3 (college worries, merged):
+
+Given these experiences, we examined students' concerns ahead of college enrollment. Overall, trans and gender expansive students worried more about discrimination compared to cisgender students. Notably, these elevated worries about discrimination persist after controlling for bullying experiences, with only modest attenuation of the coefficients. This suggests that worries about discrimination in college are not simply a reflection of past victimization but may represent anticipatory concerns about future discrimination -- consistent with the minority stress framework, in which the expectation of prejudice operates as a stressor independent of prior experiences of discrimination (Hunter et al., 2021). By contrast, general worries about college (e.g., tuition, finding community, academic performance) and worries about financial burdens showed little association with bullying, suggesting these concerns are driven by different factors. The energy that LGBTQ+ students expend navigating and trying to avoid adverse experiences -- including remaining closeted -- detracts from the quality of their educational experience and ability to create community (Goldberg & Kuvalanka, 2018; Kersey & Voigt, 2021), and our findings suggest that this burden extends into the college transition: even after accounting for bullying, trans and gender expansive students report elevated concerns about facing discrimination in college, underscoring the pervasive nature of minority stress across educational settings.
+
+
+ISSUE 3: Paragraph 5 (degree aspirations / resilience) contains
+some redundancy with earlier paragraphs. The bullying mediation
+point ("Our bullying models show that controlling for the frequency
+of bullying substantially attenuates but does not eliminate the
+high school experience gap") repeats what was already stated in
+paragraph 2. The odds ratios are also stated twice -- once in
+paragraph 5 and once in the resilience paragraph.
+
+[EDIT: Remove the repeated bullying mediation sentence from the
+resilience paragraph. Keep the odds ratios only in the degree
+aspirations paragraph (paragraph 5), and reference them rather
+than restate them in the resilience paragraph.]
+
+REVISED PARAGRAPH 4 (degree aspirations):
+
+However, despite (or because of) these worries, students still planned to pursue postsecondary schooling -- in fact, trans and gender expansive students planned to pursue advanced degrees at higher rates than their peers. Our ordered logit results quantify these differences: nonbinary students had 1.80 times the odds of aspiring to a higher degree category compared to cisgender men (95% CI [1.43, 2.26]), transgender men had 1.74 times the odds (95% CI [1.10, 2.75]), and by sexual orientation, bisexual/pansexual/omnisexual students had 1.64 times the odds (95% CI [1.45, 1.84]). These differences were robust to the inclusion of demographic controls. While this differs from previous research (Feldman et al., 2022; Sansone, 2019; Wilkinson et al., 2021), the schooling experiences of transgender and gender expansive students in our sample may include supports (whether at school or at home) potentially absent to students documented in other studies. For example, students may have had access to resources that can promote the well-being of trans and gender expansive students, such as social support from peers, family, and the community; school-inclusive policies; and extracurricular activities, among others (Fernandes et al., 2023).
+
+
+ISSUE 4: No changes needed to the policy landscape paragraph
+(paragraph 6 in the current draft). It reads well.
+
+REVISED PARAGRAPH 5: [NO CHANGES]
+
+These findings take on added significance in the current policy landscape. [... kept as-is ...]
+
+
+ISSUE 5: The SO nuance paragraph is well-placed but could connect
+more explicitly to the preceding policy discussion.
+
+[EDIT: Add a transitional opening sentence.]
+
+REVISED PARAGRAPH 6 (SO nuance):
+
+These policy considerations are further complicated by heterogeneity within the LGBTQ+ community. Our results on sexual orientation show that the associations between sexual orientation and both high school experience and college worries are partly but not fully explained by bullying. For some groups -- such as gay or lesbian students -- the high school experience gap is largely attributable to bullying, as the coefficient becomes non-significant when bullying is controlled for. For others, particularly bisexual/pansexual/omnisexual students, significant disparities in high school experience and elevated worries about discrimination persist even after accounting for bullying and assigned sex at birth. This heterogeneity reinforces the importance of disaggregated analysis and suggests that interventions must address a range of challenges beyond bullying alone.
+
+
+ISSUE 6: The "implications" section currently has First, Second,
+Third. With the new SO paragraph inserted before it, renumbering
+is needed. Also, the resilience paragraph (currently "Second")
+restates the bullying mediation finding. Streamline it.
+
+[EDIT: Remove the repeated bullying mediation sentence. Keep the
+selection bias caveat and the resilience framing with the OR
+cross-reference.]
+
+REVISED "First" paragraph: [NO CHANGES]
+
+Our findings carry several implications for California education policy. First, [... kept as-is ...]
+
+REVISED "Second" paragraph (resilience):
+
+Second, the patterns documented here -- where trans and gender expansive students report less positive high school experiences and elevated rates of identity-based bullying yet maintain elevated educational aspirations -- are consistent with the social ecological theory of resilience framing this study (Ungar, 2011, 2012). We note, however, that our sample is restricted to college-bound seniors and purely voluntary responses, which likely introduces selection: students who persisted to 12th grade and planned to attend college may have had access to supports -- whether familial, institutional, or community-based -- that buffered against the negative effects of adverse high school experiences. Trans and gender expansive students who dropped out, were pushed out, or abandoned college plans prior to our survey are not represented here, and their experiences may differ substantially. With that caveat, that students maintain elevated educational aspirations in the face of documented adversity and identity-based victimization is consistent with resilience, and with the navigational capital that LGBTQ+ students develop through experience in cis-normative environments (Pennell, 2016). Policymakers and institutions can build on this by ensuring that the transition from high school to college is supported with resources that address the specific concerns these students reported, including worries about discrimination, finding community, and accessing gender-affirming services. This includes investments in bridge programs, mentoring, and campus resources that are responsive to the needs of incoming LGBTQ+ students.
+
+REVISED "Third" paragraph: [NO CHANGES]
+
+Third, our study highlights the critical need for California to continue collecting and disaggregating data [... kept as-is ...]
+
+
+SUMMARY OF CHANGES
+===================
+1. Paragraph 1: Removed hedging ("may be associated"); led with
+   regression evidence, followed by descriptive stats as support.
+2. Merged paragraphs 3-4: Eliminated the vague transitional
+   sentence; consolidated discrimination worry discussion.
+3. Paragraph 5 (degree aspirations): Added transgender men OR
+   for completeness; otherwise minimal changes.
+4. SO nuance paragraph: Added transitional sentence connecting
+   to policy discussion.
+5. Resilience paragraph: Removed redundant bullying mediation
+   restatement; streamlined to focus on the selection caveat
+   and the resilience interpretation.

@@ -1,0 +1,38 @@
+FIGURE NOTES FOR BULLYING MODELS
+=================================
+
+HS Experience by Gender Identity (hsexp_index_gender_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,483. For the model controlling for demographics (race/ethnicity and parental level of education), n = 7,464. For the model controlling for demographics and frequency of bullying, n = 7,456. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each gender identity are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (cisgender man).
+
+HS Experience by Sexual Orientation (hsexp_index_so_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,442. For the model controlling for demographics (race/ethnicity and parental level of education), n = 7,422. For the model controlling for demographics and frequency of bullying, n = 7,414. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+HS Experience by Sexual Orientation with AFAB (hsexp_index_so_w_Nmean_bully_afab_color.png)
+Note. For the unconditional model, n = 7,442. For the model controlling for demographics (race/ethnicity and parental level of education), n = 7,422. For the model controlling for demographics and frequency of bullying, n = 7,414. For the model additionally controlling for assigned sex at birth, n = 7,404. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+General College Worries by Gender Identity (worry_index1_gender_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,319. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,276. For the model additionally controlling for frequency of bullying, n = 7,269. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each gender identity are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (cisgender man).
+
+General College Worries by Sexual Orientation (worry_index1_so_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,283. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,239. For the model additionally controlling for frequency of bullying, n = 7,232. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+General College Worries by SO with AFAB (worry_index1_so_w_Nmean_bully_afab_color.png)
+Note. For the unconditional model, n = 7,283. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,239. For the model additionally controlling for frequency of bullying, n = 7,232. For the model additionally controlling for assigned sex at birth, n = 7,223. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+Worries About Discrimination by Gender Identity (worry_index2_gender_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,319. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,276. For the model additionally controlling for frequency of bullying, n = 7,269. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each gender identity are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (cisgender man).
+
+Worries About Discrimination by Sexual Orientation (worry_index2_so_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,283. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,239. For the model additionally controlling for frequency of bullying, n = 7,232. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+Worries About Discrimination by SO with AFAB (worry_index2_so_w_Nmean_bully_afab_color.png)
+Note. For the unconditional model, n = 7,283. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,239. For the model additionally controlling for frequency of bullying, n = 7,232. For the model additionally controlling for assigned sex at birth, n = 7,223. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+Worries About Financial Burdens by Gender Identity (worry_index3_gender_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,319. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,276. For the model additionally controlling for frequency of bullying, n = 7,269. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each gender identity are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (cisgender man).
+
+Worries About Financial Burdens by Sexual Orientation (worry_index3_so_w_Nmean_bully_color.png)
+Note. For the unconditional model, n = 7,283. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,239. For the model additionally controlling for frequency of bullying, n = 7,232. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).
+
+Worries About Financial Burdens by SO with AFAB (worry_index3_so_w_Nmean_bully_afab_color.png)
+Note. For the unconditional model, n = 7,283. For the model controlling for demographics (race/ethnicity and parental level of education) and the high school experience index, n = 7,239. For the model additionally controlling for frequency of bullying, n = 7,232. For the model additionally controlling for assigned sex at birth, n = 7,223. The lines indicate 95 percent confidence intervals while the sample frequency and mean index of each sexual orientation are reported in parentheses. The vertical line at 0 represents the coefficient for the reference group (straight/heterosexual).

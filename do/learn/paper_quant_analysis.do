@@ -415,6 +415,21 @@ foreach y in $indices {
           xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
         graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_lgbtq_ctrl_color.png", replace width(1600)
 
+        * Model controlling for bullying: demographics + HS index + times_bullied
+        di "M_bully: using `cat' to predict worry, controlling for demographics, HS index & bullying"
+        reg `y' i.`cat'_cat c.hsexp_index i.race_assn i.parent_edu i.times_bullied
+        est store `y'_mbully
+
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot ///
+         (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+         (`y'_m3, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+         (`y'_mbully, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+         , drop(_cons hsexp_index *.race_assn *.parent_edu *.times_bullied) baselevels label ///
+         legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "+ bullying") span size(small) cols(1) region(lwidth(none))) ///
+          xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0)
+        graph export "$csacprojdir/fig/learn/reg/`y'_`cat'_w_Nmean_bully_color.png", replace width(1600)
+
         * SO only: model controlling for assigned sex at birth
         if "`cat'" == "so" {
             di "M5: using SO, hsexp index, and assigned sex at birth to predict worry, controlling for demographics"
@@ -430,6 +445,22 @@ foreach y in $indices {
              legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "control for demographics & HS index & assigned sex at birth") span size(small) cols(1) region(lwidth(none))) ///
               xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0)
             graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_afab_color.png", replace width(1600)
+
+            * SO only: demographics + HS index + bullying + assigned sex at birth
+            di "M_bully_afab: using SO to predict worry, controlling for demographics, HS index, bullying & assigned sex at birth"
+            reg `y' i.`cat'_cat c.hsexp_index i.race_assn i.parent_edu i.times_bullied i.afab
+            est store `y'_mbullyafab
+
+            label val `cat'_cat `cat'_cat_`y'2
+            coefplot ///
+             (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+             (`y'_m3, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+             (`y'_mbully, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+             (`y'_mbullyafab, msymbol(S) ciopts( lwidth(*2) color("`taborange'")) mcolor("`taborange'")) ///
+             , drop(_cons hsexp_index *.race_assn *.parent_edu *.times_bullied *.afab) baselevels label ///
+             legend(order(2 "unconditional" 4 "control for demographics & HS index" 6 "+ bullying" 8 "+ bullying & assigned sex at birth") span size(small) cols(1) region(lwidth(none))) ///
+              xlabel(-.5(0.5)2.5) ylabel(,labsize(vsmall)) xline(0)
+            graph export "$csacprojdir/fig/learn/reg/`y'_`cat'_w_Nmean_bully_afab_color.png", replace width(1600)
         }
 
     }
@@ -501,6 +532,21 @@ foreach y in hsexp_index {
         coefplot  (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) (`y'_m2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) , drop(_cons *.race_assn *.parent_edu) baselevels label legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0) // title( "`: var label `y''")
         graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_color.png", replace width(1600)
 
+        * Model controlling for bullying: demographics + times_bullied
+        di "M_bully: using `cat' to predict HS experience, controlling for demographics & bullying"
+        reg `y' i.`cat'_cat i.race_assn i.parent_edu i.times_bullied
+        est store `y'_mbully
+
+        label val `cat'_cat `cat'_cat_`y'2
+        coefplot ///
+         (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+         (`y'_m2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+         (`y'_mbully, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+         , drop(_cons *.race_assn *.parent_edu *.times_bullied) baselevels label ///
+         legend(order(2 "unconditional" 4 "control for demographics" 6 "control for demographics & bullying") span size(small) cols(1) region(lwidth(none))) ///
+          xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0)
+        graph export "$csacprojdir/fig/learn/reg/`y'_`cat'_w_Nmean_bully_color.png", replace width(1600)
+
         * SO only: model controlling for assigned sex at birth
         if "`cat'" == "so" {
             di "M3: using SO and assigned sex at birth to predict HS experience, controlling for demographics"
@@ -516,6 +562,22 @@ foreach y in hsexp_index {
              legend(order(2 "unconditional" 4 "control for demographics" 6 "control for demographics & assigned sex at birth") span size(small) cols(1) region(lwidth(none))) ///
               xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0)
             graph export "/home/research/ca_ed_lab/projects/csac_survey2023/fig/learn/reg/`y'_`cat'_w_Nmean_afab_color.png", replace width(1600)
+
+            * SO only: demographics + bullying + assigned sex at birth
+            di "M_bully_afab: using SO to predict HS experience, controlling for demographics, bullying & assigned sex at birth"
+            reg `y' i.`cat'_cat i.race_assn i.parent_edu i.times_bullied i.afab
+            est store `y'_mbullyafab
+
+            label val `cat'_cat `cat'_cat_`y'2
+            coefplot ///
+             (`y'_m1, msymbol(O) ciopts( lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'") ) ///
+             (`y'_m2, msymbol(D) ciopts( lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")) ///
+             (`y'_mbully, msymbol(T) ciopts( lwidth(*2) color("`mdgray'")) mcolor("`mdgray'")) ///
+             (`y'_mbullyafab, msymbol(S) ciopts( lwidth(*2) color("`taborange'")) mcolor("`taborange'")) ///
+             , drop(_cons *.race_assn *.parent_edu *.times_bullied *.afab) baselevels label ///
+             legend(order(2 "unconditional" 4 "control for demographics" 6 "+ bullying" 8 "+ bullying & assigned sex at birth") span size(small) cols(1) region(lwidth(none))) ///
+              xlabel(-4(1)1) ylabel(,labsize(vsmall)) xline(0)
+            graph export "$csacprojdir/fig/learn/reg/`y'_`cat'_w_Nmean_bully_afab_color.png", replace width(1600)
         }
 
     }
