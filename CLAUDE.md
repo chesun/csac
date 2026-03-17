@@ -19,7 +19,7 @@ This is the **CSAC 2023 High School Senior Survey** project — a collaboration 
 ## Execution Model
 
 All Stata code runs on a **remote Linux research server** — not locally. The workflow is:
-1. Edit do files locally (Dropbox-synced)
+1. Edit do files locally
 2. Upload to server via SSH
 3. Execute on server where data lives
 
