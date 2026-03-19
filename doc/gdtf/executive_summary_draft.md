@@ -24,8 +24,8 @@ orientation. Our analytic sample includes 7,522 respondents.
 
 ## Key Findings
 
-**Trans and gender expansive students report substantially less positive
-high school experiences than their cisgender peers.** On a composite
+**LGBTQ+ students report substantially less positive high school
+experiences than their cisgender/heterosexual peers.** On a composite
 index of high school experience, cisgender men scored highest (mean =
 4.3 on a -12 to 12 scale), followed by cisgender women (3.8), while
 gender diverse/questioning students scored lowest (1.1). By sexual
