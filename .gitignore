@@ -3,3 +3,7 @@
 .claude/*
 !.claude/settings.json
 !.claude/CLAUDE.md
+!.claude/rules/
+!.claude/rules/*.md
+!.claude/state/
+!.claude/state/verification-ledger.md
