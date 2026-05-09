@@ -1,0 +1,38 @@
+% Standalone wrapper for chapter 3 of the dissertation.
+%
+% This file exists ONLY to compile chapter3.tex outside the dissertation
+% (so the chapter can be drafted, reviewed, and circulated independently
+% before integration). Do NOT copy this file into the dissertation —
+% only chapter3.tex is the swap-in artifact.
+%
+% Build: pdflatex chapter3_standalone.tex
+%        biber chapter3_standalone
+%        pdflatex chapter3_standalone.tex
+%        pdflatex chapter3_standalone.tex
+%
+% Bibliography: stylefile.sty hardcodes \addbibresource{bibliography_all.bib}.
+% The local bibliography_all.bib in this directory holds the chapter-3 subset;
+% at integration time, merge its entries into the dissertation's
+% bibliography_all.bib (do not overwrite — the dissertation file is shared).
+
+\documentclass[letterpaper,11pt]{report}
+\usepackage{stylefile}
+\usepackage{textcomp}
+\hypersetup{pdftitle={Chapter 3 — LGBTQ+ Students' High School Experiences and Academic Plans (standalone draft)}}
+
+\begin{document}
+
+\title{LGBTQ+ Students' High School Experiences and Academic Plans \\
+       \large{Dissertation Chapter 3 (standalone draft)}}
+\author{Christina Sun, Alexandria Hurtt, Michal Kurlaender}
+\date{\today}
+
+\maketitle
+
+\chapter{LGBTQ+ Students' High School Experiences and Academic Plans}
+\label{chap:ch3}
+\input{chapter3}
+
+\printbibliography
+
+\end{document}

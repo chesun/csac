@@ -1,0 +1,324 @@
+% ---- Select text fonts -----
+
+% Make PDF searchable and copyable
+\input{glyphtounicode}
+\pdfgentounicode=1
+% Select font encoding 
+\usepackage[T1]{fontenc}  % Set up font encoding to T1, which is suitable for European languages and provides better hyphenation and character support
+%\usepackage{bookman}     
+%\renewcommand*\familydefault{bch}  
+
+%\renewcommand{\rmdefault}{cmss}
+% Select text font
+%\usepackage{sourceserifpro}
+% Select monospaced font
+%\usepackage{sourcecodepro}
+% Select URL font
+\usepackage[hyphens]{url}
+
+% ---- Select math fonts -----
+
+% Select symbol font
+\usepackage{MnSymbol}
+% Select calligraphic and blackboard-bold fonts
+\usepackage[cal=euler,bb=fourier]{mathalpha}
+% Enable bold math characters
+\newcommand{\hmmax}{0} % Avoid "Too many math alphabets" error
+\newcommand{\bmmax}{0} % Avoid "Too many math alphabets" error
+\usepackage{bm}
+\usepackage{bbm}
+% Select font for Roman letters, Greek letters, digits, and punctuation
+\usepackage[italic,eulergreek,nolessnomore,noparenthesis,noplusnominus,noequal,nohbar]{mathastext}
+% Correct spacing around certain Roman letters
+\MTsetmathskips{f}{3mu}{0mu}
+\MTsetmathskips{y}{2mu}{0mu}
+\MTsetmathskips{p}{2mu}{0mu}
+\MTsetmathskips{j}{2mu}{0mu}
+
+% ---- Adjust page layout ----
+
+% Customize page dimensions
+\usepackage{geometry}
+% Set top margin
+\geometry{top=1in}
+% Set bottom margin
+\geometry{bottom=1in}
+% Set side margins
+\geometry{left=1in,right=1in}
+% Set placement of page number
+\geometry{footskip=0.5in}
+
+% ---- Adjust spacing ----
+
+% Set spacing between lines
+\usepackage[doublespacing]{setspace}
+% Set spacing on lines
+\usepackage{microtype}
+% Set spacing in text
+%\AtBeginDocument{\frenchspacing}
+\usepackage{parskip}
+
+% ---- Select color scheme ----
+\usepackage[dvipsnames]{xcolor}
+
+% ---- Format header and footer ----
+
+% Customize headers and footers
+\usepackage{fancyhdr}
+% Activate custom header and footer
+\pagestyle{fancy}
+% Eliminate header line
+\renewcommand{\headrule}{}
+% Clear header and footer
+\fancyhf{}
+%\fancypagestyle{plain}{\fancyhf{}}
+% Place centered page number at foot of regular pages
+\fancyfoot[C]{\thepage}
+% Define custom commands with complex argument specifications
+\usepackage{xparse}
+% Remove footnote indentation
+\usepackage[bottom]{footmisc} % This package allows you to customize footnotes
+\setlength{\footnotemargin}{0pt} % Set margin for footnotes to 0
+\renewcommand{\footnotelayout}{\setlength{\parindent}{0pt}}
+
+
+% Place URL and publication information at foot of title page
+% \NewDocumentCommand{\available}{o g}{%
+% \fancypagestyle{plain}{\fancyfoot[C]{\color{gray}\footnotesize%
+% \IfValueT{#1}{Published in \emph{#1}\;\textbullet\;}%
+% Available at \url{#2}}}}
+
+% ---- Format title page ----
+
+% Customize title, author, and date
+\usepackage{titling}
+% Format title
+\pretitle{\begin{center}\bfseries\LARGE} 
+\posttitle{\end{center}}
+\preauthor{\begin{center}\Large} 
+\postauthor{\end{center}}
+%\predate{\begin{center}\Large} \postdate{\par\end{center}}
+
+\usepackage{titlesec}
+  %\titleformat{\chapter}[hang]{\bf}{\centering\Large\MakeUppercase\chaptername~\thechapter}{1ex}{\centering\MakeUppercase\Large}
+ 
+\titleformat{\chapter}[display]{\normalfont\bfseries}{}{5pt}{\huge}
+  \titlespacing{\chapter}{0cm}{*-5}{*2}
+
+% Eliminate thanks mark
+%\renewcommand{\tamark}{}
+%\setlength{\thanksmarkwidth}{0em}
+%\setlength{\thanksmargin}{0em}
+
+% Enable advanced programming features
+\usepackage{etoolbox}
+
+% Eliminate indentation in abstract
+\AtBeginEnvironment{titlepage}{\pagestyle{empty}\setlength{\parindent}{0pt}\singlespacing}
+
+% ---- Format section headings ----
+
+% Customize section headings
+\usepackage{titlesec}
+% Format section headings
+\titleformat*{\section}{\large\bfseries}
+% Format subsection headings
+\titleformat*{\subsection}{\bfseries}
+% Format paragraph headings
+\titleformat{\paragraph}[runin]{\itshape}{}{}{}[.]
+\setlength{\parindent}{20pt}
+% Add period after heading numbers
+\titlelabel{\thetitle.\quad}
+
+% ---- Format theorems and proofs ----
+
+% Enhance theorem environments
+\usepackage{amsthm}
+% Define theorem style
+\newtheoremstyle{paper}{}{}{\itshape}{}{\scshape}{.}{0.5em}{}
+% Apply theorem style
+\theoremstyle{paper}
+% Define theorems
+\newtheorem{theorem}{theorem}
+\newtheorem{proposition}{proposition}
+\newtheorem{lemma}{lemma}
+\newtheorem{corollary}{corollary}
+\newtheorem{definition}{definition}
+\newtheorem{assumption}{assumption}
+\newtheorem{remark}{remark}
+\newtheorem{hypothesis}{hypothesis}
+
+% Format proof heading
+\renewcommand{\proofname}{\upshape\scshape proof}
+
+% ---- Format figures and tables ----
+\usepackage{adjustbox}
+\usepackage{amsbsy}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{lscape}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{pdfpages}
+\usepackage{rotating} % sidewaystable
+\usepackage{setspace}
+\usepackage{soul}
+\usepackage{tabularx}
+\usepackage{tabulary}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage{longtable}
+\usepackage{ulem}
+\usepackage{verbatim}
+
+
+%Tikz pictures
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{startstop} = [rectangle, rounded corners, 
+minimum width=4.5cm, 
+minimum height=1.2cm,
+text centered, 
+text width=4.5cm, 
+draw=black, 
+fill=white!50]
+\tikzstyle{process} = [rectangle, rounded corners, 
+minimum width=4.5cm, 
+minimum height=1.2cm, 
+text centered, 
+text width=4.5cm, 
+draw=black, 
+fill=orange!10]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+% Include graphics
+\usepackage{graphicx}
+% Enhance table formatting
+\usepackage{booktabs}
+% Enable rotation of tables and figures
+\usepackage{rotating}
+\usepackage{lscape}
+% Enable multiple rows in table
+\usepackage{multirow}
+% Allow small figures and tables to be on their own page
+\renewcommand{\floatpagefraction}{0}
+% Center figures and tables
+\makeatletter\g@addto@macro\@floatboxreset\centering\makeatother 
+% Adjust spacing in tables
+\renewcommand{\arraystretch}{1.1}
+% Set font size in tables
+\BeforeBeginEnvironment{tabular*}{\footnotesize}
+
+% Write "table" and "figure" in small caps 
+\renewcommand{\tablename}{\textsc{table}}
+\renewcommand{\figurename}{\textsc{figure}}
+
+% Customize captions and subcaptions
+\usepackage{caption,subcaption}
+
+% Format captions
+\captionsetup{labelsep=period}
+
+% Place table captions above table
+\captionsetup[table]{position=top}
+
+% Format subcaptions
+\captionsetup[sub]{labelformat=simple,labelsep=period,size=small}
+
+% Write figure sublabels in Roman caps
+\renewcommand{\thesubfigure}{\Alph{subfigure}}
+
+% Create note for tables and figures
+\NewDocumentCommand{\note}{o g}{%
+\parbox{\textwidth}{\footnotesize\vspace*{10pt}%
+\IfValueT{#1}{\textit{#1}:\quad}%
+#2}}
+
+% ---- Format equations ----
+
+% Set tolerance for page breaks in multiline equations
+\AtBeginDocument{\allowdisplaybreaks[1]}
+
+% ---- Format lists ----
+
+% Customize lists
+\usepackage{enumitem}
+
+% Format itemized lists
+\setlist[itemize,1]{leftmargin=\parindent,label=\color{gray}{\upshape\textbullet}} % First level
+\setlist[itemize,2]{leftmargin=2\parindent,label=\color{gray}{\upshape\textendash}} % Second level
+
+% Format numbered lists
+\setlist[enumerate,1]{leftmargin=\parindent,label=\color{gray}{\upshape\alph*.}} % First level
+\setlist[enumerate,2]{leftmargin=2\parindent,label=\color{gray}{\upshape\roman*.}} % Second level
+
+% Eliminate extra spacing between items
+\setlist{nosep}
+
+% ---- Format bibliography ----
+
+% OPTION 1: Traditional BibTeX (recommended for dissertations)
+% Uncomment these lines if using traditional BibTeX:
+% \bibliographystyle{plainnat}
+
+% % OPTION 2: Natbib with traditional BibTeX
+% % Uncomment these lines if you want natbib citation commands with traditional BibTeX:
+% \usepackage{natbib}
+% \bibliographystyle{plainnat}
+% % Eliminate author-year separation in citations
+% \setcitestyle{aysep={}}
+% % Set font size in bibliography
+% %\renewcommand{\bibfont}{\small}
+% %Set spacing between references
+% \setlength{\bibsep}{0pt}
+% % Set indentation of references
+% \setlength{\bibhang}{\parindent}
+
+% OPTION 3: Biblatex (modern approach)
+% Uncomment these lines if using biblatex:
+\usepackage[style=apa,backend=biber,natbib=true]{biblatex}
+\addbibresource{bibliography_all.bib}
+\setlength{\bibhang}{1.5em} % hanging indent
+%\setlength{\bibitemsep}{\baselineskip} % space between items
+
+\usepackage{etoolbox}
+\apptocmd{\bibsetup}{\sloppy}{}{} % allows breaking long lines in bib entries
+
+
+
+% ---- Format appendix ----
+
+% \AfterEndEnvironment{thebibliography}{  
+% %insert A labelling after bibliography (since appendix starts after bib)
+% % Reset counters
+% \setcounter{theorem}{0}
+% \setcounter{proposition}{0} 
+% \setcounter{lemma}{0}
+% \setcounter{corollary}{0}
+% \setcounter{definition}{0}
+% \setcounter{assumption}{0}
+% \setcounter{remark}{0}
+% \setcounter{table}{0}
+% \setcounter{figure}{0}
+% \setcounter{equation}{0} 
+% %
+% % Add "A" in front of labels
+% \renewcommand{\thetheorem}{A\arabic{theorem}}
+% \renewcommand{\theproposition}{A\arabic{proposition}}
+% \renewcommand{\thelemma}{A\arabic{lemma}}
+% \renewcommand{\thecorollary}{A\arabic{corollary}}
+% \renewcommand{\thedefinition}{A\arabic{definition}}
+% \renewcommand{\theassumption}{A\arabic{assumption}}
+% \renewcommand{\theremark}{A\arabic{remark}}
+% \renewcommand{\thetable}{A\arabic{table}}
+% \renewcommand{\thefigure}{A\arabic{figure}}
+% \renewcommand{\theequation}{A\arabic{equation}}
+% %
+% % Add "Appendix" in front of section label
+% \titleformat{\section}{\centering\large\bfseries}{Appendix~\thesection.}{1em}{}}
+
+% ---- Enable hyperlinks  ----
+
+\usepackage[pdftex,hidelinks,hypertexnames=false,pdfpagemode=UseNone,pdfdisplaydoctitle=true, colorlinks = true, linkcolor = Blue, urlcolor = Blue, breaklinks=true, citecolor = black]{hyperref}
