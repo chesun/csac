@@ -4,26 +4,1620 @@
 % ~/github_repos/dissertation_template/Chapter3/chapter3.tex
 % when integrating into the dissertation.
 %
-% Format conventions (must hold for both standalone and dissertation builds):
-%   - File begins with \section{...} — NO \documentclass, \begin{document},
-%     or \chapter{...} (the dissertation wrapper supplies the \chapter).
-%   - Citations: \citet{key} for textual, \citep{key} for parenthetical. Both
-%     resolve under APA (dissertation) and authoryear (standalone) styles.
-%   - Figures: \includegraphics{filename.png}. The graphicspath below searches
-%     both Figures/ (standalone build) and Chapter3/Figures/ (integrated build),
-%     so the same path resolves in either context.
-%   - Tables: bare \begin{tabular}...\end{tabular}; wrap in
-%     \begin{threeparttable}...\end{threeparttable} for notes.
+% Conventions: file begins with \section{...} (no \documentclass, no \chapter).
+% Citations: \citet{key} for textual, \citep{key} for parenthetical.
+% Figures: \includegraphics{filename.png}; graphicspath below resolves both
+%   standalone (Figures/...) and integrated (Chapter3/Figures/...) paths.
+% Tables: \input{Tables/tabNN_slug.tex} loads bare longtable fragments.
 
 \graphicspath{{Figures/}{Chapter3/Figures/}}
 
-\section{Introduction}
+\section{\texorpdfstring{Introduction}{Introduction}}\label{introduction}
 
-[Chapter 3 introduction. Awaiting final Word doc from coauthor for content
-import.]
+A critical choice students make in high school is whether to pursue a
+postsecondary education. This choice is shaped by students' experiences
+in high school (Kurlaender et al., 2019; Reed et al., 2023; Uwah et al.,
+2008), which can influence their educational aspirations and
+expectations (Bergerson, 2009)--- important predictors of later
+educational attainment (Jacob \& Wilder, 2010; Sewell et al., 1969).
+Moreover, research has long documented differences in aspirations and
+expectations across student groups (Bergerson, 2009), including
+race/ethnicity, gender, and first-generation status (Kao \& Tienda, 1998;
+Mau \& Bikos, 2000; McCarron \& Inkelas, 2006; Solorzano, 1992; Trusty,
+2002), with recent studies drawing on more expansive definitions of
+gender identity and sexual orientation (Aragon et al., 2014; Feldman et
+al., 2022).
 
-% Subsequent sections will be populated from the final Word version of:
-%   "LGBTQ+ Students' High School Experiences and Academic Plans"
-%   (Sun, Hurtt, Kurlaender)
-% Expected section order: Introduction, Background, Data, Methods, Results,
-% Discussion, Conclusion. See doc/gdtf/ for the published PDF and v3 Word draft.
+Despite this, gaps are still present in research examining the
+educational aspirations of different gender and sexual identities,
+including intended field of study in college. Given that lesbian, gay,
+bisexual, transgender, and queer (and/or questioning) (LGBTQ+) students
+are distinct groups (e.g., Beemyn, 2012; Nicolazzo, 2017; Watson et al.,
+2019), each of which likely experiences school and the college-going
+process differently, it is important to interrogate the extent to which
+college aspirations and expectations differ by gender identity and
+sexual orientation. Moreover, as LGBTQ+ students frequently report
+experiencing harassment and discrimination in high school---often
+related to their sexual orientation, gender identity, and/or how they
+express their gender (Kosciw et al., 2021)---this may impact their
+specific academic aspirations and broader considerations about college,
+as school victimization can lead to lower levels of school belonging and
+self-esteem, high rates of absenteeism, and diminished academic
+outcomes, including college enrollment (Aragon et al.,~2014; Heck et
+al.,~2014; Kosciw et al.,~2013; Sansone, 2019). How differences in
+LGBTQ+ students' secondary experiences may affect their educational
+trajectories is also important to examine, particularly as federal
+protections for LGBTQ+ students have been rolled back in the current
+administration (Schultz, 2025). This work thus aims to examine
+associations between gender identity and specific academic aspirations
+(e.g., type of college, intended field of study) and college concerns
+among college-bound 12\textsuperscript{th} graders in California. In addition, we
+evaluate whether any differences in students' aspirations and
+expectations may be attributable, at least in part, to differences in
+high school experiences, including whether a student faced harassment or
+bullying.
+
+Therefore, this study explores the following research questions: (1) Do
+students' college aspirations and expectations differ by gender identity
+and sexual orientation? and (2) if so, to what extent are these observed
+differences attributable to students' high school experiences? Drawing
+on the results of a large-scale survey conducted in partnership with the
+state agency responsible for administering financial aid in California,
+we explore patterns in high school experiences and college expectations
+(including academic plans, concerns, and excitements) to investigate
+what LGBTQ+ students, particularly those that identify as transgender
+and gender expansive, consider ahead of the college transition. We
+specifically highlight trans and gender expansive students as they often
+face distinct social challenges cisgender LGB+ students may not
+experience at the same rate (James et al., 2016). By examining trans and
+gender expansive students in addition to other subgroups of the LGBTQ+
+community, we can analyze potential inequalities students may experience
+and how this might influence the college transition process.
+
+This study focuses on California students given the state's broad
+diversity across demographics, geography, and postsecondary
+opportunities. California is a particularly important context for this
+analysis as the state has historically adopted more protective policies
+for LGBTQ+ students compared to other states (e.g., the FAIR Education
+Act, comprehensive anti-discrimination protections) and maintains one of
+the most diverse student populations in the nation.
+
+\subsection{\texorpdfstring{Defining Gender Identity and Sexual Orientation}{Defining Gender Identity and Sexual Orientation}}\label{defining-gender-identity-and-sexual-orientation}
+
+Students use a variety of labels to describe both their gender identity
+and sexual orientation (Callis, 2014; Galupo et al., 2015), reflecting
+the fact that traditional binary labels (e.g., woman, man, heterosexual,
+homosexual) are often constraining descriptors for the complex ways
+individuals experience gender and sexuality \citep{hammack2022a}.
+Moreover, research suggests students are constructing their own
+identities through different labels (Watson et al., 2019; White et al.,
+2018). Accordingly, gender identities beyond the established binary are
+increasingly recognized and additional labels have also emerged to
+describe sexual orientation apart from those traditionally defined
+\citep{galupo2015a}. Although individuals continue to identify with
+traditional binary labels, many students now use a more expansive set of
+labels for both gender (e.g., nonbinary, genderfluid) and sexual
+orientation (e.g., asexual, queer) (Beemyn, 2022; Hammack et al., 2022).
+Additionally, not every individual may feel comfortable selecting a
+label, or may be unsure about which labels to select, with \emph{questioning}
+and \emph{unsure} commonly reported terms for both gender identity and sexual
+orientation (Watson et al., 2019; White et al., 2018). In this study, we
+utilize a novel dataset that acknowledges the spectrum of labels
+students may use to define their identities outside a binary construct
+and spotlight transgender, nonbinary, and gender diverse students in our
+analysis to enrich understanding of these students' unique experiences
+navigating the high school to college transition.
+
+This paper is organized as follows: We first review prior literature and
+the theoretical frameworks guiding our analysis. Next, we describe our
+data sources, key measures, and analytic approach, followed by
+quantitative and qualitative findings. We then discuss limitations
+before considering implications for California education policy.
+
+\section{\texorpdfstring{Theoretical Background and Prior Literature}{Theoretical Background and Prior Literature}}\label{theoretical-background-and-prior-literature}
+
+The transition from high school to college is shaped by a confluence of
+individual and institutional factors that can affect students'
+educational expectations and later attainment \citep{kurlaender2019a}.
+Individual differences, relationships, the school one attends, and
+broader context all play a role during this critical period (Luh et al.,
+2023; Pike \& Robbins, 2016). At the student level, attributes such as
+motivation, self-efficacy, and academic performance moderate students'
+educational \hl{trajectory (CITE).} Moreover, high school academic
+performance is associated with one's aspirations to both two- and
+four-year colleges \citep{desjardins2019a}, suggesting that students'
+perceptions of their chances of admission and success also guide their
+postsecondary ambitions.
+
+Additionally, research has long demonstrated that various forms of
+social and cultural capital play a role in shaping students' educational
+pathways (Bourdieu, 1986; Dumais \& Ward, 2010; Merolla \& Jackson, 2014;
+Plagens, 2011; Wells, 2008). For example, social capital, or the
+resources available through one's social networks, shapes college-going
+outcomes. Research shows that relationships with peers, family members,
+and mentors can support students' acquisition of valuable information
+about the college application and enrollment process and help develop
+stronger college-going attitudes and behaviors (Alvarado \& An, 2015;
+Hill, 2008; Perna, 2000; Skobba et al., 2018). Students that can
+navigate the socially constructed norms surrounding the college process,
+and whose networks provide access to academic and social resources for
+this transition, are more likely to enroll in college (Choi et al.,
+2008; Fletcher, 2015). As LGBTQ+ students often experience hostile
+social environments in schools and at home, caring adults and social
+support more broadly may be particularly important to the college-going
+process. Beyond social capital, research suggests LGBTQ+ students living
+in cis-normative environments exhibit particular strengths, or possess
+several types of queer cultural capital (Pennell, 2016). This includes
+navigational capital, or the ability to navigate schools and other
+institutional systems that are not always designed with LGBTQ+ students
+in mind. Here, students must learn to navigate systems and spaces (e.g.,
+cis-normative school and state policies about gendered restrooms, sports
+participation), potentially in creative ways, in order to access the
+psychological, social, cultural, and physical resources they need for
+their well-being (Pennell, 2016).
+
+At the institutional level, schools shape students' expectations of
+college and future educational attainment through the environments they
+cultivate (Eccles \& Roeser, 2011; Uwah et al., 2008). A school culture
+characterized by high values and expectations for learning is associated
+with increased academic outcomes \citep{hattie2009a}, and school safety and
+climate are also critical to engagement, belongingness, and achievement
+(Osterman, 2000; Walton \& Cohen, 2011). As schools may be unsafe
+learning environments for LGBTQ+ students, who often experience higher
+rates of bias-based bullying and victimization \citep{day2018a},
+LGBTQ+ students' perception of school climates may be inherently
+different from those of their cisgender heterosexual peers. Moreover,
+students' schooling experiences are mediated by stressors that underlie
+societal conditions, including external (e.g., discrimination and
+violence) and internal stressors (e.g., expectations of prejudice,
+concealment, internalized stigmas). These stressors, heightened for
+LGBTQ+ students, can affect psycho-social outcomes \citep{hunter2021a}, ultimately influencing educational expectations and the
+transition from high school to college more broadly. For example, prior
+research indicates that transgender youth often experience
+gender-related victimization, particularly in secondary schools, which
+may lead to higher levels of emotional distress and lower levels of
+school belonging \citep{mcbride2021a}. Moreover, victimization, reduced
+feelings of school belonging, and emotional distress can have a negative
+effect on school attendance, academic performance, and expectations to
+enroll in a four-year college for all LGBTQ+ youth \citep{aragon2014a}. Altogether, research suggests students' high school experiences
+influence their future educational behavior (Gong \& Toutkoushian, 2024).
+
+Our work is thus motivated by several interconnected frameworks to
+understand how LGBTQ+ students navigate the transition from high school
+to college. First, we draw on a newer model of college choice outlined
+by Klasik and colleagues (2025) that builds upon prior models (e.g.,
+Hossler \& Gallagher, 1987; Perna, 2006) to include expectations as a
+critical component in students' predisposition for college. We examine
+the ways in which high school experiences influence students' college
+expectations (including academic plans, concerns, and excitements) in
+the spring of their senior year and focus on an understudied and
+marginalized group: LGBTQ+ students.
+
+As college expectations are context-dependent, this work is also framed
+by the social ecological theory of resilience \citep{ungar2011a} to
+understand the potential variation in the college expectations of LGBTQ+
+students, who must often navigate hostile environments and cis-normative
+policies at school and within society more generally \citep{kosciw2022a}. LGBTQ+ youth that faced harassment or social exclusion in high
+school may look towards college as a new opportunity to fit in, while
+those who did not struggle as much may have other concerns. Similarly,
+LGBTQ+ students that plan to live away from home while in college may
+feel increased trepidation (i.e., leaving familial support) or, in
+contrast, relief (i.e., escaping familial discomfort or hostility)
+(O'Neill \& Conron et al., 2022). As college transitions vary across
+demographic differences, including gender (Means et al., 2016;
+Toutkoushian et al., 2018), students' identities concurrently influence
+their lived experiences and expectations for their pathway to college
+(Feldman et al., 2022; Fotopoulou, 2012). Therefore, it is important to
+consider different elements of students' identities in addition to how
+those identities are shaped by students' networks and environment. The
+differences we observe in LGBTQ+ students' expectations for college will
+reflect students' experiences and the ways in which they navigate their
+own situated context.
+
+\section{\texorpdfstring{Data and Methods}{Data and Methods}}\label{data-and-methods}
+
+\subsection{\texorpdfstring{Survey Instrument and Sample Characteristics}{Survey Instrument and Sample Characteristics}}\label{survey-instrument-and-sample-characteristics}
+
+In May 2023, in partnership with the California Student Aid Commission
+(CSAC)---the state agency responsible for administering financial aid
+programs for students attending public and private universities,
+colleges, and vocational postsecondary institutions in California---we
+administered a web-based survey to document the experiences of high
+school seniors planning to enroll in college. The survey was distributed
+to all seniors statewide that submitted either the Free Application for
+Federal Student Aid (FAFSA) or the California Dream Act Application
+(CADAA) for the 2023-24 academic year.{[}\^{}1{]} A total of \hl{XX
+{[}number{]}} students were sent an invitation to participate in
+the survey through CSAC; 10,221 completed surveys, including 9,230
+respondents who indicated they planned to go to college, 170 who did not
+plan to attend, 294 that were unsure, and 527 who did not \hl{respond to
+the enrollment plans question.} Our response rate was \hl{XX
+percent}. Students reported on varying dimensions of their high
+school experiences; the support they received in preparation for
+college; their academic interests and plans for postsecondary
+enrollment; and their concerns about college. Detailed information on
+gender identity and sexual orientation was also collected. Overall,
+9,230 respondents completed surveys who indicated they were high school
+seniors and intended to enroll in college that fall. After excluding
+respondents who were missing information about gender identity (n =
+1,708), sexual orientation (n = 1,749), race/ethnicity (n = 1,617), or
+parental education (n = 1,647), our final analytic sample included 7,522
+participants. Table 1 reports the demographic characteristics of our
+analytical sample.
+
+Compared to California's 2022--23 statewide 12th grade enrollment (see
+Appendix Table A2), our sample is broadly, though imperfectly,
+representative of the state's college-bound senior population on several
+key dimensions. In terms of race and ethnicity, our sample mirrors
+statewide enrollment, though Hispanic/Latinx students are modestly
+underrepresented (49.8\% vs.~55.7\% statewide) while Black/African
+American and Asian students are slightly overrepresented (7.0\% vs.~4.9\%
+and 15.1\% vs.~9.5\%, respectively). A direct comparison of gender is more
+difficult to draw given the state reports enrollment using only male,
+female, and nonbinary categories. With that caveat in mind, our sample
+skews more female than the statewide enrollment figures would suggest
+(57.0\% cisgender women vs.~48.2\% female statewide), which may reflect
+known patterns of differential college-going rates by gender. Given
+these differences in how gender is measured, direct comparisons on that
+dimension should be interpreted with caution.
+
+Further, because survey participation was entirely voluntary, our sample
+is self-selected, meaning that patterns in who chose to respond---and
+how they responded---may not generalize to the full population of
+college-bound seniors who filed a FAFSA or CADAA. Importantly, because
+our sample is limited to students who completed a financial aid
+application and intended to enroll in college, it excludes seniors who
+did not pursue postsecondary education. To the extent that negative high
+school experiences, such as identity-based victimization, contribute to
+disengagement from schooling or lower college-going rates, our sample
+may be positively selected, and the disparities documented here may
+understate those experienced by the broader population of LGBTQ+ high
+school students in California. We therefore interpret our findings as
+descriptive of the experiences reported by this sample rather than as
+estimates of population parameters.
+
+****
+
+\textbf{Table 1}
+
+\emph{Demographic Characteristics of 12\textsuperscript{th} Grade Participants (N = 7,522),}
+\emph{2023}
+
+\input{Tables/tab01_demographics.tex}
+
+To collect data on gender identity, we adopted the two-step approach
+recommended by the GenIUSS group \citep{herman2014a} given its high
+sensitivity and specificity in accurately discriminating between
+transgender and cisgender respondents (Herman, 2014; Saperstein \&
+Westbrook, 2021). This approach includes two questions: (1) What is your
+sex assigned at birth, on your original birth certificate?, with \emph{male}
+and \emph{female} as response options; and (2) What is your current gender
+identity?, with \emph{woman}, \emph{man}, \emph{nonbinary}, \emph{prefer not to say}, and
+\emph{other} as response options. Respondents who chose \emph{other} also had the
+option to write in a response. Using these survey items, we classify
+respondents into one of the following umbrella categories: \emph{cisgender},
+\emph{transgender and gender expansiv}e (Robinson \& Cooper, 2024), and
+\emph{prefer not to say}. Respondents who reported that their sex assigned at
+birth aligned with their current gender identity (e.g., male and man;
+female and woman) were categorized as \emph{cisgender}, while respondents who
+reported their sex assigned at birth differed from their current gender
+identity were categorized as \emph{trans(gender) and gender expansive}. The
+Human Rights Campaign uses the term \emph{trans(gender) and gender expansive}
+to describe ``the collective community of individuals whose gender
+identities, gender presentations and expressions, and/or lived
+experiences differ from those typically associated with the sex they
+were assigned at birth'' (Robinson \& Cooper, 2024). Here, we adopt this
+collective umbrella term to refer to all respondents who identified
+differently than their sex assigned at birth while recognizing that
+``trans'' and ``gender expansive'' are not necessarily distinct or mutually
+exclusive identities, and that some may not use these labels to describe
+their personal identity.
+
+We further classify trans and gender expansive students into the
+following sub-categories, which we utilize in our analysis: \emph{transgender
+men, transgender women, nonbinary,} and \emph{gender diverse/questioning.}
+For example, students who reported their sex assigned at birth as female
+or male and who identified as a man or a woman were categorized as
+\emph{binary-identifying transgender men} and \emph{women}, respectively\emph{.}
+Students who selected \emph{nonbinary} or wrote in responses that included
+the term ``nonbinary'' in their written responses were categorized as
+\emph{nonbinary}, regardless of sex assigned at birth\emph{.} Students who wrote
+in other diverse gender identities (e.g., genderfluid) are captured by
+the term \emph{gender diverse/questioning}. Our analysis revealed some
+significant differences between the experiences of nonbinary and gender
+diverse/questioning students, which provides additional support for
+these distinctions. Finally, students who chose \emph{prefer not to say} or
+wrote in malicious responses (e.g., racial and gender slurs) were
+classified as \emph{prefer not to say}. Among the trans and gender expansive
+students in our sample (\emph{n} = 417), about 19\% identified as transgender,
+64\% as nonbinary, and 17\% as gender diverse/questioning. Beyond
+predefined options, students also noted 26 unique terms to describe
+their gender identity, including \emph{genderfluid}, \emph{agender},
+\emph{genderqueer}, and \emph{two-spirit}, among many others{[}\^{}2{]}\emph{.} We also
+examined associations between gender identity and sexual orientation and
+found that trans and gender expansive students were more likely to
+select a non-heterosexual sexual orientation than cisgender students
+(see Table A1 in Appendix A).{[}\^{}3{]}
+
+To measure sexual orientation, we adapted the survey instrument
+recommended by the Sexual Minority Assessment Research Team (SMART) to
+capture the breadth of students' identities. Students were asked to
+self-identify among the following options: \emph{lesbian or gay}; \emph{straight
+(not gay or lesbian)}; \emph{bisexual}; \emph{asexual}; \emph{prefer not to say}; and
+\emph{other}, which also included the opportunity to write in a response
+\citep{badgett2009a}. The option \emph{asexual} was added to proffer more
+expansive options for students. Within our sample, nearly one-quarter
+(\emph{n} = 1,782) of students identified as LGB+, with most students
+identifying as bisexual/pansexual/omnisexual (15.2\%), while about 4\% of
+students identified as gay or lesbian, 2.4\% as
+asexual/aromantic/demisexual, and 1.8\% as other/queer/questioning.
+Similar to gender identity, students also used a variety of terms to
+describe their sexual orientation beyond those provided, such as
+\emph{pansexual} and \emph{queer}, while others used multiple terms or did not
+want to label their sexual orientation.{[}\^{}4{]}
+
+We also adapted questions on bullying and harassment from the California
+Healthy Kids Survey \citep{austin2023a} to examine students\textquotesingle{}
+experiences with identity-based victimization in high school.
+Specifically, we asked students to report the frequency with which they
+were bullied or harassed at school in the past 12 months, with response
+options ranging from zero times to four or more times. Students who
+reported being bullied at least once were then asked to identify the
+reasons for their victimization, including race or ethnicity, religion,
+gender identity, or sexual orientation.
+
+A full descriptive examination of the rich diversity of labels students
+used to describe their gender identities and sexual orientation in the
+open response option, beyond those provided, is included in a companion
+paper currently under review \citep{hurtt2026a}. Here, we
+turn to how LGBTQ+ identities relate to students' high school
+experiences and college expectations.
+
+\section{\texorpdfstring{\textbf{Data} \textbf{Analysis}}{Data Analysis}}\label{data-analysis}
+
+We examine four main areas: high school experience; bullying and
+harassment; concerns about college; and postsecondary educational
+plans---including intended field of study, enrollment intentions, and
+degree aspiration.
+
+To measure high school experience, we construct an additive index
+(equally weighted) from six survey items: students' ratings of their
+high school academic performance, social experience, sense of belonging
+in their school community, whether teachers and staff cared about their
+future, the quality of college advising, and feelings of preparedness
+for college.{[}\^{}5{]} All items range from -2 to 2, with -2 indicating a very
+negative experience, 2 indicating a very positive experience, and 0
+indicating a neutral experience. We construct the additive index using
+these items given their internal consistency (Cronbach's alpha = 0.74).
+The index for high school experiences ranges from -12 to 12, with higher
+values indicating more positive high school experiences. To explore
+differences in high school experience by gender and sexual orientation,
+we regress the high school experience index on gender identity/sexual
+orientation, first in an unconditional model and then adding controls
+for race/ethnicity and parental education.{[}\^{}6{]}
+
+We also descriptively examine rates of experiencing bullying and
+harassment in high school, disaggregated by gender identity and sexual
+orientation. For students who reported being bullied at least once, we
+further examine whether they attributed the bullying to their gender
+identity or sexual orientation.
+
+To examine college concerns, we analyze the battery of 12 survey items
+in which students were asked to rate how worried they were about their
+upcoming college experience on a four-point Likert scale (0 = "Not at
+all worried", 1 = ``Slightly worried'', 2 = ``Somewhat worried'', and 3 =
+"Very worried"). Eight items captured general concerns: affording
+tuition, living expenses, performing well academically, balancing work
+obligations, balancing family obligations, finding community, living
+away from home, and having adequate support for emotional and mental
+health needs. Four items captured concerns about discrimination:
+discrimination based on race, gender identity, sexual orientation, and
+religion (see Appendix C and D for disaggregation of each item by gender
+identity and sexual orientation, respectively).
+
+We assessed the internal consistency of the 12 items using Cronbach's
+alpha (0.80) and then performed principal component analysis (PCA){[}\^{}7{]}
+to identify underlying dimensions of college worry. We retained
+components with eigenvalues greater than 1.0, which identified three
+principal components. We then constructed a composite worry index for
+each retained component for every student as a weighted sum of the
+student's responses to the 12 worry items, with weights given by the
+eigenvector of the corresponding component. The first component, which
+we label as \emph{general worries}, loads broadly across most items and
+captures overall anxiety about the college transition. The second
+component, \emph{worries about discrimination}, loads most heavily on the
+four discrimination items. The third component, \emph{worries about financial
+burdens}, loads primarily on the tuition and living expense items. Each
+index is a continuous measure, with higher values indicating greater
+concern along that dimension.
+
+We then use regression analysis to explore potential differences in the
+level of each type of worry by gender identity and sexual orientation.
+We estimate three different specifications in our analysis: (1) an
+unconditional model with gender identity/sexual orientation alone; (2) a
+model controlling for student demographics (i.e., the full set of
+race/ethnicity and highest parental education indicators); and (3) a
+model that controls for student demographics and high school experience
+index. Coefficient estimates from models (2) and (3) are very similar,
+therefore we report only models (1) and (3). For robustness, we also
+additionally estimate a model that controls for demographics, high
+school experience index, and sex assigned at birth for differences by
+sexual orientation. Results for this additional model are reported in
+Appendix G.
+
+We examine postsecondary educational plans along three dimensions.
+First, we tabulate intended field of study by gender identity (Table 5).
+Second, we estimate logit models for intent to attend a four-year
+(versus two-year) college. Third, we estimate ordered logit models for
+highest degree aspirations, where the outcome is an ordinal measure with
+five categories: vocational/technical certificate, associate degree,
+bachelor's degree, master's degree, and doctoral degree. The logit and
+ordered logit models are estimated separately by gender identity and
+sexual orientation. In each case, we estimate an unconditional model and
+a model with controls for race/ethnicity and parent education. For
+sexual orientation models, we additionally estimate a specification that
+controls for assigned sex at birth. Cisgender men and
+straight/heterosexual students serve as the reference categories. We
+report odds ratios with 95\% confidence intervals and present predicted
+probabilities from the ordered logit models as a stacked bar chart,
+evaluated at sample means.
+
+\section{\texorpdfstring{Findings}{Findings}}\label{findings}
+
+\textbf{High School Experiences}
+
+Using the high school experience index described in the Data Analysis
+section, we first compare average high school experiences by gender
+identity and sexual orientation. For summary statistics of survey items
+over the entire sample, see Appendix B. For summary statistics of survey
+items disaggregated by gender identity and sexual orientation, see
+Appendix C.
+
+We first compare average high school experiences by gender identity
+(Table 2). Cisgender men report the most positive high school
+experiences (mean = 4.27), followed by cisgender women (mean = 3.79).
+Trans and gender expansive students report substantially less positive
+experiences, with gender diverse/questioning students reporting the
+lowest scores (mean = 1.11). We plot these differences as regression
+coefficients in Figure 1 and find them statistically significant and
+robust to the inclusion of demographic controls. While not causal, these
+results indicate that there is an association between gender identity
+and students' experiences in high school, which we consider in later
+analyses.
+
+\textbf{Table 2}
+
+\emph{Summary Statistics of High School Experience Index by Gender Identity}
+
+\input{Tables/tab02_hsexp_by_gender.tex}
+
+\emph{Note.} The general high school experience index only applies to
+students who reported non-missing values for all six high school
+experience items and ranges from -12 to 12 (negative values indicate a
+negative experience, positive values indicate a positive experience, and
+zero indicates a neutral experience). High school experience items are
+available in Appendices B and C
+
+****
+
+\textbf{Figure 1}
+
+\includegraphics[width=\textwidth]{fig01_hsexp_gender.png}\emph{Regression of High School Experience Index on Gender
+Identity}
+
+\emph{Note.} For the unconditional model, \emph{n} = 7,483. For the model
+controlling for demographics (race/ethnicity and parental level of
+education), \emph{n} = 7,464. The lines indicate 95 percent confidence
+intervals while the sample frequency and mean index of each gender
+identity are reported in parentheses. The vertical line at 0 represents
+the coefficient for the reference group (cisgender man).
+
+We observe a similar pattern by sexual orientation (see Table 3).
+Relative to straight/heterosexual students (mean = 4.13), all other
+sexual orientation groups report significantly lower high school
+experience scores. Students who prefer not to disclose their sexual
+orientation (mean = 2.91) and bisexual/pansexual/omnisexual students
+(mean = 3.12) report the largest gaps, while
+asexual/aromantic/demisexual students (mean = 3.68) and gay or lesbian
+students (mean = 3.55) report somewhat smaller but still significant
+differences. These differences are attenuated but remain statistically
+significant after controlling for race/ethnicity and parental education,
+as well as assigned sex at birth (results presented in Figure 2). While
+not causal, these results indicate that there is an association between
+both gender identity and sexual orientation and students\textquotesingle{} experiences
+in high school, which we consider in later analyses.
+
+\textbf{Table 3}
+
+\emph{General High School Experience by Sexual Orientation}
+
+\input{Tables/tab03_hsexp_by_so.tex}
+
+\emph{Note.} The general high school experience index only applies to
+students who reported non-missing values for all six high school
+experience items and ranges from -12 to 12 (negative values indicate a
+negative experience, positive values indicate a positive experience, and
+zero indicates a neutral experience). High school experience items are
+available in Appendices B and C.
+
+\textbf{Figure 2}
+
+\emph{Regression of High School Experience Index on Sexual Orientation}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{fig02_hsexp_so.png}
+\caption{A graph with colored lines and dots AI-generated content may be
+incorrect.}
+\end{figure}
+
+\emph{Note.} For the unconditional model, \emph{n} = 7,483. For the model
+controlling for demographics (race/ethnicity and parental level of
+education), \emph{n} = 7,464. The lines indicate 95 percent confidence
+intervals while the sample frequency and mean index of each sexual
+orientation are reported in parentheses. The vertical line at 0
+represents the coefficient for the reference group
+(straight/heterosexual).
+
+\subsection{\texorpdfstring{Bullying in High School}{Bullying in High School}}\label{bullying-in-high-school}
+
+As described in Data and Methods, students reported the frequency with
+which they were bullied or harassed at school (response options included
+\emph{0 times}, \emph{1 time}, \emph{2-3 times}, and \emph{4 or more times}). For students
+who reported being bullied at least once, students were also asked about
+the reasons they were harassed or bullied (i.e., race or ethnicity,
+religion, gender identity, or sexual orientation).
+
+Figure 3 presents the frequency of bullying by gender identity and
+sexual orientation. Across all respondents, approximately 77\% of
+students reported not being bullied or harassed on school property in
+the past year, while roughly 10\% reported being bullied once, 9\%
+reported being bullied two to three times, and about 4\% reported being
+bullied four or more times. However, these rates varied considerably by
+gender identity. Among cisgender men, nearly 84\% reported no bullying
+compared to only about 35\% of transgender students and 54\% of nonbinary
+and gender diverse/questioning students. Moreover, transgender students
+reported the highest rates of repeated victimization, with approximately
+27\% experiencing bullying two to three times and nearly 16\% experiencing
+bullying four or more times --- rates far exceeding those of any other
+gender identity group. Nonbinary and gender diverse/questioning students
+also reported elevated rates of bullying relative to their cisgender
+peers, with roughly 23\% reporting two to three incidents and about 10\%
+reporting four or more.
+
+Patterns by sexual orientation revealed similar disparities. While
+approximately 82\% of straight/heterosexual students reported no bullying
+in the past year, this figure dropped to about 61\% for gay or lesbian
+students and 62\% for bisexual, pansexual, and omnisexual students.
+Students identifying as other, queer, or questioning also reported lower
+rates of no bullying (about 60\%) and higher rates of repeated
+victimization compared to their heterosexual peers. Asexual, aromantic,
+and demisexual students reported rates closer to the overall average,
+though still below those of heterosexual students.
+
+\textbf{Figure 3}
+
+\emph{Frequency of Bullying/Harassment in the Past Year}
+
+\subsection{\texorpdfstring{\protect\includegraphics[width=\textwidth]{fig03_times_bullied.png}}{}}\label{a-graph-of-a-number-of-bullied-in-the-last-12-months-ai-generated-content-may-be-incorrect.}
+
+\emph{Note.} Rates depicted in the figure represent the sample of students
+that responded to questions about bullying and harassment (n = 7,512 for
+disaggregation by gender, and \emph{n} = 7,471 for disaggregation by sexual
+orientation).
+
+Among students who reported being bullied one or more times, we further
+examined whether students attributed the bullying to their gender
+identity or sexual orientation (Figure 4). Overall, about 55\% of
+students that were bullied indicated they had been harassed because of
+their gender or sexual orientation. This figure, however, masks stark
+differences across identity groups. Among transgender students who
+reported being bullied (\emph{n} = 42), all attributed the bullying to their
+gender or sexual orientation, and nearly 88\% of nonbinary and gender
+diverse/questioning students who were bullied reported the same. In
+contrast, only about 35\% of cisgender men and 51\% of cisgender women who
+were bullied attributed it to gender or sexual orientation. Disparities
+were just as pronounced across sexual orientation: approximately 97\% of
+gay or lesbian students who experienced bullying reported it was related
+to their gender or sexual orientation, compared to about 77\% of
+bisexual, pansexual, and omnisexual students and only 28\% of
+straight/heterosexual students. These patterns underscore that trans and
+gender expansive students and sexual minority students not only
+experience higher rates of bullying overall, but are also
+disproportionately targeted because of their identity --- a finding
+consistent with prior research documenting the heightened risk of
+bias-based victimization among LGBTQ+ youth (Day et al., 2018; Kosciw et
+al., 2022).
+
+\textbf{Figure 4}
+
+\emph{Student Responses to ``During the past 12 months, were you harassed or
+bullied for your gender identity or sexual orientation?''}
+
+\includegraphics[width=\textwidth]{fig04_bullied_because.png}\emph{Note}. Rates depicted in the figure represent the sample
+of students that reported being bullied or harassed more than once (\emph{n}
+= 960 for disaggregation by gender, and \emph{n} = 958 for disaggregation by
+sexual orientation).
+
+Together, these patterns paint a troubling picture of the high school
+climate for trans and gender expansive students and sexual minority
+students more broadly. Not only are these students bullied at
+substantially higher rates, but the bullying they experience is
+overwhelmingly tied to their identity. Importantly, these experiences do
+not exist in isolation from students' expectations for college. As we
+examine in the following section, the elevated rates of identity-based
+victimization documented here likely contribute to the heightened
+worries about discrimination that trans and gender expansive students
+report ahead of the college transition, even as students simultaneously
+express excitement about the possibility of finding safer, more
+affirming postsecondary environments.
+
+\textbf{Bullying as a Potential Mediator of High School Experiences}
+
+To investigate whether identity-based victimization helps explain the
+observed differences in high school experience by gender identity and
+sexual orientation, we estimated additional models that control for the
+frequency of bullying or harassment in the past year (results presented
+in Appendix I). As shown in Appendix Figure I1, adding bullying as a
+covariate substantially attenuates the coefficients for gender identity.
+For example, the gap between gender diverse/questioning students and
+cisgender men narrows from -3.29 to -2.46 index points, and the gap for
+nonbinary students narrows from -2.03 to -1.44, though both remain
+highly significant. The coefficient for transgender women is no longer
+statistically significant after controlling for bullying (b = -0.80, p =
+0.39), consistent with this group\textquotesingle s small sample size. Across all
+gender identity categories, the R-squared increases from 0.034
+(demographics only) to 0.072 (demographics plus bullying), indicating
+that bullying frequency explains a meaningful share, but not all, of the
+variation in high school experiences.
+
+A similar pattern emerges by sexual orientation (Appendix Figure I2).
+After controlling for bullying, the coefficient for gay or lesbian
+students is no longer statistically significant (b = -0.32, p = 0.18),
+suggesting that the lower high school experience reported by this group
+is largely attributable to bullying experiences. The gap for
+bisexual/pansexual/omnisexual students narrows from -1.11 to -0.72 but
+remains significant, indicating that bullying explains part but not all
+of the difference for this group. Further controlling for assigned sex
+at birth produces only modest additional attenuation. These results
+suggest that bullying is a meaningful mediator of the relationship
+between gender identity, sexual orientation, and overall high school
+experience, though it does not fully account for the observed
+disparities --- particularly for bisexual/pansexual/omnisexual students
+and those who prefer not to disclose their sexual orientation.
+
+\subsection{\texorpdfstring{Concerns About College}{Concerns About College}}\label{concerns-about-college}
+
+Having established that bullying partly accounts for identity-related
+differences in high school experience, we next turn to students'
+concerns ahead of the college transition. Students were asked about
+their concerns ahead of the transition to college (Table 4). The three
+PCA-derived worry indices described in the Data Analysis section
+together explained 56.0\% of the variance in overall worries about the
+transition to college: (1) general worries; (2) worries about
+discrimination (including gender, sexuality, race, and religion); and
+(3) worries about financial burdens (including tuition and living
+costs). For summary statistics of the survey items used to construct
+these dimensions by gender identity and sexual orientation, see Appendix
+D. Together, these components explained 56.0\% of the variance in overall
+worries about the transition to college. We constructed three indices of
+worries using PCA eigenvectors (summary statistics of the PCA constructs
+are reported in Table 4).
+
+\textbf{Table 4}
+
+\emph{College Concern Items and Results from Principal Component Analysis
+(PCA)}
+
+\input{Tables/tab04_concerns_pca.tex}
+
+\emph{Note.} The first twelve rows are survey items related to college
+worries. Each item ranges from 0 (\emph{not worried at all}) to 3 (\emph{very
+worried}). The last three rows indicate the three constructs: (1)
+\emph{general worries} ranges from 0 to 10.23; (2) \emph{worries about
+discrimination} ranges from -3.83 to 5.12; and (3) \emph{worries about
+financial burdens} ranges from -3.64 to 3.65. Constructs were only
+created for high school students that reported non-missing values for
+all twelve items. The PCA proportion explained is reported in
+parentheses after each construct. See Data Analysis section for details
+on the construction of the worry indices.
+
+In terms of broad concerns, we find trans and gender expansive students
+experience a higher level of general worries compared to cisgender
+students. When we correlated these worries to students' high school
+experiences, there appeared to be a negative, fairly weak correlation
+between high school experience and general worries about college; that
+is, students who reported more negative experiences in high school, on
+average, reported more worries. However, there is almost no correlation
+between high school experience and worries about discrimination or
+financial burdens, respectively.
+
+Regression estimates for each component of worry by gender identity,
+with and without controls, are presented in Figures 5 through 7 (see
+Data Analysis for specification details). In all regressions, \emph{cisgender
+men} was set as the baseline comparison category.
+
+Regression estimates for general college worries on gender categories
+are presented in Figure 5. Among trans and gender expansive students, we
+find no statistical differences in general worries between different
+gender identities. That is, the general worries of transgender men,
+transgender women, and nonbinary or gender questioning students were
+significantly higher than cisgender men, but not significantly different
+from each other.
+
+\textbf{Figure 5}
+
+\emph{Regression of General College Worries on Gender Identity} \emph{Categories}
+
+\includegraphics[width=\textwidth]{fig05_worry_general_gender.png}
+
+\emph{Note.} We estimate regression models with gender indicators for an
+unconditional model (\emph{n} = 7,319) and include race/ethnicity indicators,
+parental education indicators, and a constructed high school experience
+index as covariates for the specification with control variables (\emph{n} =
+7,276). The lines indicate 95 percent confidence intervals while the
+sample frequency and mean for each gender identity are reported in
+parentheses. The vertical line at 0 represents the coefficient for the
+reference group (cisgender man).
+
+Additionally, results illustrate that trans and gender expansive
+students maintain higher levels of worry about discrimination compared
+to cisgender students (Figure 6), as the magnitude of the difference
+between transgender men and cisgender men exceeds the mean level of
+worry about discrimination for cisgender men. Additionally, among trans
+and gender expansive students, transgender students report higher levels
+of worry about discrimination compared to nonbinary and gender
+diverse/questioning students, although this estimate is somewhat noisy
+due to sample size. Finally, Figure 7 suggests that worries about
+financial burdens do not differ by gender identity.
+
+\textbf{Figure 6}
+
+\emph{Regression of Worries about Discrimination on Gender Identity
+Categories}
+
+\includegraphics[width=\textwidth]{fig06_worry_discrim_gender.png}
+
+\emph{Note.} We estimate regression models with gender indicators for an
+unconditional model (\emph{n} = 7,319) and include race/ethnicity indicators,
+parental education indicators, and a constructed high school experience
+index as covariates for the specification with control variables (\emph{n} =
+7,276). The lines indicate 95 percent confidence intervals while the
+sample frequency and mean for each gender identity are reported in
+parentheses. The vertical line at 0 represents the coefficient for the
+reference group (cisgender man).
+
+****
+
+\textbf{Figure 7}
+
+\emph{Regression of Worries about Financial Burdens on Gender Identity}
+\emph{Categories}
+
+\includegraphics[width=\textwidth]{fig07_worry_finance_gender.png}
+
+\emph{Note.} We estimate regression models with gender indicators for an
+unconditional model (\emph{n} = 7,319) and include race/ethnicity indicators,
+parental education indicators, and a constructed high school experience
+index as covariates for the specification with control variables (\emph{n} =
+7,276). The lines indicate 95 percent confidence intervals while the
+sample frequency and mean for each gender identity are reported in
+parentheses. The vertical line at 0 represents the coefficient for the
+reference group (cisgender man).
+
+We find a similar pattern when examining college concerns by sexual
+orientation. All non-heterosexual groups report significantly higher
+levels of general worries compared to straight/heterosexual students
+(Figure 8). The magnitude of these differences is fairly consistent
+across sexual orientation categories, with point estimates ranging from
+roughly 0.5 to 1.0 units above straight/heterosexual students.
+Other/queer/questioning students report the highest level of general
+worries (mean = 4.58), though the confidence interval is wider due to
+smaller sample size. These differences remain statistically significant
+after controlling for demographics and high school experience, though
+the estimates are somewhat attenuated.
+
+Worries about discrimination also differ significantly by sexual
+orientation (Figure 9). All non-heterosexual groups report higher levels
+of worry about discrimination relative to straight/heterosexual students
+(mean = -1.39). Among sexual minority students,
+asexual/aromantic/demisexual and other/queer/questioning students report
+the largest differences, while bisexual/pansexual/omnisexual students
+report somewhat smaller but still significant differences. These
+estimates are robust to the inclusion of demographic controls and the
+high school experience index.
+
+As with gender identity, worries about financial burdens do not differ
+meaningfully by sexual orientation (Figure 10). Point estimates are
+close to zero for most groups and confidence intervals generally overlap
+with the reference line, suggesting that financial concerns about
+college are not strongly associated with sexual orientation.
+
+\textbf{Figure 8}
+
+\emph{Regression of General College Worries on Sexual Orientation}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{fig08_worry_general_so.png}
+\caption{A graph with blue and yellow dots AI-generated content may be
+incorrect.}
+\end{figure}
+
+\emph{Note.} For the unconditional model, \emph{n} = 7,283. For the model
+controlling for demographics (race/ethnicity and parental level of
+education), \emph{n} = 7,263. The lines indicate 95 percent confidence
+intervals while the sample frequency and mean index of each sexual
+orientation are reported in parentheses. The vertical line at 0
+represents the coefficient for the reference group
+(straight/heterosexual).
+
+\textbf{Figure 9}
+
+\emph{Regression of College Worries about Discrimination on Sexual
+Orientation}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{fig09_worry_discrim_so.png}
+\caption{A graph with numbers and lines AI-generated content may be
+incorrect.}
+\end{figure}
+
+\emph{Note.} For the unconditional model, \emph{n} = 7,283. For the model
+controlling for demographics (race/ethnicity and parental level of
+education), \emph{n} = 7,263. The lines indicate 95 percent confidence
+intervals while the sample frequency and mean index of each sexual
+orientation are reported in parentheses. The vertical line at 0
+represents the coefficient for the reference group
+(straight/heterosexual).
+
+\textbf{Figure 10}
+
+\emph{Regression of College Worries about Financial Burdens on Sexual
+Orientation}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{fig10_worry_finance_so.png}
+\caption{A graph with numbers and lines AI-generated content may be
+incorrect.}
+\end{figure}
+
+\emph{Note.} For the unconditional model, \emph{n} = 7,283. For the model
+controlling for demographics (race/ethnicity and parental level of
+education), \emph{n} = 7,263. The lines indicate 95 percent confidence
+intervals while the sample frequency and mean index of each sexual
+orientation are reported in parentheses. The vertical line at 0
+represents the coefficient for the reference group
+(straight/heterosexual).
+
+\section{\texorpdfstring{Bullying as a Potential Mediator of College Worries}{Bullying as a Potential Mediator of College Worries}}\label{bullying-as-a-potential-mediator-of-college-worries}
+
+To investigate whether bullying experiences help explain the observed
+differences in college worries, we estimated additional models that
+control for the frequency of bullying or harassment in the past year,
+alongside demographic controls and the high school experience index
+(results are presented in Appendix J).
+
+For general worries by gender identity, controlling for bullying
+modestly attenuates the coefficients but does not substantively change
+the pattern of results (Appendix Figure J1). For example, the
+coefficient for nonbinary students decreases from 1.64 to 1.49, and for
+gender diverse/questioning students from 1.81 to 1.62, but all trans and
+gender expansive categories remain significantly higher than cisgender
+men. The bullying coefficients themselves are positive and significant,
+indicating that students who experienced more frequent bullying report
+higher general worries about college, though this association does not
+fully account for the gender identity differences. A similar pattern
+holds by sexual orientation (Appendix Figure J2): all non-heterosexual
+groups continue to report significantly higher general worries after
+controlling for bullying, with only modest attenuation of the
+coefficients.
+
+For worries about discrimination, the results are even more striking.
+After controlling for bullying, the coefficients for gender identity
+remain large and highly significant (Appendix Figure J3). Transgender
+men maintain the highest level of worry about discrimination relative to
+cisgender men (b = 1.48), followed by transgender women (b = 1.22),
+nonbinary students (b = 0.97), and gender diverse/questioning students
+(b = 0.73). The persistence of these large coefficients after
+controlling for bullying suggests that worry about discrimination is not
+simply a reflection of past bullying experiences but may reflect broader
+anticipation of discrimination in the college environment. By sexual
+orientation (Appendix Figure J4), all non-heterosexual groups likewise
+maintain significantly elevated worries about discrimination after
+controlling for bullying, with other/queer/questioning students (b =
+0.71) and asexual/aromantic/demisexual students (b = 0.62) reporting the
+largest differences.
+
+Consistent with the earlier findings, worries about financial burdens
+remain unrelated to either gender identity or sexual orientation after
+controlling for bullying (Appendix Figures J5 and J6). The bullying
+coefficients themselves are small and largely non-significant in the
+financial burden models, confirming that financial concerns about
+college operate independently of both identity-based differences and
+bullying experiences.
+
+
+
+\section{\texorpdfstring{Postsecondary Education Plans}{Postsecondary Education Plans}}\label{postsecondary-education-plans}
+
+We first explore patterns in academic plans across gender identity,
+including college program type, intended field of study, and the highest
+degree students planned to pursue. Findings indicate that most students
+planned to enroll in a four-year college compared to a two-year college
+across gender identity (Figure 11); however, more transgender and
+nonbinary students planned to enroll in four-year colleges compared to
+their cisgender peers. Conversely, students that identified as gender
+diverse or questioning intended to enroll in a two-year or four-year
+college at nearly similar rates (49.3\% and 50.7\%, respectively).
+
+\textbf{Figure 11}
+
+\emph{Plans for Two- or Four- Year College Enrollment Among 12\textsuperscript{th} Grade
+Participants (n = 7,522) by Gender}\includegraphics[width=\textwidth]{fig11_enrollment_plans.png}
+
+Differences also emerged in students' intended field of study (Table 5).
+Overall, most students planned to study natural sciences (16.3\%),
+engineering (16.2\%), and health sciences (14.8\%), including trans and
+gender expansive students. These students often selected these majors at
+higher rates than their peers. For example, transgender women planned to
+study engineering at nearly 9 percentage points above the rate overall.
+Trans and gender expansive students were also more likely to pursue
+humanities and the arts, as gender diverse students (31.0\%), transgender
+men (28.8\%), nonbinary students (25.5\%), and transgender women (25.0\%)
+all indicated this field at much higher rates than the sample overall
+(11.4\%).
+
+\textbf{Table 5}
+
+\emph{Intended Field of Study by Gender Identity (n = 7,499)}
+
+Business
+
+Engineering
+
+Natural sciences
+
+Social sciences
+
+Humanities and arts
+
+Health sciences
+
+Education
+
+Applied sciences
+
+Public service
+
+Undecided
+
+N
+
+All respondents
+
+10.0
+
+16.2
+
+16.3
+
+12.3
+
+11.4
+
+14.8
+
+3.5
+
+3.4
+
+4.8
+
+7.5
+
+7,499
+
+Cisgender man
+
+12.1
+
+30.0
+
+12.2
+
+7.9
+
+8.9
+
+8.0
+
+1.4
+
+7.0
+
+4.3
+
+8.4
+
+2,662
+
+Cisgender woman
+
+9.6
+
+7.8
+
+18.4
+
+14.7
+
+11.2
+
+19.9
+
+4.9
+
+1.2
+
+5.3
+
+7.1
+
+4280
+
+Transgender man
+
+1.7
+
+13.6
+
+22.0
+
+15.3
+
+28.8
+
+6.8
+
+5.1
+
+1.7
+
+1.7
+
+3.4
+
+59
+
+Transgender woman
+
+10.0
+
+25.0
+
+10.0
+
+10.0
+
+25.0
+
+0.0
+
+0.0
+
+15.0
+
+0.0
+
+5.0
+
+20
+
+Nonbinary
+
+3.0
+
+12.0
+
+19.9
+
+15.4
+
+25.5
+
+7.9
+
+3.0
+
+3.4
+
+3.4
+
+6.7
+
+267
+
+Gender diverse/
+
+questioning
+
+1.4
+
+9.9
+
+19.7
+
+16.9
+
+31.0
+
+8.5
+
+1.4
+
+1.4
+
+5.6
+
+4.2
+
+71
+
+Prefer not to say
+
+5.0
+
+19.3
+
+18.6
+
+12.9
+
+17.9
+
+9.3
+
+2.9
+
+2.1
+
+3.6
+
+8.6
+
+140
+
+N
+
+749
+
+1211
+
+1220
+
+920
+
+852
+
+1106
+
+262
+
+255
+
+360
+
+564
+
+7,499
+
+\emph{Note}. Each cell represents the row percentage.
+
+Students also indicated the highest degree they planned to complete
+(Figure 12). Across all respondents, over half (54.9\%) planned to earn
+an advanced degree. Additionally, we find that more trans and gender
+expansive students indicated plans to earn a master's or doctorate at
+higher rates compared to cisgender students. Among transgender women, of
+the 55.0\% that planned to complete an advanced degree, 72.7\% intended to
+earn a master's degree---higher than any other gender identity we
+surveyed. Comparatively, transgender women, gender diverse/questioning
+students, and cisgender men were more likely to pursue an associate or
+vocational degree compared to other students, although transgender women
+and cisgender men appear to be outliers overall.
+
+\textbf{Figure 12}
+
+\emph{Plans for Degree Completion (n = 7,497)}\includegraphics[width=\textwidth]{fig12_degree_plans.png}
+
+\emph{Note.} Bars represent percentages. For disaggregation by gender
+identity, n = 7,497. For disaggregation by sexual orientation, n =
+7,456.
+
+To examine whether descriptive differences in postsecondary plans
+persist after accounting for student demographics, we estimated logit
+models for intent to attend a four-year college and ordered logit models
+for highest degree aspirations, separately by gender identity and sexual
+orientation. We report odds ratios, where values greater than one
+indicate higher odds relative to the reference category. We also report
+the predicted probabilities from the ordered logit models as stacked bar
+charts evaluated at sample means in Appendix H.
+
+For four-year enrollment by gender identity (Table 6), nonbinary
+students were significantly more likely than cisgender men to plan to
+attend a four-year institution, and this difference was robust to the
+inclusion of demographic controls. Cisgender women were also
+significantly more likely to plan to attend a four-year college in both
+specifications. The odds ratio for gender diverse/questioning students
+was less than one in both specifications, consistent with the
+descriptive finding that this group was roughly equally split between
+two- and four-year enrollment plans. For the smallest gender identity
+subgroups --- transgender men (n = 59) and transgender women (n = 20)
+--- the odds ratios were greater than one, but estimates are imprecise
+due to limited sample sizes; therefore, we refrain from drawing
+conclusions about four-year enrollment for these categories based on the
+regression estimates alone and instead direct readers to the descriptive
+results reported in Figure 11.
+
+For highest degree aspirations by gender identity (Table 8), we find
+that cisgender women had 1.63 times the odds of aspiring to a higher
+degree category compared to cisgender men in the unconditional model (OR
+= 1.63, 95\% CI {[}1.49, 1.78{]}), increasing slightly to 1.73 with
+demographic controls. Similarly, nonbinary students had significantly
+higher degree aspirations (OR = 1.80, 95\% CI {[}1.43, 2.26{]}), and
+transgender men also had significantly higher odds (OR = 1.74, 95\% CI
+{[}1.10, 2.75{]}). Gender diverse/questioning students had elevated odds
+that were statistically significant in the unconditional model (OR =
+1.58, 95\% CI {[}1.02, 2.45{]}), but attenuated to marginal significance
+with controls. The odds ratio for transgender women was not
+statistically significant, likely due to the small sample size.
+
+Results by sexual orientation were broadly consistent. For four-year
+enrollment (Table 7), gay or lesbian students and
+bisexual/pansexual/omnisexual students were significantly more likely to
+plan to attend a four-year college, and these differences persisted
+after controlling for demographics. The odds ratios for
+asexual/aromantic/demisexual and other/queer/questioning students were
+greater than one and significant in the unconditional models but
+attenuated and no longer statistically significant with the inclusion of
+demographic controls, suggesting that some of the descriptive
+differences for these groups may reflect compositional variation in
+race/ethnicity or parental education.
+
+\textbf{Table 6}
+
+Logit Models: Intent to Attend 4-Year College (Odds Ratios)\emph{, by Gender
+Identity}
+
+\input{Tables/tab05_field_of_study.tex}
+
+Exponentiated coefficients; 95\% confidence intervals in brackets
+
+\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
+
+\textbf{Table 7}
+
+Logit Models: Intent to Attend 4-Year College (Odds Ratios), by Sexual
+Orientation
+
+\input{Tables/tab06_logit_4yr_gender.tex}
+
+\emph{Note.} Exponentiated coefficients; 95\% confidence intervals in brackets
+
+\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
+
+For degree aspirations (Tables 8 and 9), ordered logit results reported
+as odds ratios indicate that nonbinary students had significantly higher
+degree aspirations than cisgender men (OR = 1.80, 95\% CI {[}1.43,
+2.26{]}), with the largest and most precisely estimated odds ratio among
+the trans and gender expansive categories; this difference remained
+robust with demographic controls (OR = 1.83, 95\% CI {[}1.45, 2.30{]}).
+Transgender men also reported significantly higher degree aspirations in
+both the unconditional (OR = 1.74, 95\% CI {[}1.10, 2.75{]}) and controlled
+(OR = 1.66, 95\% CI {[}1.03, 2.67{]}) models. Gender diverse/questioning
+students had 1.58 times the odds of aspiring to a higher degree category
+in the unconditional model (95\% CI {[}1.02, 2.45{]}), though this
+attenuated to marginal significance with demographic controls (OR =
+1.54, 95\% CI {[}0.99, 2.41{]}). Cisgender women had significantly higher
+degree aspirations across both specifications (OR = 1.63 unconditional;
+OR = 1.73 with controls). For transgender women, the very small sample
+size (n = 20) produced estimates that were too imprecise to support
+meaningful inference (OR = 1.19, 95\% CI {[}0.55, 2.61{]}); while the
+descriptive patterns suggest that transgender students as a group report
+lower rates of certificate and associate degree aspirations and
+comparable or higher rates of master\textquotesingle s degree aspirations relative to
+cisgender men, the regression models lack the statistical power to
+confirm these patterns for this subgroup individually. We therefore
+direct readers to the descriptive results in Figure 12 rather than
+interpret these coefficients substantively. In terms of sexual
+orientation, gay or lesbian students (OR = 1.53, 95\% CI {[}1.25, 1.87{]})
+and bisexual/pansexual/omnisexual students (OR = 1.64, 95\% CI {[}1.45,
+1.84{]}) consistently reported higher degree aspirations across both
+specifications. The odds ratios for asexual/aromantic/demisexual
+students (OR = 1.52, 95\% CI {[}1.17, 1.98{]}) and other/queer/questioning
+students (OR = 1.44, 95\% CI {[}1.06, 1.96{]}) were significant in the
+unconditional models but attenuated and no longer statistically
+significant with the inclusion of demographic controls, suggesting that
+some of these descriptive differences may reflect compositional
+variation in race/ethnicity or parental education.
+
+\textbf{Table 8}
+
+Ordered Logit Models: Highest Degree Plans (Odds Ratios) \emph{, by Gender
+Identity}
+
+\input{Tables/tab07_logit_4yr_so.tex}
+
+Exponentiated coefficients; 95\% confidence intervals in brackets
+
+\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
+
+\textbf{Table 9}
+
+Ordered Logit Models: Highest Degree Plans (Odds Ratios)\emph{, by Sexual
+Orientation}
+
+\input{Tables/tab08_olm_degree_gender.tex}
+
+Exponentiated coefficients; 95\% confidence intervals in brackets
+
+\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
+
+Overall, these regression results confirm that many LGBTQ+ students ---
+particularly nonbinary students, gay or lesbian students, and
+bisexual/pansexual/omnisexual students --- maintain high educational
+aspirations that are not explained by demographic composition alone. At
+the same time, the limited statistical power for the smallest gender
+identity subgroups highlights a recurring challenge in quantitative
+research on transgender populations and reinforces the need for larger,
+targeted data collection efforts that can support more precise inference
+for these communities.
+
+\subsection{\texorpdfstring{Qualitative Findings}{Qualitative Findings}}\label{qualitative-findings}
+
+The survey also asked respondents two open-ended questions: (1) ``\hl{What
+do you think is the biggest challenge you'll face in college?'' and (2)
+''What} are you most excited about for college?'' Although a full
+qualitative analysis of these data is beyond the scope of this paper, we
+report some of the social concerns and hopes raised by transgender,
+nonbinary, and gender diverse/questioning students.{[}\^{}8{]}
+
+\subsubsection{\texorpdfstring{\textbf{\emph{Social Challenges and Discrimination}}}{Social Challenges and Discrimination}}\label{social-challenges-and-discrimination}
+
+Nearly one-quarter of trans and gender expansive students identified
+social challenges as a concern, with many worried about making new
+friends or whether they would make friends at all. A nonbinary student
+described, ``Making friends has been a challenge for me in the past when
+I had to go somewhere new and didn't know anyone, so it might take a
+little while to get close with people.'' Transgender students also
+expressed concerns over finding community once they entered college,
+including worries they may not fit in, or may feel alone or overwhelmed
+in a new social environment. These worries also included fears of
+discrimination; multiple students noted concerns about transphobia,
+coming out to others, and seeing kids from their high school. Moreover,
+the most intense social concern came from one nonbinary student who
+shared: ``I could die from hate crimes.''
+
+\subsubsection{\texorpdfstring{\textbf{\emph{Finding Friends and Community}}}{Finding Friends and Community}}\label{finding-friends-and-community}
+
+In contrast, over 36\% of trans and gender expansive students were
+excited about the social aspects of college, as students anticipated
+meeting new people and building new friendships even despite some
+apprehension. One nonbinary student expressed, ``I will be making friends
+on my own, which is scary, but something to look forward to.'' Several
+students looked forward to finding community, with one gender diverse
+student writing: ``{[}I am excited{]} to be able to build a community for
+myself where I truly feel that I belong.'' Additionally, students
+anticipated meeting other students similar to themselves. One nonbinary
+student explained, ``I'm most excited about the friendships I will form
+with people who share the same mindset as me.'' Students also wanted to
+meet people who shared their academic interests. As one gender
+diverse/questioning student noted: ``I'm really excited to be part of a
+supportive and engaging community\ldots{} {[}and{]} excited to be around people
+with a similar drive for learning and an appreciation of education.''
+
+Several students were also excited to attend a college where they could
+access gender-affirming healthcare and housing. One gender
+diverse/questioning student mentioned, ``I'm also going to be downtown
+for college and I know that the college I'm going to is very LGBTQ+
+friendly.'' Another nonbinary student explained, ``I'm also looking
+forward to receiving certain medical treatment at my college's health
+center that I currently don't have access to.''
+
+Some trans and gender expansive students also looked forward to the
+opportunity to leave their home environment. Students described a desire
+to ``{[}get{]} away from home and a community that I was almost constantly
+harassed in,'' ``leave my abusive household,'' and ``be away from home\ldots{}
+{[}and{]} finally hav{[}e{]} my own autonomy.'' One trans woman added that
+leaving home and entering college explicitly offered ``the ability to
+transition my gender identity, as my parents are opposed to it.''
+Together, these responses illustrate a pattern consistent with our
+quantitative findings: even as trans and gender expansive students
+report elevated concerns about discrimination and less positive high
+school experiences, they simultaneously express hope that college will
+offer safer, more affirming environments where they can build community
+and access the support they need.
+
+\subsection{\texorpdfstring{Limitations}{Limitations}}\label{limitations}
+
+One limitation to consider in this work is that our sample is restricted
+to students that indicated their plans to enroll in college in the fall
+after their senior year. Our results therefore uniquely speak to a group
+of students that made it to 12\textsuperscript{th} grade and made the decision to
+explore college. As such, results do not include students who dropped
+out prior to 12\textsuperscript{th} grade, had other plans, or for whom college seemed
+out of reach---a population future research should examine in more
+detail, particularly for LGBTQ+ students. We also wish to note that
+students' plans can change---some students may not enroll in college
+after the survey was administered, underscoring that expectations to
+enroll do not always lead to enrollment (Klasik et al., 2025). Thus,
+these results reflect a unique sample of intended college-goers captured
+at one point in time. Future research on high school completion as well
+as college enrollment and retention by gender identity is needed.
+
+\section{\texorpdfstring{Discussion and Conclusion}{Discussion and Conclusion}}\label{discussion-and-conclusion}
+
+The transition from high school to college is an important one, and the
+high school experiences of LGBTQ+ students can influence their
+educational expectations and later attainment. Our findings reveal that
+identity-based bullying explains a meaningful share, but not all, of the
+observed disparities in high school experience for trans and gender
+expansive students. Controlling for bullying substantially attenuates
+the gender identity gaps (e.g., from -3.29 to -2.46 for gender
+diverse/questioning students), yet significant differences persist,
+indicating that the challenges these students face extend beyond
+victimization alone -\/- potentially including institutional climate,
+lack of representation, or navigating cis-normative policies and spaces.
+A similar pattern emerges by sexual orientation: bullying accounts for
+the high school experience gap among gay or lesbian students but does
+not fully explain the disparities for bisexual/pansexual/omnisexual
+students or those who prefer not to disclose their orientation. These
+findings are consistent with prior research on gender-related
+victimization in high school (Hatchel et al., 2018; McBride, 2021).
+
+Given these experiences, we examined students\textquotesingle{} concerns ahead of
+college enrollment. Overall, trans and gender expansive students worried
+more about discrimination compared to cisgender students. Notably, these
+elevated worries about discrimination persist after controlling for
+bullying experiences, with only modest attenuation of the coefficients.
+This suggests that worries about discrimination in college are not
+simply a reflection of past victimization but may represent anticipatory
+concerns about future discrimination -\/- consistent with the minority
+stress framework, in which the expectation of prejudice operates as a
+stressor independent of prior experiences of discrimination (Hunter et
+al., 2021). By contrast, general worries about college (e.g., tuition,
+finding community, academic performance) and worries about financial
+burdens showed little association with bullying, suggesting these
+concerns are driven by different factors. The energy that LGBTQ+
+students expend navigating and trying to avoid adverse experiences -\/-
+including remaining closeted -\/- detracts from the quality of their
+educational experience and ability to create community (Goldberg \&
+Kuvalanka, 2018; Kersey \& Voigt, 2021), and our findings suggest that
+this burden extends into the college transition: even after accounting
+for bullying, trans and gender expansive students report elevated
+concerns about facing discrimination in college, underscoring the
+pervasive nature of minority stress across educational settings.
+
+However, despite these worries, students still planned to pursue
+postsecondary schooling - in fact, trans and gender expansive students
+planned to pursue advanced degrees at higher rates than their peers. Our
+ordered logit results quantify these differences: nonbinary students had
+1.80 times the odds of aspiring to a higher degree category compared to
+cisgender men (95\% CI {[}1.43, 2.26{]}), transgender men had 1.74 times
+the odds (95\% CI {[}1.10, 2.75{]}), and by sexual orientation,
+bisexual/pansexual/omnisexual students had 1.64 times the odds (95\% CI
+{[}1.45, 1.84{]}). These differences were robust to the inclusion of
+demographic controls. While this differs from previous research (Feldman
+et al., 2022; Sansone, 2019; Wilkinson et al., 2021), the schooling
+experiences of transgender and gender expansive students in our sample
+may include supports (whether at school or at home) potentially absent
+to students documented in other studies. For example, students may have
+had access to resources that can promote the well-being of trans and
+gender expansive students, such as social support from peers, family,
+and the community; school-inclusive policies; and extracurricular
+activities, among others (Fernandes et al., 2023).
+
+These findings take on added significance in the current policy
+landscape. Since our data were collected in 2023, the federal policy
+environment for LGBTQ+ students has shifted considerably, including
+executive orders withdrawing federal recognition of transgender
+identities, restrictions on Title IX protections, and efforts to curtail
+access to gender-affirming care for minors (Exec. Order No.~14168, 2025;
+U.S. Department of Education, 2025). At the same time, several states
+have enacted laws limiting discussion of sexual orientation and gender
+identity in schools (Movement Advancement Project, 2025), while
+California has continued to strengthen state-level protections,
+including AB 1955 (the SAFETY Act), which prohibits school districts
+from requiring staff to disclose a student's gender identity or sexual
+orientation to parents without the student's consent (California
+Legislative Information, 2023; Equality California, 2025). This
+divergence underscores the importance of state-level data and
+state-level action. Our results suggest that even within California's
+comparatively protective policy environment, trans and gender expansive
+students experienced significant disparities in high school climate and
+identity-based victimization at the time of our survey. As federal
+protections for transgender students are rolled back, the role of state
+and local policy in addressing these disparities becomes even more
+critical.
+
+These policy considerations are further complicated by heterogeneity
+within the LGBTQ+ community. Our results on sexual orientation show that
+the associations between sexual orientation and both high school
+experience and college worries are partly but not fully explained by
+bullying. For some groups -\/- such as gay or lesbian students -\/- the
+high school experience gap is largely attributable to bullying, as the
+coefficient becomes non-significant when bullying is controlled for. For
+others, particularly bisexual/pansexual/omnisexual students, significant
+disparities in high school experience and elevated worries about
+discrimination persist even after accounting for bullying and assigned
+sex at birth. This heterogeneity reinforces the importance of
+disaggregated analysis and suggests that interventions must address a
+range of challenges beyond bullying alone.
+
+Our findings carry several implications for California education policy.
+First, the stark disparities in bullying rates and identity-based
+victimization documented in this study suggest that generic
+anti-bullying programs may be insufficient to address the experiences of
+trans and gender expansive students. That 100\% of bullied transgender
+students (\emph{n} = 42) attributed their victimization to their gender
+identity or sexual orientation points to the need for targeted
+interventions that specifically address identity-based harassment,
+including expanded support for gender-sexuality alliances (GSAs) and
+professional development for school staff on LGBTQ+ student needs.
+California's Seth's Law (AB 9, 2012) already requires schools to adopt
+anti-bullying policies that enumerate sexual orientation and gender
+identity as protected categories; however, our findings indicate that
+substantial identity-based victimization persists despite this legal
+framework, suggesting that districts may benefit from additional
+resources and accountability mechanisms to ensure these policies are
+actively implemented.
+
+Second, the patterns documented here -\/- where trans and gender
+expansive students report less positive high school experiences and
+elevated rates of identity-based bullying yet maintain elevated
+educational aspirations -\/- are consistent with the social ecological
+theory of resilience framing this study \citep{ungar2011a}. With the
+sample caveats noted in the Limitations section above, the persistence
+of elevated educational aspirations in the face of documented adversity
+is consistent with resilience and with the navigational capital that
+LGBTQ+ students develop through experience in cis-normative environments
+(Pennell, 2016). Our qualitative data reinforce this interpretation:
+even as students described fears of discrimination and hate crimes, they
+simultaneously expressed excitement about finding community and
+accessing gender-affirming resources in college, with one trans woman
+noting that college offered ``the ability to transition my gender
+identity, as my parents are opposed to it.'' Policymakers and
+institutions can build on this resilience by ensuring that the
+transition from high school to college is supported with resources that
+address the specific concerns these students reported, including worries
+about discrimination, finding community, and accessing gender-affirming
+services. This includes investments in bridge programs, mentoring, and
+campus resources that are responsive to the needs of incoming LGBTQ+
+students.
+
+Third, our study highlights the critical need for California to continue
+collecting and disaggregating data by gender identity and sexual
+orientation in statewide surveys and school climate assessments. The
+richness of the data collected in partnership with the California
+Student Aid Commission allowed us to identify disparities that would be
+invisible in datasets that treat LGBTQ+ students as a monolithic group
+or that omit gender identity measures entirely. As the state considers
+how to monitor school climate and student well-being going forward, this
+level of detail will be essential to understanding and addressing the
+needs of this population. However, we also recognize that in the current
+political climate, students may have legitimate concerns about
+disclosing their identities in institutional surveys. Efforts to build
+on this kind of evidence base will need to balance the analytic power of
+detailed identity data with robust protections for student privacy and
+confidentiality.
+
+More broadly, our findings underscore the importance of California's
+continued commitment to fostering safe, affirming educational
+environments --- and to ensuring that all students, regardless of gender
+identity or sexual orientation, are supported in realizing their
+educational aspirations. As California approaches a new chapter of its
+education policy, we hope these findings will offer a foundation for
+evidence-based action on behalf of some of the state's most vulnerable
+students.
