@@ -87,25 +87,45 @@ local texopts booktabs fragment nonotes label replace
 * TABLE 2  HS Experience Index summary by Gender Identity
 * TABLE 3  HS Experience Index summary by Sexual Orientation
 *-------------------------------------------------------------------------------
-* NOTE: estpost tabstat ... by(numeric_var) uses RAW category codes (0, 1, 2)
-* as row labels. To get value labels (Cisgender Man, Cisgender Woman, ...),
-* decode the numeric variable into a string variable first and use by(str_var).
+* NOTE on labels: estpost tabstat ... by(numeric_var) stores rows under the
+* numeric values (0, 1, 2). esttab then shows those numbers as row labels.
+* To get value labels in the output, build a coeflabels() option that maps
+* each numeric coefname to its value label.
+*
+* coeflabels(0 "Cisgender Man" 1 "Cisgender Woman" ...) handles spaces
+* without any compound-quoting headache.
 *===============================================================================
-cap drop gender_cat_str so_cat_str
-decode gender_cat, gen(gender_cat_str)
-decode so_cat,     gen(so_cat_str)
+
+* -- Helper program: build a coeflabels option from a labeled numeric var --
+cap program drop _build_coeflabels
+program define _build_coeflabels, rclass
+    syntax varname
+    local var = "`varlist'"
+    local lblname : value label `var'
+    levelsof `var', local(vals)
+    local out ""
+    foreach v of local vals {
+        local lab : label `lblname' `v'
+        local out `out' `v' `"`"`lab'"'"'
+    }
+    return local coefopts `"`out'"'
+end
 
 estimates clear
-estpost tabstat hsexp_index, listwise stat(N mean sd) by(gender_cat_str) columns(statistics)
+estpost tabstat hsexp_index, listwise stat(N mean sd) by(gender_cat) columns(statistics)
+_build_coeflabels gender_cat
+local coefopts = r(coefopts)
 esttab . using "`outdir'/tab02_hsexp_by_gender.tex", `texopts' ///
     cells("count(fmt(%9.0f)) mean(fmt(%9.2f)) sd(fmt(%9.2f))") ///
-    nostar unstack noobs nonumber
+    nostar unstack noobs nonumber coeflabels(`coefopts')
 
 estimates clear
-estpost tabstat hsexp_index, listwise stat(N mean sd) by(so_cat_str) columns(statistics)
+estpost tabstat hsexp_index, listwise stat(N mean sd) by(so_cat) columns(statistics)
+_build_coeflabels so_cat
+local coefopts = r(coefopts)
 esttab . using "`outdir'/tab03_hsexp_by_so.tex", `texopts' ///
     cells("count(fmt(%9.0f)) mean(fmt(%9.2f)) sd(fmt(%9.2f))") ///
-    nostar unstack noobs nonumber
+    nostar unstack noobs nonumber coeflabels(`coefopts')
 
 *===============================================================================
 * TABLE 4  Worry items + PCA constructs (overall N + mean)
@@ -120,76 +140,61 @@ esttab . using "`outdir'/tab04_concerns_pca.tex", `texopts' ///
 
 *===============================================================================
 * TABLE C1, C2  HS experience items, by Gender / by SO (cross-tab of means)
+* TABLE D1, D2  Worry items,        by Gender / by SO
 *-------------------------------------------------------------------------------
-* NOTE: esttab does NOT accept a trailing 'if' qualifier (programmer command,
-* not data command). Use control-flow if {} block instead.
+* NOTE: instead of building an mtitles() list (which requires fragile compound
+* double-quoting and broke "Cisgender Man" into two cells last time), we use
+* est store NAME, title("Label") - esttab uses stored titles automatically.
 *
-* For column headers to show value labels (Cisgender Man, ...) instead of
-* "col_0", "col_1", ..., build an mtitles() list using the value-label lookup
-* and pass it explicitly to esttab.
+* Helper to build cross-tab from per-by-group estpost results with proper
+* column titles taken directly from value labels.
 *===============================================================================
-foreach demo in gender so {
-    estimates clear
-    levelsof `demo'_cat, local(cats)
-    * Build mtitles list of value labels (one per by-group)
-    local lbl_name : value label `demo'_cat
-    local mtitles ""
-    foreach c of local cats {
-        local lab : label `lbl_name' `c'
-        local mtitles `"`mtitles' "`lab'""'
-        estpost tabstat $allhsexp if `demo'_cat == `c', stat(mean N) columns(statistics)
-        est store col_`c'
-    }
-    if "`demo'" == "gender" {
-        esttab col_* using "`outdir'/tab_appC1_hsexp_items_by_gender.tex", ///
-            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
-            mtitles(`mtitles')
-    }
-    else {
-        esttab col_* using "`outdir'/tab_appC2_hsexp_items_by_so.tex", ///
-            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
-            mtitles(`mtitles')
-    }
-}
 
-*===============================================================================
-* TABLE D1, D2  Worry items, by Gender / by SO (cross-tab of means)
-*===============================================================================
-foreach demo in gender so {
+cap program drop _build_crosstab
+program define _build_crosstab
+    syntax , VARS(string) BYvar(string) OUTfile(string) [TEXOPTS(string)]
     estimates clear
-    levelsof `demo'_cat, local(cats)
-    local lbl_name : value label `demo'_cat
-    local mtitles ""
+    levelsof `byvar', local(cats)
+    local lblname : value label `byvar'
     foreach c of local cats {
-        local lab : label `lbl_name' `c'
-        local mtitles `"`mtitles' "`lab'""'
-        estpost tabstat $allworries if `demo'_cat == `c', stat(mean N) columns(statistics)
-        est store col_`c'
+        local lab : label `lblname' `c'
+        estpost tabstat `vars' if `byvar' == `c', stat(mean N) columns(statistics)
+        eststo col_`c', title(`"`lab'"')
     }
-    if "`demo'" == "gender" {
-        esttab col_* using "`outdir'/tab_appD1_concerns_by_gender.tex", ///
-            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
-            mtitles(`mtitles')
-    }
-    else {
-        esttab col_* using "`outdir'/tab_appD2_concerns_by_so.tex", ///
-            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
-            mtitles(`mtitles')
-    }
-}
+    esttab col_* using "`outfile'", `texopts' ///
+        cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") ///
+        nostar unstack noobs nonumber
+end
+
+_build_crosstab, vars($allhsexp) byvar(gender_cat) ///
+    outfile("`outdir'/tab_appC1_hsexp_items_by_gender.tex") texopts(`texopts')
+_build_crosstab, vars($allhsexp) byvar(so_cat) ///
+    outfile("`outdir'/tab_appC2_hsexp_items_by_so.tex") texopts(`texopts')
+_build_crosstab, vars($allworries) byvar(gender_cat) ///
+    outfile("`outdir'/tab_appD1_concerns_by_gender.tex") texopts(`texopts')
+_build_crosstab, vars($allworries) byvar(so_cat) ///
+    outfile("`outdir'/tab_appD2_concerns_by_so.tex") texopts(`texopts')
 
 *===============================================================================
 * TABLE A1  Gender x SO row percentages
-*===============================================================================
+*-------------------------------------------------------------------------------
 * NOTE: estpost tabulate does NOT accept the 'percent' option (that belongs
 * to plain Stata 'tabulate'). estpost just stores the contingency in e();
 * row percentages are then rendered by esttab via cell(rowpct(...)).
 *
-* For value labels in row/column headers, use the decoded string variables
-* (created above for Tables 2/3).
-estpost tabulate gender_cat_str so_cat_str
+* For value labels: build a single coeflabels() that covers BOTH gender_cat
+* row codes and so_cat column codes, since estpost tabulate stores both
+* dimensions under their numeric values.
+*===============================================================================
+estpost tabulate gender_cat so_cat
+* Combine coeflabels for both gender_cat (rows) and so_cat (columns)
+_build_coeflabels gender_cat
+local g_labels = r(coefopts)
+_build_coeflabels so_cat
+local s_labels = r(coefopts)
 esttab . using "`outdir'/tab_appA1_gender_so_crosstab.tex", `texopts' ///
-    cell(rowpct(fmt(%9.1f))) unstack noobs nonumber nostar
+    cell(rowpct(fmt(%9.1f))) unstack noobs nonumber nostar ///
+    coeflabels(`g_labels')
 
 *===============================================================================
 * TABLE 6  Logit: 4-yr enrollment by Gender (odds ratios)  -- replaces segment_or_gender
