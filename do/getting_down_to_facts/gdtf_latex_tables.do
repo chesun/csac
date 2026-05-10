@@ -156,8 +156,10 @@ foreach demo in gender so {
 *===============================================================================
 * TABLE A1  Gender x SO row percentages
 *===============================================================================
-* asdoc-style cross-tab; estpost-tabulate writes contingency to e()
-estpost tabulate gender_cat so_cat, percent
+* NOTE: estpost tabulate does NOT accept the 'percent' option (that belongs
+* to plain Stata 'tabulate'). estpost just stores the contingency in e();
+* row percentages are then rendered by esttab via cell(rowpct(...)).
+estpost tabulate gender_cat so_cat
 esttab . using "`outdir'/tab_appA1_gender_so_crosstab.tex", `texopts' ///
     cell(rowpct(fmt(%9.1f))) unstack noobs nonumber nostar
 
