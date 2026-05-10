@@ -9,7 +9,7 @@ description: |
   here was developed converting a 78-page GDTF paper to dissertation chapter 3
   in one session, hitting nine separate non-obvious gotchas.
 author: Claude Code Academic Workflow
-version: 1.1.0
+version: 1.2.0
 argument-hint: "<path/to/paper.docx> [path/to/published.pdf]"
 ---
 
@@ -149,6 +149,64 @@ for tex_file in Path('Tables').glob('*.tex'):
         text = re.sub(rf'^\\{cmd}\s*$\n?', '', text, flags=re.M)
     tex_file.write_text(text)
 ```
+
+### Gotcha #18: Off-by-one in image-number to figure-slug mapping
+
+Pandoc emits sequentially-numbered images (`image1.png`, `image2.png`, ...) in
+extraction order, regardless of figure labels in the source. If you assume a
+figure was dropped between v1 and v2 of a paper and shift your fig_map
+accordingly, but the figure is actually still present (just with a less-
+prominent label), every subsequent image-to-slug mapping shifts by one.
+
+Symptom: appendix figure captions don't match the section heading they appear
+under. E.g., "Appendix F: HS Experience by Sexual Orientation Robustness" shows
+a figure captioned "Regression of General Worries on Sexual Orientation"
+(which is actually G1's content). A trailing fix-up patch (`image27 → J6`)
+produces a duplicate of one figure.
+
+Detection script:
+```python
+includes = re.findall(r'\\includegraphics\[width=\\textwidth\]\{(fig_app[^}]+)\}', text)
+from collections import Counter
+counts = Counter(includes)
+dups = [(f, n) for f, n in counts.items() if n > 1]
+expected = [s for _, s, _ in correct_appx]
+missing = [exp for exp in expected if (exp + '.png') not in includes]
+print(f'Duplicates: {dups}, Missing: {missing}')
+```
+
+If duplicates appear: walk each figure block in the appendix in document order
+and re-emit with the correctly-mapped slug+caption+label. Use a permissive
+regex with negative lookahead to match each block independently:
+
+```python
+fig_block_re = re.compile(
+    r'\\begin\{figure\}(?:(?!\\begin\{figure\}).)*?\\end\{figure\}',
+    re.S
+)
+```
+
+Always validate fig_map BEFORE wrapping by greping the source markdown for the
+final image-N to figure-label mapping (e.g., `grep -nB1 "image13" source.md`).
+
+### Gotcha #19: Lost \input{} references after multi-pass cleanup
+
+If you do multiple cleanup passes (strip orphan preludes, move notes inside
+envs, etc.), any pass that operates on table/figure environment boundaries can
+accidentally drop an `\input{Tables/...}` reference. The Tables/ file remains
+on disk but the chapter never loads it, so the table is silently missing from
+the PDF.
+
+Detection:
+```bash
+ls Tables/*.tex | sed 's|.*/||; s|\.tex$||' > /tmp/expected
+grep -oE 'Tables/(tab\w+)\.tex' chapter3.tex | sed 's|.*/||; s|\.tex$||' | sort -u > /tmp/actual
+diff /tmp/expected /tmp/actual
+```
+
+Run this check after every cleanup pass that touches `\begin{table}`, `\input`,
+or table boundary regexes. If a Tables/X.tex exists but isn't `\input`'d,
+re-insert the wrapper at the appropriate position in chapter3.tex.
 
 ### Stata-direct LaTeX tables (when source is available)
 
