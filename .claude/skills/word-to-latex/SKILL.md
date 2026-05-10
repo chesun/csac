@@ -9,8 +9,177 @@ description: |
   here was developed converting a 78-page GDTF paper to dissertation chapter 3
   in one session, hitting nine separate non-obvious gotchas.
 author: Claude Code Academic Workflow
-version: 1.0.0
+version: 1.1.0
 argument-hint: "<path/to/paper.docx> [path/to/published.pdf]"
+---
+
+## v1.1 additions (gotchas 11-17, discovered post-compile during PDF visual review)
+
+After the chapter compiles cleanly, a visual PDF review surfaces seven more
+issues. Address these in a SECOND cleanup pass before declaring done:
+
+### Gotcha #11: \emph{} renders as underline (ulem)
+
+`\usepackage{ulem}` without `[normalem]` redefines `\emph` to use `\uline`
+(underline) instead of italic. Words like "male", "female", journal names —
+all underlined. Fix the stylefile:
+
+```latex
+\usepackage[normalem]{ulem}  % normalem keeps \emph as italics
+```
+
+### Gotcha #12: Notes orphaned outside table/figure environments
+
+Pandoc places `\emph{Note.} ...` paragraphs AFTER `\end{table}`/`\end{figure}`,
+where they get misplaced (page break splits them away from their figure).
+
+Fix: move each Note INSIDE the env, before `\end{...}`, and wrap in:
+
+```latex
+\medskip
+\begin{minipage}{\linewidth}
+\noindent\footnotesize\textit{Notes:} <body>
+\end{minipage}
+```
+
+Regex pattern (handles 90% of cases):
+```python
+re.compile(
+    r'(\\end\{(table|figure)\})\s*\n\s*\n'
+    r'(\\emph\{Note[^}]*\}[^\n]*(?:\n[^\n]+)*?)(?=\n\s*\n|\Z)',
+    re.S
+)
+```
+
+Edge cases that need separate handling:
+- Orphan `\emph{Title}` between `\end{figure}` and the Note (strip first)
+- No blank line between `\end{...}` and `\emph{Note}` (insert one first)
+- Last note in file has no trailing blank line (use `\Z` lookahead, ensure file ends with newline)
+
+### Gotcha #13: Hand-formatted tables need cleanup
+
+Pandoc wraps every cell in `\begin{minipage}[t]{\linewidth}\raggedright \begin{quote} X \end{quote} \end{minipage}` and produces verbose column specs like `>{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5417}}`. Strip and simplify:
+
+```python
+# Strip minipage+quote wrappers
+text = re.sub(
+    r'\\begin\{minipage\}\[[bt]\]\{\\linewidth\}\\raggedright\s*\n'
+    r'\\begin\{quote\}\s*\n(.+?)\s*\n\\end\{quote\}\s*\n\\end\{minipage\}',
+    r'\\quad \1', text, flags=re.S)
+
+# Strip simpler minipage variants (no quote)
+text = re.sub(
+    r'\\begin\{minipage\}\[[bt]\]\{\\linewidth\}\\(?:raggedright|centering)\s*\n'
+    r'\s*([^\n]*?)\s*\n\\end\{minipage\}',
+    r'\1', text, flags=re.S)
+
+# Simplify column spec
+text = re.sub(r'\\begin\{tabular\}\{@\{\}.*?@\{\}\}',
+              r'\\begin{tabular}{@{}lrr@{}}', text, flags=re.S)
+```
+
+### Gotcha #14: Add \midrule above Total rows + double bottom rule
+
+Journal convention for descriptive tables:
+
+```python
+# Insert \midrule before "Total" rows
+lines = text.split('\n')
+new = []
+for line in lines:
+    if re.match(r'^Total\b[^\\&]*&[^\\]+\\\\', line):
+        prev = next((l for l in reversed(new) if l.strip()), '')
+        if not prev.strip().startswith('\\midrule'):
+            new.append('\\midrule')
+    new.append(line)
+text = '\n'.join(new)
+
+# Replace final \end{tabular} with double bottomrule
+text = text.replace('\\end{tabular}',
+    '\\midrule\n\\bottomrule\\bottomrule\n\\end{tabular}')
+```
+
+### Gotcha #15: \noalign{} artifacts
+
+Pandoc tables include `\toprule\noalign{}` and `\bottomrule\noalign{}` as paragraph terminators. These break booktabs alignment. Strip:
+
+```python
+text = re.sub(r'\\noalign\{\}', '', text)
+text = re.sub(r'\\toprule\s*\n\s*\\bottomrule', r'\\toprule', text)
+```
+
+### Gotcha #16: Counter reset per appendix section (without \chapter)
+
+If appendices use `\section{}` (not `\chapter{}`), `\appendix` doesn't auto-reset table/figure counters. Tables get sequential numbers (10, 11, 12) instead of A.1, B.1, C.1.
+
+Fix: insert per-appendix counter resets:
+
+```python
+def appendix_section_reset(match):
+    letter = match.group(1)
+    section_text = match.group(0)
+    # Skip if next 100 chars already contain renewcommand
+    pos = match.end()
+    if '\\renewcommand{\\thetable}' in text[pos:pos+100]:
+        return section_text
+    return (section_text + '\n'
+            f'\\renewcommand{{\\thetable}}{{{letter}.\\arabic{{table}}}}\n'
+            f'\\renewcommand{{\\thefigure}}{{{letter}.\\arabic{{figure}}}}\n'
+            f'\\setcounter{{table}}{{0}}\n'
+            f'\\setcounter{{figure}}{{0}}\n')
+
+text = re.sub(r'\\section\{Appendix ([A-Z])(?::[^}]*)?\}\\label\{[^}]+\}',
+              appendix_section_reset, text)
+```
+
+### Gotcha #17: longtable inside table env double-increments counter
+
+Pandoc generates `\begin{longtable}` for every table. When you wrap that in `\begin{table}\caption{}\input{Tables/foo.tex}\end{table}`, BOTH the longtable AND the table caption increment the counter, producing A.1, A.3, A.5 (skipping evens).
+
+Fix: convert longtable → tabular in all Tables/*.tex fragments:
+
+```python
+for tex_file in Path('Tables').glob('*.tex'):
+    text = tex_file.read_text()
+    text = re.sub(r'\\begin\{longtable\}\[\]\{(@\{\}.*?@\{\})\}',
+                  r'\\begin{tabular}{\1}', text, flags=re.S)
+    text = text.replace('\\end{longtable}', '\\end{tabular}')
+    # Strip longtable-only commands
+    for cmd in ['\\endhead', '\\endfirsthead', '\\endfoot', '\\endlastfoot']:
+        text = re.sub(rf'^\\{cmd}\s*$\n?', '', text, flags=re.M)
+    tex_file.write_text(text)
+```
+
+### Stata-direct LaTeX tables (when source is available)
+
+If the paper's regression and descriptive tables come from a Stata script (look for `esttab` calls in the codebase), bypass pandoc entirely by writing a parallel `.do` file that outputs LaTeX:
+
+```stata
+* Common esttab options for bare LaTeX tabular
+local texopts tex fragment booktabs nonotes label replace
+
+* Regression table example
+esttab seg_gender1 seg_gender2 using "tab06_logit_4yr_gender.tex", `texopts' ///
+    keep(*gender_cat*) nobaselevels eform b(%9.3f) ci(%9.3f) ///
+    star(* 0.10 ** 0.05 *** 0.01) nomtitles ///
+    scalars("N Observations" "demo_controls Demographic Controls")
+
+* Descriptive (estpost + esttab) example
+estpost tabstat hsexp_index, listwise stat(N mean sd) by(gender_cat)
+esttab . using "tab02_hsexp_by_gender.tex", `texopts' ///
+    cells("count(fmt(%9.0f)) mean(fmt(%9.2f)) sd(fmt(%9.2f))") ///
+    nostar unstack noobs nonumber
+```
+
+Key esttab options for LaTeX bare tabular:
+- `tex` — LaTeX format
+- `fragment` — no `\begin{table}` wrapper, only the tabular content
+- `booktabs` — `\toprule`/`\midrule`/`\bottomrule` (not `\hline`)
+- `nonotes` — suppress default footer notes (add via tablenotes in the chapter)
+- `label` — use Stata variable labels, not raw names
+
+This produces clean tables that need NO post-processing, vs ~20 minutes of cleanup per pandoc-converted table.
+
 ---
 
 # Word → LaTeX Academic Paper Conversion Pipeline
