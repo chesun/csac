@@ -140,8 +140,13 @@ esttab . using "`outdir'/tab04_concerns_pca.tex", `texopts' ///
 
 * -- Hardcoded column titles for cross-tab tables (gender groups, SO groups) --
 * Same source as g_labels / s_labels above (genderso.do).
-local g_titles "Cisgender Man" "Cisgender Woman" "Transgender Man" "Transgender Woman" "Non-binary" "Gender Diverse/Questioning" "Prefer Not to Say"
-local s_titles "Straight/Heterosexual" "Gay or Lesbian" "Bisexual/Pansexual/Omnisexual" "Asexual/Aromantic/Demisexual" "Other/Queer/Questioning" "Prefer Not to Say"
+*
+* IMPORTANT: mtitles() needs a list of QUOTED strings (each quoted string =
+* one title). Bare "..." in a Stata local strips the quotes, so esttab would
+* split each multi-word title on whitespace. Use compound double quotes
+* `"..."'  to preserve the inner literal " characters in the local value.
+local g_titles `" "Cisgender Man" "Cisgender Woman" "Transgender Man" "Transgender Woman" "Non-binary" "Gender Diverse/Questioning" "Prefer Not to Say" "'
+local s_titles `" "Straight/Heterosexual" "Gay or Lesbian" "Bisexual/Pansexual/Omnisexual" "Asexual/Aromantic/Demisexual" "Other/Queer/Questioning" "Prefer Not to Say" "'
 
 * -- Build each cross-tab: one estpost-tabstat per by-group, then esttab with mtitles --
 foreach demo in gender so {
