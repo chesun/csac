@@ -311,3 +311,35 @@ extracting to a script in `.workspace/` for reuse.
 - `58fc066` — round-trip integration (Cisgender Man labels rendering)
 - `7ae77ae` — Table 5 cleanup + regression centered coefs/clean labels
 - `1fab7ed` — strip extra rules + compact wide tables
+
+## 2026-05-10 morning — wide-table overfull diagnostic
+
+User confirmed wide tables still cut off after the `\footnotesize` +
+`\setlength{\tabcolsep}{3pt}` pass. pdflatex log shows hbox overflows
+of 100-320pt (way beyond what compact-format can recover):
+
+  - tab_appD2: 319.7 pt over
+  - tab_appD1: 261.4 pt over
+  - tab_appC2: 183.5 pt over
+  - tab_appC1: 125.2 pt over
+  - tab_appA1: 112.9 pt over
+  - tab05:      ~16 pt over (already mostly fits)
+
+Root cause: 14 columns of mean+count alternating, with column titles
+like "Gender Diverse/Questioning" (24 chars) and row labels like
+"how worried are you about discrimination based on sexual
+orientation" (70+ chars).
+
+Recommended fix combination (waiting on user direction):
+  - **(A) Drop count columns** (halves to 7 cols) — Stata: change
+    `cells("mean(...) count(...)")` to `cells("mean(...)")`. N is
+    redundant since reported in Tables 2/3.
+  - **(B) Shorter row labels** — add `label var` lines in Stata
+    before tabstat, mapping survey items to short codes (e.g.,
+    "Discrimination - SO" instead of full question).
+
+Tomorrow priorities (also in TODO.md):
+  1. Apply (A) + (B) per user OK — likely needs final list of short
+     labels from user since they know the natural shorthand
+  2. A.1 column-header automation
+  3. Dead-code cleanup (decode lines)
