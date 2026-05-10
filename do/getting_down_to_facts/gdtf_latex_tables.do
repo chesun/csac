@@ -1,37 +1,47 @@
-/*
-Produces bare-tabular LaTeX fragments for dissertation Chapter 3 tables that
-have a Stata source. Outputs to $csacprojdir/tab/dissertation_chapter3/*.tex.
-
-These fragments are designed to be \input{}-ed inside a \begin{table} ...
-\caption{} ... \label{} wrapper that lives in the chapter3.tex source. Per
-.claude/rules/tables.md, generated .tex files contain ONLY the tabular
-content -- not the float wrapper or captions/notes.
-
-Tables produced (numbering matches the published GDTF paper):
-  Table 2  hsexp_summary_gender   HS Experience Index summary by Gender
-  Table 3  hsexp_summary_so       HS Experience Index summary by Sexual Orientation
-  Table 4  worry_items_pca        Worry items + PCA constructs (overall N + mean)
-  Table 6  logit_4yr_gender       Logit: 4-yr enrollment by Gender (odds ratios)
-  Table 7  logit_4yr_so           Logit: 4-yr enrollment by SO (odds ratios)
-  Table 8  ologit_degree_gender   Ordered Logit: degree plans by Gender (odds ratios)
-  Table 9  ologit_degree_so       Ordered Logit: degree plans by SO (odds ratios)
-  Tab A1   gender_so_crosstab     Gender x SO row percentages
-  Tab B    hsexp_items_construct  HS exp items + construct (overall N + mean)
-  Tab C1   hsexp_items_gender     HS exp items by Gender (cross-tab of means)
-  Tab C2   hsexp_items_so         HS exp items by SO
-  Tab D1   worry_items_gender     Worry items by Gender
-  Tab D2   worry_items_so         Worry items by SO
-
-Tables NOT produced here (kept hand-formatted in chapter3.tex Tables/):
-  Table 1, A2, E -- demographics / external CDE data / qualitative sample
-  Table 5        -- intended field of study by gender (verify variable name first)
-
-To run on the server:
-  do $csacprojdir/do/getting_down_to_facts/gdtf_latex_tables.do
-
-Outputs go to tab/dissertation_chapter3/. Sync them back via FileZilla to
-doc/dissertation/chapter3/Tables/, replacing the pandoc-converted versions.
-*/
+* ============================================================================
+* gdtf_latex_tables.do
+* ============================================================================
+* Produces bare-tabular LaTeX fragments for dissertation Chapter 3 tables that
+* have a Stata source. Outputs to: $csacprojdir/tab/dissertation_chapter3/
+*
+* These fragments are designed to be \input{}-ed inside a \begin{table} ...
+* \caption{} ... \label{} wrapper that lives in the chapter3.tex source. Per
+* .claude/rules/tables.md, generated .tex files contain ONLY the tabular
+* content -- not the float wrapper or captions/notes.
+*
+* NOTE: do NOT use /* ... */ block comments here. The output path contains
+* a literal "/" followed by "*" (in $csacprojdir/tab/dissertation_chapter3/),
+* and Stata's lexer interprets "*/" mid-path as the end of a block comment,
+* terminating it early and breaking everything that follows. Use leading-*
+* line comments throughout the file.
+*
+* Tables produced (numbering matches the FINAL published GDTF paper):
+*   Table 2  hsexp_summary_gender   HS Experience Index summary by Gender
+*   Table 3  hsexp_summary_so       HS Experience Index summary by SO
+*   Table 4  worry_items_pca        Worry items + PCA constructs (overall N + mean)
+*   Table 6  logit_4yr_gender       Logit: 4-yr enrollment by Gender (odds ratios)
+*   Table 7  logit_4yr_so           Logit: 4-yr enrollment by SO (odds ratios)
+*   Table 8  ologit_degree_gender   Ordered Logit: degree plans by Gender (odds ratios)
+*   Table 9  ologit_degree_so       Ordered Logit: degree plans by SO (odds ratios)
+*   Tab A1   gender_so_crosstab     Gender x SO row percentages
+*   Tab C1   hsexp_items_gender     HS exp items by Gender (cross-tab of means)
+*   Tab C2   hsexp_items_so         HS exp items by SO
+*   Tab D1   worry_items_gender     Worry items by Gender
+*   Tab D2   worry_items_so         Worry items by SO
+*
+* Tables NOT produced here (kept hand-formatted in chapter3.tex Tables/):
+*   Table 1, A2, E -- demographics / external CDE data / qualitative sample
+*   Table 5        -- intended field of study by gender (verify major_cat first)
+*
+* (Note: Appendix B/Table B from v3 was DROPPED in the final paper, so we no
+*  longer generate hsexp_items_construct.)
+*
+* To run on the server:
+*   do $csacprojdir/do/getting_down_to_facts/gdtf_latex_tables.do
+*
+* Outputs go to tab/dissertation_chapter3/. Sync them back via FileZilla to
+* doc/dissertation/chapter3/Tables/, replacing the pandoc-converted versions.
+* ============================================================================
 
 version 17.0
 set more off
@@ -95,13 +105,7 @@ estpost tabstat $allworries worry_index1 worry_index2 worry_index3, ///
 esttab . using "`outdir'/tab04_concerns_pca.tex", `texopts' ///
     cells("count(fmt(%9.0f)) mean(fmt(%9.2f))") nostar unstack noobs nonumber
 
-*===============================================================================
-* TABLE B  HS experience items + construct (overall N + mean)
-*===============================================================================
-estimates clear
-estpost tabstat $allhsexp hsexp_index, statistics(N mean) columns(statistics)
-esttab . using "`outdir'/tab_appB_hsexp_items_construct.tex", `texopts' ///
-    cells("count(fmt(%9.0f)) mean(fmt(%9.2f))") nostar unstack noobs nonumber
+* (Table B from v3 was DROPPED in the final paper -- no longer generated.)
 
 *===============================================================================
 * TABLE C1, C2  HS experience items, by Gender / by SO (cross-tab of means)
