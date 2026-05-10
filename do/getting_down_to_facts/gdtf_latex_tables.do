@@ -66,19 +66,22 @@ local outdir "$csacprojdir/tab/dissertation_chapter3"
 cap mkdir "`outdir'"
 
 * Load cleaned data
-use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
+use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso_constructs.dta", clear
 
 * Globals from paper_quant_analysis.do (re-declare in case running standalone)
 global allhsexp    hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college
 global allworries  worry_tuition worry_living worry_academic worry_work worry_family worry_community worry_away worry_support worry_gender worry_so worry_race worry_religion
 
 * Common esttab options (LaTeX bare tabular)
-* fragment       -- output ONLY \begin{tabular}...\end{tabular} (no float)
-* booktabs       -- use \toprule/\midrule/\bottomrule (no \hline)
-* nonotes        -- suppress default footer notes (we add via tablenotes in chapter3.tex)
-* nomtitles      -- no model titles row (we control headers via mlabels)
-* label          -- use variable labels instead of names
-local texopts tex fragment booktabs nonotes label replace
+* booktabs       -- LaTeX output with \toprule/\midrule/\bottomrule
+*                  (NOTE: 'booktabs' is itself a LaTeX format -- DO NOT also
+*                   pass 'tex'; they are mutually exclusive output formats and
+*                   esttab will error with "only one allowed of ... tex,
+*                   booktabs, ...". Use one or the other.)
+* fragment       -- output ONLY \begin{tabular}...\end{tabular} (no float wrapper)
+* nonotes        -- suppress default footer notes (we add via minipage in chapter3.tex)
+* label          -- use variable labels instead of raw variable names
+local texopts booktabs fragment nonotes label replace
 
 *===============================================================================
 * TABLE 2  HS Experience Index summary by Gender Identity
