@@ -1,39 +1,116 @@
 # TODO — CSAC Project
 
-Last updated: 2026-05-09
+Last updated: 2026-05-09 (end of day)
 
 ## Active (doing now)
 
-(none)
+(none — paused for the night)
 
-## Up Next (chapter 3 — server round-trip)
+## Up Next (chapter 3 — picking up tomorrow)
 
-- [ ] **Run `do/getting_down_to_facts/gdtf_latex_tables.do` on the server** to produce clean Stata-direct LaTeX tables (replaces 12+ pandoc-converted ones)
-- [ ] **FileZilla `tab/dissertation_chapter3/*.tex` back** to local repo, then copy/replace `doc/dissertation/chapter3/Tables/` files
-- [ ] **Recompile** and verify Stata-direct tables render properly
+### Wide tables — if still cut off after `\footnotesize` + `\tabcolsep{3pt}`
+
+In order of impact (largest first):
+
+- [ ] **Drop the count columns** from Tables B.1, B.2, C.1, C.2 — keep only
+      means. Halves the width. The N is in Tables 2/3 already.
+- [ ] **Use `\scriptsize`** (one size smaller than `\footnotesize`)
+- [ ] **Wrap tabular in `\resizebox{\textheight}{!}{...}`** for the
+      `sidewaystable` envs (auto-scales — can get tiny on very wide tabs)
+- [ ] **Shorter row labels** — alias survey items to short codes (e.g.,
+      "Acad. exp." instead of full survey question) in either the Stata
+      script or by editing the .tex post-output
+
+### A.1 column-header patch is fragile
+
+- [ ] Currently re-applied via Python in the integration step each time
+      Tables/ is updated from `tab/dissertation_chapter3/`. Consider
+      either: (a) automating in the wrapper script as a permanent fix;
+      (b) finding an esttab option that relabels `unstack` columns
+      (none known yet); (c) accepting it as a manual post-process step
+      and documenting prominently.
+
+### Cleanup
+
+- [ ] Remove the now-redundant `decode gender_cat, gen(gender_cat_str)`
+      and `decode so_cat, gen(so_cat_str)` lines from the .do file.
+      The string variables aren't used anywhere — `coeflabels()` is
+      doing the label mapping directly from numeric codes. Dead code.
+- [ ] Extract the Python integration wrapper (auto-detect col count, add
+      `\begin{tabular}`/`\bottomrule`/`\end{tabular}`, re-patch A.1
+      column header) into a reusable script in `.workspace/` so the
+      integration step is one command, not a paste.
 
 ## Up Next (lower priority polish)
 
-- [ ] **Section-level diff against published PDF** for any remaining journal copyedits beyond placeholders, year fixes, and footnotes (~2 hours)
-- [ ] **Add Table 5 (intended field of study) to the Stata script** if a `major_cat` variable exists; otherwise keep hand-formatted
+- [ ] **Section-level diff against published PDF** for any remaining
+      journal copyedits beyond placeholders, year fixes, and footnotes
+      (~2 hours)
+- [ ] **Add Table 5 (intended field of study) to the Stata script** if a
+      `major_cat` variable exists on the cleaned data; currently it uses
+      the pandoc-converted version which I rewrote to be clean booktabs
 
 ## Waiting On
 
-- [ ] Final post-copyedit Word version of GDTF paper from coauthor (Alex Hurtt) — at that point, replace v3-converted prose with final-Word version
+- [ ] (none active — final Word arrived; chapter is converted from final
+      and incremental edits going forward)
 
 ## Backlog
 
-- [ ] Integrate chapter 3 into `~/github_repos/dissertation_template/` once content is finalized
+- [ ] Integrate chapter 3 into `~/github_repos/dissertation_template/`
+      once content is finalized
 - [ ] Begin chapter 1 and chapter 2 scaffolding (separate dissertation chapters)
 - [ ] Update `dissertation.tex` chapter-3 title and label at integration time
-- [ ] Update CLAUDE.md GDTF figure list (currently lists 8 figures; published paper has 12)
+- [ ] Update CLAUDE.md GDTF figure list (currently lists 8 figures; published
+      paper has 12 — already noted on 2026-05-09 but never edited the file)
 
-## Done (recent)
+## Done (2026-05-09 end-of-day summary)
 
-- [x] 2026-05-09 — **Final cleanup pass**: filled 5 placeholders (`(CITE)` → 3 citations, `XX [number]` → 323,555, `XX percent` → 3.2%, qual questions block); restored 8 footnotes; stripped 14 orphan figure preludes + 11 orphan table preludes + giant Table 5 cell-content block; fixed 15 appendix figure captions (had AI-generated alt-text); wrote `do/getting_down_to_facts/gdtf_latex_tables.do` for 12+ Stata-direct LaTeX tables (server-run, FileZilla back); converted all longtable → tabular in Tables/; appendix table numbering now matches published (A.1, B.1, C.1, C.2, D.1, D.2, E.1); 72-page PDF, 0 errors
-- [x] 2026-05-09 — **Cleanup pass**: fixed 5 corporate-author bib parses; added 9 missing references (Bergerson, Fernandes, Heck, James, Klasik, Pennell, Reed, Schultz, AB 9); applied 3 journal copyedits (Watson 2019→2020, Kosciw 2013/2021→2022); converted all citations (45 `\citep{}`); wrapped 27 figures + 17 tables in environments with caption + label; converted 47 figure + 27 table cross-refs to `\ref{}`; appended appendices (were truncated out of first pass); 84-page PDF compiles clean (0 errors, 0 undefined)
-- [x] 2026-05-09 — Pivoted from Path A to Path B; pandoc-converted v3 docx, anystyle-parsed bibliography (71 entries), extracted 17 tables, copied 27 figures, compiled clean 54-page PDF
-- [x] 2026-05-09 — Mapped 27 figures (12 main + 15 appendix) and 17 tables (9 main + 8 appendix) to local sources
-- [x] 2026-05-08 — Built standalone LaTeX scaffold at `doc/dissertation/chapter3/` (compiles clean)
-- [x] 2026-05-08 — Initial decision: Path A (wait for final Word); revised 2026-05-09 to Path B
+The day's work, in chronological commit order:
+
+- [x] Pivoted from Path A to Path B (start from v3 + PDF diff); pandoc-
+      converted v3 docx, anystyle-parsed bibliography, mapped 27 figures
+      and 17 tables; first compile of 54-page draft (`aaa7a55`)
+- [x] First cleanup pass: 5 corporate-author bib parses, 9 missing
+      references added, 3 journal copyedits (Watson 2019→2020, Kosciw
+      2013/2021→2022), 45 `\citep{}` resolved, 27 figures + 17 tables
+      wrapped with caption + label, appendices appended (had been
+      truncated) (`6cd777c`)
+- [x] **Final cleanup pass**: 5 placeholders filled, 8 footnotes restored,
+      14 orphan figure preludes + 11 orphan table preludes stripped,
+      243-line Table 5 cell-content orphan stripped, 15 appendix figure
+      captions cleaned of AI-alt-text, longtable→tabular conversion,
+      appendix table numbering corrected to A.1/B.1/etc.; wrote
+      `gdtf_latex_tables.do` for Stata-direct LaTeX tables; 72-page PDF
+      compiles clean
+- [x] Re-converted the WHOLE chapter from the **final post-copyedit Word
+      doc** when it arrived mid-session (~5K char prose delta, +6 refs,
+      Table B dropped); applied all 17 cleanup gotchas via
+      `full_reconvert.py`; 73-page PDF (`55648a2`)
+- [x] Stata script iterations: dropped `tex` (conflicts with `booktabs`)
+      `4440f00`; replaced trailing `if` with control-flow `if{}` `4c9a0a6`;
+      dropped `percent` from `estpost tabulate` `4ef37f2`; hardcoded
+      coeflabels/mtitles from genderso.do `78ccb44`; compound double
+      quotes for mtitles `6805970`
+- [x] Wired `appendix.sty` into chapter 3 for proper appendix
+      formatting (centered "Appendix A. Title", \\Alph sections, page
+      break per section, A.1/B.1 auto-numbering) (`c9c0f9a`)
+- [x] Stripped duplicate orphan title text (Table N. Title) that
+      appeared in prose AND as caption in 25 places (`967f46b`)
+- [x] Moved figure captions to TOP of figures (was below) (`967f46b`)
+- [x] Re-mapped all 15 appendix figures (off-by-one because skipped F1)
+      + restored missing Table 9 (`073a592`)
+- [x] Round-trip table integrations with Stata outputs (`f4d521d`,
+      `e5f9afe`, `58fc066`)
+- [x] Table 5 cleanup + regression table row labels and centered coefs
+      (`7ae77ae`)
+- [x] Quadruple-bottom-rule fix + compact format for wide tables
+      (`1fab7ed`)
+- [x] **Skill v1.2 published** documenting the Word→LaTeX pipeline with
+      19 documented gotchas (`6aba25b`, `7f46efb`)
+
+## Done (earlier)
+
+- [x] 2026-05-08 — Built standalone LaTeX scaffold at
+      `doc/dissertation/chapter3/`
 - [x] 2026-03-17 — GDTF v3 copyedit completed; passed to Alex Hurtt

@@ -70,3 +70,54 @@
 
 - Done: standalone chapter compiles, all figures and tables in place
 - Pending: cleanup pass (citations, cross-refs, anystyle bugs); section-level diff against published PDF; merge final Word version when coauthor responds
+
+## 2026-05-09 22:00 — Chapter 3 final-docx re-conversion + heavy table polish
+
+**Operations (mass-of-work day):**
+
+- Pivoted to Path B (start from v3 + PDF diff) and built first 54-page draft
+- Caught all kinds of pandoc artifacts: figure preludes, table preludes, AI alt-text captions, cell-content orphans, broken footnote markers, missing references
+- Produced `do/getting_down_to_facts/gdtf_latex_tables.do` for Stata-direct LaTeX tables
+- Re-converted entire chapter from final post-copyedit Word doc when it arrived (`GDTF LGBTQ paper -- Final - clean.docx`)
+- Multiple Stata script iterations to fix esttab errors (drop `tex`, replace `if` qualifier, drop `percent` from `estpost tabulate`); switched from dynamic helper to hardcoded value labels from `do/clean/genderso.do`
+- Wired `appendix.sty` from dissertation_template into chapter for proper appendix formatting (centered "Appendix A. Title", auto A.1/B.1 numbering, page break per section)
+- Restructured appendix sections so each table is in correct A/B/C/D counter range (was off — sections were AFTER their tables)
+- Re-mapped all 15 appendix figures (off-by-one because earlier pass skipped F1) + restored missing Table 9
+- 5 server round-trips on Stata table outputs to get value labels rendering ("Cisgender Man" etc. instead of raw 0/1/2)
+- Multiple PDF visual reviews caught: orphan duplicate titles (25 stripped), figure captions on bottom (moved to top), wide tables cut off (added `\footnotesize` + `\setlength{\tabcolsep}{3pt}`), quadruple bottom rules in hand-formatted tables (stripped extra `\midrule` between Total and `\bottomrule\bottomrule`), regression coefs right-aligned (`lr...r` → `lc...c`), regression row labels with stray quotes (`"Cisgender Woman" "(N=4269, mean=3.79)"` → `Cisgender Woman`)
+- Skill v1.2 published documenting 19 cleanup gotchas (`word-to-latex/SKILL.md`)
+
+**Decisions:**
+
+- **Final docx is source-of-truth** going forward; full re-conversion was worth doing despite ~5K char prose delta to merge
+- **Hardcode value labels in .do file** rather than dynamic helpers — too much Stata local-quoting complexity
+- **chapter3.tex is the authoritative draft** for incremental edits; no more pipeline re-runs
+- **Stata-direct tables for regression + descriptive** (esttab fragment+booktabs); hand-formatted for Tables 1, A.2, E (panel/demographic format esttab can't easily produce)
+- **Wide tables: sidewaystable + footnotesize + tabcolsep{3pt}** as default; if still cut off, escalate to scriptsize/resizebox/drop-count-cols/shorter-row-labels (see TODO)
+
+**Results:**
+
+- 70-page PDF compiles clean (0 errors, 0 undefined cites)
+- Source-of-truth: `doc/gdtf/GDTF LGBTQ paper -- Final - clean.docx`
+- Files in good state:
+  - `chapter3.tex` (~95K chars body) — incremental edits going forward
+  - `chapter3_standalone.tex` — wrapper, compiles standalone
+  - `bibliography_all.bib` (80 entries, all citations resolved)
+  - `appendix.sty` — adapted from dissertation_template, mid-document `\input`-able
+  - `stylefile.sty` — has `\providecommand{\sym}` for esttab significance stars
+  - `Figures/` (27 files: fig01-12 + fig_app{F1,G1-G3,H1-H3,I1-I2,J1-J6})
+  - `Tables/` (16 files: 9 main + 7 appendix; A.1, B.1, B.2, C.1, C.2, D.1, plus Table 5 in landscape)
+  - `do/getting_down_to_facts/gdtf_latex_tables.do` — server-runnable, hardcoded value labels
+- Many session log entries; full commit history in `git log --oneline | head -30`
+
+**Issues / follow-ups (see TODO.md):**
+
+- Wide tables (B.1, B.2, C.1, C.2 with 14 cols, plus Table 5 with 12 cols) may still be cut off after compact-format pass; escalation options listed in TODO
+- A.1 column-header patch is currently re-applied via Python on each integration — not ideal
+- Dead code: `decode gender_cat` in .do file is functionally unused (coeflabels is doing the label mapping); remove next session
+
+**Status:**
+
+- Done: full chapter 3 conversion + heavy polish; 70-page compiled PDF, 0 errors
+- Pending: wide-table fit, A.1 column-header automation, .do file dead-code cleanup
+- Open question: integrate chapter 3 into dissertation_template now or wait for chapters 1/2

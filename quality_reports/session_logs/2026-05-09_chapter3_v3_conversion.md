@@ -150,3 +150,164 @@ after the user updated it to point at the constructs dataset.
 - All 27 figures + 16 tables have proper captions (no AI-alt-text leftovers)
 - Appendix table numbering matches published (A.1, A.2, B.1 dropped, C.1,
   C.2, D.1, D.2, E.1)
+
+## Late evening continuation (table integration cycle)
+
+After the do-file fixes finally let it run clean on the server, several
+rounds of integrating the Stata-direct outputs:
+
+- `e5f9afe` — first integration of Stata `.tex` fragments. Found that the
+  `fragment` esttab option strips not just `\begin{table}` but also
+  `\begin{tabular}` — added wrappers via Python with auto-detected column
+  count. Also defined `\sym{}` macro in stylefile (esttab uses it for
+  significance stars).
+- `761ed47` — added `decode` for Tables 2/3/A1 and `mtitles()` for C1/C2/D1/D2
+  to render value labels (Cisgender Man) instead of raw codes (0). Server
+  needs to pull this and re-run.
+- `bcb3ff8` — caught a 243-line orphan block of raw cell content from
+  Table 5's HTML parsing that bled into the prose; stripped it. Moved
+  the orphan note that followed inside the Table 5 env. Then re-ran the
+  Note-mover on 8 other orphan notes with extra preprocessing for
+  `\textbf{Figure~\ref{...}}` orphan titles between `\end{figure}` and
+  `\emph{Note}` (which had broken the regex lookahead).
+- `f4d521d` — second Stata re-run downloaded; outputs were byte-identical
+  because the user hadn't pulled `761ed47` on the server before re-running.
+  Tracked `tab/dissertation_chapter3/` so the source-of-truth Stata outputs
+  are version-controlled.
+- Citation rendering false alarm: user reported "showing citation stems
+  for the majority of citations". Verification across pages 2/3/4/10/30
+  showed all citations rendering in proper APA form
+  (`(Kurlaender et al., 2019; Reed et al., 2023; Uwah et al., 2008)` etc.).
+  PDF text grep for any `lowercase+year+letter` stem pattern returned 0
+  matches. Likely a stale-PDF-in-viewer issue. Asked user to clarify with
+  a specific page+citation example.
+
+## Status (mid-evening checkpoint)
+
+- 65-page PDF, 0 errors, 0 undefined cites
+- All 16 tables present (12 Stata-direct + 4 hand-formatted)
+- All 27 figures with proper captions and labels
+- All notes inside their figure/table envs
+- Open: Stata table by-group labels show raw codes (0, 1, 2) until server
+  pulls 761ed47 and re-runs. Compile is fine; just a cosmetic content issue.
+- Open: incremental in-place edits to chapter3.tex going forward (no more
+  pipeline re-runs).
+
+## Late-night iteration cycle (table polish)
+
+After the late-evening checkpoint, several rounds of polishing the
+Stata-direct tables based on visual review. Commits in chronological order
+(prefix `c9c0f9a` and after):
+
+- `c9c0f9a` — wired the dissertation-template's `appendix.sty` into chapter 3.
+  Adapted it for in-chapter use (removed `\\usepackage` calls; safe to
+  `\\input{}` mid-document). Now provides:
+  - "Appendix A. Title" centered/large/bold heading
+  - Section letters A, B, C, D (\\Alph{section})
+  - `\\clearpage` before each appendix section (via titleformat)
+  - Auto-reset of table/figure counters per appendix section
+  - Tables labeled A.1, A.2, B.1, B.2, ... using \\thesection prefix
+  Stripped the per-section `\\renewcommand{\\thetable}` blocks from
+  chapter3.tex (now centralized in appendix.sty).
+- Per user direction: appendix sections renumbered in natural order
+  A/B/C/D (no skipping B as v3 did). The dropping of v3's "Appendix B"
+  was a paper-version decision, but the dissertation chapter restarts
+  with a clean count.
+- `78ccb44` — dropped the dynamic-helper approach for coeflabels/mtitles
+  (compound-quote leak when accumulating quoted strings into a Stata local).
+  Hardcoded the value-label maps directly from `do/clean/genderso.do`
+  lines 136 (gender_cat_lbl) and 239 (so_cat_lbl):
+  - `coeflabels(\`g_labels')` for tab02, tab_appA1
+  - `coeflabels(\`s_labels')` for tab03
+  - `mtitles(\`g_titles')` for tab_appC1, tab_appD1
+  - `mtitles(\`s_titles')` for tab_appC2, tab_appD2
+- `6805970` — caught that bare `local x "title 1" "title 2"` strips the
+  quotes; esttab then sees space-separated tokens. Wrapped the mtitles
+  list in compound double quotes `\`" "title" "title" "'` to preserve
+  inner literal `"` characters.
+- `58fc066` — third round-trip: tables 2/3/A.1 row labels now correct
+  ("Cisgender Man" etc.). Patched A.1 column header directly in the
+  output .tex (esttab can't relabel the unstack column dimension).
+- `7ae77ae` — five fixes from PDF visual review:
+  1. Table 5 (Intended Field of Study by Gender) column overlap →
+     rewrote with clean `l*{11}{r}` column spec + booktabs rules
+  2. Table 5 missing `\\bottomrule` → added booktabs structure
+  3. Table 5 had two notes (orphan "Exponentiated coefficients" from
+     Table 6 bled in) → stripped
+  4. Regression tables 6/7/8/9 row labels showed `"Cisgender Woman"
+     "(N=4269, mean=3.79)"` → stripped quotes + (N=, mean=) suffix
+  5. Regression tables right-aligned coefs → changed column spec from
+     `lrr`/`lrrr` to `lcc`/`lccc` for centered coefs
+  Also wrapped Table 5 in `\\begin{sidewaystable}` (12 cols).
+- `1fab7ed` — two more visual issues:
+  1. Quadruple horizontal rules at bottom of tab01, tab_appA2, tab_appE
+     → stripped extra `\\midrule` between Total row and `\\bottomrule
+     \\bottomrule`. Now: `\\midrule` above Total, `\\bottomrule
+     \\bottomrule` below (double horizontal line at bottom as user wants).
+  2. Wide tables (Table 5 + A.1, B.1, B.2, C.1, C.2) cut off →
+     added `\\footnotesize` + `\\setlength{\\tabcolsep}{3pt}` between
+     `\\label{}` and `\\input{}` for compact rendering. Default
+     tabcolsep is ~6pt; halving it gains substantial horizontal room.
+
+## Status (end of day, 2026-05-09 ~22:00)
+
+- 70-page PDF compiles clean (0 errors, 0 undefined cites)
+- All 16 tables present with proper labels (Cisgender Man, Cisgender
+  Woman, etc. instead of raw codes)
+- Appendix structurally formatted via appendix.sty (sections A/B/C/D
+  in order, "Appendix A. Title" centered/large/bold, page break per
+  section, table/figure counters auto-reset)
+- Wide tables wrapped in `\\begin{sidewaystable}` (landscape) plus
+  `\\footnotesize` + reduced `\\tabcolsep` for fit
+- Hand-formatted tables (1, A.2, D.1=qual_demographics) have proper
+  booktabs structure: `\\toprule`, `\\midrule` above Total, double
+  `\\bottomrule` below
+- Regression tables (6, 7, 8, 9) have clean centered coefficients
+  with proper row labels (no more quote leak)
+
+## Open items (pick up tomorrow)
+
+If the wide tables (B.1, B.2, C.1, C.2 with 14 cols mean+count
+alternating, plus Table 5 with 12 cols) are STILL cut off after the
+`\\footnotesize` + `\\tabcolsep{3pt}` fix:
+
+1. **Drop count columns from B/C/D 1/2** — keeps just means, halves
+   width (the N is reported in Tables 2/3 already). Biggest win.
+2. **Use `\\scriptsize`** instead of `\\footnotesize` (one size smaller)
+3. **Wrap tabular in `\\resizebox{\\textheight}{!}{...}`** for sidewaystable
+   (auto-scales to fit; can get tiny on very wide tables)
+4. **Shorter row labels** — alias survey items to short codes (e.g.,
+   "Acad. exp." instead of "how do you rate HS academic experience"),
+   either in the Stata script or by editing the .tex post-output
+
+A1 column-header patch is currently re-applied via Python on each
+integration round (since esttab's coeflabels can't relabel `unstack`
+column dimensions). Note this in the workflow so it doesn't get lost.
+
+The `decode + by(string_var)` approach is still in the do file for
+Tables 2/3 — but `coeflabels()` is what's actually doing the label
+mapping. The decode is functionally redundant; could clean up next
+session.
+
+## Workflow note
+
+`chapter3.tex` is the authoritative draft. Stata-direct tables come
+from `do/getting_down_to_facts/gdtf_latex_tables.do` on the server,
+output to `tab/dissertation_chapter3/`, FileZilla'd back, then
+integrated via the wrapper python script (auto-detect col count,
+add `\\begin{tabular}` / `\\bottomrule` / `\\end{tabular}`).
+Python wrapper inlined into the integration commits; consider
+extracting to a script in `.workspace/` for reuse.
+
+## Final commits today (in order)
+
+- `b765ff0` — appendix table numbering corrected; landscape for wide tabs
+- `381e36a` — Stata coeflabels + est-store-title approach (rewritten)
+- `c9c0f9a` — wired appendix.sty into chapter
+- `78ccb44` — hardcoded coeflabels from genderso.do (dropped helpers)
+- `4ef37f2`, `4c9a0a6`, `4440f00` — earlier do-file fixes (drop 'tex',
+  replace 'if' qualifier, drop 'percent')
+- `6805970` — compound double quotes for mtitles list
+- `58fc066` — round-trip integration (Cisgender Man labels rendering)
+- `7ae77ae` — Table 5 cleanup + regression centered coefs/clean labels
+- `1fab7ed` — strip extra rules + compact wide tables
