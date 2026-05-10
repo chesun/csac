@@ -1222,7 +1222,6 @@ Ratios) by Gender Identity
 \emph{Note.} Exponentiated coefficients; 95\% confidence intervals included in
 brackets.
 
-\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
 
 Results by sexual orientation were broadly consistent. For four-year
 enrollment (Table~\ref{tab:logit_4yr_so}), gay or lesbian students and
@@ -1248,7 +1247,6 @@ Ratios) by Sexual Orientation
 \emph{Note.} Exponentiated coefficients; 95\% confidence intervals included in
 brackets.
 
-\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
 
 For degree aspirations (Tables 8 and 9), ordered logit results reported
 as odds ratios indicate that nonbinary students had significantly higher
@@ -1282,9 +1280,7 @@ Gender Identity
 \input{Tables/tab07_logit_4yr_so.tex}
 \end{table}
 
-Exponentiated coefficients; 95\% confidence intervals in brackets
 
-\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
 
 In terms of sexual orientation, gay or lesbian students (OR = 1.53, 95\%
 CI {[}1.25, 1.87{]}) and bisexual/pansexual/omnisexual students (OR =
@@ -1304,11 +1300,14 @@ Sexual Orientation
 \input{Tables/tab08_olm_degree_gender.tex}
 \end{table}
 
-Exponentiated coefficients; 95\% confidence intervals in brackets
+\begin{table}[htbp]
+\centering
+\caption{Ordered Logit Models: Highest Degree Plans by Sexual Orientation (Odds Ratios)}
+\label{tab:olm_degree_so}
+\input{Tables/tab09_olm_degree_so.tex}
+\end{table}
 
-\textsuperscript{*} \emph{p} \textless{} 0.10, \textsuperscript{**} \emph{p} \textless{} 0.05, \textsuperscript{***} \emph{p} \textless{} 0.01
-
-\subsection{\texorpdfstring{Qualitative Findings}{Qualitative Findings}}\label{qualitative-findings}
+\subsection{Qualitative Findings}\label{qualitative-findings}
 
 The survey also asked respondents about challenges they anticipated as
 well as what they were the most excited about ahead of the transition to
@@ -1681,13 +1680,11 @@ item ranges from 0 (\emph{not worried at all}) to 3 (\emph{very worried}).
 
 \textbf{Appendix F: High School Experience by Sexual Orientation Robustness}
 
-Regression of High School Experience Index on Sexual Orientation
-
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{fig_appG1_worry_general_so_afab.png}
-\caption{Regression of General College Worries on Sexual Orientation (with Assigned Sex at Birth Control)}
-\label{fig:worry_general_so_afab}
+\includegraphics[width=\textwidth]{fig_appF1_hsexp_so_afab.png}
+\caption{Regression of HS Experience Index on Sexual Orientation (with Assigned Sex at Birth Control)}
+\label{fig:hsexp_so_afab}
 \medskip
 \begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} For the unconditional model, \emph{n} = 7,483. For the model
@@ -1703,8 +1700,23 @@ the reference group (straight/heterosexual).
 
 \textbf{Appendix G: College Worries by Sexual Orientation Robustness}
 
-\textbf{Figure~\ref{fig:worry_general_so_afab}.} Regression of Composite Index for General College Worries
-on Sexual Orientation
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig_appG1_worry_general_so_afab.png}
+\caption{Regression of General College Worries on Sexual Orientation (with Assigned Sex at Birth Control)}
+\label{fig:worry_general_so_afab}
+\medskip
+\begin{minipage}{\linewidth}
+\noindent\footnotesize\textit{Notes:} For the unconditional model, \emph{n} = 7,283. For the model
+controlling for demographics (race/ethnicity and parental level of
+education), \emph{n} = 7,263. For the model controlling for demographics
+(race/ethnicity and parental level of education) and sex assigned at
+birth, \emph{n} = 7,254. The lines indicate 95\% confidence intervals while
+the sample frequency and mean index of each sexual orientation are
+reported in parentheses. The vertical line at 0 represents the
+coefficient for the reference group (straight/heterosexual).
+\end{minipage}
+\end{figure}
 
 \begin{figure}[htbp]
 \centering
@@ -1724,9 +1736,6 @@ coefficient for the reference group (straight/heterosexual).
 \end{minipage}
 \end{figure}
 
-\textbf{Figure~\ref{fig:worry_discrim_so_afab}.} Regression of Composite Index for College Worries about
-Discrimination on Sexual Orientation
-
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig_appG3_worry_finance_so_afab.png}
@@ -1745,8 +1754,7 @@ coefficient for the reference group (straight/heterosexual).
 \end{minipage}
 \end{figure}
 
-\textbf{Figure~\ref{fig:worry_finance_so_afab}.} Regression of Composite Index for College Worries about
-Financial Burdens on Sexual Orientation
+\textbf{Appendix H: Predicted Probabilities of Degree Aspirations}
 
 \begin{figure}[htbp]
 \centering
@@ -1755,21 +1763,12 @@ Financial Burdens on Sexual Orientation
 \label{fig:degree_gender_stacked}
 \medskip
 \begin{minipage}{\linewidth}
-\noindent\footnotesize\textit{Notes:} For the unconditional model, \emph{n} = 7,283. For the model
-controlling for demographics (race/ethnicity and parental level of
-education), \emph{n} = 7,263. For the model controlling for demographics
-(race/ethnicity and parental level of education) and sex assigned at
-birth, \emph{n} = 7,254. The lines indicate 95\% confidence intervals while
-the sample frequency and mean index of each sexual orientation are
-reported in parentheses. The vertical line at 0 represents the
-coefficient for the reference group (straight/heterosexual).
+\noindent\footnotesize\textit{Notes:} Controlling for demographics (race/ethnicity and parent
+education).
 \end{minipage}
 \end{figure}
 
-\textbf{Appendix H: Predicted Probabilities of Degree Aspirations}
-
-\textbf{Figure~\ref{fig:degree_gender_stacked}.} Predicted Probability of Degree Aspirations by Gender
-Identity, Evaluated at Sample Means
+**
 
 \begin{figure}[htbp]
 \centering
@@ -1783,10 +1782,9 @@ education).
 \end{minipage}
 \end{figure}
 
-**
-
-\textbf{Figure~\ref{fig:degree_so_stacked}.} Adjusted Predicted Probability of Degree Aspirations by
-Sexual Orientation, Evaluated at Sample Means
+\textbf{Figure~\ref{fig:degree_so_stacked_afab}.} Adjusted Predicted Probability of Degree Aspirations by
+Sexual Orientation, Evaluated at Sample Means, Controlling for Assigned
+Sex at Birth
 
 \begin{figure}[htbp]
 \centering
@@ -1796,36 +1794,17 @@ Sexual Orientation, Evaluated at Sample Means
 \medskip
 \begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} Controlling for demographics (race/ethnicity and parent
-education).
-\end{minipage}
-\end{figure}
-
-\textbf{Figure~\ref{fig:degree_so_stacked_afab}.} Adjusted Predicted Probability of Degree Aspirations by
-Sexual Orientation, Evaluated at Sample Means, Controlling for Assigned
-Sex at Birth
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{fig_appI1_hsexp_gender_bully.png}
-\caption{Regression of HS Experience Index on Gender Identity (Controlling for Bullying)}
-\label{fig:hsexp_gender_bully}
-\medskip
-\begin{minipage}{\linewidth}
-\noindent\footnotesize\textit{Notes:} Controlling for demographics (race/ethnicity and parent
 education) and assigned sex at birth.
 \end{minipage}
 \end{figure}
 
 \textbf{Appendix I: Bullying as Mediator for High School Experience}
 
-\textbf{Figure~\ref{fig:hsexp_gender_bully}.} Regression of High School Experience Index on Gender
-Identity, Controlling for Bullying
-
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{fig_appI2_hsexp_so_bully_afab.png}
-\caption{Regression of HS Experience Index on Sexual Orientation (Controlling for Bullying)}
-\label{fig:hsexp_so_bully_afab}
+\includegraphics[width=\textwidth]{fig_appI1_hsexp_gender_bully.png}
+\caption{Regression of HS Experience Index on Gender Identity (Controlling for Bullying)}
+\label{fig:hsexp_gender_bully}
 \medskip
 \begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,483. For the model
@@ -1838,14 +1817,11 @@ the coefficient for the reference group (cisgender man).
 \end{minipage}
 \end{figure}
 
-\textbf{Figure~\ref{fig:hsexp_so_bully_afab}.} Regression of High School Experience Index on Sexual
-Orientation, Controlling for Bullying
-
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{fig_appJ1_worry_general_gender_bully.png}
-\caption{Regression of General College Worries on Gender Identity (Controlling for Bullying)}
-\label{fig:worry_general_gender_bully}
+\includegraphics[width=\textwidth]{fig_appI2_hsexp_so_bully_afab.png}
+\caption{Regression of HS Experience Index on Sexual Orientation (Controlling for Bullying)}
+\label{fig:hsexp_so_bully_afab}
 \medskip
 \begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,442. For the model
@@ -1862,8 +1838,23 @@ represents the coefficient for the reference group
 
 \textbf{Appendix J: Bullying as Mediator for College Worries}
 
-\textbf{Figure~\ref{fig:worry_general_gender_bully}.} Regression of Composite Index of General College Worries
-on Gender Identity, Controlling for Bullying
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig_appJ1_worry_general_gender_bully.png}
+\caption{Regression of General College Worries on Gender Identity (Controlling for Bullying)}
+\label{fig:worry_general_gender_bully}
+\medskip
+\begin{minipage}{\linewidth}
+\noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,319. For the model
+controlling for demographics (race/ethnicity and parental level of
+education) and the high school experience index, n = 7,276. For the
+model additionally controlling for frequency of bullying, n = 7,269. The
+lines indicate 95\% confidence intervals while the sample frequency and
+mean index of each gender identity are reported in parentheses. The
+vertical line at 0 represents the coefficient for the reference group
+(cisgender man).
+\end{minipage}
+\end{figure}
 
 \begin{figure}[htbp]
 \centering
@@ -1872,19 +1863,17 @@ on Gender Identity, Controlling for Bullying
 \label{fig:worry_general_so_bully_afab}
 \medskip
 \begin{minipage}{\linewidth}
-\noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,319. For the model
+\noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,283. For the model
 controlling for demographics (race/ethnicity and parental level of
-education) and the high school experience index, n = 7,276. For the
-model additionally controlling for frequency of bullying, n = 7,269. The
-lines indicate 95\% confidence intervals while the sample frequency and
-mean index of each gender identity are reported in parentheses. The
-vertical line at 0 represents the coefficient for the reference group
-(cisgender man).
+education) and the high school experience index, n = 7,239. For the
+model additionally controlling for frequency of bullying, n = 7,232. For
+the model additionally controlling for assigned sex at birth, n = 7,223.
+The lines indicate 95\% confidence intervals while the sample frequency
+and mean index of each sexual orientation are reported in parentheses.
+The vertical line at 0 represents the coefficient for the reference
+group (straight/heterosexual).
 \end{minipage}
 \end{figure}
-
-\textbf{Figure~\ref{fig:worry_general_so_bully_afab}.} Regression of Composite Index of General College Worries
-on Sexual Orientation, Controlling for Bullying
 
 \begin{figure}[htbp]
 \centering
@@ -1893,20 +1882,16 @@ on Sexual Orientation, Controlling for Bullying
 \label{fig:worry_discrim_gender_bully}
 \medskip
 \begin{minipage}{\linewidth}
-\noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,283. For the model
+\noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,319. For the model
 controlling for demographics (race/ethnicity and parental level of
-education) and the high school experience index, n = 7,239. For the
-model additionally controlling for frequency of bullying, n = 7,232. For
-the model additionally controlling for assigned sex at birth, n = 7,223.
-The lines indicate 95\% confidence intervals while the sample frequency
-and mean index of each sexual orientation are reported in parentheses.
-The vertical line at 0 represents the coefficient for the reference
-group (straight/heterosexual).
+education) and the high school experience index, n = 7,276. For the
+model additionally controlling for frequency of bullying, n = 7,269. The
+lines indicate 95\% confidence intervals while the sample frequency and
+mean index of each gender identity are reported in parentheses. The
+vertical line at 0 represents the coefficient for the reference group
+(cisgender man).
 \end{minipage}
 \end{figure}
-
-\textbf{Figure~\ref{fig:worry_discrim_gender_bully}.} Regression of Composite Index of College Worries about
-Discrimination on Gender Identity, Controlling for Bullying
 
 \begin{figure}[htbp]
 \centering
@@ -1915,27 +1900,6 @@ Discrimination on Gender Identity, Controlling for Bullying
 \label{fig:worry_discrim_so_bully_afab}
 \medskip
 \begin{minipage}{\linewidth}
-\noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,319. For the model
-controlling for demographics (race/ethnicity and parental level of
-education) and the high school experience index, n = 7,276. For the
-model additionally controlling for frequency of bullying, n = 7,269. The
-lines indicate 95\% confidence intervals while the sample frequency and
-mean index of each gender identity are reported in parentheses. The
-vertical line at 0 represents the coefficient for the reference group
-(cisgender man).
-\end{minipage}
-\end{figure}
-
-\textbf{Figure~\ref{fig:worry_discrim_so_bully_afab}.} Regression of Composite Index of College Worries about
-Discrimination on Sexual Orientation, Controlling for Bullying
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{fig_appJ5_worry_finance_gender_bully.png}
-\caption{Regression of College Worries About Financial Burdens on Gender Identity (Controlling for Bullying)}
-\label{fig:worry_finance_gender_bully}
-\medskip
-\begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,283. For the model
 controlling for demographics (race/ethnicity and parental level of
 education) and the high school experience index, n = 7,239. For the
@@ -1948,14 +1912,11 @@ group (straight/heterosexual).
 \end{minipage}
 \end{figure}
 
-\textbf{Figure~\ref{fig:worry_finance_gender_bully}.} Regression of Composite Index of College Worries about
-Financial Burdens on Gender Identity, Controlling for Bullying
-
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{fig_appJ6_worry_finance_so_bully_afab.png}
-\caption{Regression of College Worries About Financial Burdens on Sexual Orientation (Controlling for Bullying)}
-\label{fig:worry_finance_so_bully_afab}
+\includegraphics[width=\textwidth]{fig_appJ5_worry_finance_gender_bully.png}
+\caption{Regression of College Worries About Financial Burdens on Gender Identity (Controlling for Bullying)}
+\label{fig:worry_finance_gender_bully}
 \medskip
 \begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} For the unconditional model, n = 7,319. For the model
@@ -1969,14 +1930,11 @@ vertical line at 0 represents the coefficient for the reference group
 \end{minipage}
 \end{figure}
 
-\textbf{Figure~\ref{fig:worry_finance_so_bully_afab}.} Regression of Composite Index of College Worries about
-Financial Burdens on Sexual Orientation, Controlling for Bullying
-
-\begin{figure}
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig_appJ6_worry_finance_so_bully_afab.png}
-\caption{A graph with numbers and lines AI-generated content may be
-incorrect.}
+\caption{Regression of College Worries About Financial Burdens on Sexual Orientation (Controlling for Bullying)}
+\label{fig:worry_finance_so_bully_afab}
 \medskip
 \begin{minipage}{\linewidth}
 \noindent\footnotesize\textit{Notes:} For the unconditional model, \emph{n} = 7,283. For the model
