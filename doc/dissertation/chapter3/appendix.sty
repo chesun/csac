@@ -1,0 +1,45 @@
+% Appendix styling for dissertation chapter 3.
+%
+% Adapted from dissertation_template/appendix.sty for in-chapter use:
+% Designed to be \input{}'d AFTER \appendix in chapter3.tex (mid-document)
+% so styling activates only for the appendix sections, leaving the main-text
+% section numbering (1.1, 1.2, ...) untouched.
+%
+% Removed package loads (\usepackage{tocloft}, \usepackage{xr}) - those are
+% preamble-only and live in stylefile.sty if needed.
+
+% ---- Section heading format ----
+% "Appendix A. Title" centered, large, bold
+
+% Section labels: A, B, C, ...  (\appendix already does this in report class
+% via \thechapter, but we override \thesection here for the chapter-internal
+% appendix scheme used in this standalone draft)
+\renewcommand{\thesection}{\Alph{section}}
+
+% Page break before each appendix section
+% (Use titlesec's \pretitle hook instead of \sectionbreak which isn't always
+% defined.)
+\titleformat{\section}[block]{\centering\large\bfseries\clearpage}{Appendix~\thesection.}{1em}{}
+
+% ---- Counter labels: A.1, A.2 in Appendix A; C.1, C.2 in Appendix C; etc. ----
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
+\renewcommand{\theproposition}{\thesection.\arabic{proposition}}
+\renewcommand{\thelemma}{\thesection.\arabic{lemma}}
+\renewcommand{\thecorollary}{\thesection.\arabic{corollary}}
+\renewcommand{\thedefinition}{\thesection.\arabic{definition}}
+\renewcommand{\theassumption}{\thesection.\arabic{assumption}}
+\renewcommand{\theremark}{\thesection.\arabic{remark}}
+
+% Reset table/figure/equation counters at each new appendix section
+\makeatletter
+\@addtoreset{table}{section}
+\@addtoreset{figure}{section}
+\@addtoreset{equation}{section}
+\@addtoreset{theorem}{section}
+\makeatother
+
+% Reset section counter so first appendix section becomes A
+\setcounter{section}{0}
