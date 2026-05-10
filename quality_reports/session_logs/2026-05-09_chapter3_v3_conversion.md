@@ -85,3 +85,68 @@ User chose: pause after task 2 (figure mapping) for confirmation, then run tasks
 ## Open Questions
 
 None blocking. Working draft is ready for refinement.
+
+<!-- primary-source-ok: dugan_2012 -->
+
+## Continuation (later in session)
+
+After the initial v3-derived chapter compiled clean, several rounds of
+PDF-driven cleanup against the published version, then re-conversion from
+the final post-copyedit Word doc when it arrived. Commits in chronological
+order:
+
+- `824fbf0` — fixed `\emph{}` rendering as underline (ulem missing `[normalem]`),
+  added `\midrule` above Total rows + double `\bottomrule` in hand-formatted
+  tables, moved 33 orphan Note blocks INSIDE their figure/table envs wrapped
+  in `\medskip\begin{minipage}\noindent\footnotesize\textit{Notes:} ... \end{minipage}`
+  per user spec.
+- `6aba25b` — skill v1.1: documented gotchas 11-17 from the cleanup pass
+  (ulem trap, notes-in-envs, hand-table cleanup, midrule-above-totals,
+  `\noalign{}` artifacts, appendix counter resets, longtable double-counter).
+- `55648a2` — **major: full re-conversion from `GDTF LGBTQ paper -- Final - clean.docx`**
+  (final post-coauthor, post-journal-copyedit version that arrived mid-session).
+  Prose ~5K chars shorter, 1900 lines diff against v3, abstract rewritten,
+  acknowledgements add Kerith Jane Conron, +6 new references (73→79), Table B
+  dropped (17→16 tables). Pipeline: `full_reconvert.py` re-applied all 17
+  cleanup gotchas. End state: 73 pages, 0 errors.
+- `94c7df6` — fixed `gdtf_latex_tables.do` showing as commented-out: opening
+  `/* ... */` block contained `*/dissertation_chapter3/*.tex` in the body,
+  Stata's lexer closed the comment at the mid-path `*/`. Converted entire
+  header to leading-`*` line comments. Also dropped TABLE B block (Appendix B
+  removed in final).
+- `37bd654` — resolved last 2 unconverted citations: Movement Advancement
+  Project (anystyle dropped corporate author into title field; renamed key
+  + `author = {{...}}`) and the missing reference entry for the Transgender
+  college students study cited in body but absent from final's references list
+  (source-paper bug; added entry manually with DOI 10.1353/csd.2012.0067).
+- `073a592` — caught off-by-one in appendix figure mapping: my fig_map
+  assumed F1 was dropped in final but it's there (just unbolded). Every
+  appendix figure shifted by one position, plus a duplicate J6 from a
+  trailing patch. Walked all 15 appendix figures in document order and
+  re-emitted with correct fname+caption+label. Also restored Table 9
+  (silently dropped during cleanup; .tex file was on disk but `\input`
+  reference was lost).
+- `7f46efb` — skill v1.2: gotchas 18-19 (off-by-one image→slug mapping,
+  lost `\input{}` references after multi-pass cleanup).
+- `4440f00` — `gdtf_latex_tables.do` server-run error: `tex` and `booktabs`
+  are mutually-exclusive output formats in esttab. Dropped `tex` from texopts.
+- `4c9a0a6` — `gdtf_latex_tables.do` second server-run error: esttab does
+  NOT accept trailing `if` qualifier (programmer command, not data command).
+  Replaced `esttab ... if "demo" == "gender"` with control-flow `if {} else {}`.
+
+Bigger picture: the dissertation chapter 3 is now derived from the final
+post-copyedit version of the GDTF paper (not the v3 March draft). 73-page
+PDF compiles clean (0 errors, 0 undefined cites). All 17 cleanup gotchas
+documented in the `word-to-latex` skill. Stata-direct table regeneration is
+ready to run on the server (`do/getting_down_to_facts/gdtf_latex_tables.do`)
+after the user updated it to point at the constructs dataset.
+
+## Status (continuation end)
+
+- Working draft at 73 pages, compiles clean
+- Stata script ready for server run; outputs FileZilla back to `Tables/`
+- Hand-formatted Table 1.1, A.2, E.1 cleaned up with proper booktabs styling
+- All notes inside figure/table envs in user's preferred minipage format
+- All 27 figures + 16 tables have proper captions (no AI-alt-text leftovers)
+- Appendix table numbering matches published (A.1, A.2, B.1 dropped, C.1,
+  C.2, D.1, D.2, E.1)
