@@ -6,17 +6,16 @@ Last updated: 2026-05-09
 
 (none)
 
-## Up Next (chapter 3 follow-ups — needs coauthor input)
+## Up Next (chapter 3 — server round-trip)
 
-- [ ] **Fill the "(CITE)" placeholder** on PDF page 4 (Theoretical Background, "trajectory (CITE)") — coauthor needs to provide missing citation
-- [ ] **Fill "XX [number]" / "XX percent" placeholders** in Data and Methods section (page 6) — survey response counts and rates
-- [ ] **Fix "Appendix Table 19" cross-reference** rendering — should show as "Table A.2"; needs `\appendix` numbering reset or table label tweak (~30 min)
+- [ ] **Run `do/getting_down_to_facts/gdtf_latex_tables.do` on the server** to produce clean Stata-direct LaTeX tables (replaces 12+ pandoc-converted ones)
+- [ ] **FileZilla `tab/dissertation_chapter3/*.tex` back** to local repo, then copy/replace `doc/dissertation/chapter3/Tables/` files
+- [ ] **Recompile** and verify Stata-direct tables render properly
 
 ## Up Next (lower priority polish)
 
-- [ ] **Visual-verify all 17 tables and 27 figures** in compiled PDF
-- [ ] **Section-level diff against published PDF** for journal copyedits beyond what I caught (Watson 2019→2020, Kosciw 2013/2021→2022) (~2-3 hours)
-- [ ] **Recompute chapter1.X, chapter1.Y format** if dissertation prefers cleaner table/figure numbering
+- [ ] **Section-level diff against published PDF** for any remaining journal copyedits beyond placeholders, year fixes, and footnotes (~2 hours)
+- [ ] **Add Table 5 (intended field of study) to the Stata script** if a `major_cat` variable exists; otherwise keep hand-formatted
 
 ## Waiting On
 
@@ -31,6 +30,7 @@ Last updated: 2026-05-09
 
 ## Done (recent)
 
+- [x] 2026-05-09 — **Final cleanup pass**: filled 5 placeholders (`(CITE)` → 3 citations, `XX [number]` → 323,555, `XX percent` → 3.2%, qual questions block); restored 8 footnotes; stripped 14 orphan figure preludes + 11 orphan table preludes + giant Table 5 cell-content block; fixed 15 appendix figure captions (had AI-generated alt-text); wrote `do/getting_down_to_facts/gdtf_latex_tables.do` for 12+ Stata-direct LaTeX tables (server-run, FileZilla back); converted all longtable → tabular in Tables/; appendix table numbering now matches published (A.1, B.1, C.1, C.2, D.1, D.2, E.1); 72-page PDF, 0 errors
 - [x] 2026-05-09 — **Cleanup pass**: fixed 5 corporate-author bib parses; added 9 missing references (Bergerson, Fernandes, Heck, James, Klasik, Pennell, Reed, Schultz, AB 9); applied 3 journal copyedits (Watson 2019→2020, Kosciw 2013/2021→2022); converted all citations (45 `\citep{}`); wrapped 27 figures + 17 tables in environments with caption + label; converted 47 figure + 27 table cross-refs to `\ref{}`; appended appendices (were truncated out of first pass); 84-page PDF compiles clean (0 errors, 0 undefined)
 - [x] 2026-05-09 — Pivoted from Path A to Path B; pandoc-converted v3 docx, anystyle-parsed bibliography (71 entries), extracted 17 tables, copied 27 figures, compiled clean 54-page PDF
 - [x] 2026-05-09 — Mapped 27 figures (12 main + 15 appendix) and 17 tables (9 main + 8 appendix) to local sources
