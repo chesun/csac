@@ -96,36 +96,24 @@ local texopts booktabs fragment nonotes label replace
 * without any compound-quoting headache.
 *===============================================================================
 
-* -- Helper program: build a coeflabels option from a labeled numeric var --
-cap program drop _build_coeflabels
-program define _build_coeflabels, rclass
-    syntax varname
-    local var = "`varlist'"
-    local lblname : value label `var'
-    levelsof `var', local(vals)
-    local out ""
-    foreach v of local vals {
-        local lab : label `lblname' `v'
-        local out `out' `v' `"`"`lab'"'"'
-    }
-    return local coefopts `"`out'"'
-end
+* -- Hardcoded value labels (from do/clean/genderso.do) --
+* Avoids fragile Stata compound-quote dance. Update these if the cleaning
+* code changes. Source: genderso.do lines 136 (gender_cat_lbl) and 239
+* (so_cat_lbl).
+local g_labels 0 "Cisgender Man" 1 "Cisgender Woman" 2 "Transgender Man" 3 "Transgender Woman" 4 "Non-binary" 5 "Gender Diverse/Questioning" 6 "Prefer Not to Say"
+local s_labels 0 "Straight/Heterosexual" 1 "Gay or Lesbian" 2 "Bisexual/Pansexual/Omnisexual" 3 "Asexual/Aromantic/Demisexual" 4 "Other/Queer/Questioning" 5 "Prefer Not to Say"
 
 estimates clear
 estpost tabstat hsexp_index, listwise stat(N mean sd) by(gender_cat) columns(statistics)
-_build_coeflabels gender_cat
-local coefopts = r(coefopts)
 esttab . using "`outdir'/tab02_hsexp_by_gender.tex", `texopts' ///
     cells("count(fmt(%9.0f)) mean(fmt(%9.2f)) sd(fmt(%9.2f))") ///
-    nostar unstack noobs nonumber coeflabels(`coefopts')
+    nostar unstack noobs nonumber coeflabels(`g_labels')
 
 estimates clear
 estpost tabstat hsexp_index, listwise stat(N mean sd) by(so_cat) columns(statistics)
-_build_coeflabels so_cat
-local coefopts = r(coefopts)
 esttab . using "`outdir'/tab03_hsexp_by_so.tex", `texopts' ///
     cells("count(fmt(%9.0f)) mean(fmt(%9.2f)) sd(fmt(%9.2f))") ///
-    nostar unstack noobs nonumber coeflabels(`coefopts')
+    nostar unstack noobs nonumber coeflabels(`s_labels')
 
 *===============================================================================
 * TABLE 4  Worry items + PCA constructs (overall N + mean)
@@ -150,30 +138,49 @@ esttab . using "`outdir'/tab04_concerns_pca.tex", `texopts' ///
 * column titles taken directly from value labels.
 *===============================================================================
 
-cap program drop _build_crosstab
-program define _build_crosstab
-    syntax , VARS(string) BYvar(string) OUTfile(string) [TEXOPTS(string)]
-    estimates clear
-    levelsof `byvar', local(cats)
-    local lblname : value label `byvar'
-    foreach c of local cats {
-        local lab : label `lblname' `c'
-        estpost tabstat `vars' if `byvar' == `c', stat(mean N) columns(statistics)
-        eststo col_`c', title(`"`lab'"')
-    }
-    esttab col_* using "`outfile'", `texopts' ///
-        cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") ///
-        nostar unstack noobs nonumber
-end
+* -- Hardcoded column titles for cross-tab tables (gender groups, SO groups) --
+* Same source as g_labels / s_labels above (genderso.do).
+local g_titles "Cisgender Man" "Cisgender Woman" "Transgender Man" "Transgender Woman" "Non-binary" "Gender Diverse/Questioning" "Prefer Not to Say"
+local s_titles "Straight/Heterosexual" "Gay or Lesbian" "Bisexual/Pansexual/Omnisexual" "Asexual/Aromantic/Demisexual" "Other/Queer/Questioning" "Prefer Not to Say"
 
-_build_crosstab, vars($allhsexp) byvar(gender_cat) ///
-    outfile("`outdir'/tab_appC1_hsexp_items_by_gender.tex") texopts(`texopts')
-_build_crosstab, vars($allhsexp) byvar(so_cat) ///
-    outfile("`outdir'/tab_appC2_hsexp_items_by_so.tex") texopts(`texopts')
-_build_crosstab, vars($allworries) byvar(gender_cat) ///
-    outfile("`outdir'/tab_appD1_concerns_by_gender.tex") texopts(`texopts')
-_build_crosstab, vars($allworries) byvar(so_cat) ///
-    outfile("`outdir'/tab_appD2_concerns_by_so.tex") texopts(`texopts')
+* -- Build each cross-tab: one estpost-tabstat per by-group, then esttab with mtitles --
+foreach demo in gender so {
+    estimates clear
+    levelsof `demo'_cat, local(cats)
+    foreach c of local cats {
+        estpost tabstat $allhsexp if `demo'_cat == `c', stat(mean N) columns(statistics)
+        eststo col_`c'
+    }
+    if "`demo'" == "gender" {
+        esttab col_* using "`outdir'/tab_appC1_hsexp_items_by_gender.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
+            mtitles(`g_titles')
+    }
+    else {
+        esttab col_* using "`outdir'/tab_appC2_hsexp_items_by_so.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
+            mtitles(`s_titles')
+    }
+}
+
+foreach demo in gender so {
+    estimates clear
+    levelsof `demo'_cat, local(cats)
+    foreach c of local cats {
+        estpost tabstat $allworries if `demo'_cat == `c', stat(mean N) columns(statistics)
+        eststo col_`c'
+    }
+    if "`demo'" == "gender" {
+        esttab col_* using "`outdir'/tab_appD1_concerns_by_gender.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
+            mtitles(`g_titles')
+    }
+    else {
+        esttab col_* using "`outdir'/tab_appD2_concerns_by_so.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs ///
+            mtitles(`s_titles')
+    }
+}
 
 *===============================================================================
 * TABLE A1  Gender x SO row percentages
@@ -187,11 +194,7 @@ _build_crosstab, vars($allworries) byvar(so_cat) ///
 * dimensions under their numeric values.
 *===============================================================================
 estpost tabulate gender_cat so_cat
-* Combine coeflabels for both gender_cat (rows) and so_cat (columns)
-_build_coeflabels gender_cat
-local g_labels = r(coefopts)
-_build_coeflabels so_cat
-local s_labels = r(coefopts)
+* g_labels is hardcoded above (gender_cat row codes -> value labels)
 esttab . using "`outdir'/tab_appA1_gender_so_crosstab.tex", `texopts' ///
     cell(rowpct(fmt(%9.1f))) unstack noobs nonumber nostar ///
     coeflabels(`g_labels')
