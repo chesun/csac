@@ -113,18 +113,24 @@ esttab . using "`outdir'/tab04_concerns_pca.tex", `texopts' ///
 *===============================================================================
 * TABLE C1, C2  HS experience items, by Gender / by SO (cross-tab of means)
 *===============================================================================
+* NOTE: esttab does NOT accept a trailing 'if' qualifier (that is a data-
+* command syntax, not a programmer-command syntax). Use a control-flow
+* if {} block to choose the output filename instead.
 foreach demo in gender so {
-    local label_var = cond("`demo'" == "gender", "gender_cat_lbl", "so_cat_lbl")
     estimates clear
     levelsof `demo'_cat, local(cats)
     foreach c of local cats {
         estpost tabstat $allhsexp if `demo'_cat == `c', stat(mean N) columns(statistics)
         est store col_`c'
     }
-    esttab col_* using "`outdir'/tab_appC1_hsexp_items_by_`demo'.tex" if "`demo'" == "gender", ///
-        `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
-    esttab col_* using "`outdir'/tab_appC2_hsexp_items_by_`demo'.tex" if "`demo'" == "so", ///
-        `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
+    if "`demo'" == "gender" {
+        esttab col_* using "`outdir'/tab_appC1_hsexp_items_by_gender.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
+    }
+    else {
+        esttab col_* using "`outdir'/tab_appC2_hsexp_items_by_so.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
+    }
 }
 
 *===============================================================================
@@ -137,10 +143,14 @@ foreach demo in gender so {
         estpost tabstat $allworries if `demo'_cat == `c', stat(mean N) columns(statistics)
         est store col_`c'
     }
-    esttab col_* using "`outdir'/tab_appD1_concerns_by_`demo'.tex" if "`demo'" == "gender", ///
-        `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
-    esttab col_* using "`outdir'/tab_appD2_concerns_by_`demo'.tex" if "`demo'" == "so", ///
-        `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
+    if "`demo'" == "gender" {
+        esttab col_* using "`outdir'/tab_appD1_concerns_by_gender.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
+    }
+    else {
+        esttab col_* using "`outdir'/tab_appD2_concerns_by_so.tex", ///
+            `texopts' cells("mean(fmt(%9.2f)) count(fmt(%9.0f))") nostar unstack noobs nonumber
+    }
 }
 
 *===============================================================================
