@@ -343,3 +343,50 @@ Tomorrow priorities (also in TODO.md):
      labels from user since they know the natural shorthand
   2. A.1 column-header automation
   3. Dead-code cleanup (decode lines)
+
+## 2026-05-10 — wide-table fit cycle (continuation)
+
+User came back to wide tables after the previous compact-format pass.
+Multi-step cycle to get B.1, B.2, C.1, C.2, A.1 to fit cleanly:
+
+- `91fa23b` — wrapped row labels via `p{2.5in}` column type; dropped count
+  cells in Stata (`mean(...) count(...)` -> `mean(...)`); added "N reported
+  in Tables 2/3" notes since count was no longer in cells
+- `d181357` — integrated count-dropped Stata outputs (8 cols instead of 14)
+- `94c527b` — narrowed row label column from `p{2.5in}` to `p{1.8in}`
+  (more aggressive wrap); wrapped A.1 in sidewaystable (was portrait)
+- `1bd888a` — switched cells back to stacked mean/N (`cells("mean(...)"
+  "count(... par)")`); wrapped column labels in Table 5 + A.1; centered
+  all data cells; reverted N-location notes
+- `1970d30` — integrated stacked outputs (mean on top line, (count) below)
+- `87e07c5` — added `p{0.85in}` for data cols in B/C/D 1/2 to wrap "Gender
+  Diverse/Questioning"
+- `ffa4853` — diagnosed: esttab's `\multicolumn{1}{c}{...}` wrapper around
+  each header overrides p{} column spec. Strip these in integration script.
+- `cbc9206` — widened cols to `p{0.95in}` (gender, 7 cols) / `p{1.1in}`
+  (SO, 6 cols) since margins still had room
+- `01427e7` — final fix: `Bisexual/Pansexual/Omnisexual` and similar slash-
+  separated labels don't wrap because LaTeX treats `/` as non-breakable.
+  Insert `\allowbreak{}` after each `/` in header rows (only, not data).
+
+## End-of-day state (2026-05-10 ~13:00)
+
+- 71-page PDF, 0 errors, 0 undefined cites, 0 overfull hboxes
+- Wide tables (A.1, B.1, B.2, C.1, C.2): row labels wrap at p{1.8in},
+  column labels wrap at p{0.95in}/p{1.1in} with `\allowbreak{}` after
+  slashes for slash-separated category names
+- Stacked mean/(count) cells visible
+- Workflow stable: server re-run -> FileZilla `tab/dissertation_chapter3/`
+  -> `python3 .workspace/integrate_stata_tables.py` -> compile
+
+The integration script `.workspace/integrate_stata_tables.py` now handles
+all post-processing automatically:
+- Copy from server outputs
+- Wrap with `\begin{tabular}` + booktabs rules
+- Apply `>{\raggedright\arraybackslash}p{1.8in}` row label + per-file
+  data col widths (`p{0.95in}` for 7-col gender tables, `p{1.1in}` for
+  6-col SO tables)
+- Strip `\multicolumn{1}{c}{...}` wrappers from headers
+- Insert `\allowbreak{}` after `/` in header rows
+- Strip quoted `"label" "(N=, mean=)"` artifacts from regression rows
+- Re-patch A.1 column header (esttab unstack-column limitation)
