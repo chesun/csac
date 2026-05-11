@@ -158,12 +158,12 @@ foreach demo in gender so {
     }
     if "`demo'" == "gender" {
         esttab col_* using "`outdir'/tab_appC1_hsexp_items_by_gender.tex", ///
-            `texopts' cells("mean(fmt(%9.2f))") nostar unstack noobs ///
+            `texopts' cells("mean(fmt(%9.2f))" "count(fmt(%9.0f) par)") nostar unstack noobs ///
             mtitles(`g_titles')
     }
     else {
         esttab col_* using "`outdir'/tab_appC2_hsexp_items_by_so.tex", ///
-            `texopts' cells("mean(fmt(%9.2f))") nostar unstack noobs ///
+            `texopts' cells("mean(fmt(%9.2f))" "count(fmt(%9.0f) par)") nostar unstack noobs ///
             mtitles(`s_titles')
     }
 }
@@ -177,12 +177,12 @@ foreach demo in gender so {
     }
     if "`demo'" == "gender" {
         esttab col_* using "`outdir'/tab_appD1_concerns_by_gender.tex", ///
-            `texopts' cells("mean(fmt(%9.2f))") nostar unstack noobs ///
+            `texopts' cells("mean(fmt(%9.2f))" "count(fmt(%9.0f) par)") nostar unstack noobs ///
             mtitles(`g_titles')
     }
     else {
         esttab col_* using "`outdir'/tab_appD2_concerns_by_so.tex", ///
-            `texopts' cells("mean(fmt(%9.2f))") nostar unstack noobs ///
+            `texopts' cells("mean(fmt(%9.2f))" "count(fmt(%9.0f) par)") nostar unstack noobs ///
             mtitles(`s_titles')
     }
 }
