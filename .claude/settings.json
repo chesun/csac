@@ -44,17 +44,7 @@
       "Bash(gs *)",
       "Bash(pdftk *)",
       "Bash(mkdir *)",
-      "Read",
-      "Agent(*)",
-      "Bash(git blame*)",
-      "Bash(git show*)",
-      "Glob",
-      "Grep",
-      "Skill(*)",
-      "WebFetch(*)",
-      "WebSearch(*)",
-      "mcp__plugin_compound-engineering_context7__query-docs",
-      "mcp__plugin_compound-engineering_context7__resolve-library-id"
+      "Read"
     ]
   },
   "hooks": {
