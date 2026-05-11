@@ -19,7 +19,10 @@
 % Page break before each appendix section
 % (Use titlesec's \pretitle hook instead of \sectionbreak which isn't always
 % defined.)
-\titleformat{\section}[block]{\centering\large\bfseries\clearpage}{Appendix~\thesection.}{1em}{}
+% \FloatBarrier before each new appendix section so prior section's floats
+% can't drift into the next appendix; then \clearpage starts the section on
+% a fresh page with the centered/large/bold "Appendix X." heading.
+\titleformat{\section}[block]{\centering\large\bfseries\FloatBarrier\clearpage}{Appendix~\thesection.}{1em}{}
 
 % ---- Counter labels: A.1, A.2 in Appendix A; C.1, C.2 in Appendix C; etc. ----
 \renewcommand{\thetable}{\thesection.\arabic{table}}
