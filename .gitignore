@@ -91,3 +91,9 @@ CLAUDE.local.md
 # quality_reports/plans/*lfs-dvc-migration-plan.md.
 master_supporting_docs/literature/papers/*.pdf
 master_supporting_docs/literature/papers/**/*.pdf
+
+# Microsoft Office lock files
+~$*
+
+# LaTeX top-level output (when compiled from project root)
+texput.log
