@@ -121,3 +121,64 @@
 - Done: full chapter 3 conversion + heavy polish; 70-page compiled PDF, 0 errors
 - Pending: wide-table fit, A.1 column-header automation, .do file dead-code cleanup
 - Open question: integrate chapter 3 into dissertation_template now or wait for chapters 1/2
+
+## 2026-05-10 23:00 — Wide-Table Fit Cycle (Tables 5, A.1, B.1, B.2, C.1, C.2)
+
+**Operations:**
+- Stack mean/N in regression cells; wrap data-col labels in B.1, B.2, C.1, C.2
+- Strip esttab `\multicolumn{1}{c}{}` wrappers so `p{}` wrap actually engages
+- Widen wide-table data cols `p{0.85in}` → `p{0.95in}`/`p{1.1in}`
+- Add `\allowbreak{}` after `/` in header rows so slash-separated labels can wrap
+
+**Decisions:**
+- Default formula for wide tables: `sidewaystable` + `footnotesize` + `tabcolsep{3pt}` + `p{}` data cols + `\allowbreak` for slashes + strip-multicolumn-wrappers
+
+**Commits:** `1bd888a`, `1970d30`, `87e07c5`, `ffa4853`, `cbc9206`, `01427e7`, `3199afd`
+
+**Status:**
+- Done: all wide tables fit within margins; 70-page PDF compiles clean
+- Pending: appendix floats drifting to later pages (next session)
+
+## 2026-05-11 18:00 — Appendix Float Confinement + F–J Section Refactor
+
+**Operations:**
+- Add `\usepackage{placeins}` to stylefile.sty; `\FloatBarrier` in appendix.sty `\titleformat`
+- `[htbp]` → `[!ht]` for appendix tables
+- Convert 5 appendix headers (F–J) from `\textbf{Appendix X: Title}` to `\section{Title}\label{...}` so they get auto-letter numbering
+
+**Decisions:**
+- Float-confinement mechanism: `\FloatBarrier` at section boundary + `\clearpage` + `[!ht]` placement
+
+**Commits:** `e8201e0`, `9f951ff`, `44e8fba`, `b72194b`
+
+**Status:**
+- Done: 71-page standalone PDF clean, all appendix figures with their parent sections
+
+## 2026-05-12 (evening) — Dissertation Integration as Chapter 3
+
+**Operations:**
+- Source-side prep: created Appendix B (HS Experience Items + Construct) extracted from Word source; new section + new table fragment `tab_appB_hsexp_items_construct.tex`
+- Converted 13 hardcoded letter/number refs in `chapter3.tex` to `\ref{}` form (11 "Appendix X" letters + Figures 5–7 + Tables 8–9 → all portable across appendix.sty variants)
+- Polished `tab_appE_qual_demographics.tex` with `\midrule` panel separators
+- Dissertation_template repo: swapped Chapter 2 ↔ Chapter 3 slots (DiD paper now Ch 2, GDTF as fresh Ch 3); integrated GDTF as Chapter 3 — 246-page dissertation PDF, 0 errors
+- Drafted dissertation umbrella abstract paragraph (Audre Lorde epigraph + diversity-as-hallmark framing) — delivered in conversation, not written to dissertation files per user instruction
+- Added `~$*` and `texput.log` to `.gitignore`
+
+**Decisions:**
+- Chapter swap via directory rename (Option B) over slot-swap-only (Option A) — clean directory names, larger diff
+- Defensive `:ch3:` label namespacing (50 labels + 108 same-file refs)
+- No chapter footnote — user will add manually
+- Audre Lorde epigraph (verbatim trim from *Sister Outsider*) over Sen — authentic > performative gravitas
+
+**Results:**
+- csac standalone Chapter 3 PDF: 72 pages, 0 errors
+- dissertation_template full PDF: 246 pages, 0 errors, 0 undefined refs/cites, 0 multiply-defined; TOC Ch1 p1 / Ch2 p102 / Ch3 p161 / Bib p222
+- Appendix B (new) renders as section 3.11 per UC Davis continuous numbering
+- Lesson surfaced: `git mv` + post-`sed` requires explicit `git add` before commit (caught in commit `7dfa776`, fixed in `70adfda`)
+
+**Commits (csac):** `7183570`, `06e0f5d`
+**Commits (dissertation_template):** `7dfa776`, `70adfda`, `b9245c8` (then user added `e251ad7` Table 2.13 sizing)
+
+**Status:**
+- Done: GDTF paper integrated as Chapter 3 of dissertation; both repos clean, both pushed
+- Pending (user-side): add chapter 3 footnote manually in dissertation.tex; drop in umbrella abstract paragraph + per-chapter abstracts; add Audre Lorde epigraph block (LaTeX provided in conversation)

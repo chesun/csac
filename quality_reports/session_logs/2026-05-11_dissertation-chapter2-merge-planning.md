@@ -204,3 +204,52 @@ only delivered the paragraph in conversation.
 
 ---
 
+## Wrap-up
+
+Date: 2026-05-12, end of day.
+
+### Final State
+
+- **csac**: clean working tree, all commits pushed
+  - `7183570` — chapter3 source-side prep (Appendix B + 13 ref
+    conversions + Appendix E midrules)
+  - `06e0f5d` — workflow docs (merge plan + session logs + .gitignore)
+- **dissertation_template**: clean working tree
+  - `b9245c8` — GDTF integrated as Chapter 3 (246-page PDF, 0 errors)
+  - `e251ad7` — user-side Table 2.13 sizing fix on Overleaf, merged in
+    via `c45eca1`
+
+### Housekeeping Updates
+
+- `TODO.md` rewritten with Active/Up Next/Done sections reflecting the
+  two-day arc: wide-table fit → appendix float confinement →
+  dissertation integration
+- `SESSION_REPORT.md` appended with three new entries bridging the
+  2.5-day gap since last update
+- `.claude/SESSION_REPORT.md` mirror synced
+- `.gitignore` extended to ignore Microsoft Office lock files (`~$*`)
+  and project-root LaTeX scratch (`texput.log`)
+
+### Manual Items for User
+
+1. Add chapter-3 thanks footnote in `dissertation.tex` (~line 133)
+2. Drop dissertation umbrella abstract paragraph into the abstract
+   section (drafted in conversation: "Diversity is a hallmark of human
+   societies…")
+3. Add three chapter abstracts as paragraphs 2–4 under the umbrella
+4. Add Audre Lorde epigraph block between dedication and
+   `\chapter*{Acknowledgments}` (~line 84) — LaTeX block delivered in
+   conversation, uses verbatim trim of *Sister Outsider* with ellipsis
+
+### Key Lessons Captured
+
+- **git mv + sed staging trap**: `git mv` stages the rename; subsequent
+  in-place `sed` modifications are NOT staged. Always `git add` the
+  destination path before committing. Caught in `7dfa776`, fixed in
+  `70adfda`. Documented in the merge plan Step 3.2 + 3.10.
+- **Overleaf-GitHub sync vs. local edits**: Overleaf can push back
+  changes on top of local pushes within minutes. Pause Overleaf-side
+  edits during integration windows; if divergence, follow §11 recipe.
+
+---
+
