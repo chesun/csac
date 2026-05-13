@@ -182,3 +182,31 @@
 **Status:**
 - Done: GDTF paper integrated as Chapter 3 of dissertation; both repos clean, both pushed
 - Pending (user-side): add chapter 3 footnote manually in dissertation.tex; drop in umbrella abstract paragraph + per-chapter abstracts; add Audre Lorde epigraph block (LaTeX provided in conversation)
+
+## 2026-05-12 — THSJ R2 revisions (Reviewer 2 Comments 1–3) + Google Docs co-edit
+
+**Operations:**
+- Wrote `do/thsj_rr/r2_revisions.do` (~370 lines) addressing the three quantitative reviewer comments
+- Wrote helper `do/thsj_rr/r2_worry_coefs.do` (~55 lines) for SD-unit worry coefficient extraction
+- 4 rounds of worker-critic loop on `r2_revisions.do` (final score 94/100); 1 round on the prose-edits bundle (91/100 → ~99/100 after fixes)
+- Produced 7 deliverables: 2 .docx tables, 1 audit CSV, 4 .png figures (in `tab/thsj_rr/` + `fig/thsj_rr/`)
+- Drafted 12-edit prose bundle at `quality_reports/2026-05-12_thsj-r2-prose-edits.md`; Christina applied all 12 + the directional-error correction in the Google Doc with Alex
+- Updated project-scoped `stata` skill at `.claude/skills/stata/SKILL.md` with three new Common Patterns and Pitfalls sections (putdocx memtable, r() case-sensitivity, value-label name fetching)
+
+**Decisions:**
+- Comment 1 test = two-sample prtest G-vs-not-G with `p_all_f` computed from microdata. Initial v1 spec used hand-coded p_all + bitesti based on a wrong scope assumption (Table 2's "All respondents" row was thought to be hand-built; turned out the microdata IS available)
+- Comment 2 standardization = z-score over the M1 unconditional sample (n=7,483 for hsexp; n=7,319 for worries) so both M1 and M2/M3 share a single z-scale
+- Comment 3 = standardize all four outcomes (hsexp + 3 worry indices); Fig 5 controls = demographics only; Figs 6–8 controls = demographics + standardized hsexp
+- Google Docs equations use minimal-LaTeX symbols only (Latin + basic Greek + `\sum`); `D_{gi}` dummies instead of `\mathbb{1}[...]`; `$$...$$` delimiters (Auto-LaTeX add-on requirement)
+
+**Results:**
+- All seven analysis outputs verified: tables embedded in docx, p-values sensible (not all 1.000), figures match published sample sizes, standardization mean=0/SD=1
+- **Directional error caught in published manuscript Figure 6 paragraph**: said trans/gender expansive worries were "significantly lower than cisgender men" but data shows POSITIVE coefficients (higher worry). Corrected in Edit 10 of the prose bundle
+- Three bugs fixed mid-flight: bitesti returned p=1.000 because of `r(P)` capital vs `r(p)` lowercase (silent collapse via `min(.,.)=.`); docx tables came back empty due to `memtable` option keeping them in memory; label-copy errored because `gender_cat`'s attached label name was mutated by upstream code
+
+**Commits:**
+- (this commit) — analysis script + outputs + reviews + prose-edits bundle + skill update + housekeeping
+
+**Status:**
+- Done: All 12 prose edits applied in Google Doc; analysis side complete
+- Pending: Response letter to THSJ editor (mapping each reviewer comment to the change made); final .docx export; submission portal upload

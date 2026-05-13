@@ -158,6 +158,79 @@ estpost tabstat varlist, stat(N mean) by(group) columns(statistics)
 esttab . using "table.rtf", cells("count(fmt(%9.0f)) mean(fmt(a3))") replace
 ```
 
+### putdocx table — never use `memtable` if you want the table in the file
+
+The `memtable` option on `putdocx table` keeps the table in memory and does **not** add it to the active document. The default (no `memtable`) adds the table directly. Per Stata 17 [RPT] putdocx table p.71:
+
+> "memtable specifies that the table be created and held in memory instead of being added to the active document."
+
+Failure mode is silent: the `.docx` saves successfully, the paragraph title (added separately via `putdocx paragraph`) is visible, but the table body is missing — leaving an apparently empty docx with only a title. Easy to miss because no error is raised.
+
+```stata
+* WRONG — table never reaches the file
+putdocx table tbl = (5, 4), border(all, nil) memtable
+putdocx table tbl(1, 1) = ("Header")
+putdocx save "out.docx", replace      // file has title only; tbl is orphaned
+
+* RIGHT — table added to the document
+putdocx table tbl = (5, 4), border(all, nil)
+putdocx table tbl(1, 1) = ("Header")
+putdocx save "out.docx", replace      // tbl is in the file
+```
+
+Sanity-check after a `putdocx save`:
+```bash
+unzip -p out.docx word/document.xml | grep -c "<w:tbl>"   # should be > 0
+```
+
+### r() scalar names: case-sensitive; look up before reading
+
+Stata r-class scalar names are **case-sensitive** and do not always follow intuition. `bitest`/`bitesti` and `prtest`/`prtesti` store the two-sided p-value in **`r(p)` (lowercase p)** — `r(P)` (capital) does not exist. Confirmed against r.pdf p.139 (`bitest`) and p.2066 (`prtest`).
+
+Reading a non-existent scalar like `local pval = r(P)` silently sets the local to missing (`.`). Combined with `min()` ignoring missing arguments, a defensive fallback like `min(1, 2 * min(., .))` collapses to **1** for every observation — silently producing p=1.000 across the entire dataset with no error message. This bug cost a server round trip on the THSJ R2 revision.
+
+**Rule:** before writing `local x = r(...)` for any new Stata command, look up the documented Stored Results section:
+
+```bash
+DOCS=~/Documents/stata/docs
+pdfgrep -i -n "Stored results" $DOCS/r.pdf | grep -i "PAGE_NEAR_COMMAND"
+# extract the relevant pages via pdfplumber (see references/doc_lookup.md)
+```
+
+Cite the manual page number in a code comment next to the `local x = r(...)` line:
+
+```stata
+qui prtest field_f, by(group_indicator)
+local pval = r(p)        // two-sided p-value; r.pdf p.2066 (two-sample prtest)
+```
+
+If you're using a defensive fallback (`if mi(\`pval')`), include a **visible** warning so a degenerate case can't pass silently:
+
+```stata
+if mi(`pval') {
+    di as error "WARNING: missing p-value for ... -- investigate."
+}
+```
+
+### Don't assume a variable's value-label is named `<var>_lbl`
+
+When a downstream script does `label copy gender_cat_lbl new_lbl` or `:label gender_cat_lbl 0`, it relies on `gender_cat_lbl` being the label name attached to `gender_cat`. This frequently breaks because earlier code (e.g., per-y-axis label-building loops with `label val var <something_else>`) overwrites the attached label and the dataset is **saved** with the new attachment. The original `gender_cat_lbl` may still exist as a defined label but is no longer attached.
+
+**Rule:** fetch the actually-attached label name at runtime via the extended macro function `: value label var`:
+
+```stata
+local orig_glbl : value label gender_cat
+if "`orig_glbl'" == "" {
+    di as error "FATAL: gender_cat has no value label attached."
+    exit 198
+}
+label copy `orig_glbl' gender_cat_new_lbl   // works regardless of upstream renaming
+```
+
+Two signs you've hit this bug:
+- `label copy <name> ...` errors with "label `<name>' not found" but you know the variable has a value label visible in `tab var`.
+- A downstream `label val var <restored_name>` doesn't actually restore the variable's original label because that name was never attached in the current data.
+
 ## Instructions
 
 When helping with Stata:

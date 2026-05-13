@@ -1,0 +1,71 @@
+gender_code,gender_label,field_code,field_label,n_g,x_g,p_g,p_all_f,p_value,stars
+0,Cisgender man,1,Business,2662,321,.12058603,.09987998,9.150e-06,***
+0,Cisgender man,2,Engineering,2662,799,.30015026,.1614882,1.85e-129,***
+0,Cisgender man,3,Natural sciences,2662,324,.121713,.16268836,9.883e-13,***
+0,Cisgender man,4,Social sciences,2662,209,.0785124,.12268302,5.182e-18,***
+0,Cisgender man,5,Humanities & Arts,2662,237,.0890308,.11361515,6.466e-07,***
+0,Cisgender man,6,Health sciences,2662,212,.07963937,.14748633,1.000e-34,***
+0,Cisgender man,7,Education,2662,36,.01352367,.03493799,6.785e-14,***
+0,Cisgender man,8,Applied sciences,2662,185,.06949662,.03400453,2.708e-36,***
+0,Cisgender man,9,Public service,2662,115,.0432006,.0480064,.14869263,
+0,Cisgender man,10,Undecided,2662,224,.08414726,.07521003,.02947955,**
+1,Cisgender woman,1,Business,4280,409,.09556075,.09987998,.15031972,
+1,Cisgender woman,2,Engineering,4280,333,.07780374,.1614882,3.72e-114,***
+1,Cisgender woman,3,Natural sciences,4280,788,.18411215,.16268836,6.787e-09,***
+1,Cisgender woman,4,Social sciences,4280,629,.14696262,.12268302,1.470e-13,***
+1,Cisgender woman,5,Humanities & Arts,4280,478,.11168224,.11361515,.54305666,
+1,Cisgender woman,6,Health sciences,4280,850,.19859813,.14748633,5.708e-47,***
+1,Cisgender woman,7,Education,4280,210,.04906542,.03493799,1.561e-14,***
+1,Cisgender woman,8,Applied sciences,4280,53,.01238318,.03400453,1.023e-32,***
+1,Cisgender woman,9,Public service,4280,226,.05280374,.0480064,.02504115,**
+1,Cisgender woman,10,Undecided,4280,304,.07102804,.07521003,.1133336,
+2,Transgender man,1,Business,59,1,.01694915,.09987998,.03293402,**
+2,Transgender man,2,Engineering,59,8,.13559322,.1614882,.58736051,
+2,Transgender man,3,Natural sciences,59,13,.22033898,.16268836,.22837857,
+2,Transgender man,4,Social sciences,59,9,.15254237,.12268302,.48276593,
+2,Transgender man,5,Humanities & Arts,59,17,.28813559,.11361515,.00002226,***
+2,Transgender man,6,Health sciences,59,4,.06779661,.14748633,.08308262,*
+2,Transgender man,7,Education,59,3,.05084746,.03493799,.50404152,
+2,Transgender man,8,Applied sciences,59,1,.01694915,.03400453,.46803339,
+2,Transgender man,9,Public service,59,1,.01694915,.0480064,.26258235,
+2,Transgender man,10,Undecided,59,2,.03389831,.07521003,.22705993,
+3,Transgender woman,1,Business,20,2,.1,.09987998,.99856984,
+3,Transgender woman,2,Engineering,20,5,.25,.1614882,.28141889,
+3,Transgender woman,3,Natural sciences,20,2,.1,.16268836,.44689217,
+3,Transgender woman,4,Social sciences,20,2,.1,.12268302,.75685192,
+3,Transgender woman,5,Humanities & Arts,20,5,.25,.11361515,.05428426,*
+3,Transgender woman,6,Health sciences,20,0,0,.14748633,.06251825,*
+3,Transgender woman,7,Education,20,0,0,.03493799,.39418505,
+3,Transgender woman,8,Applied sciences,20,3,.15,.03400453,.00415662,***
+3,Transgender woman,9,Public service,20,0,0,.0480064,.31460557,
+3,Transgender woman,10,Undecided,20,1,.05,.07521003,.66860445,
+4,Nonbinary,1,Business,267,8,.02996255,.09987998,.00010449,***
+4,Nonbinary,2,Engineering,267,32,.11985019,.1614882,.059734,*
+4,Nonbinary,3,Natural sciences,267,53,.19850187,.16268836,.10640678,
+4,Nonbinary,4,Social sciences,267,41,.15355805,.12268302,.11737124,
+4,Nonbinary,5,Humanities & Arts,267,68,.25468165,.11361515,1.399e-13,***
+4,Nonbinary,6,Health sciences,267,21,.07865169,.14748633,.00123771,***
+4,Nonbinary,7,Education,267,8,.02996255,.03493799,.65209664,
+4,Nonbinary,8,Applied sciences,267,9,.03370787,.03400453,.97827147,
+4,Nonbinary,9,Public service,267,9,.03370787,.0480064,.26575476,
+4,Nonbinary,10,Undecided,267,18,.06741573,.07521003,.62289506,
+5,Gender diverse/questioning,1,Business,71,1,.01408451,.09987998,.01541269,**
+5,Gender diverse/questioning,2,Engineering,71,7,.09859155,.1614882,.14786996,
+5,Gender diverse/questioning,3,Natural sciences,71,14,.1971831,.16268836,.42878509,
+5,Gender diverse/questioning,4,Social sciences,71,12,.16901408,.12268302,.23184116,
+5,Gender diverse/questioning,5,Humanities & Arts,71,22,.30985915,.11361515,1.645e-07,***
+5,Gender diverse/questioning,6,Health sciences,71,6,.08450704,.14748633,.13265426,
+5,Gender diverse/questioning,7,Education,71,1,.01408451,.03493799,.33630341,
+5,Gender diverse/questioning,8,Applied sciences,71,1,.01408451,.03400453,.35209842,
+5,Gender diverse/questioning,9,Public service,71,4,.05633803,.0480064,.74143199,
+5,Gender diverse/questioning,10,Undecided,71,3,.04225352,.07521003,.29006546,
+6,Prefer not to say,1,Business,140,7,.05,.09987998,.04692478,**
+6,Prefer not to say,2,Engineering,140,27,.19285714,.1614882,.30858501,
+6,Prefer not to say,3,Natural sciences,140,26,.18571429,.16268836,.45617284,
+6,Prefer not to say,4,Social sciences,140,18,.12857143,.12268302,.83025107,
+6,Prefer not to say,5,Humanities & Arts,140,25,.17857143,.11361515,.01449216,**
+6,Prefer not to say,6,Health sciences,140,13,.09285714,.14748633,.06574544,*
+6,Prefer not to say,7,Education,140,4,.02857143,.03493799,.67878025,
+6,Prefer not to say,8,Applied sciences,140,3,.02142857,.03400453,.40722642,
+6,Prefer not to say,9,Public service,140,5,.03571429,.0480064,.49222268,
+6,Prefer not to say,10,Undecided,140,12,.08571429,.07521003,.63426543,

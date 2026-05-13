@@ -1,0 +1,827 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/r2_revisions.txt
+  log type:  text
+ opened on:  12 May 2026, 18:22:13
+
+. 
+. * Load data with constructs
+. use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso_constructs.dta", clear
+(Fully cleaned CSAC 2023 HS senior survey data)
+
+. 
+. * Defensive assertions per air-gapped-workflow.md
+. assert _N > 0
+
+. foreach v in gender_cat major hsexp_index worry_index1 worry_index2 worry_index3 race_assn parent_edu {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         di as error "FATAL: variable '`v'' not found in dataset. Stopping."
+  5.         exit _rc
+  6.     }
+  7. }
+
+. 
+. * Color palette (matches paper_quant_analysis.do:74-79)
+. local aggieblue "0 74 168"
+
+. local aggiegold "255 191 0"
+
+. 
+. * Output directories
+. local tabout "$csacprojdir/tab/thsj_rr"
+
+. local figout "$csacprojdir/fig/thsj_rr"
+
+. cap mkdir "`tabout'"
+
+. cap mkdir "`figout'"
+
+. 
+. ********************************************************************************
+. * SECTION 1: COMMENT 1 -- Table 2 with significance stars
+. *   Two-sample test of proportions per (gender, field) cell, comparing each
+. *   gender group's rate of field f to the rate among the remaining respondents.
+. *   "All respondents" row is computed from microdata (not hand-coded).
+. ********************************************************************************
+. 
+. di _newline(2) "===================================================="
+
+
+====================================================
+
+. di "SECTION 1: Table 2 (field of study) -- prtest G vs. not-G"
+SECTION 1: Table 2 (field of study) -- prtest G vs. not-G
+
+. di "===================================================="
+====================================================
+
+. 
+. * Publication-friendly field labels (match the published Table 2 column headers,
+. * not the verbose Stata labels with parenthetical examples)
+. local field_1_lbl  "Business"
+
+. local field_2_lbl  "Engineering"
+
+. local field_3_lbl  "Natural sciences"
+
+. local field_4_lbl  "Social sciences"
+
+. local field_5_lbl  "Humanities & Arts"
+
+. local field_6_lbl  "Health sciences"
+
+. local field_7_lbl  "Education"
+
+. local field_8_lbl  "Applied sciences"
+
+. local field_9_lbl  "Public service"
+
+. local field_10_lbl "Undecided"
+
+. 
+. * Gender display labels (match paper's Table 2 row order)
+. local gender_0_lbl "Cisgender man"
+
+. local gender_1_lbl "Cisgender woman"
+
+. local gender_2_lbl "Transgender man"
+
+. local gender_3_lbl "Transgender woman"
+
+. local gender_4_lbl "Nonbinary"
+
+. local gender_5_lbl "Gender diverse/questioning"
+
+. local gender_6_lbl "Prefer not to say"
+
+. 
+. * --------------------------------------------------------------------------
+. * Step 1 -- compute the "All respondents" row from microdata.
+. * Analytical sample = students with non-missing gender_cat AND non-missing major
+. * (published Note reports n=7,499; sanity-check the count below).
+. * --------------------------------------------------------------------------
+. qui count if !mi(major) & !mi(gender_cat)
+
+. local n_all = r(N)
+
+. di _newline "Analytical sample (non-missing gender_cat & major): n_all = `n_all'"
+
+Analytical sample (non-missing gender_cat & major): n_all = 7499
+
+. 
+. forval f = 1/10 {
+  2.     qui count if major == `f' & !mi(gender_cat)
+  3.     local x_all_`f' = r(N)
+  4.     local p_all_`f' = `x_all_`f'' / `n_all'
+  5. }
+
+. 
+. * Sanity check: computed-from-microdata vs. published Table 2 "All respondents".
+. * Published values are the truth-baseline; flag diffs > 0.5pp.
+. local pub_1  = 0.100   // Business
+
+. local pub_2  = 0.162   // Engineering
+
+. local pub_3  = 0.163   // Natural sciences
+
+. local pub_4  = 0.123   // Social sciences
+
+. local pub_5  = 0.114   // Humanities & Arts
+
+. local pub_6  = 0.148   // Health sciences
+
+. local pub_7  = 0.035   // Education
+
+. local pub_8  = 0.034   // Applied sciences
+
+. local pub_9  = 0.048   // Public service
+
+. local pub_10 = 0.075   // Undecided
+
+. 
+. di _newline "Sanity: computed p_all from microdata vs. published Table 2 row"
+
+Sanity: computed p_all from microdata vs. published Table 2 row
+
+. di "  field  computed  published  diff (pp)"
+  field  computed  published  diff (pp)
+
+. forval f = 1/10 {
+  2.     local diff_pp = 100 * (`p_all_`f'' - `pub_`f'')
+  3.     di "  `f'      " %5.3f `p_all_`f'' "     " %5.3f `pub_`f'' "     " %5.2f `diff_pp'
+  4.     if abs(`diff_pp') > 0.5 {
+  5.         di as error "    WARNING: |diff| > 0.5pp for field `f' (`field_`f'_lbl') -- investigate."
+  6.     }
+  7. }
+  1      0.100     0.100     -0.01
+  2      0.161     0.162     -0.05
+  3      0.163     0.163     -0.03
+  4      0.123     0.123     -0.03
+  5      0.114     0.114     -0.04
+  6      0.147     0.148     -0.05
+  7      0.035     0.035     -0.01
+  8      0.034     0.034      0.00
+  9      0.048     0.048      0.00
+  10      0.075     0.075      0.02
+
+. 
+. * --------------------------------------------------------------------------
+. * Step 2 -- per-cell two-sample test of proportions (G vs. not-G).
+. * For each (gender g, field f) cell: test whether group g's rate of field f
+. * differs from the rate among the remaining respondents. The displayed
+. * "All respondents" row is the marginal proportion (mechanically identical
+. * regardless of how prtest partitions the comparison sample).
+. * --------------------------------------------------------------------------
+. 
+. * Helper dummies for the prtest loop. Restricted to the analytical sample
+. * (non-missing major) for field_f, and over all observations for is_g_g
+. * (gender_cat already has no missing for codes 0..6 by construction of the
+. * analytical sample restriction inside prtest's `if` clause).
+. forval f = 1/10 {
+  2.     cap drop field_`f'
+  3.     gen byte field_`f' = (major == `f') if !mi(major)
+  4. }
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+(415 missing values generated)
+
+. forval g = 0/6 {
+  2.     cap drop is_g_`g'
+  3.     gen byte is_g_`g' = (gender_cat == `g')
+  4. }
+
+. 
+. * Result matrices.
+. * Rows: 7 gender groups (cis man ... prefer not to say)
+. * Cols: 10 fields
+. matrix prop_mat = J(7, 10, .)
+
+. matrix pval_mat = J(7, 10, .)
+
+. matrix n_mat    = J(7, 10, .)  // x_g (successes) for audit
+
+. 
+. * Per-gender sample sizes (n_g) -- denominator for proportions
+. matrix ng_vec   = J(7, 1, .)
+
+. 
+. * Open audit CSV (header preserved verbatim from v1 for downstream parsing)
+. file open auditfh using "`tabout'/r2_table2_field_by_gender_stars_audit.csv", write replace
+
+. file write auditfh "gender_code,gender_label,field_code,field_label,n_g,x_g,p_g,p_all_f,p_value,stars" _n
+
+. 
+. forval g = 0/6 {
+  2.     qui count if gender_cat == `g' & !mi(major)
+  3.     local n_g = r(N)
+  4.     matrix ng_vec[`g'+1, 1] = `n_g'
+  5. 
+.     forval f = 1/10 {
+  6.         qui count if gender_cat == `g' & major == `f'
+  7.         local x_g = r(N)
+  8. 
+.         * Group's observed proportion of field f
+.         if `n_g' > 0 {
+  9.             local p_g = `x_g' / `n_g'
+ 10.         }
+ 11.         else {
+ 12.             local p_g = .
+ 13.         }
+ 14. 
+.         * Two-sample test of proportions: G (is_g_g==1) vs. not-G (is_g_g==0).
+.         * Per Stata 17 [R] r.pdf p.2066 (prtest Stored results, two-sample
+.         * block), the two-sided p-value is stored in r(p) (lowercase p);
+.         * one-sided bounds are r(p_l) and r(p_u). The asymptotic z formula
+.         * for the two-sided test is 2{1 - Phi(|z|)} (p.2067 Methods and
+.         * formulas). r() scalars are case-sensitive -- using r(P) (capital)
+.         * would silently return missing.
+.         if `n_g' > 0 {
+ 15.             qui prtest field_`f' if !mi(major) & !mi(gender_cat), by(is_g_`g')
+ 16.             local pval = r(p)        // two-sided p-value; r.pdf p.2066
+ 17. 
+.             if mi(`pval') {
+ 18.                 di as error "WARNING: missing p-value for gender=`g' (`gender_`g'_lbl'), field=`f' (`field_`f'_lbl') -- n=`n_g', x=`x_g'. Cell will display without stars."
+ 19.             }
+ 20.         }
+ 21.         else {
+ 22.             local pval = .
+ 23.         }
+ 24. 
+.         * Star levels: * p<0.10, ** p<0.05, *** p<0.01
+.         local stars = ""
+ 25.         if !mi(`pval') {
+ 26.             if `pval' < 0.01      local stars = "***"
+ 27.             else if `pval' < 0.05 local stars = "**"
+ 28.             else if `pval' < 0.10 local stars = "*"
+ 29.         }
+ 30. 
+.         matrix prop_mat[`g'+1, `f'] = `p_g'
+ 31.         matrix pval_mat[`g'+1, `f'] = `pval'
+ 32.         matrix n_mat[`g'+1, `f']    = `x_g'
+ 33. 
+.         file write auditfh "`g',`gender_`g'_lbl',`f',`field_`f'_lbl',`n_g',`x_g'," (`p_g') "," (`p_all_`f'') "," (`pval') ",`stars'" _n
+ 34.     }
+ 35. }
+
+. file close auditfh
+
+. 
+. * Sanity-check log: cells whose direction (vs. the rest of the sample) should
+. * be obvious under the two-sample prtest. Predictions are signed relative to
+. * the not-G rate, not relative to the published "All respondents" row.
+. di _newline "Sentinel cells -- should be highly significant in the expected direction:"
+
+Sentinel cells -- should be highly significant in the expected direction:
+
+. di "  Cisgender man x Engineering   (expect HIGH +, low p): " ///
+>     %5.3f prop_mat[1,2] "  p=" %5.3f pval_mat[1,2]
+  Cisgender man x Engineering   (expect HIGH +, low p): 0.300  p=0.000
+
+. di "  Cisgender man x Health sciences (expect LOW -, low p): " ///
+>     %5.3f prop_mat[1,6] "  p=" %5.3f pval_mat[1,6]
+  Cisgender man x Health sciences (expect LOW -, low p): 0.080  p=0.000
+
+. di "  Gender diverse/questioning x Humanities (expect HIGH +, low p): " ///
+>     %5.3f prop_mat[6,5] "  p=" %5.3f pval_mat[6,5]
+  Gender diverse/questioning x Humanities (expect HIGH +, low p): 0.310  p=0.000
+
+. 
+. * Build the Word table via putdocx
+. * Layout: 10 rows (header + 7 gender rows + All respondents + N row) x 12 cols
+. *         (gender label, 10 fields, N column)
+. putdocx clear
+
+. putdocx begin
+
+. putdocx paragraph
+
+. putdocx text ("Table 2 (R2 revision): Intended Field of Study by Gender Identity, with significance stars"), bold
+
+. 
+. local nrows = 10  // header + 7 gender + All + N
+
+. local ncols = 12  // label + 10 fields + N
+
+. * NOTE: do NOT pass `memtable` -- per Stata 17 [RPT] putdocx table p.71,
+. * memtable keeps the table in memory only and does not add it to the active
+. * document. The v1 of this script used memtable and produced empty .docx
+. * files (title paragraph attached but tables orphaned in memory).
+. putdocx table tbl = (`nrows', `ncols'), border(all, nil) border(top, single) border(bottom, single)
+
+. 
+. * Header row
+. putdocx table tbl(1,1) = (""), bold
+
+. forval f = 1/10 {
+  2.     local col = `f' + 1
+  3.     putdocx table tbl(1, `col') = ("`field_`f'_lbl'"), bold halign(center)
+  4. }
+
+. putdocx table tbl(1, `ncols') = ("N"), bold halign(center)
+
+. 
+. * "All respondents" row (no stars; benchmark from published values)
+. putdocx table tbl(2, 1) = ("All respondents")
+
+. forval f = 1/10 {
+  2.     local pct_str = strofreal(100 * `p_all_`f'', "%4.1f")
+  3.     putdocx table tbl(2, `=`f'+1') = ("`pct_str'"), halign(center)
+  4. }
+
+. qui count if !mi(major) & !mi(gender_cat)
+
+. putdocx table tbl(2, `ncols') = ("`r(N)'"), halign(center)
+
+. 
+. * 7 gender rows with stars
+. forval g = 0/6 {
+  2.     local row = `g' + 3   // rows 3-9
+  3.     putdocx table tbl(`row', 1) = ("`gender_`g'_lbl'")
+  4.     forval f = 1/10 {
+  5.         local pct = 100 * prop_mat[`g'+1, `f']
+  6.         local pct_str = strofreal(`pct', "%4.1f")
+  7.         local pval = pval_mat[`g'+1, `f']
+  8.         local stars = ""
+  9.         if !mi(`pval') {
+ 10.             if `pval' < 0.01      local stars = "***"
+ 11.             else if `pval' < 0.05 local stars = "**"
+ 12.             else if `pval' < 0.10 local stars = "*"
+ 13.         }
+ 14.         putdocx table tbl(`row', `=`f'+1') = ("`pct_str'`stars'"), halign(center)
+ 15.     }
+ 16.     putdocx table tbl(`row', `ncols') = ("`=ng_vec[`g'+1, 1]'"), halign(center)
+ 17. }
+
+. 
+. * Bottom N row (column totals)
+. putdocx table tbl(`nrows', 1) = ("N"), bold
+
+. forval f = 1/10 {
+  2.     qui count if major == `f' & !mi(gender_cat)
+  3.     putdocx table tbl(`nrows', `=`f'+1') = ("`r(N)'"), halign(center)
+  4. }
+
+. qui count if !mi(major) & !mi(gender_cat)
+
+. putdocx table tbl(`nrows', `ncols') = ("`r(N)'"), bold halign(center)
+
+. 
+. * Notes paragraph
+. putdocx paragraph
+
+. putdocx text ("Note. The rates depicted represent respondents who indicated their intended field of study. Each cell represents the row percentage. Stars indicate two-sample tests of proportions comp
+> aring each gender group's rate of a given field to the rate among the remaining respondents: * p<0.10, ** p<0.05, *** p<0.01. P-values use the asymptotic normal approximation; for transgender women (
+> n=20), transgender men (n=59), and gender diverse/questioning (n=71), p-values should be interpreted with caution where expected cell counts are small.")
+
+. 
+. putdocx save "`tabout'/r2_table2_field_by_gender_stars.docx", replace
+successfully replaced "/home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/r2_table2_field_by_gender_stars.docx"
+
+. 
+. * Cleanup: drop helper dummies so they do not persist into Section 2.
+. forval f = 1/10 {
+  2.     cap drop field_`f'
+  3. }
+
+. forval g = 0/6 {
+  2.     cap drop is_g_`g'
+  3. }
+
+. 
+. ********************************************************************************
+. * SECTION 2: COMMENT 2 -- Standardized HS Experience Index + t-tests vs. cis man
+. ********************************************************************************
+. 
+. di _newline(2) "===================================================="
+
+
+====================================================
+
+. di "SECTION 2: Table 3 (HS experience) -- standardized + t-tests"
+SECTION 2: Table 3 (HS experience) -- standardized + t-tests
+
+. di "===================================================="
+====================================================
+
+. 
+. * Standardize hsexp_index over the unconditional regression sample
+. * (students with non-missing hsexp_index AND non-missing gender_cat)
+. qui summarize hsexp_index if !mi(gender_cat), meanonly
+
+. local hsexp_mean = r(mean)
+
+. qui summarize hsexp_index if !mi(gender_cat)
+
+. local hsexp_sd   = r(sd)
+
+. local hsexp_n    = r(N)
+
+. 
+. di "Standardization sample: n = `hsexp_n', mean = `hsexp_mean', SD = `hsexp_sd'"
+Standardization sample: n = 7483, mean = 3.838567419484164, SD = 4.30215672094614
+
+. 
+. cap drop hsexp_z
+
+. gen hsexp_z = (hsexp_index - `hsexp_mean') / `hsexp_sd' if !mi(gender_cat)
+(1,747 missing values generated)
+
+. label var hsexp_z "Standardized HS experience (z-score)"
+
+. 
+. * Sanity check: mean ~ 0 and SD ~ 1 in the standardization sample
+. qui summarize hsexp_z
+
+. di "Sanity: hsexp_z over standardization sample -- mean = " %5.3f r(mean) ///
+>     ", SD = " %5.3f r(sd) "  (should be ~0 and ~1 by construction)"
+Sanity: hsexp_z over standardization sample -- mean = 0.000, SD = 1.000  (should be ~0 and ~1 by construction)
+
+. 
+. * Compute group N and standardized mean for each gender
+. * Estimate differences vs. cis man via regression
+. qui reg hsexp_z i.gender_cat
+
+. matrix b_t3 = e(b)
+
+. matrix V_t3 = e(V)
+
+. local int_t3 = _b[_cons]   // intercept = mean for cis man (by construction)
+
+. 
+. * Display regression for the log
+. di _newline "Regression: hsexp_z on i.gender_cat (cis man = base)"
+
+Regression: hsexp_z on i.gender_cat (cis man = base)
+
+. reg hsexp_z i.gender_cat
+
+      Source |       SS           df       MS      Number of obs   =     7,483
+-------------+----------------------------------   F(6, 7476)      =     19.75
+       Model |  116.760644         6  19.4601074   Prob > F        =    0.0000
+    Residual |  7365.23946     7,476  .985184518   R-squared       =    0.0156
+-------------+----------------------------------   Adj R-squared   =    0.0148
+       Total |   7482.0001     7,482  1.00000001   Root MSE        =    .99256
+
+---------------------------------------------------------------------------------------------------------------------
+                                            hsexp_z | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------------------------------------------+----------------------------------------------------------------
+                                         gender_cat |
+          "Cisgender Woman" "(N=4269, mean=3.79)"   |  -.1125215   .0245211    -4.59   0.000    -.1605898   -.0644532
+            "Transgender Man" "(N=59, mean=2.42)"   |  -.4294185   .1306467    -3.29   0.001    -.6855228   -.1733143
+          "Transgender Woman" "(N=20, mean=2.55)"   |  -.4000679   .2227773    -1.80   0.073    -.8367741    .0366384
+                "Non-binary" "(N=267, mean=2.32)"   |  -.4539125   .0637208    -7.12   0.000    -.5788231   -.3290018
+ "Gender Diverse/Questioning" "(N=71, mean=1.11)"   |  -.7341617   .1193581    -6.15   0.000     -.968137   -.5001863
+         "Prefer Not to Say" "(N=138, mean=2.23)"   |  -.4740112   .0866575    -5.47   0.000    -.6438844   -.3041381
+                                                    |
+                                              _cons |   .1005512   .0192486     5.22   0.000     .0628185     .138284
+---------------------------------------------------------------------------------------------------------------------
+
+. 
+. * Capture df once so the loop below does not need to re-run the regression
+. * (the same regression was previously re-run six times to harvest _b/_se).
+. local df_t3 = e(df_r)
+
+. 
+. * Build Table 3 via putdocx
+. putdocx clear
+
+. putdocx begin
+
+. putdocx paragraph
+
+. putdocx text ("Table 3 (R2 revision): Standardized General High School Experience by Gender Identity"), bold
+
+. 
+. local t3_nrows = 9   // header + 7 gender + Total
+
+. local t3_ncols = 5   // label, N, std mean, diff vs cis man, p
+
+. * memtable removed -- see Section 1 NOTE above (kept table in memory only)
+. putdocx table t3 = (`t3_nrows', `t3_ncols'), border(all, nil) border(top, single) border(bottom, single)
+
+. 
+. * Header
+. putdocx table t3(1, 1) = (""), bold
+
+. putdocx table t3(1, 2) = ("N"), bold halign(center)
+
+. putdocx table t3(1, 3) = ("Std. mean"), bold halign(center)
+
+. putdocx table t3(1, 4) = ("Diff. vs. cis man"), bold halign(center)
+
+. putdocx table t3(1, 5) = ("Stars"), bold halign(center)
+
+. 
+. * Cis man row (g=0): N, mean, no diff
+. local row = 2
+
+. qui count if gender_cat == 0 & !mi(hsexp_z)
+
+. local n_g = r(N)
+
+. qui summarize hsexp_z if gender_cat == 0, meanonly
+
+. local m_g_str = strofreal(r(mean), "%5.3f")
+
+. putdocx table t3(`row', 1) = ("`gender_0_lbl' (ref.)")
+
+. putdocx table t3(`row', 2) = ("`n_g'"), halign(center)
+
+. putdocx table t3(`row', 3) = ("`m_g_str'"), halign(center)
+
+. putdocx table t3(`row', 4) = ("--"), halign(center)
+
+. putdocx table t3(`row', 5) = (""), halign(center)
+
+. 
+. * Other gender groups (g=1..6): diff from cis man + stars
+. forval g = 1/6 {
+  2.     local row = `g' + 2
+  3.     qui count if gender_cat == `g' & !mi(hsexp_z)
+  4.     local n_g = r(N)
+  5.     qui summarize hsexp_z if gender_cat == `g', meanonly
+  6.     local m_g_str = strofreal(r(mean), "%5.3f")
+  7. 
+.     * Extract coefficient and p-value on `g'.gender_cat from the single
+.     * regression already run above (no need to re-estimate per iteration).
+.     local coef = _b[`g'.gender_cat]
+  8.     local se   = _se[`g'.gender_cat]
+  9.     local tval = `coef' / `se'
+ 10.     local pval = 2 * ttail(`df_t3', abs(`tval'))
+ 11. 
+.     local diff_str = strofreal(`coef', "%5.3f")
+ 12.     local stars = ""
+ 13.     if `pval' < 0.01      local stars = "***"
+ 14.     else if `pval' < 0.05 local stars = "**"
+ 15.     else if `pval' < 0.10 local stars = "*"
+ 16. 
+.     putdocx table t3(`row', 1) = ("`gender_`g'_lbl'")
+ 17.     putdocx table t3(`row', 2) = ("`n_g'"), halign(center)
+ 18.     putdocx table t3(`row', 3) = ("`m_g_str'"), halign(center)
+ 19.     putdocx table t3(`row', 4) = ("`diff_str'"), halign(center)
+ 20.     putdocx table t3(`row', 5) = ("`stars'"), halign(center)
+ 21. }
+
+. 
+. * Total row
+. local row = `t3_nrows'
+
+. qui count if !mi(hsexp_z)
+
+. local n_tot = r(N)
+
+. qui summarize hsexp_z, meanonly
+
+. local m_tot_str = strofreal(r(mean), "%5.3f")
+
+. putdocx table t3(`row', 1) = ("Total"), bold
+
+. putdocx table t3(`row', 2) = ("`n_tot'"), halign(center)
+
+. putdocx table t3(`row', 3) = ("`m_tot_str'"), halign(center)
+
+. putdocx table t3(`row', 4) = (""), halign(center)
+
+. putdocx table t3(`row', 5) = (""), halign(center)
+
+. 
+. * Notes
+. putdocx paragraph
+
+. local hsexp_mean_str = strofreal(`hsexp_mean', "%4.2f")
+
+. local hsexp_sd_str = strofreal(`hsexp_sd', "%4.2f")
+
+. putdocx text ("Note. The general high school experience index has been standardized to mean 0 and standard deviation 1 over the standardization sample (n = `hsexp_n', raw mean = `hsexp_mean_str', raw
+>  SD = `hsexp_sd_str'). Standardized means by gender identity are reported in column 3. Column 4 reports the difference in standard-deviation units relative to cisgender men, estimated via OLS regress
+> ion with cisgender man as the omitted reference category. Stars indicate t-tests of the difference: * p<0.10, ** p<0.05, *** p<0.01.")
+
+. 
+. putdocx save "`tabout'/r2_table3_hsexp_standardized.docx", replace
+successfully replaced "/home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/r2_table3_hsexp_standardized.docx"
+
+. 
+. ********************************************************************************
+. * SECTION 3: COMMENT 3 -- Figures 5-8 standardized coefplots
+. ********************************************************************************
+. 
+. di _newline(2) "===================================================="
+
+
+====================================================
+
+. di "SECTION 3: Figures 5-8 -- standardized coefplots (color version)"
+SECTION 3: Figures 5-8 -- standardized coefplots (color version)
+
+. di "===================================================="
+====================================================
+
+. 
+. * Standardize all four outcomes over their respective UNCONDITIONAL regression
+. * samples. hsexp_z was already built in Section 2; rebuild here defensively in
+. * case Section 2's sample differs from Fig 5's.
+. 
+. * For Figure 5: standardization sample = students with non-missing hsexp_index
+. * AND non-missing gender_cat. (Already computed above; reuse.)
+. 
+. * For Figures 6-8: each worry_index has its own non-missing pattern. Standardize
+. * each over the unconditional regression sample (non-missing y and gender_cat).
+. foreach y of varlist worry_index1 worry_index2 worry_index3 {
+  2.     qui summarize `y' if !mi(gender_cat), meanonly
+  3.     local `y'_mean = r(mean)
+  4.     qui summarize `y' if !mi(gender_cat)
+  5.     local `y'_sd   = r(sd)
+  6.     local `y'_n    = r(N)
+  7. 
+.     cap drop `y'_z
+  8.     gen `y'_z = (`y' - ``y'_mean') / ``y'_sd' if !mi(gender_cat)
+  9.     label var `y'_z "`: var label `y'' (z-score)"
+ 10. 
+.     di "Standardized `y': n = ``y'_n', raw mean = " %6.3f ``y'_mean' ///
+>         ", raw SD = " %6.3f ``y'_sd'
+ 11. }
+(1,911 missing values generated)
+Standardized worry_index1: n = 7319, raw mean =  3.782, raw SD =  1.848
+(1,911 missing values generated)
+Standardized worry_index2: n = 7319, raw mean = -1.221, raw SD =  1.043
+(1,911 missing values generated)
+Standardized worry_index3: n = 7319, raw mean =  0.637, raw SD =  1.128
+
+. 
+. * Fetch the actual value-label name attached to gender_cat. The cleaning
+. * script(s) upstream may have named it `gender_cat`, `gender_cat_lbl`, or
+. * something else; the extended macro `: value label var` returns whatever
+. * it is, so we don't hardcode an assumption that broke at runtime.
+. local orig_glbl : value label gender_cat
+
+. if "`orig_glbl'" == "" {
+.     di as error "FATAL: gender_cat has no value label attached. Cannot build coefplot y-axis labels."
+.     exit 198
+. }
+
+. di "Detected gender_cat value-label name: `orig_glbl'"
+Detected gender_cat value-label name: gender_cat_hsexp_index2
+
+. 
+. * Build N-and-mean value labels for the y-axis of each coefplot.
+. * Mirrors paper_quant_analysis.do:199-211 but for the *standardized* outcomes.
+. foreach y in hsexp_z worry_index1_z worry_index2_z worry_index3_z {
+  2.     cap label drop gender_cat_`y'_lbl
+  3.     label copy `orig_glbl' gender_cat_`y'_lbl
+  4. 
+.     forval i = 0/6 {
+  5.         qui summ `y' if gender_cat == `i'
+  6.         local ybar : display %4.2f r(mean)
+  7.         local nval = r(N)
+  8.         * Use the hand-coded sentence-case labels from Section 1
+.         * (gender_`i'_lbl) so the figure y-axis ticks match Tables 2 and 3
+.         * exactly ("Nonbinary" one word, "Cisgender man" sentence case, etc.).
+.         label define gender_cat_`y'_lbl `i' ///
+>             `" "`gender_`i'_lbl'" "(N=`nval', mean=`ybar')" "', modify
+  9.     }
+ 10. }
+
+. 
+. * (output directories already created at top of script)
+. 
+. * --------------------------------------------------------------------------
+. * FIGURE 5: hsexp_z by gender (M1 unconditional + M2 demographics)
+. * --------------------------------------------------------------------------
+. di _newline "FIGURE 5: standardized HS experience coefplot"
+
+FIGURE 5: standardized HS experience coefplot
+
+. 
+. eststo clear
+
+. qui reg hsexp_z i.gender_cat
+
+. est store hsexp_z_m1
+
+. di "  M1 (unconditional): N = " e(N) ", cis man point = 0 by construction"
+  M1 (unconditional): N = 7483, cis man point = 0 by construction
+
+. 
+. qui reg hsexp_z i.gender_cat i.race_assn i.parent_edu
+
+. est store hsexp_z_m2
+
+. di "  M2 (demographics): N = " e(N)
+  M2 (demographics): N = 7464
+
+. 
+. label val gender_cat gender_cat_hsexp_z_lbl
+
+. coefplot ///
+>     (hsexp_z_m1, msymbol(O) ciopts(lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'")) ///
+>     (hsexp_z_m2, msymbol(D) ciopts(lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")), ///
+>     drop(_cons *.race_assn *.parent_edu) baselevels label ///
+>     legend(order(2 "unconditional" 4 "control for demographics") span size(small) cols(1) region(lwidth(none))) ///
+>     xlabel(-1.5(0.5)0.5) ylabel(, labsize(vsmall)) xline(0)
+
+. graph export "`figout'/r2_fig5_hsexp_z_color.png", replace width(1600)
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig5_hsexp_z_color.png written in PNG format
+
+. 
+. * Restore default label
+. label val gender_cat `orig_glbl'
+
+. 
+. * --------------------------------------------------------------------------
+. * FIGURES 6-8: each worry_index_z by gender (M1 unconditional + M3 demographics + hsexp_z)
+. * --------------------------------------------------------------------------
+. * Note: for the worry figures, the controls model adds hsexp_z (the standardized
+. * HS experience index) as a covariate -- mirrors paper_quant_analysis.do:372 with
+. * hsexp_index replaced by hsexp_z. Coefficient on hsexp_z is interpretable in
+. * SD-of-hsexp units.
+. 
+. local figno 6
+
+. foreach y in worry_index1 worry_index2 worry_index3 {
+  2.     di _newline "FIGURE `figno': standardized `y' coefplot"
+  3. 
+.     eststo clear
+  4.     qui reg `y'_z i.gender_cat
+  5.     est store `y'_z_m1
+  6.     di "  M1 (unconditional): N = " e(N)
+  7. 
+.     qui reg `y'_z i.gender_cat c.hsexp_z i.race_assn i.parent_edu
+  8.     est store `y'_z_m3
+  9.     di "  M3 (demographics + hsexp_z): N = " e(N)
+ 10. 
+.     label val gender_cat gender_cat_`y'_z_lbl
+ 11.     coefplot ///
+>         (`y'_z_m1, msymbol(O) ciopts(lwidth(*2) color("`aggieblue'")) mcolor("`aggieblue'")) ///
+>         (`y'_z_m3, msymbol(D) ciopts(lwidth(*2) color("`aggiegold'")) mcolor("`aggiegold'")), ///
+>         drop(_cons hsexp_z *.race_assn *.parent_edu) baselevels label ///
+>         legend(order(2 "unconditional" 4 "control for demographics & HS index") span size(small) cols(1) region(lwidth(none))) ///
+>         xlabel(-0.5(0.5)1.5) ylabel(, labsize(vsmall)) xline(0)
+ 12.     graph export "`figout'/r2_fig`figno'_`y'_z_color.png", replace width(1600)
+ 13. 
+.     label val gender_cat `orig_glbl'
+ 14.     local ++figno
+ 15. }
+
+FIGURE 6: standardized worry_index1 coefplot
+  M1 (unconditional): N = 7319
+  M3 (demographics + hsexp_z): N = 7276
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig6_worry_index1_z_color.png written in PNG format
+
+FIGURE 7: standardized worry_index2 coefplot
+  M1 (unconditional): N = 7319
+  M3 (demographics + hsexp_z): N = 7276
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig7_worry_index2_z_color.png written in PNG format
+
+FIGURE 8: standardized worry_index3 coefplot
+  M1 (unconditional): N = 7319
+  M3 (demographics + hsexp_z): N = 7276
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig8_worry_index3_z_color.png written in PNG format
+
+. 
+. di _newline(2) "===================================================="
+
+
+====================================================
+
+. di "DONE. Outputs:"
+DONE. Outputs:
+
+. di "  `tabout'/r2_table2_field_by_gender_stars.docx"
+  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/r2_table2_field_by_gender_stars.docx
+
+. di "  `tabout'/r2_table2_field_by_gender_stars_audit.csv"
+  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/r2_table2_field_by_gender_stars_audit.csv
+
+. di "  `tabout'/r2_table3_hsexp_standardized.docx"
+  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/r2_table3_hsexp_standardized.docx
+
+. di "  `figout'/r2_fig5_hsexp_z_color.png"
+  /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig5_hsexp_z_color.png
+
+. di "  `figout'/r2_fig6_worry_index1_z_color.png"
+  /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig6_worry_index1_z_color.png
+
+. di "  `figout'/r2_fig7_worry_index2_z_color.png"
+  /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig7_worry_index2_z_color.png
+
+. di "  `figout'/r2_fig8_worry_index3_z_color.png"
+  /home/research/ca_ed_lab/projects/csac_survey2023/fig/thsj_rr/r2_fig8_worry_index3_z_color.png
+
+. di "===================================================="
+====================================================
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/r2_revisions.txt
+  log type:  text
+ closed on:  12 May 2026, 18:22:16
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

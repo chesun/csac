@@ -1,12 +1,25 @@
 # TODO — CSAC Project
 
-Last updated: 2026-05-12 (end of day)
+Last updated: 2026-05-12 (end of THSJ R2 session)
 
 ## Active (doing now)
 
-(none — paused for the night)
+(none)
 
 ## Up Next
+
+### THSJ R2 — submission close-out
+
+- [ ] Draft response letter to The High School Journal editor mapping
+      each reviewer comment (1–7) to the specific change made. Flag
+      the directional-error correction in the Figure 6 paragraph
+      (manuscript said "lower than cisgender men"; data shows "higher")
+      as a self-caught issue resolved in this revision round.
+- [ ] Final read-through of the live Google Doc — eyeball rendered
+      equations, confirm new tables and figures display correctly,
+      check directional-error correction reads naturally in context
+- [ ] Export final .docx from Google Doc, package with response letter,
+      upload to THSJ submission portal
 
 ### User-side dissertation polish (manual, in `dissertation_template/`)
 
@@ -53,7 +66,50 @@ Last updated: 2026-05-12 (end of day)
 
 ## Done (2026-05-12 end-of-day summary)
 
-The two-day arc, in roughly chronological commit order:
+### THSJ R2 revision — Christina's portion (Reviewer 2 Comments 1–3)
+
+- [x] **Reviewer comments extracted** from the R2 round-two .docx;
+      Christina owns Comments 1–3, Alex owns 4–7
+- [x] **Plan drafted** in `quality_reports/plans/2026-05-12_thsj-r2-revisions.md`;
+      full table/figure → source-code mapping; resolved 5 open questions
+- [x] **`do/thsj_rr/r2_revisions.do`** written + iterated (4 rounds with
+      coder-critic, final score 94/100): Section 1 = Table 2 with
+      two-sample prtest G-vs-not-G + stars; Section 2 = Table 3 with
+      standardized HS-experience index + t-tests vs. cis man;
+      Section 3 = Figures 5–8 standardized coefplots in color version
+- [x] **Three Stata bugs fixed mid-flight**: `bitesti`/`prtest` r() scalar
+      case-sensitivity (`r(p)` lowercase, not `r(P)`); `putdocx table`
+      `memtable` option silently orphans tables in memory (produces
+      empty docx); `gender_cat` value-label name is mutated by
+      upstream code (use `: value label var` to fetch at runtime).
+      Captured as new "Common Patterns and Pitfalls" sections in the
+      project-scoped `stata` skill at `.claude/skills/stata/SKILL.md`
+- [x] **Outputs produced**: `tab/thsj_rr/r2_table2_field_by_gender_stars.docx`,
+      `r2_table3_hsexp_standardized.docx`, the audit CSV, 4 PNG figures
+      (`r2_fig{5,6,7,8}_*_z_color.png`)
+- [x] **Directional-error caught in published manuscript**: Figure 6
+      paragraph said "general worries was significantly lower than
+      cisgender men" but M1 unconditional regression shows all
+      trans/gender expansive groups have POSITIVE coefficients (higher
+      worry, not lower). Flagged at top of prose-edits bundle; Edit 10
+      proposes the corrected language. Likely a leftover from an
+      earlier sign-flipped PCA construct
+- [x] **Prose-edits bundle** at `quality_reports/2026-05-12_thsj-r2-prose-edits.md`:
+      12 concrete edits + directional-error flag, anchored by search-string,
+      ordered top-to-bottom of manuscript. Writer-critic verified 91/100
+      → ~99/100 post-fixes (terminology drift "regression sample" →
+      "analytical sample"; 3 stylistic tightenings applied)
+- [x] **Google Docs equation portability**: rewrote equations using
+      minimal-LaTeX (only Latin + basic Greek α β γ δ ε θ + `\sum`);
+      switched `\mathbb{1}[gender_i=g]` to `D_{gi}` dummy variables;
+      wrapped all 13 math blocks in `$$...$$` (Auto-LaTeX add-on
+      requirement, not single `$...$`)
+- [x] **All 12 edits + directional-error correction applied** by
+      Christina in the Google Doc co-edit with Alex (this session)
+
+### Earlier dissertation work (Ch 3 / GDTF)
+
+The two-day arc on dissertation chapter 3, in roughly chronological commit order:
 
 - [x] **2026-05-10**: Wide-table fit cycle — stack mean/N, wrap data-col
       labels, strip esttab `\multicolumn` wrappers, widen p{} cols,

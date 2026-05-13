@@ -6,6 +6,7 @@ When writing a new review, consult this index first. If an `Active` entry exists
 
 ---
 
+- [2026-05-12_r2-revisions_coder_review_round3.md](2026-05-12_r2-revisions_coder_review_round3.md) — `do/thsj_rr/r2_revisions.do`, score 94/100, Active (supersedes Round-2 at score 92/100, now in archive/)
 
 ---
 
