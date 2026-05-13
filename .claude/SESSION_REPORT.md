@@ -210,3 +210,14 @@
 **Status:**
 - Done: All 12 prose edits applied in Google Doc; analysis side complete
 - Pending: Response letter to THSJ editor (mapping each reviewer comment to the change made); final .docx export; submission portal upload
+
+## 2026-05-13 — THSJ R2 response-letter snippets for Comments 1–3
+
+**Operations:**
+- Drafted `quality_reports/2026-05-13_thsj-r2-response-snippets.md`: three short responses (2–5 sentences each) for Reviewer 2's Comments 1, 2, 3, ready to drop into the response letter
+- Each snippet quotes the reviewer comment, leads with a one-line confirmation, and specifies where the change appears in the manuscript (table/figure/section anchor)
+- Comment 3 response transparently flags the self-caught directional error in the prior Figure 6 paragraph (manuscript said "lower than cisgender men"; regression shows "higher")
+
+**Status:**
+- Done: Christina's portion of the response letter (Comments 1–3 snippets)
+- Pending: assemble full response letter — cover paragraph to the editor + Reviewer 1 "all concerns addressed" reply + integrate Alex's Comments 4–7 responses from the earlier reviewer-response file + transmittal

@@ -1,6 +1,6 @@
 # TODO — CSAC Project
 
-Last updated: 2026-05-12 (end of THSJ R2 session)
+Last updated: 2026-05-13 (THSJ R2 response snippets drafted)
 
 ## Active (doing now)
 
@@ -10,11 +10,13 @@ Last updated: 2026-05-12 (end of THSJ R2 session)
 
 ### THSJ R2 — submission close-out
 
-- [ ] Draft response letter to The High School Journal editor mapping
-      each reviewer comment (1–7) to the specific change made. Flag
-      the directional-error correction in the Figure 6 paragraph
-      (manuscript said "lower than cisgender men"; data shows "higher")
-      as a self-caught issue resolved in this revision round.
+- [ ] Assemble the full response letter to The High School Journal
+      editor. Response snippets for Christina's Comments 1–3 are
+      drafted at `quality_reports/2026-05-13_thsj-r2-response-snippets.md`;
+      still need: cover paragraph to the editor, response to Reviewer
+      1's "all my concerns addressed" note, and Alex's responses to
+      Comments 4–7 incorporated from the earlier reviewer-response
+      file. Directional-error correction already flagged in Comment 3.
 - [ ] Final read-through of the live Google Doc — eyeball rendered
       equations, confirm new tables and figures display correctly,
       check directional-error correction reads naturally in context

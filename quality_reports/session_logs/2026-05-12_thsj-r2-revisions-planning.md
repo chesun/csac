@@ -181,5 +181,6 @@ Estimated revised score ≈ 99/100, comfortably above the 95 submission threshol
 - [ ] **Pending:** Christina + Alex apply the 12 prose edits in the Google Doc co-edit.
 - [ ] **Pending:** Christina + Alex review the directional-error flag (Figure 6 "lower" vs. "higher") and confirm the corrected language.
 - [ ] **Pending:** Christina swap in the new .docx tables and .png figures for Tables 2, 3 and Figures 5, 6, 7, 8 in the Google Doc.
-- [ ] **Pending:** Response letter drafting (separate session) — map each reviewer comment to the specific change made.
+- [x] **2026-05-13:** Christina's Comments 1–3 response snippets drafted at `quality_reports/2026-05-13_thsj-r2-response-snippets.md` (~4 sentences each; quotes reviewer comment + leads with one-line confirmation + cites location of change; Comment 3 transparently flags the self-caught directional error).
+- [ ] **Pending:** Full response letter assembly — cover paragraph + Reviewer 1 "all concerns addressed" reply + Alex's Comments 4–7 responses incorporated + transmittal.
 - [ ] **Pending:** Final manuscript export and submission to The High School Journal.
