@@ -18,6 +18,7 @@
 **Primary analysis language:** [e.g., Stata 17 / R / Python / Julia]
 **LaTeX engine:** [pdflatex | xelatex]
 **Overleaf path:** [optional — e.g., ~/Library/CloudStorage/Dropbox/Apps/Overleaf/project-name. If set, compile/verify tooling targets this path instead of in-repo paper/ and talks/.]
+**Analysis roots:** do/, fig/, tab/
 
 ---
 
@@ -29,6 +30,7 @@
 - **Quality gates** — weighted aggregate score; nothing ships below 80/100 (see `quality.md`)
 - **Worker-critic pairs** — every creator has a paired critic; critics never edit files (see `agents.md`)
 - **Primary source first** — before citing a paper in a load-bearing artifact, read the PDF and produce reading notes in `master_supporting_docs/literature/reading_notes/`; hooks block edits otherwise (see `primary-source-first.md`)
+- **Evidence gating** — a verdict is only as good as the evidence it carries; gate on *claims*, not actions; verdicts are `{PASS, UNVERIFIED, FAIL}` (never a silent default-PASS), and the verification mechanism scales to checkability (block only deterministic Tier-1 checks; advise+deduct for judgment). A no-logic-change claim is gated against the residue the recorder writes to the verification ledger (see `adversarial-default.md` § Evidence gating and `.claude/references/evidence-gating-detail.md`)
 - **Decisions are ADRs** — substantive decisions live in `decisions/NNNN_slug.md` (see `decision-log.md`)
 - **Track TODOs** — project root `TODO.md` (see `todo-tracking.md`)
 - **Auto-memory** — corrections and preferences saved automatically via Claude Code's built-in memory system
