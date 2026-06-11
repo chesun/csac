@@ -6,6 +6,8 @@
 
 * To run all the dofiles:
 * do "/home/research/ca_ed_lab/projects/csac_survey2023/do/do_all_baiyu.do"
+
+* CS May 31, 2026: absorbed by do_all.do. Archived.
 ********************************************************************************
 
 

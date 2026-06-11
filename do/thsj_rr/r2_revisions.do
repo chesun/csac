@@ -6,7 +6,7 @@ DATE CREATED: 2026-05-12
 
 Plan: $csacprojdir/quality_reports/plans/2026-05-12_thsj-r2-revisions.md
 
-To Run This Dofile (on TERC server):
+To Run This Dofile (on server):
     do "$csacprojdir/do/thsj_rr/r2_revisions.do"
 
 WHAT THIS PRODUCES

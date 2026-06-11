@@ -5,7 +5,7 @@ PROGRAM: THSJ R2 -- Print standardized worry-index regression coefficients
 WRITTEN BY: Christina Sun (ucsun@ucdavis.edu)
 DATE CREATED: 2026-05-12
 
-To Run This Dofile (on TERC server):
+To Run This Dofile (on server):
     do "$csacprojdir/do/thsj_rr/r2_worry_coefs.do"
 
 WHAT THIS PRODUCES
