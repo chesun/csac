@@ -1,27 +1,12 @@
 # TODO — CSAC Project
 
-Last updated: 2026-05-13 (THSJ R2 response snippets drafted)
+Last updated: 2026-06-13 (offboarding: README expanded, output-path fixes, status updates)
 
 ## Active (doing now)
 
 (none)
 
 ## Up Next
-
-### THSJ R2 — submission close-out
-
-- [ ] Assemble the full response letter to The High School Journal
-      editor. Response snippets for Christina's Comments 1–3 are
-      drafted at `quality_reports/2026-05-13_thsj-r2-response-snippets.md`;
-      still need: cover paragraph to the editor, response to Reviewer
-      1's "all my concerns addressed" note, and Alex's responses to
-      Comments 4–7 incorporated from the earlier reviewer-response
-      file. Directional-error correction already flagged in Comment 3.
-- [ ] Final read-through of the live Google Doc — eyeball rendered
-      equations, confirm new tables and figures display correctly,
-      check directional-error correction reads naturally in context
-- [ ] Export final .docx from Google Doc, package with response letter,
-      upload to THSJ submission portal
 
 ### User-side dissertation polish (manual, in `dissertation_template/`)
 
@@ -65,6 +50,19 @@ Last updated: 2026-05-13 (THSJ R2 response snippets drafted)
       we want a working copy outside `dissertation_template/Chapter1/`
 - [ ] Begin Chapter 2 (peer-effects DiD) scaffolding for csac if we
       want a working copy outside `dissertation_template/Chapter2/`
+
+## Done (2026-06-13)
+
+- [x] **The High School Journal paper accepted** (forthcoming). R2
+      submission close-out complete; the prior "submission close-out"
+      task block is retired.
+- [x] **Offboarding pass**: README expanded with full per-file
+      inputs/outputs, project structure, history, external-input
+      provenance, and gotchas. Output-path bugs fixed in
+      `clean_qualtrics_export.do`, `cde_demographics.do` (incl. latent
+      undefined `fall_year`), and `csac_survey_finaid.do`. Status
+      updated across README and CLAUDE.md (GDTF3 + finaid brief
+      published; THSJ accepted). Coder-critic review: 94/100.
 
 ## Done (2026-05-12 end-of-day summary)
 

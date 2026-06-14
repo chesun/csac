@@ -7,10 +7,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is the **CSAC 2023 High School Senior Survey** project — a collaboration between the California Education Lab (UC Davis) and the California Student Aid Commission (CSAC). A single survey wave of California high school graduating seniors (May 2023) is merged with CSAC admin data and CCC admin data to study summer school enrollment and financial aid receipt.
 
 **Research outputs from this survey**:
-1. [PACE Brief](https://edpolicyinca.org/publications/transition-college) — transition to college
+1. [PACE Brief](https://edpolicyinca.org/publications/transition-college) — transition to college (published)
 2. **AEA Papers & Proceedings** — summer school nudge experiment (forthcoming)
-3. **The High School Journal** — article submitted, awaiting R&R response (active)
-4. **Getting Down to Facts III (GDTF3)** — white paper (current primary output)
+3. **The High School Journal** — LGBTQ+ high school experiences (accepted, forthcoming)
+4. **Getting Down to Facts III (GDTF3)** — white paper (published)
+5. **Financial-aid brief** — co-branded with CSAC (published); standalone code in `do/csac_survey_finaid.do`
 
 **Team**: Christina Sun (CS, `ucsun@ucdavis.edu`), Baiyu Zhou (BZ, `baizhou@ucdavis.edu`)
 
@@ -42,7 +43,7 @@ do/         Stata do files (all executable code)
   learn/      Analysis and visualization
   experiments/ Summer nudge RCT and admin data analysis (AEA P&P)
   getting_down_to_facts/  GDTF3 white paper analysis (draws on thsj_rr/ and paper_quant_analysis.do)
-  thsj_rr/    High School Journal R&R (submitted, awaiting response)
+  thsj_rr/    High School Journal R&R analysis (paper accepted, forthcoming)
   archive/    Legacy code
 dta/        Local data files (cleaned outputs synced back from server)
   cln/        Cleaned .dta files

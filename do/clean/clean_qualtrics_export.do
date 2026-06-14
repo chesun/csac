@@ -1155,7 +1155,12 @@ foreach v in college_whynot college_excited college_challenge {
 label data "Fully cleaned CSAC 2023 HS senior survey data"
 compress 
 
-save $csacclndatadir/csac_hs_senior_2023_clean, replace 
+save $csacclndatadir/csac_hs_senior_2023_clean, replace
+
+* also save a working copy to the project dir: prep_brief.do and genderso.do
+* read the cleaned data from $csacprojdir/dta/cln/, not $csacclndatadir
+cap mkdir "$csacprojdir/dta/cln"
+save $csacprojdir/dta/cln/csac_hs_senior_2023_clean, replace
 
 
 local date2 = c(current_date)

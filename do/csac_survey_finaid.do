@@ -334,10 +334,12 @@ Q12b. Now imagine that you borrowed $50,000 in student loans to pay for college.
 
 ******************************************************************************/
 codebook loan_pay_10k loan_pay_50k if college_fall==1
+cap mkdir "$main/fig"
+cap mkdir "$main/fig/finaid"
 hist loan_pay_10k if college_fall==1, freq title("Expected Repayment: $10k")
-graph export "/$main/Loan_ten.png"
+graph export "$main/fig/finaid/Loan_ten.png", replace
 hist loan_pay_50k if college_fall==1, freq title("Expected Repayment: $50k")
-graph export "/$main/Loan_fifty.png"
+graph export "$main/fig/finaid/Loan_fifty.png", replace
 
 /*Q12c. [IF LOAN on question 11]: You indicated you plan to take out student loans. How much do you plan to borrow?
 ●	Less than $5k

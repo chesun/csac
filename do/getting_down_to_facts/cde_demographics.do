@@ -26,6 +26,10 @@ import delimited using $csacprojdir/dta/raw/enr202022.txt, delimiter(tab) varnam
 
 keep if academic_year == "2022-23"
 
+* fall_year drives the year variable and output filename below; derived from the
+* hardcoded "2022-23" academic-year filter above (fall 2022 -> spring 2023)
+local fall_year = 2022
+
 rename cds_code cdscode
 	label var cdscode "CDS Code"
 	label var county "County"
@@ -108,4 +112,5 @@ rename cds_code cdscode
 	sort cdscode year county district school ethnicity race male
 	compress
 	label data "California Department of Education Spring `=`fall_year' + 1' School Enrollment"
-	save data/public_access/clean/cde/enr/enr_`=`fall_year' + 1'_clean.dta, replace
+	cap mkdir "$csacprojdir/dta/cln/cde"
+	save "$csacprojdir/dta/cln/cde/enr_`=`fall_year' + 1'_clean.dta", replace
