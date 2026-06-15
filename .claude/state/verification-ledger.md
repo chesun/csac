@@ -17,8 +17,11 @@ Cache of verification results for the adversarial-default rule (`.claude/rules/a
 
 | Path | Check | Verified At | File hash | Result | Evidence |
 |------|-------|-------------|-----------|--------|----------|
-| _example_ scripts/01_clean.do | no-hardcoded-paths | 2026-04-28T10:00Z | a1b2c3d4e5f6 | PASS | grep returned 0 matches |
-| _example_ scripts/02_analysis.do | seed-set-once | 2026-04-28T10:00Z | f7e8d9c0b1a2 | FAIL | 0 occurrences in master.do |
-| _example_ paper/main.tex | bibliography-resolves | 2026-04-28T10:05Z | 9e8d7c6b5a4f | ASSUMED | Cost-prohibitive: full pdflatex+biber run not yet executed in this session |
+| do/clean/clean_qualtrics_export.do | no-hardcoded-paths | 2026-06-14T00:00Z | c36142720eb5 | PASS | grep `"/Users\|"/home\|"C:\\` returned 0 matches; uses $csac* globals |
+| do/getting_down_to_facts/cde_demographics.do | no-hardcoded-paths | 2026-06-14T00:00Z | cd4fd426bcfa | PASS | 0 matches; output now `$csacprojdir/dta/cln/cde/` |
+| do/csac_survey_finaid.do | no-hardcoded-paths | 2026-06-14T00:00Z | f40aed59c206 | PASS | 1 match at L17 = in-file `global main` project-root def (self-contained settings, like settings.do); analysis code uses the global, 0 stray paths |
+| do/clean/clean_qualtrics_export.do | offboarding-pathfix | 2026-06-14T00:00Z | c36142720eb5 | PASS | coder-critic 94/100 (`quality_reports/reviews/2026-06-13_offboarding-pathfixes_coder_review.md`); static only — server run pending |
+| do/getting_down_to_facts/cde_demographics.do | offboarding-pathfix | 2026-06-14T00:00Z | cd4fd426bcfa | PASS | `local fall_year=2022` resolves undefined macro; coder-critic 94/100; static only |
+| do/csac_survey_finaid.do | offboarding-pathfix | 2026-06-14T00:00Z | f40aed59c206 | PASS | loan figs → `fig/finaid/`, `, replace` added; coder-critic 94/100; static only |
 
 <!-- Real entries replace the _example_ rows above. Keep one row per (path, check). When a file changes, its rows become stale and are re-evaluated on next access. -->

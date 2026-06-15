@@ -221,3 +221,26 @@
 **Status:**
 - Done: Christina's portion of the response letter (Comments 1–3 snippets)
 - Pending: assemble full response letter — cover paragraph to the editor + Reviewer 1 "all concerns addressed" reply + integrate Alex's Comments 4–7 responses from the earlier reviewer-response file + transmittal
+
+## 2026-06-14 — Offboarding: README expansion, output-path fixes, status updates
+
+**Operations:**
+- Rewrote `README.md` into a full offboarding doc: per-file inputs/outputs for the whole `do_all.do` pipeline + live standalone finaid analysis, project structure, history, external-input provenance, gotchas (I/O extracted by 5 parallel Explore agents, claims verified against code)
+- Fixed 3 do files: `clean/clean_qualtrics_export.do` (dual-save cleaned data to `$csacprojdir/dta/cln/`), `getting_down_to_facts/cde_demographics.do` (defined latent-undefined `fall_year=2022`; output → `$csacprojdir/dta/cln/cde/`), `csac_survey_finaid.do` (loan figs → `$main/fig/finaid/`, `, replace`)
+- Propagated output statuses across `README.md`, `CLAUDE.md`, `TODO.md`, memory; updated logs/state (`research_journal.md` created, verification-ledger rows, this report, session log); synced memory to `claude-config`
+
+**Decisions:**
+- Single survey wave confirmed (no fall wave; CCC fall = records). User scoping: pipeline + live standalone documented; people = CS & BZ only
+- Left THSJ "under review" footnote + `[Forthcoming` bib typo in the `doc/dissertation/chapter3/` scaffold unchanged, per author (dissertation filed; scaffold is historical)
+
+**Results:**
+- Coder-critic review of the 3 fixes: 94/100, no must-fix items
+- Outputs' final statuses recorded: PACE published, AEA P&P forthcoming, THSJ accepted/forthcoming, GDTF3 published, finaid published; dissertation filed
+
+**Commits:**
+- `9a096f7` — docs: offboarding — expand README, fix output paths, update output statuses
+- (this commit) — logs/state/memory wrap-up
+
+**Status:**
+- Done: offboarding documentation + code fixes + status consistency across repo and memory
+- Pending: live server run of `do do/do_all.do` to confirm the 3 fixes end-to-end (air-gapped — verified statically only)
