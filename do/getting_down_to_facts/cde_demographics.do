@@ -31,12 +31,13 @@ keep if academic_year == "2022-23"
 local fall_year = 2022
 
 rename cds_code cdscode
+rename gr_kn kdgn  // CDE file names kindergarten gr_kn, not kdgn
 	label var cdscode "CDS Code"
 	label var county "County"
 	label var district "District"
 	label var school "School"
 
-	rename ethnic ethnicity
+	rename race_ethnicity ethnicity  // CDE file names the 0-9 race code race_ethnicity, not ethnic
 	label def ethnicity 0 "Not reported"
 	label def ethnicity 1 "American Indian or Alaska Native, Not Hispanic", add
 	label def ethnicity 2 "Asian, Not Hispanic", add

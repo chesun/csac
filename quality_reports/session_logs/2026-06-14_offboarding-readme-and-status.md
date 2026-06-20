@@ -58,3 +58,10 @@
 - **Diagnosis (confirmed):** `reg_tab.do:23` `controls_svy` had a truncated name `i.primary_eng`; the variable is `primary_english` everywhere (created `clean_qualtrics_export.do:342`; used correctly as `i.primary_english` in `explore_rct.do:30` and `reg_share.do:15`). Pre-existing typo — unrelated to the `do_all.do` commenting (each downstream file reloads `_clean.dta` fresh, so it only ever sees disk variables).
 - **Fix:** `i.primary_eng` → `i.primary_english`. Committed (permanent bug fix). Ledger updated.
 - **Scanned the remaining active experiments files:** `reg_share.do` clean. `het.do` references `race_black/white/hisp/asian` + `gender_man/woman` (all from `prep_brief.do`); `gender_man/woman` are confirmed in `_clean.dta` (explore_rct used them), so the race indicators share that lineage and are low-risk but not server-verified. Stages 4–5 (THSJ/GDTF) use separate datasets — not yet scanned.
+
+### 2026-06-20 — Third server error: `r(111) ethnic not found` (cde_demographics.do, stage 5)
+
+- Resumed run cleared **all of stage 3 (RCT) and stage 4 (THSJ)** — `reg_tab` fix worked, `het.do`'s race vars were fine — and reached stage 5. Halted in `cde_demographics.do` at `rename ethnic ethnicity`.
+- **Diagnosis (confirmed via `ds`):** external CDE file `enr202022.txt` schema drift. Code expected the old wide format (`ethnic` 0–9, `kdgn`); the file actually has `race_ethnicity` and `gr_kn` (with `gender` and the grade columns present). Not caused by the offboarding edits.
+- **Fix:** `rename ethnic ethnicity` → `rename race_ethnicity ethnicity`; added `rename gr_kn kdgn`. Committed. Leaf file — nothing downstream reads its saved dataset. **Stated assumption:** `race_ethnicity` is numeric 0–9 (CDE's standard ETHNIC coding); if it's a string, L59 `ethnicity==1` will throw r(109) loudly and I'll add a destring/encode.
+- **`do_all.do`** resume point advanced to stage 5 (`cde_demographics` → `gdtf_reg` → `gdtf_adhoc` → `gdtf_latex_tables`); still uncommitted.
