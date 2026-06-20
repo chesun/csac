@@ -65,3 +65,10 @@
 - **Diagnosis (confirmed via `ds`):** external CDE file `enr202022.txt` schema drift. Code expected the old wide format (`ethnic` 0–9, `kdgn`); the file actually has `race_ethnicity` and `gr_kn` (with `gender` and the grade columns present). Not caused by the offboarding edits.
 - **Fix:** `rename ethnic ethnicity` → `rename race_ethnicity ethnicity`; added `rename gr_kn kdgn`. Committed. Leaf file — nothing downstream reads its saved dataset. **Stated assumption:** `race_ethnicity` is numeric 0–9 (CDE's standard ETHNIC coding); if it's a string, L59 `ethnicity==1` will throw r(109) loudly and I'll add a destring/encode.
 - **`do_all.do`** resume point advanced to stage 5 (`cde_demographics` → `gdtf_reg` → `gdtf_adhoc` → `gdtf_latex_tables`); still uncommitted.
+
+### 2026-06-20 — Pipeline runs end-to-end; final `log close` r(606) fixed (milestone)
+
+- Resumed run completed **all of stage 5 (GDTF)** — `gdtf_latex_tables.do` (the last file) wrote its fragments. Only the final `log close` in `do_all.do` errored `r(606) no log file open` (the sub-do-files' `cap log close _all` closes the master log early, so nothing is open at the end). Benign — everything ran.
+- **Fix (permanent):** final `log close` → `cap log close _all` in `do_all.do`.
+- **Restored `do_all.do`** to all-stages-active via `git checkout` (discarding the temp resume scaffolding), then re-applied only the log-close fix. 27 active `do` lines, balance 2/2.
+- **Milestone:** every stage of the pipeline has now run successfully on the server across the staged runs. Four bugs surfaced and fixed during the server runs — `first_gen` duplicate (`sum_stats.do`), `primary_eng` typo (`reg_tab.do`), CDE column renames (`cde_demographics.do`), final log-close (`do_all.do`) — on top of the three original static path fixes. **Remaining:** one optional clean full run of the restored `do_all.do` to confirm an r(0) end-to-end exit.

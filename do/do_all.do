@@ -128,7 +128,9 @@ do $csacprojdir/do/getting_down_to_facts/gdtf_latex_tables.do
 
 
 
-log close 
+* sub-do-files each run `cap log close _all`, which closes this master log
+* early, so a bare `log close` here errors r(606). cap makes the exit clean.
+cap log close _all
 translate $csacprojdir/log/do_all.smcl ///
     $csacprojdir/log/do_all.txt, replace 
 

@@ -8,12 +8,12 @@ Last updated: 2026-06-20 (code-offboarding scope; CLAUDE.md GDTF figure list cor
 
 ## Up Next
 
-- [ ] **Live server run of `do do/do_all.do`** (user-side, air-gapped server)
-      to confirm the three offboarding code fixes end-to-end:
-      `clean/clean_qualtrics_export.do`,
-      `getting_down_to_facts/cde_demographics.do`, and
-      `csac_survey_finaid.do`. Verified statically only so far
-      (coder-critic 94/100). This is the last open offboarding step.
+- [ ] **(Optional) One clean full run of `do do/do_all.do`** to confirm an
+      r(0) end-to-end exit. Every stage already ran successfully on the
+      server across staged runs; `do_all.do` is restored to all-active with
+      the log-close fix. Before the run, upload the restored `do_all.do`
+      plus the three server-fixed analysis files: `experiments/sum_stats.do`,
+      `experiments/reg_tab.do`, `getting_down_to_facts/cde_demographics.do`.
 
 ## Waiting On
 
@@ -25,6 +25,11 @@ Last updated: 2026-06-20 (code-offboarding scope; CLAUDE.md GDTF figure list cor
 
 ## Done (2026-06-20)
 
+- [x] **Full `do_all.do` pipeline debugged on the server** — ran every stage
+      across staged runs; fixed four bugs surfaced live: `first_gen` dup
+      (`sum_stats.do`), `primary_eng` typo (`reg_tab.do`), CDE column renames
+      (`cde_demographics.do`), and the final `log close` r(606) (`do_all.do`).
+      `do_all.do` restored to all-active with the log-close fix.
 - [x] **CLAUDE.md GDTF figure list corrected** — replaced the stale
       8-figure draft list with the published 12 figures (new ordering:
       HS-experience regressions by gender/SO, two bullying figures,
