@@ -72,3 +72,10 @@
 - **Fix (permanent):** final `log close` → `cap log close _all` in `do_all.do`.
 - **Restored `do_all.do`** to all-stages-active via `git checkout` (discarding the temp resume scaffolding), then re-applied only the log-close fix. 27 active `do` lines, balance 2/2.
 - **Milestone:** every stage of the pipeline has now run successfully on the server across the staged runs. Four bugs surfaced and fixed during the server runs — `first_gen` duplicate (`sum_stats.do`), `primary_eng` typo (`reg_tab.do`), CDE column renames (`cde_demographics.do`), final log-close (`do_all.do`) — on top of the three original static path fixes. **Remaining:** one optional clean full run of the restored `do_all.do` to confirm an r(0) end-to-end exit.
+
+### 2026-06-20 — Full clean run verified end-to-end (offboarding code COMPLETE)
+
+- User ran the restored `do_all.do` start-to-finish on the server; reported success, downloaded logs.
+- **Verified the downloaded logs** (didn't just take "succeeded"): every pipeline sub-log opened 2026-06-20 14:24–14:34 in `do_all.do` order; master `do_all.txt` opened 14:24:13; runtime ~10.5 min (CCC merge is the long pole — make_csac_data/clean_ccc 14:25 then merge_ccc 14:33). **No `r(NNN);` error returns in any pipeline log.**
+- The two stale 2023-dated logs (`clean/clean_qualtrics_export.txt`, `learn/brief.txt`) are unrelated leftovers — those do-files actually log to `clean_qualtrics_export_bz.txt` (14:24:17 today) and `brief.log`. The only error codes anywhere in `log/` are in non-pipeline stale logs (`merge_dob` 2025, `make_rct_data` 2025, `clean_qualtrics_export.log` 2023). Ledger row `full-pipeline-run-verified` = PASS.
+- **Code side of offboarding is complete.**

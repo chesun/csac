@@ -8,12 +8,9 @@ Last updated: 2026-06-20 (code-offboarding scope; CLAUDE.md GDTF figure list cor
 
 ## Up Next
 
-- [ ] **(Optional) One clean full run of `do do/do_all.do`** to confirm an
-      r(0) end-to-end exit. Every stage already ran successfully on the
-      server across staged runs; `do_all.do` is restored to all-active with
-      the log-close fix. Before the run, upload the restored `do_all.do`
-      plus the three server-fixed analysis files: `experiments/sum_stats.do`,
-      `experiments/reg_tab.do`, `getting_down_to_facts/cde_demographics.do`.
+(none) — **code offboarding complete.** The full `do_all.do` pipeline ran
+clean end-to-end on the server on 2026-06-20 (verified: all 27 stages,
+~10.5 min, zero errors in any pipeline log).
 
 ## Waiting On
 
@@ -25,6 +22,11 @@ Last updated: 2026-06-20 (code-offboarding scope; CLAUDE.md GDTF figure list cor
 
 ## Done (2026-06-20)
 
+- [x] **Full clean `do_all.do` run verified end-to-end** — all 27 stages ran
+      14:24–14:34 (~10.5 min) with zero Stata error returns in any pipeline
+      log (logs downloaded and checked). The only r() codes in `log/` are
+      stale non-pipeline leftovers (merge_dob 2025, make_rct_data 2025,
+      *_2023). **Code side of offboarding is done.**
 - [x] **Full `do_all.do` pipeline debugged on the server** — ran every stage
       across staged runs; fixed four bugs surfaced live: `first_gen` dup
       (`sum_stats.do`), `primary_eng` typo (`reg_tab.do`), CDE column renames

@@ -244,3 +244,20 @@
 **Status:**
 - Done: offboarding documentation + code fixes + status consistency across repo and memory
 - Pending: live server run of `do do/do_all.do` to confirm the 3 fixes end-to-end (air-gapped — verified statically only)
+
+## 2026-06-20 — Full do_all.do pipeline verified end-to-end
+
+**Operations:**
+- Debugged the full server pipeline across staged runs; fixed 4 live bugs: `first_gen` dup (`sum_stats.do` cap drop), `primary_eng` typo (`reg_tab.do`), CDE column renames (`cde_demographics.do`: race_ethnicity/gr_kn), final `log close` r(606) (`do_all.do` cap log close _all)
+- Restored `do_all.do` to all-stages-active (discarded temp resume scaffolding)
+- Verified downloaded logs: all 27 stages opened 2026-06-20 14:24–14:34 in order, no r(NNN) errors in any pipeline log, ~10.5 min runtime
+
+**Results:**
+- Full clean end-to-end run confirmed (r(0)). Code side of offboarding COMPLETE.
+
+**Commits:**
+- `8fab2be` first_gen, `e9b5d40` primary_eng, `3891023` CDE renames, `9825bc6` log-close + restore
+
+**Status:**
+- Done: full pipeline runs clean on server; all records/ledger/memory updated
+- Pending: none (code offboarding closed)
