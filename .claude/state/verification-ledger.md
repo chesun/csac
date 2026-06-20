@@ -25,3 +25,5 @@ Cache of verification results for the adversarial-default rule (`.claude/rules/a
 | do/csac_survey_finaid.do | offboarding-pathfix | 2026-06-14T00:00Z | f40aed59c206 | PASS | loan figs → `fig/finaid/`, `, replace` added; coder-critic 94/100; static only |
 
 <!-- Real entries replace the _example_ rows above. Keep one row per (path, check). When a file changes, its rows become stale and are re-evaluated on next access. -->
+| do/experiments/sum_stats.do | diagnosis:do_all-first_gen-r110 | 2026-06-20T00:00Z | 604587c05a2b | DIAGNOSED | clean_csac_admin.do:114 creates+saves first_gen into csac_survey_ccc_merged_clean.dta (L118); sum_stats.do:14 reloads it then re-gens first_gen → r(110). Only collision (cross-checked all experiments/ gens vs saved vars). do_all.do order: clean_csac_admin(91)→sum_stats(95) |
+| do/experiments/sum_stats.do | offboarding-pathfix | 2026-06-20T00:00Z | 604587c05a2b | PASS | added `cap drop first_gen` before `gen first_gen = .` (idempotent); static only — server re-run pending |

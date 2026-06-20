@@ -43,3 +43,10 @@
 - Trimmed `TODO.md` to code-offboarding scope: removed dissertation-polish items, the Chapter-3 dissertation-table/`.workspace` tooling follow-ups, the published-PDF prose diff, "add Table 5", and Ch 1/2 scaffolding.
 - Kept the one real open item (live server run of `do_all.do` to confirm the 3 static fixes) and the CLAUDE.md GDTF figure-count doc fix.
 - **Implemented the figure fix:** extracted captions from the published PDF (`doc/gdtf/LGBTQ+ Students' ... .pdf`) via `pdftotext`; replaced CLAUDE.md's stale 8-figure draft list with the published 12 (verified Figs 3–4 break out by gender identity *and* SO from the body text). Remaining open offboarding item is now just the server run.
+
+## 2026-06-20 — Server-run error: `r(110) first_gen already defined`
+
+- User ran `do do/do_all.do` on the server; it halted with `r(110): variable first_gen already defined` at `gen first_gen = .`.
+- **Diagnosis (confirmed, not guessed):** `clean_csac_admin.do:114` creates `first_gen` and saves it into `csac_survey_ccc_merged_clean.dta` (L118). `sum_stats.do:14` reloads that dataset (now containing `first_gen`) and re-`gen`s it at L64 → collision. Only surfaces in the consolidated `do_all.do` run. `do_all.do` order confirms `clean_csac_admin`(91) → `sum_stats`(95).
+- Cross-checked every `gen` in `do/experiments/` against the variables `clean_csac_admin.do` saves: `first_gen` is the **only** collision (explore_rct / reg_tab / reg_share / het clear).
+- **Fix:** `cap drop first_gen` before `gen first_gen = .` in `sum_stats.do` — idempotent, preserves standalone runs. Diagnosis + fix recorded in the verification ledger. Static-only; server re-run pending.

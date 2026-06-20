@@ -61,6 +61,10 @@ lab var hs_home "Home School"
 
 // parent edu
 // first generation: parents did not attend college
+// clean_csac_admin.do already creates & saves first_gen into the _clean
+// dataset this file loads, so cap drop makes the re-derivation idempotent
+// (avoids r(110) "already defined" in the full do_all.do run).
+cap drop first_gen
 gen first_gen = .
 replace first_gen = inlist(parent_edu, 1, 2) if !mi(parent_edu)
 lab var first_gen "First-Gen College Student"
