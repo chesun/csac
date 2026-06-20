@@ -20,7 +20,7 @@ local tabdir $csacprojdir/tab/experiments
 use $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, clear  
 
 
-local controls_svy i.race_simp i.gender_brief i.hs_type i.lgbtq i.primary_eng i.parent_edu
+local controls_svy i.race_simp i.gender_brief i.hs_type i.lgbtq i.primary_english i.parent_edu
 local controls_csac i.derived_income_cat hs_gpa i.efc_cat i.parent_marital 
 local controls_all `controls_svy' `controls_csac'
 

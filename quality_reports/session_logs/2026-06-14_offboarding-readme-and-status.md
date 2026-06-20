@@ -50,3 +50,11 @@
 - **Diagnosis (confirmed, not guessed):** `clean_csac_admin.do:114` creates `first_gen` and saves it into `csac_survey_ccc_merged_clean.dta` (L118). `sum_stats.do:14` reloads that dataset (now containing `first_gen`) and re-`gen`s it at L64 → collision. Only surfaces in the consolidated `do_all.do` run. `do_all.do` order confirms `clean_csac_admin`(91) → `sum_stats`(95).
 - Cross-checked every `gen` in `do/experiments/` against the variables `clean_csac_admin.do` saves: `first_gen` is the **only** collision (explore_rct / reg_tab / reg_share / het clear).
 - **Fix:** `cap drop first_gen` before `gen first_gen = .` in `sum_stats.do` — idempotent, preserves standalone runs. Diagnosis + fix recorded in the verification ledger. Static-only; server re-run pending.
+- **Resume scaffolding (TEMP, uncommitted):** commented out the 13 already-successful `do` lines in `do_all.do` (stages 1–2 + experiments through `explore_rct.do`) so the re-run skips straight to `sum_stats.do`; their outputs are on disk so downstream loads fine. Marked with a TEMP block to restore before a clean full run. Left uncommitted on purpose (don't want a half-disabled master on `main`).
+
+### 2026-06-20 — Second server error: `r(111) primary_eng not found` (reg_tab.do)
+
+- Resumed run got past `sum_stats` (first_gen fix worked), then halted in `reg_tab.do` at `reg ... \`controls_all'` with `variable primary_eng not found`.
+- **Diagnosis (confirmed):** `reg_tab.do:23` `controls_svy` had a truncated name `i.primary_eng`; the variable is `primary_english` everywhere (created `clean_qualtrics_export.do:342`; used correctly as `i.primary_english` in `explore_rct.do:30` and `reg_share.do:15`). Pre-existing typo — unrelated to the `do_all.do` commenting (each downstream file reloads `_clean.dta` fresh, so it only ever sees disk variables).
+- **Fix:** `i.primary_eng` → `i.primary_english`. Committed (permanent bug fix). Ledger updated.
+- **Scanned the remaining active experiments files:** `reg_share.do` clean. `het.do` references `race_black/white/hisp/asian` + `gender_man/woman` (all from `prep_brief.do`); `gender_man/woman` are confirmed in `_clean.dta` (explore_rct used them), so the race indicators share that lineage and are low-risk but not server-verified. Stages 4–5 (THSJ/GDTF) use separate datasets — not yet scanned.
