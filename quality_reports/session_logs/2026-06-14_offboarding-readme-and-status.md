@@ -36,3 +36,9 @@
 
 - `9a096f7` — docs: offboarding — expand README, fix output paths, update output statuses
 - (this session) — logs/state/memory wrap-up
+
+## 2026-06-20 — TODO scope correction
+
+- User: offboarding is **code only**; all papers published / dissertation filed → no paper edits needed.
+- Trimmed `TODO.md` to code-offboarding scope: removed dissertation-polish items, the Chapter-3 dissertation-table/`.workspace` tooling follow-ups, the published-PDF prose diff, "add Table 5", and Ch 1/2 scaffolding.
+- Kept the one real open item (live server run of `do_all.do` to confirm the 3 static fixes) and the CLAUDE.md GDTF figure-count doc fix. Uncommitted.

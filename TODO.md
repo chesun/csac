@@ -1,6 +1,6 @@
 # TODO — CSAC Project
 
-Last updated: 2026-06-13 (offboarding: README expanded, output-path fixes, status updates)
+Last updated: 2026-06-20 (scoped TODO to code offboarding; removed paper/dissertation document tasks — all papers published, dissertation filed)
 
 ## Active (doing now)
 
@@ -8,30 +8,12 @@ Last updated: 2026-06-13 (offboarding: README expanded, output-path fixes, statu
 
 ## Up Next
 
-### User-side dissertation polish (manual, in `dissertation_template/`)
-
-- [ ] Add chapter-3 thanks/acknowledgments footnote to `dissertation.tex`
-      (~line 133) following the Ch 1 / Ch 2 pattern: co-authors
-      Alexandria Hurtt and Michal Kurlaender + funding/data acks
-- [ ] Drop dissertation umbrella abstract paragraph into the abstract
-      section (paragraph drafted in conversation, not written to file)
-- [ ] Drop in three chapter abstracts (one per paragraph) below the
-      umbrella
-- [ ] Add Audre Lorde epigraph block (LaTeX provided in conversation)
-      between the dedication and `\chapter*{Acknowledgments}` (~line 84)
-
-### Chapter 3 (csac standalone) follow-ups
-
-- [ ] Remove the now-redundant `decode gender_cat, gen(gender_cat_str)`
-      and `decode so_cat, gen(so_cat_str)` lines from `gdtf_latex_tables.do`.
-      Dead code — `coeflabels()` is doing the label mapping directly
-      from numeric codes.
-- [ ] A.1 column-header patch is fragile (currently re-applied via
-      Python in `.workspace/integrate_stata_tables.py` on each
-      integration). Consider promoting to a permanent fix in the
-      wrapper script or finding an esttab option.
-- [ ] Extract the Python integration wrapper into a reusable script in
-      `.workspace/` so the integration step is one command, not a paste.
+- [ ] **Live server run of `do do/do_all.do`** (user-side, air-gapped server)
+      to confirm the three offboarding code fixes end-to-end:
+      `clean/clean_qualtrics_export.do`,
+      `getting_down_to_facts/cde_demographics.do`, and
+      `csac_survey_finaid.do`. Verified statically only so far
+      (coder-critic 94/100). This is the last open offboarding step.
 
 ## Waiting On
 
@@ -39,17 +21,8 @@ Last updated: 2026-06-13 (offboarding: README expanded, output-path fixes, statu
 
 ## Backlog
 
-- [ ] Section-level prose diff against published PDF for any remaining
-      journal copyedits beyond placeholders, year fixes, and footnotes
-      (~2 hours)
-- [ ] Add Table 5 (intended field of study) to the Stata script if a
-      `major_cat` variable exists on the cleaned data
 - [ ] Update CLAUDE.md GDTF figure list (currently lists 8 figures;
-      published paper has 12)
-- [ ] Begin Chapter 1 (belief distortion JMP) scaffolding for csac if
-      we want a working copy outside `dissertation_template/Chapter1/`
-- [ ] Begin Chapter 2 (peer-effects DiD) scaffolding for csac if we
-      want a working copy outside `dissertation_template/Chapter2/`
+      published paper has 12) — repo doc-accuracy fix, not a paper edit.
 
 ## Done (2026-06-13)
 
