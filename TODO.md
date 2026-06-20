@@ -1,6 +1,6 @@
 # TODO — CSAC Project
 
-Last updated: 2026-06-20 (scoped TODO to code offboarding; removed paper/dissertation document tasks — all papers published, dissertation filed)
+Last updated: 2026-06-20 (code-offboarding scope; CLAUDE.md GDTF figure list corrected to the published 12)
 
 ## Active (doing now)
 
@@ -21,8 +21,17 @@ Last updated: 2026-06-20 (scoped TODO to code offboarding; removed paper/dissert
 
 ## Backlog
 
-- [ ] Update CLAUDE.md GDTF figure list (currently lists 8 figures;
-      published paper has 12) — repo doc-accuracy fix, not a paper edit.
+- [ ] (none)
+
+## Done (2026-06-20)
+
+- [x] **CLAUDE.md GDTF figure list corrected** — replaced the stale
+      8-figure draft list with the published 12 figures (new ordering:
+      HS-experience regressions by gender/SO, two bullying figures,
+      worry regressions by gender then SO, enrollment + degree plans
+      last). Captions verified against the published PDF in `doc/gdtf/`.
+- [x] **TODO scoped to code offboarding** — removed paper/dissertation
+      document tasks (all papers published, dissertation filed).
 
 ## Done (2026-06-13)
 

@@ -119,15 +119,21 @@ The paper examines LGBTQ+ students' high school experiences and college expectat
 - **Appendix E**: Summary statistics of qualitative response sample
 
 ### Figures in paper
-- **Figure 1**: Plans for college enrollment (2-year vs 4-year by gender identity)
-- **Figure 2**: Plans for degree completion (highest degree by gender identity)
-- **Figure 3**: Regression of overall high school experience on gender identity (coefficient plot, unconditional + controls)
-- **Figure 4**: Frequency of bullying/harassment in past year (by gender identity and sexual orientation)
-- **Figure 5**: Bullying attributed to gender identity or sexual orientation (by gender identity and sexual orientation)
-- **Figures 6-8**: Regression coefficient plots of college worries on gender identity:
-  - Figure 6: General college worries
-  - Figure 7: Worries about discrimination
-  - Figure 8: Worries about financial burdens
+
+The published white paper has **12 figures** (an earlier draft, which this list previously reflected, had 8). Captions match the published PDF (`doc/gdtf/LGBTQ+ Students' High School Experiences and Academic Plans.pdf`):
+
+- **Figure 1**: Regression of the high school experience index on gender identity (coefficient plot, unconditional + controls)
+- **Figure 2**: Regression of the high school experience index on sexual orientation
+- **Figure 3**: Frequency of bullying/harassment in the past year (by gender identity and sexual orientation)
+- **Figure 4**: Student responses to whether they were harassed/bullied for their gender identity or sexual orientation (by gender identity and sexual orientation)
+- **Figure 5**: Regression of general worries about college on gender identity
+- **Figure 6**: Regression of worries about discrimination in college on gender identity
+- **Figure 7**: Regression of worries about financial burdens in college on gender identity
+- **Figure 8**: Regression of general worries about college on sexual orientation
+- **Figure 9**: Regression of worries about discrimination in college on sexual orientation
+- **Figure 10**: Regression of worries about financial burdens in college on sexual orientation
+- **Figure 11**: Plans for college enrollment by gender identity (n = 7,522)
+- **Figure 12**: Plans for degree completion by gender identity
 
 ### Key analytical methods
 - **PCA**: Used for both high school experience (1 construct) and college worries (3 constructs: general, discrimination, financial)

@@ -41,4 +41,5 @@
 
 - User: offboarding is **code only**; all papers published / dissertation filed → no paper edits needed.
 - Trimmed `TODO.md` to code-offboarding scope: removed dissertation-polish items, the Chapter-3 dissertation-table/`.workspace` tooling follow-ups, the published-PDF prose diff, "add Table 5", and Ch 1/2 scaffolding.
-- Kept the one real open item (live server run of `do_all.do` to confirm the 3 static fixes) and the CLAUDE.md GDTF figure-count doc fix. Uncommitted.
+- Kept the one real open item (live server run of `do_all.do` to confirm the 3 static fixes) and the CLAUDE.md GDTF figure-count doc fix.
+- **Implemented the figure fix:** extracted captions from the published PDF (`doc/gdtf/LGBTQ+ Students' ... .pdf`) via `pdftotext`; replaced CLAUDE.md's stale 8-figure draft list with the published 12 (verified Figs 3–4 break out by gender identity *and* SO from the body text). Remaining open offboarding item is now just the server run.
