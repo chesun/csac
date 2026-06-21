@@ -2,9 +2,11 @@
 
 Code, outputs, and documentation for the **2023 California high school senior survey** project, a collaboration between the California Education Lab (UC Davis) and the California Student Aid Commission (CSAC).
 
-A single survey wave was fielded to graduating California high school seniors in **May 2023**. The survey is merged with CSAC administrative data and California Community Colleges (CCC) administrative data to study the college transition, summer-school enrollment, and financial aid. (An earlier version of this README referred to a "fall wave." There is no second survey wave — the project uses CCC *fall enrollment and financial aid records*, not a fall survey.)
+A single survey wave was fielded to graduating California high school seniors in **May 2023**. The survey is merged with CSAC administrative data and California Community Colleges (CCC) administrative data to study the college transition, summer-school enrollment, and financial aid.
 
 **Team:** Christina Sun (CS, `ucsun@ucdavis.edu`) and Baiyu Zhou (BZ, `baizhou@ucdavis.edu`).
+
+**CS Offboarding:** Entire code pipeline ran successfully June 20, 2026. README finalized. Project offboarding complete June 21, 2026.
 
 ---
 
@@ -15,7 +17,7 @@ This survey supports five outputs:
 | Output | Status | Code lives in |
 |---|---|---|
 | [PACE brief](https://edpolicyinca.org/publications/transition-college) — transition to college | Published | `do/clean/`, `do/learn/` |
-| AEA Papers & Proceedings — summer-school nudge RCT | Forthcoming | `do/experiments/` |
+| AEA Papers & Proceedings — summer-school nudge RCT | Published | `do/experiments/` |
 | The High School Journal — LGBTQ+ high school experiences | Accepted, forthcoming | `do/learn/`, `do/thsj_rr/` |
 | Getting Down to Facts III (GDTF3) white paper | Published | `do/getting_down_to_facts/` |
 | Financial-aid brief (co-branded with CSAC) | Published | `do/csac_survey_finaid.do` |
@@ -196,4 +198,4 @@ These are **required** but produced outside this repo. Provenance is recorded as
 - **`csac_survey_finaid.do` is self-contained.** It does not source `settings.do` (defines its own `$main`). Run it on its own, not through `do_all.do`.
 - **`gdtf_reg.do` writes some outputs to `tab/thsj_rr/`** (not only `tab/getting_down_to_facts/`).
 - **Network packages.** `do_all.do` and a few cleaning scripts call `ssc install` (e.g., `ngram`, `codebookout`). The server needs internet access on first run, or pre-install the packages.
-- **Stata version.** Authored against Stata 17; the server may run Stata 18 with older package versions. Watch for command-syntax drift.
+- **Stata version.** Authored against Stata 17; Server version is Stata 18, code is forward compatible.
