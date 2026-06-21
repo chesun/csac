@@ -1,8 +1,9 @@
------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/check_csac_data.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/chec
+> k_csac_data.txt
   log type:  text
- opened on:   5 Feb 2026, 20:12:16
+ opened on:  20 Jun 2026, 14:34:00
 
 . 
 . * Load fully cleaned data
@@ -10,7 +11,8 @@
 (Fully cleaned CSAC 2023 HS senior survey data)
 
 . 
-. merge 1:1 id using  $csacprojdir/dta/cln/csac_admin, keep(1 3) gen(csac_merge)
+. merge 1:1 id using  $csacprojdir/dta/cln/csac_admin, keep(1 3) gen(csac_merge
+> )
 
     Result                      Number of obs
     -----------------------------------------
@@ -78,7 +80,8 @@
 .     
 . mdesc nces_sch_code stdt_gpa derived_income derived_assets ///
 >     sfc_mar_stat_code pfc_mar_stat_code ///
->     family_size efc stdt_ca_res_flag us_ctzn_elig_nonctzn if so_queer==1 | gender_queer == 1
+>     family_size efc stdt_ca_res_flag us_ctzn_elig_nonctzn if so_queer==1 | ge
+> nder_queer == 1
 
     Variable    |     Missing          Total     Percent Missing
 ----------------+-----------------------------------------------
@@ -139,8 +142,9 @@ Gender Diverse/Questioning |          3        2.29       93.13
                      Total |        131      100.00
 
 . 
-. local csacvars  nces_sch_code stdt_gpa derived_income derived_assets sfc_mar_stat_code pfc_mar_stat_code family_size efc stdt_ca_
-> res_flag us_ctzn_elig_nonctzn
+. local csacvars  nces_sch_code stdt_gpa derived_income derived_assets sfc_mar_
+> stat_code pfc_mar_stat_code family_size efc stdt_ca_res_flag us_ctzn_elig_non
+> ctzn
 
 . 
 . foreach var of local csacvars {
@@ -282,7 +286,8 @@ Gender Diverse/Questioning |          3        2.38       93.65
 . 
 . log close 
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/check_csac_data.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/chec
+> k_csac_data.txt
   log type:  text
- closed on:   5 Feb 2026, 20:12:16
------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:34:00
+-------------------------------------------------------------------------------

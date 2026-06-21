@@ -1,8 +1,9 @@
---------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/merge_ccc.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> merge_ccc.txt
   log type:  text
- opened on:  11 Dec 2025, 14:08:36
+ opened on:  20 Jun 2026, 14:33:50
 
 . 
 . 
@@ -37,8 +38,8 @@ ccc_ft_nudge: all characters numeric; treat_calgrant generated as byte
 (7585 missing values generated)
 
 . // merge to the winnie xwalk
-. merge 1:1 idunique using $csacprojdir/dta/cln/ccc_xwalk_winnie.dta, keep(1 3) gen(xwalk_me
-> rge) 
+. merge 1:1 idunique using $csacprojdir/dta/cln/ccc_xwalk_winnie.dta, keep(1 3)
+>  gen(xwalk_merge) 
 
     Result                      Number of obs
     -----------------------------------------
@@ -60,8 +61,9 @@ ccc_ft_nudge: all characters numeric; treat_calgrant generated as byte
 (5,588 observations deleted)
 
 . save $csacprojdir/dta/cln/csac_survey_noxwalk.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwalk.dta
-    saved
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_nox
+    > walk.dta saved
 
 . restore 
 
@@ -71,30 +73,30 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwa
 
 . 
 . // merge to individual level sx data
-. merge 1:1 student_ssn using $csacprojdir/dta/cln/sx_2023_indiv_level.dta, gen(sx_merge) ke
-> ep(1 3)
+. merge 1:1 student_ssn using $csacprojdir/dta/cln/sx_2023_indiv_level.dta, gen
+> (sx_merge) keep(1 3)
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         2,124
-        from master                     2,124  (sx_merge==1)
+    Not matched                         2,135
+        from master                     2,135  (sx_merge==1)
         from using                          0  (sx_merge==2)
 
-    Matched                             3,464  (sx_merge==3)
+    Matched                             3,453  (sx_merge==3)
     -----------------------------------------
 
 . 
 . // merge to individual level sfa data
-. merge 1:1 student_ssn using $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, gen(sfa_merge) 
-> keep(1 3)
+. merge 1:1 student_ssn using $csacprojdir/dta/cln/sfa_2023_indiv_level.dta, ge
+> n(sfa_merge) keep(1 3)
 
     Result                      Number of obs
     -----------------------------------------
-    Not matched                         2,624
-        from master                     2,624  (sfa_merge==1)
+    Not matched                         2,571
+        from master                     2,571  (sfa_merge==1)
         from using                          0  (sfa_merge==2)
 
-    Matched                             2,964  (sfa_merge==3)
+    Matched                             3,017  (sfa_merge==3)
     -----------------------------------------
 
 . 
@@ -144,10 +146,10 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwa
   5. }
 (4,701 real changes made)
 (5,588 real changes made)
-(6,825 real changes made)
-(3,464 real changes made)
-(7,325 real changes made)
-(2,964 real changes made)
+(6,836 real changes made)
+(3,453 real changes made)
+(7,272 real changes made)
+(3,017 real changes made)
 
 . 
 . tab where_college sx_merge
@@ -156,14 +158,14 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_noxwa
   attend college this |         merge
                  fall | Survey On     Merged |     Total
 ----------------------+----------------------+----------
-California Community  |       962      2,213 |     3,175 
-California State Univ |     1,674        195 |     1,869 
+California Community  |       975      2,200 |     3,175 
+California State Univ |     1,672        197 |     1,869 
 University of Califor |     1,675        172 |     1,847 
 Private four-year col |       427         61 |       488 
 Vocational, technical |       115         58 |       173 
 College outside of Ca |       800         55 |       855 
 ----------------------+----------------------+----------
-                Total |     5,653      2,754 |     8,407 
+                Total |     5,664      2,743 |     8,407 
 
 . tab where_college sfa_merge
 
@@ -171,14 +173,14 @@ College outside of Ca |       800         55 |       855
   attend college this |         merge
                  fall | Survey On     Merged |     Total
 ----------------------+----------------------+----------
-California Community  |     1,125      2,050 |     3,175 
-California State Univ |     1,760        109 |     1,869 
-University of Califor |     1,768         79 |     1,847 
-Private four-year col |       456         32 |       488 
-Vocational, technical |       125         48 |       173 
-College outside of Ca |       827         28 |       855 
+California Community  |     1,106      2,069 |     3,175 
+California State Univ |     1,757        112 |     1,869 
+University of Califor |     1,766         81 |     1,847 
+Private four-year col |       453         35 |       488 
+Vocational, technical |       122         51 |       173 
+College outside of Ca |       824         31 |       855 
 ----------------------+----------------------+----------
-                Total |     6,061      2,346 |     8,407 
+                Total |     6,028      2,379 |     8,407 
 
 . tab sx_merge sfa_merge
 
@@ -186,44 +188,49 @@ College outside of Ca |       827         28 |       855
 result from |         merge
       merge | Survey On     Merged |     Total
 ------------+----------------------+----------
-Survey Only |     6,797         28 |     6,825 
-     Merged |       528      2,936 |     3,464 
+Survey Only |     6,806         30 |     6,836 
+     Merged |       466      2,987 |     3,453 
 ------------+----------------------+----------
-      Total |     7,325      2,964 |    10,289 
+      Total |     7,272      3,017 |    10,289 
 
 . 
 .  
 . 
 . // convert missings to zeros in the survey data 
-. foreach var in enr_su  enr_f units_att_su units_att_f units_earn_f units_earn_su {
+. foreach var in enr_su  enr_f units_att_su units_att_f units_earn_f units_earn
+> _su {
   2.     replace `var' = 0 if mi(`var') 
   3. }
-(6,825 real changes made)
-(6,825 real changes made)
-(6,825 real changes made)
-(6,825 real changes made)
-(6,825 real changes made)
-(6,825 real changes made)
+(6,836 real changes made)
+(6,836 real changes made)
+(6,836 real changes made)
+(6,836 real changes made)
+(6,836 real changes made)
+(6,836 real changes made)
 
 . 
-. lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique individual ma
-> tches kept"
+. lab data "survey data merged to CCC credits, GPA, and SF Awards, only unique 
+> individual matches kept"
 note: label truncated to 80 characters
 
 . save $csacprojdir/dta/cln/csac_survey_ccc_merged.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged.dta
-    saved
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc
+    > _merged.dta saved
 
 . 
 . 
 end of do-file
 
-. do $csacprojdir/do/experiments/explore_rct.do
+. * clean CSAC admin variables
+. do $csacprojdir/do/experiments/clean_csac_admin.do
 
-. /* explore the RCT results  */
+. /* clean CSAC admin variables */
 . 
-. 
-. /* 
-> do $csacprojdir/do/experiments/explore_rct.do
+. /* usage:
+> do $csacprojdir/do/experiments/clean_csac_admin.do
+> 
 >  */
+. 
+. 
 . cap log close _all

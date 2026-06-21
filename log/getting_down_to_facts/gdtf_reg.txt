@@ -1,8 +1,9 @@
---------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down_to_facts/gdtf_reg.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down
+> _to_facts/gdtf_reg.txt
   log type:  text
- opened on:  15 Mar 2026, 19:36:32
+ opened on:  20 Jun 2026, 14:34:19
 
 . 
 . use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
@@ -30,14 +31,16 @@
 . replace highest_degree_2 = 4 if highest_degree==5
 (1,823 real changes made)
 
-. lab def highest_degree_2 1 "Certificate in vocational/technical field" 2 "Associate degree" 3 "Bachelo
-> r's degree" 4 "Master's or Doctoral Degree"
+. lab def highest_degree_2 1 "Certificate in vocational/technical field" 2 "Ass
+> ociate degree" 3 "Bachelor's degree" 4 "Master's or Doctoral Degree"
 
 . 
 . 
-. *===============================================================================
+. *============================================================================
+> ===
 . * 2 year vs 4 year, Figure 3
-. *===============================================================================
+. *============================================================================
+> ===
 . 
 . // segment is a dummy for attending 4 year
 . foreach demo in gender so {
@@ -58,28 +61,29 @@
  13.         estadd local demo_controls "Yes"
  14.         estadd local afab_control "Yes"
  15. 
-.         esttab segment_`demo'1 segment_`demo'2 segment_`demo'3 using $csacprojdir/tab/thsj_rr/segment_
-> models_`demo'.rtf, ///
+.         esttab segment_`demo'1 segment_`demo'2 segment_`demo'3 using $csacpro
+> jdir/tab/thsj_rr/segment_models_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             b(%9.3f) se(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             title("Logit Models: Intent to Attend 4-Year College") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls" "afab_control Assigned Sex a
-> t Birth") ///
+>             scalars("N Observations" "demo_controls Demographic Controls" "af
+> ab_control Assigned Sex at Birth") ///
 >             label replace
  16.     }
  17.     else {
- 18.         esttab segment_`demo'1 segment_`demo'2 using $csacprojdir/tab/thsj_rr/segment_models_`demo'
-> .rtf, ///
+ 18.         esttab segment_`demo'1 segment_`demo'2 using $csacprojdir/tab/thsj
+> _rr/segment_models_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             b(%9.3f) se(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             title("Logit Models: Intent to Attend 4-Year College") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls") ///
+>             scalars("N Observations" "demo_controls Demographic Controls") //
+> /
 >             label replace
  19.     }
  20. 
@@ -95,19 +99,19 @@ Logistic regression                                     Number of obs =  7,522
                                                         Prob > chi2   = 0.0016
 Log likelihood = -5037.6931                             Pseudo R2     = 0.0021
 
----------------------------------------------------------------------------------------------
-                    segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
-----------------------------+----------------------------------------------------------------
-                 gender_cat |
-           Cisgender Woman  |   .1787333   .0501937     3.56   0.000     .0803555    .2771111
-           Transgender Man  |     .51652    .285441     1.81   0.070    -.0429341    1.075974
-         Transgender Woman  |   .5406175   .4895161     1.10   0.269    -.4188164    1.500051
-                Non-binary  |    .336317   .1345905     2.50   0.012     .0725244    .6001097
-Gender Diverse/Questioning  |  -.2785095   .2405826    -1.16   0.247    -.7500426    .1930237
-         Prefer Not to Say  |   .1106192    .176501     0.63   0.531    -.2353164    .4565549
-                            |
-                      _cons |   .3066804    .039125     7.84   0.000     .2299968    .3833639
----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .1787333   .0501937     3.56   0.000     .0803555    .2771111
+Transgend..  |     .51652    .285441     1.81   0.070    -.0429341    1.075974
+Transgend..  |   .5406175   .4895161     1.10   0.269    -.4188164    1.500051
+ Non-binary  |    .336317   .1345905     2.50   0.012     .0725244    .6001097
+Gender Di..  |  -.2785095   .2405826    -1.16   0.247    -.7500426    .1930237
+Prefer No..  |   .1106192    .176501     0.63   0.531    -.2353164    .4565549
+             |
+       _cons |   .3066804    .039125     7.84   0.000     .2299968    .3833639
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "No"
@@ -126,44 +130,44 @@ Logistic regression                                     Number of obs =  7,498
                                                         Prob > chi2   = 0.0000
 Log likelihood = -4599.3452                             Pseudo R2     = 0.0858
 
--------------------------------------------------------------------------------------------------------
-                              segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                           gender_cat |
-                     Cisgender Woman  |   .2484105   .0535413     4.64   0.000     .1434716    .3533495
-                     Transgender Man  |   .3925732   .3038717     1.29   0.196    -.2030044    .9881508
-                   Transgender Woman  |   .4160585   .5186597     0.80   0.422    -.6004957    1.432613
-                          Non-binary  |   .2932015    .142033     2.06   0.039      .014822     .571581
-          Gender Diverse/Questioning  |   -.384067   .2560554    -1.50   0.134    -.8859264    .1177924
-                   Prefer Not to Say  |   .0950865    .192374     0.49   0.621    -.2819597    .4721326
-                                      |
-                            race_assn |
-              Black/African American  |   .3053935   .1902791     1.60   0.108    -.0675466    .6783336
-                     Hispanic/Latinx  |  -.0462287   .1692526    -0.27   0.785    -.3779577    .2855003
-                    Pacific Islander  |   .2033381   .3218295     0.63   0.528     -.427436    .8341122
-                            Filipino  |   .0076259   .2178559     0.04   0.972    -.4193638    .4346156
-                               Asian  |   .8066489    .182164     4.43   0.000     .4496139    1.163684
-                               Other  |  -.0744926   .2335347    -0.32   0.750    -.5322122     .383227
-                  White/Non-Hispanic  |   .1865432   .1759885     1.06   0.289    -.1583879    .5314744
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0768334   .0756578    -1.02   0.310    -.2251199    .0714531
-     Some college, no college degree  |   .1723734   .0878772     1.96   0.050     .0001372    .3446096
-                    Associate degree  |  -.1702277    .113913    -1.49   0.135     -.393493    .0530376
-                   Bachelor's degree  |   .8312878    .090645     9.17   0.000     .6536268    1.008949
-Graduate/Professional degree beyo..)  |   1.385052   .0998623    13.87   0.000     1.189326    1.580778
-                          Don't know  |   -.615057   .1217072    -5.05   0.000    -.8535987   -.3765154
-                                      |
-                                _cons |  -.1874703   .1790052    -1.05   0.295     -.538314    .1633735
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .2484105   .0535413     4.64   0.000     .1434716    .3533495
+Transgend..  |   .3925732   .3038717     1.29   0.196    -.2030044    .9881508
+Transgend..  |   .4160585   .5186597     0.80   0.422    -.6004957    1.432613
+ Non-binary  |   .2932015    .142033     2.06   0.039      .014822     .571581
+Gender Di..  |   -.384067   .2560554    -1.50   0.134    -.8859264    .1177924
+Prefer No..  |   .0950865    .192374     0.49   0.621    -.2819597    .4721326
+             |
+   race_assn |
+Black/Afr..  |   .3053935   .1902791     1.60   0.108    -.0675466    .6783336
+Hispanic/~x  |  -.0462287   .1692526    -0.27   0.785    -.3779577    .2855003
+Pacific I..  |   .2033381   .3218295     0.63   0.528     -.427436    .8341122
+   Filipino  |   .0076259   .2178559     0.04   0.972    -.4193638    .4346156
+      Asian  |   .8066489    .182164     4.43   0.000     .4496139    1.163684
+      Other  |  -.0744926   .2335347    -0.32   0.750    -.5322122     .383227
+White/Non~c  |   .1865432   .1759885     1.06   0.289    -.1583879    .5314744
+             |
+  parent_edu |
+High scho..  |  -.0768334   .0756578    -1.02   0.310    -.2251199    .0714531
+Some coll..  |   .1723734   .0878772     1.96   0.050     .0001372    .3446096
+Associate..  |  -.1702277    .113913    -1.49   0.135     -.393493    .0530376
+Bachelor'..  |   .8312878    .090645     9.17   0.000     .6536268    1.008949
+Graduate..)  |   1.385052   .0998623    13.87   0.000     1.189326    1.580778
+ Don't know  |   -.615057   .1217072    -5.05   0.000    -.8535987   -.3765154
+             |
+       _cons |  -.1874703   .1790052    -1.05   0.295     -.538314    .1633735
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
 
 added macro:
        e(afab_control) : "No"
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/segment_models_gender.r
-> tf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/segment_models_gender.rtf)
 
 Iteration 0:  Log likelihood = -5019.6719  
 Iteration 1:  Log likelihood = -4994.8605  
@@ -175,18 +179,18 @@ Logistic regression                                     Number of obs =  7,481
                                                         Prob > chi2   = 0.0000
 Log likelihood = -4994.8219                             Pseudo R2     = 0.0050
 
-------------------------------------------------------------------------------------------------
-                       segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
--------------------------------+----------------------------------------------------------------
-                        so_cat |
-               Gay or Lesbian  |    .525694   .1237219     4.25   0.000     .2832035    .7681845
-Bisexual/Pansexual/Omnisexual  |   .3439305   .0687488     5.00   0.000     .2091853    .4786757
- Asexual/Aromantic/Demisexual  |   .4748543   .1630532     2.91   0.004      .155276    .7944326
-      Other/Queer/Questioning  |   .3456426   .1871208     1.85   0.065    -.0211075    .7123927
-            Prefer Not to Say  |     .00107   .0942161     0.01   0.991    -.1835901    .1857301
-                               |
-                         _cons |   .3360759   .0281546    11.94   0.000     .2808939    .3912579
-------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |    .525694   .1237219     4.25   0.000     .2832035    .7681845
+Bisexual/~l  |   .3439305   .0687488     5.00   0.000     .2091853    .4786757
+Asexual/A~l  |   .4748543   .1630532     2.91   0.004      .155276    .7944326
+Other/Que~g  |   .3456426   .1871208     1.85   0.065    -.0211075    .7123927
+Prefer No..  |     .00107   .0942161     0.01   0.991    -.1835901    .1857301
+             |
+       _cons |   .3360759   .0281546    11.94   0.000     .2808939    .3912579
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "No"
@@ -205,35 +209,35 @@ Logistic regression                                     Number of obs =  7,456
                                                         Prob > chi2   = 0.0000
 Log likelihood = -4575.6766                             Pseudo R2     = 0.0852
 
--------------------------------------------------------------------------------------------------------
-                              segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .4040548   .1306972     3.09   0.002      .147893    .6602166
-       Bisexual/Pansexual/Omnisexual  |   .2981335   .0725879     4.11   0.000     .1558638    .4404033
-        Asexual/Aromantic/Demisexual  |    .173558   .1746529     0.99   0.320    -.1687554    .5158714
-             Other/Queer/Questioning  |   .1703491   .1985799     0.86   0.391    -.2188604    .5595585
-                   Prefer Not to Say  |  -.1069448   .1011511    -1.06   0.290    -.3051973    .0913078
-                                      |
-                            race_assn |
-              Black/African American  |   .3404614   .1906746     1.79   0.074    -.0332539    .7141768
-                     Hispanic/Latinx  |  -.0145073   .1698143    -0.09   0.932    -.3473372    .3183226
-                    Pacific Islander  |   .2351736   .3229236     0.73   0.466     -.397745    .8680922
-                            Filipino  |   .0058766   .2183694     0.03   0.979    -.4221196    .4338727
-                               Asian  |   .8486875   .1828643     4.64   0.000       .49028    1.207095
-                               Other  |   .0408915    .234282     0.17   0.861    -.4182928    .5000758
-                  White/Non-Hispanic  |   .2093677   .1766289     1.19   0.236    -.1368185    .5555539
-                                      |
-                           parent_edu |
-                 High school diploma  |   -.094891    .075925    -1.25   0.211    -.2437013    .0539194
-     Some college, no college degree  |   .1496708   .0881504     1.70   0.090    -.0231007    .3224424
-                    Associate degree  |  -.1955674   .1142951    -1.71   0.087    -.4195816    .0284468
-                   Bachelor's degree  |   .7833465   .0906612     8.64   0.000     .6056539    .9610391
-Graduate/Professional degree beyo..)  |    1.33997   .1001131    13.38   0.000     1.143752    1.536188
-                          Don't know  |  -.6417493   .1221728    -5.25   0.000    -.8812035    -.402295
-                                      |
-                                _cons |  -.1000102   .1766248    -0.57   0.571    -.4461885    .2461681
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .4040548   .1306972     3.09   0.002      .147893    .6602166
+Bisexual/~l  |   .2981335   .0725879     4.11   0.000     .1558638    .4404033
+Asexual/A~l  |    .173558   .1746529     0.99   0.320    -.1687554    .5158714
+Other/Que~g  |   .1703491   .1985799     0.86   0.391    -.2188604    .5595585
+Prefer No..  |  -.1069448   .1011511    -1.06   0.290    -.3051973    .0913078
+             |
+   race_assn |
+Black/Afr..  |   .3404614   .1906746     1.79   0.074    -.0332539    .7141768
+Hispanic/~x  |  -.0145073   .1698143    -0.09   0.932    -.3473372    .3183226
+Pacific I..  |   .2351736   .3229236     0.73   0.466     -.397745    .8680922
+   Filipino  |   .0058766   .2183694     0.03   0.979    -.4221196    .4338727
+      Asian  |   .8486875   .1828643     4.64   0.000       .49028    1.207095
+      Other  |   .0408915    .234282     0.17   0.861    -.4182928    .5000758
+White/Non~c  |   .2093677   .1766289     1.19   0.236    -.1368185    .5555539
+             |
+  parent_edu |
+High scho..  |   -.094891    .075925    -1.25   0.211    -.2437013    .0539194
+Some coll..  |   .1496708   .0881504     1.70   0.090    -.0231007    .3224424
+Associate..  |  -.1955674   .1142951    -1.71   0.087    -.4195816    .0284468
+Bachelor'..  |   .7833465   .0906612     8.64   0.000     .6056539    .9610391
+Graduate..)  |    1.33997   .1001131    13.38   0.000     1.143752    1.536188
+ Don't know  |  -.6417493   .1221728    -5.25   0.000    -.8812035    -.402295
+             |
+       _cons |  -.1000102   .1766248    -0.57   0.571    -.4461885    .2461681
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
@@ -252,51 +256,54 @@ Logistic regression                                     Number of obs =  7,446
                                                         Prob > chi2   = 0.0000
 Log likelihood = -4562.3912                             Pseudo R2     = 0.0870
 
--------------------------------------------------------------------------------------------------------
-                              segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .4030665   .1311845     3.07   0.002     .1459496    .6601833
-       Bisexual/Pansexual/Omnisexual  |   .2342429    .074224     3.16   0.002     .0887666    .3797192
-        Asexual/Aromantic/Demisexual  |   .1094634   .1759893     0.62   0.534    -.2354692    .4543961
-             Other/Queer/Questioning  |      .1139   .1995631     0.57   0.568    -.2772365    .5050366
-                   Prefer Not to Say  |  -.1470021   .1017898    -1.44   0.149    -.3465064    .0525022
-                                      |
-                            race_assn |
-              Black/African American  |   .3250673   .1908839     1.70   0.089    -.0490583    .6991929
-                     Hispanic/Latinx  |  -.0153134   .1699606    -0.09   0.928      -.34843    .3178033
-                    Pacific Islander  |   .2481436   .3227888     0.77   0.442    -.3845109     .880798
-                            Filipino  |   .0234557   .2187893     0.11   0.915    -.4053635     .452275
-                               Asian  |   .8586253   .1830764     4.69   0.000     .4998022    1.217448
-                               Other  |  -.0017195   .2349507    -0.01   0.994    -.4622145    .4587755
-                  White/Non-Hispanic  |   .2047865   .1767864     1.16   0.247    -.1417085    .5512815
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0870563   .0760364    -1.14   0.252     -.236085    .0619724
-     Some college, no college degree  |      .1574   .0883307     1.78   0.075     -.015725     .330525
-                    Associate degree  |  -.1879377   .1145592    -1.64   0.101    -.4124695    .0365941
-                   Bachelor's degree  |   .8089009   .0910397     8.89   0.000     .6304663    .9873355
-Graduate/Professional degree beyo..)  |    1.35901   .1003989    13.54   0.000     1.162231    1.555788
-                          Don't know  |  -.6214477   .1226791    -5.07   0.000    -.8618943    -.381001
-                                      |
-                                 afab |
-                              Female  |   .2212286   .0535231     4.13   0.000     .1163253    .3261319
-                                _cons |  -.2362102   .1799195    -1.31   0.189     -.588846    .1164256
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+     segment | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .4030665   .1311845     3.07   0.002     .1459496    .6601833
+Bisexual/~l  |   .2342429    .074224     3.16   0.002     .0887666    .3797192
+Asexual/A~l  |   .1094634   .1759893     0.62   0.534    -.2354692    .4543961
+Other/Que~g  |      .1139   .1995631     0.57   0.568    -.2772365    .5050366
+Prefer No..  |  -.1470021   .1017898    -1.44   0.149    -.3465064    .0525022
+             |
+   race_assn |
+Black/Afr..  |   .3250673   .1908839     1.70   0.089    -.0490583    .6991929
+Hispanic/~x  |  -.0153134   .1699606    -0.09   0.928      -.34843    .3178033
+Pacific I..  |   .2481436   .3227888     0.77   0.442    -.3845109     .880798
+   Filipino  |   .0234557   .2187893     0.11   0.915    -.4053635     .452275
+      Asian  |   .8586253   .1830764     4.69   0.000     .4998022    1.217448
+      Other  |  -.0017195   .2349507    -0.01   0.994    -.4622145    .4587755
+White/Non~c  |   .2047865   .1767864     1.16   0.247    -.1417085    .5512815
+             |
+  parent_edu |
+High scho..  |  -.0870563   .0760364    -1.14   0.252     -.236085    .0619724
+Some coll..  |      .1574   .0883307     1.78   0.075     -.015725     .330525
+Associate..  |  -.1879377   .1145592    -1.64   0.101    -.4124695    .0365941
+Bachelor'..  |   .8089009   .0910397     8.89   0.000     .6304663    .9873355
+Graduate..)  |    1.35901   .1003989    13.54   0.000     1.162231    1.555788
+ Don't know  |  -.6214477   .1226791    -5.07   0.000    -.8618943    -.381001
+             |
+        afab |
+     Female  |   .2212286   .0535231     4.13   0.000     .1163253    .3261319
+       _cons |  -.2362102   .1799195    -1.31   0.189     -.588846    .1164256
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
 
 added macro:
        e(afab_control) : "Yes"
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/segment_models_so.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/segment_models_so.rtf)
 
 . 
 . 
 . foreach demo in gender so {
-  2.     *===============================================================================
+  2.     *=====================================================================
+> ==========
 .     * DEGREE COMPLETION BY GENDER, FIGURE 4
-.     *===============================================================================
+.     *========================================================================
+> =======
 . 
 .     * Model 1: unconditional
 .     ologit highest_degree i.`demo'_cat
@@ -317,33 +324,37 @@ added macro:
  13.         estadd local demo_controls "Yes"
  14.         estadd local afab_control "Yes"
  15. 
-.         esttab deg_`demo'1 deg_`demo'2 deg_`demo'3 using $csacprojdir/tab/thsj_rr/degree_`demo'.rtf, /
-> //
+.         esttab deg_`demo'1 deg_`demo'2 deg_`demo'3 using $csacprojdir/tab/ths
+> j_rr/degree_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             b(%9.3f) se(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             title("Ordered Logit Models: Highest Degree Plans") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls" "afab_control Assigned Sex a
-> t Birth") ///
+>             scalars("N Observations" "demo_controls Demographic Controls" "af
+> ab_control Assigned Sex at Birth") ///
 >             label replace
  16.     }
  17.     else {
- 18.         esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/thsj_rr/degree_`demo'.rtf, ///
+ 18.         esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/thsj_rr/degr
+> ee_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             b(%9.3f) se(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             title("Ordered Logit Models: Highest Degree Plans") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls") ///
+>             scalars("N Observations" "demo_controls Demographic Controls") //
+> /
 >             label replace
  19.     }
  20. 
-.     *===============================================================================
+.     *========================================================================
+> =======
 .     * DEGREE COMPLETION collapsed category
-.     *===============================================================================
+.     *========================================================================
+> =======
 .     * Model 1: unconditional
 .     ologit highest_degree_2 i.`demo'_cat
  21.     estimates store deg2_`demo'1
@@ -362,115 +373,127 @@ added macro:
  31.         estadd local demo_controls "Yes"
  32.         estadd local afab_control "Yes"
  33. 
-.         esttab deg2_`demo'1 deg2_`demo'2 deg2_`demo'3 using $csacprojdir/tab/thsj_rr/degree2_`demo'.rt
-> f, ///
+.         esttab deg2_`demo'1 deg2_`demo'2 deg2_`demo'3 using $csacprojdir/tab/
+> thsj_rr/degree2_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             b(%9.3f) se(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             title("Ordered Logit Models: Highest Degree Plans") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls" "afab_control Assigned Sex a
-> t Birth") ///
+>             scalars("N Observations" "demo_controls Demographic Controls" "af
+> ab_control Assigned Sex at Birth") ///
 >             label replace
  34.     }
  35.     else {
- 36.         esttab deg2_`demo'1 deg2_`demo'2 using $csacprojdir/tab/thsj_rr/degree2_`demo'.rtf, ///
+ 36.         esttab deg2_`demo'1 deg2_`demo'2 using $csacprojdir/tab/thsj_rr/de
+> gree2_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             b(%9.3f) se(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             title("Ordered Logit Models: Highest Degree Plans") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls") ///
+>             scalars("N Observations" "demo_controls Demographic Controls") //
+> /
 >             label replace
  37.     }
  38. 
-.     *===========================================================================
+.     *========================================================================
+> ===
 .     * ODDS RATIO TABLES (reviewer request)
-.     *===========================================================================
+.     *========================================================================
+> ===
 . 
 .     if "`demo'" == "so" {
  39.         * Regression tables with odds ratios — 3 columns for SO
-.         esttab deg_`demo'1 deg_`demo'2 deg_`demo'3 using $csacprojdir/tab/getting_down_to_facts/degree
-> _or_`demo'.rtf, ///
+.         esttab deg_`demo'1 deg_`demo'2 deg_`demo'3 using $csacprojdir/tab/get
+> ting_down_to_facts/degree_or_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             eform ///
 >             b(%9.3f) ci(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
->             title("Ordered Logit Models: Highest Degree Plans (Odds Ratios)") ///
+>             title("Ordered Logit Models: Highest Degree Plans (Odds Ratios)")
+>  ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls" "afab_control Assigned Sex a
-> t Birth") ///
+>             scalars("N Observations" "demo_controls Demographic Controls" "af
+> ab_control Assigned Sex at Birth") ///
 >             label replace
  40. 
-.         esttab deg_`demo'1 deg_`demo'2 deg_`demo'3 using $csacprojdir/tab/getting_down_to_facts/degree
-> _or_`demo'.csv, ///
+.         esttab deg_`demo'1 deg_`demo'2 deg_`demo'3 using $csacprojdir/tab/get
+> ting_down_to_facts/degree_or_`demo'.csv, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             eform ///
 >             b(%9.3f) ci(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls" "afab_control Assigned Sex a
-> t Birth") ///
+>             scalars("N Observations" "demo_controls Demographic Controls" "af
+> ab_control Assigned Sex at Birth") ///
 >             label replace
  41. 
 .         * Segment logit as odds ratios — 3 columns for SO
-.         esttab segment_`demo'1 segment_`demo'2 segment_`demo'3 using $csacprojdir/tab/getting_down_to_
-> facts/segment_or_`demo'.rtf, ///
+.         esttab segment_`demo'1 segment_`demo'2 segment_`demo'3 using $csacpro
+> jdir/tab/getting_down_to_facts/segment_or_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             eform ///
 >             b(%9.3f) ci(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
->             title("Logit Models: Intent to Attend 4-Year College (Odds Ratios)") ///
+>             title("Logit Models: Intent to Attend 4-Year College (Odds Ratios
+> )") ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls" "afab_control Assigned Sex a
-> t Birth") ///
+>             scalars("N Observations" "demo_controls Demographic Controls" "af
+> ab_control Assigned Sex at Birth") ///
 >             label replace
  42.     }
  43.     else {
- 44.         esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/getting_down_to_facts/degree_or_`demo
-> '.rtf, ///
+ 44.         esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/getting_down
+> _to_facts/degree_or_`demo'.rtf, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             eform ///
 >             b(%9.3f) ci(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
->             title("Ordered Logit Models: Highest Degree Plans (Odds Ratios)") ///
+>             title("Ordered Logit Models: Highest Degree Plans (Odds Ratios)")
+>  ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls") ///
+>             scalars("N Observations" "demo_controls Demographic Controls") //
+> /
 >             label replace
  45. 
-.         esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/getting_down_to_facts/degree_or_`demo'.c
-> sv, ///
+.         esttab deg_`demo'1 deg_`demo'2 using $csacprojdir/tab/getting_down_to
+> _facts/degree_or_`demo'.csv, ///
 >             keep(*`demo'_cat*) ///
 >             nobaselevels ///
 >             eform ///
 >             b(%9.3f) ci(%9.3f) ///
 >             star(* 0.10 ** 0.05 *** 0.01) ///
 >             nomtitles ///
->             scalars("N Observations" "demo_controls Demographic Controls") ///
+>             scalars("N Observations" "demo_controls Demographic Controls") //
+> /
 >             label replace
  46. 
-.         esttab segment_`demo'1 segment_`demo'2 using $csacprojdir/tab/getting_down_to_facts/segment_or
-> _`demo'.rtf, ///
+.         esttab segment_`demo'1 segment_`demo'2 using $csacprojdir/tab/getting
+> _down_to_facts/segment_or_`demo'.rtf, ///
 >         keep(*`demo'_cat*) ///
 >         nobaselevels ///
 >         eform ///
 >         b(%9.3f) ci(%9.3f) ///
 >         star(* 0.10 ** 0.05 *** 0.01) ///
->         title("Logit Models: Intent to Attend 4-Year College (Odds Ratios)") ///
+>         title("Logit Models: Intent to Attend 4-Year College (Odds Ratios)") 
+> ///
 >         nomtitles ///
 >         scalars("N Observations" "demo_controls Demographic Controls") ///
 >         label replace
  47.     }
  48. 
-.     *===========================================================================
+.     *========================================================================
+> ===
 .     * STACKED BAR: Predicted probability of each degree level by group
-.     *===========================================================================
+.     *========================================================================
+> ===
 . 
 .     if "`demo'" == "gender" {
  49.         local demo_title "Gender Identity"
@@ -482,7 +505,8 @@ added macro:
 .     * Run model with controls
 .     ologit highest_degree i.`demo'_cat `controls'
  55. 
-.     * Extract category info and sample sizes from estimation sample before margins overwrites e()
+.     * Extract category info and sample sizes from estimation sample before ma
+> rgins overwrites e()
 .     qui levelsof `demo'_cat, local(catvals)
  56.     local ncat : word count `catvals'
  57.     local i = 1
@@ -496,7 +520,8 @@ added macro:
  65. 
 .     * Get predicted probabilities for all outcomes at each category level
 .     margins `demo'_cat, predict(outcome(1)) predict(outcome(2)) ///
->         predict(outcome(3)) predict(outcome(4)) predict(outcome(5)) atmeans ///
+>         predict(outcome(3)) predict(outcome(4)) predict(outcome(5)) atmeans /
+> //
 >         post
  66. 
 .     * Extract margins into a temporary dataset for plotting
@@ -517,7 +542,8 @@ added macro:
  77.     foreach c of local catvals {
  78.         qui replace group = `c' in `i'
  79.         qui replace group_lab = "`lab`i''" in `i'
- 80.         * Margins stores results in order: outcome1 for all cats, then outcome2, etc.
+ 80.         * Margins stores results in order: outcome1 for all cats, then out
+> come2, etc.
 .         * Row index for cat `i', outcome j = (`j'-1)*ncat + `i'
 .         local r1 = 0*`ncat' + `i'
  81.         local r2 = 1*`ncat' + `i'
@@ -575,51 +601,56 @@ added macro:
 119. 
 .     * Stacked horizontal bar chart with text labels
 .     twoway ///
->         (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lwidth(vthin) barwidth(0.7)
-> ) ///
->         (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) lwidth(vthin) barwidth(0.7
-> )) ///
->         (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) lwidth(vthin) barwidth(0.
-> 7)) ///
->         (rbar cum3 cum4 ypos, horizontal fcolor("145 191 219") lcolor(white) lwidth(vthin) barwidth(0.
-> 7)) ///
->         (rbar cum4 cum5 ypos, horizontal fcolor("`aggieblue'") lcolor(white) lwidth(vthin) barwidth(0.
-> 7)) ///
->         (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid5, msymbol(none) mlabel(slab5) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) 
-> ///
+>         (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lw
+> idth(vthin) barwidth(0.7)) ///
+>         (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) l
+> width(vthin) barwidth(0.7)) ///
+>         (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) 
+> lwidth(vthin) barwidth(0.7)) ///
+>         (rbar cum3 cum4 ypos, horizontal fcolor("145 191 219") lcolor(white) 
+> lwidth(vthin) barwidth(0.7)) ///
+>         (rbar cum4 cum5 ypos, horizontal fcolor("`aggieblue'") lcolor(white) 
+> lwidth(vthin) barwidth(0.7)) ///
+>         (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(
+> white) mlabsize(vsmall)) ///
+>         (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(
+> white) mlabsize(vsmall)) ///
+>         (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(
+> black) mlabsize(vsmall)) ///
+>         (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(
+> black) mlabsize(vsmall)) ///
+>         (scatter ypos mid5, msymbol(none) mlabel(slab5) mlabpos(0) mlabcolor(
+> white) mlabsize(vsmall)) ///
 >         , ///
->         title("Adjusted Predicted Probability of Degree Aspirations" "by `demo_title'", size(medium)) 
-> ///
+>         title("Adjusted Predicted Probability of Degree Aspirations" "by `dem
+> o_title'", size(medium)) ///
 >         xtitle("Predicted Probability (%)", size(small)) ///
 >         xlabel(0(20)100, format(%3.0f)) ///
 >         ytitle("") ///
 >         ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
->         legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's" 5 "Doctoral") ///
+>         legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's
+> " 5 "Doctoral") ///
 >             rows(1) size(small) position(6)) ///
->         note("Predicted probabilities from ordered logit with demographic controls, evaluated at sampl
-> e means.", size(vsmall)) ///
+>         note("Predicted probabilities from ordered logit with demographic con
+> trols, evaluated at sample means.", size(vsmall)) ///
 >         scheme(white_tableau) ///
 >         graphregion(margin(l+18))
 120. 
-.     graph export $csacprojdir/fig/getting_down_to_facts/degree_`demo'_stacked.png, replace width(4000)
+.     graph export $csacprojdir/fig/getting_down_to_facts/degree_`demo'_stacked
+> .png, replace width(4000)
 121. 
 .     * Also export the predicted probabilities as a CSV table
 .     export delimited group_lab pr_cert pr_assoc pr_bach pr_mast pr_doct ///
->         using $csacprojdir/tab/getting_down_to_facts/degree_margins_`demo'.csv, replace
+>         using $csacprojdir/tab/getting_down_to_facts/degree_margins_`demo'.cs
+> v, replace
 122. 
 .     restore
 123. 
-.     *===========================================================================
+.     *========================================================================
+> ===
 .     * COLLAPSED CATEGORY: Stacked bar for 4-category version
-.     *===========================================================================
+.     *========================================================================
+> ===
 . 
 .     ologit highest_degree_2 i.`demo'_cat `controls'
 124. 
@@ -692,7 +723,8 @@ added macro:
 .     gen str8 slab1 = string(pr_cert, "%4.1f") + "%" if pr_cert >= 10
 173.     gen str8 slab2 = string(pr_assoc, "%4.1f") + "%" if pr_assoc >= 10
 174.     gen str8 slab3 = string(pr_bach, "%4.1f") + "%" if pr_bach >= 10
-175.     gen str8 slab4 = string(pr_mastdoct, "%4.1f") + "%" if pr_mastdoct >= 10
+175.     gen str8 slab4 = string(pr_mastdoct, "%4.1f") + "%" if pr_mastdoct >= 
+> 10
 176. 
 .     * Collect y-axis labels
 .     local ylabels ""
@@ -703,47 +735,51 @@ added macro:
 181.     }
 182. 
 .     twoway ///
->         (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lwidth(vthin) barwidth(0.7)
-> ) ///
->         (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) lwidth(vthin) barwidth(0.7
-> )) ///
->         (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) lwidth(vthin) barwidth(0.
-> 7)) ///
->         (rbar cum3 cum4 ypos, horizontal fcolor("`aggieblue'") lcolor(white) lwidth(vthin) barwidth(0.
-> 7)) ///
->         (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmall)) 
-> ///
->         (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(white) mlabsize(vsmall)) 
-> ///
+>         (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lw
+> idth(vthin) barwidth(0.7)) ///
+>         (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) l
+> width(vthin) barwidth(0.7)) ///
+>         (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) 
+> lwidth(vthin) barwidth(0.7)) ///
+>         (rbar cum3 cum4 ypos, horizontal fcolor("`aggieblue'") lcolor(white) 
+> lwidth(vthin) barwidth(0.7)) ///
+>         (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(
+> white) mlabsize(vsmall)) ///
+>         (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(
+> white) mlabsize(vsmall)) ///
+>         (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(
+> black) mlabsize(vsmall)) ///
+>         (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(
+> white) mlabsize(vsmall)) ///
 >         , ///
->         title("Adjusted Predicted Probability of Degree Aspirations" "by `demo_title'", size(medium)) 
-> ///
+>         title("Adjusted Predicted Probability of Degree Aspirations" "by `dem
+> o_title'", size(medium)) ///
 >         xtitle("Predicted Probability (%)", size(small)) ///
 >         xlabel(0(20)100, format(%3.0f)) ///
 >         ytitle("") ///
 >         ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
->         legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's/Doctoral") ///
+>         legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's
+> /Doctoral") ///
 >             rows(1) size(small) position(6)) ///
->         note("Predicted probabilities from ordered logit with demographic controls, evaluated at sampl
-> e means.", size(vsmall)) ///
+>         note("Predicted probabilities from ordered logit with demographic con
+> trols, evaluated at sample means.", size(vsmall)) ///
 >         scheme(white_tableau) ///
 >         graphregion(margin(l+18))
 183. 
-.     graph export $csacprojdir/fig/getting_down_to_facts/degree2_`demo'_stacked.png, replace width(4000
-> )
+.     graph export $csacprojdir/fig/getting_down_to_facts/degree2_`demo'_stacke
+> d.png, replace width(4000)
 184. 
 .     export delimited group_lab pr_cert pr_assoc pr_bach pr_mastdoct ///
->         using $csacprojdir/tab/getting_down_to_facts/degree2_margins_`demo'.csv, replace
+>         using $csacprojdir/tab/getting_down_to_facts/degree2_margins_`demo'.c
+> sv, replace
 185. 
 .     restore
 186. 
-.     *===========================================================================
+.     *========================================================================
+> ===
 .     * STACKED BAR WITH AFAB CONTROL (SO only)
-.     *===========================================================================
+.     *========================================================================
+> ===
 .     if "`demo'" == "so" {
 187. 
 .         * 5-category degree with afab control
@@ -761,7 +797,8 @@ added macro:
 197.         }
 198. 
 .         margins `demo'_cat, predict(outcome(1)) predict(outcome(2)) ///
->             predict(outcome(3)) predict(outcome(4)) predict(outcome(5)) atmeans ///
+>             predict(outcome(3)) predict(outcome(4)) predict(outcome(5)) atmea
+> ns ///
 >             post
 199. 
 .         preserve
@@ -829,45 +866,49 @@ added macro:
 251.         }
 252. 
 .         twoway ///
->             (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lwidth(vthin) barwidth(
-> 0.7)) ///
->             (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) lwidth(vthin) barwidth
-> (0.7)) ///
->             (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) lwidth(vthin) barwidt
-> h(0.7)) ///
->             (rbar cum3 cum4 ypos, horizontal fcolor("145 191 219") lcolor(white) lwidth(vthin) barwidt
-> h(0.7)) ///
->             (rbar cum4 cum5 ypos, horizontal fcolor("`aggieblue'") lcolor(white) lwidth(vthin) barwidt
-> h(0.7)) ///
->             (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(white) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(white) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(black) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid5, msymbol(none) mlabel(slab5) mlabpos(0) mlabcolor(white) mlabsize(vsmal
-> l)) ///
+>             (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white
+> ) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(whit
+> e) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(whi
+> te) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum3 cum4 ypos, horizontal fcolor("145 191 219") lcolor(whi
+> te) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum4 cum5 ypos, horizontal fcolor("`aggieblue'") lcolor(whi
+> te) lwidth(vthin) barwidth(0.7)) ///
+>             (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabco
+> lor(white) mlabsize(vsmall)) ///
+>             (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabco
+> lor(white) mlabsize(vsmall)) ///
+>             (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabco
+> lor(black) mlabsize(vsmall)) ///
+>             (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabco
+> lor(black) mlabsize(vsmall)) ///
+>             (scatter ypos mid5, msymbol(none) mlabel(slab5) mlabpos(0) mlabco
+> lor(white) mlabsize(vsmall)) ///
 >             , ///
->             title("Adjusted Predicted Probability of Degree Aspirations" "by Sexual Orientation (Contr
-> olling for Assigned Sex at Birth)", size(small)) ///
+>             title("Adjusted Predicted Probability of Degree Aspirations" "by 
+> Sexual Orientation (Controlling for Assigned Sex at Birth)", size(small)) ///
 >             xtitle("Predicted Probability (%)", size(small)) ///
 >             xlabel(0(20)100, format(%3.0f)) ///
 >             ytitle("") ///
 >             ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
->             legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's" 5 "Doctoral") ///
+>             legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Mast
+> er's" 5 "Doctoral") ///
 >                 rows(1) size(small) position(6)) ///
->             note("Predicted probabilities from ordered logit with demographic controls" "and assigned 
-> sex at birth, evaluated at sample means.", size(vsmall)) ///
+>             note("Predicted probabilities from ordered logit with demographic
+>  controls" "and assigned sex at birth, evaluated at sample means.", size(vsma
+> ll)) ///
 >             scheme(white_tableau) ///
 >             graphregion(margin(l+18 r+5))
 253. 
-.         graph export $csacprojdir/fig/getting_down_to_facts/degree_so_stacked_afab.png, replace width(
-> 4000)
+.         graph export $csacprojdir/fig/getting_down_to_facts/degree_so_stacked
+> _afab.png, replace width(4000)
 254. 
-.         export delimited group_lab pr_cert pr_assoc pr_bach pr_mast pr_doct ///
->             using $csacprojdir/tab/getting_down_to_facts/degree_margins_so_afab.csv, replace
+.         export delimited group_lab pr_cert pr_assoc pr_bach pr_mast pr_doct /
+> //
+>             using $csacprojdir/tab/getting_down_to_facts/degree_margins_so_af
+> ab.csv, replace
 255. 
 .         restore
 256. 
@@ -938,7 +979,8 @@ added macro:
 .         gen str8 slab1 = string(pr_cert, "%4.1f") + "%" if pr_cert >= 10
 306.         gen str8 slab2 = string(pr_assoc, "%4.1f") + "%" if pr_assoc >= 10
 307.         gen str8 slab3 = string(pr_bach, "%4.1f") + "%" if pr_bach >= 10
-308.         gen str8 slab4 = string(pr_mastdoct, "%4.1f") + "%" if pr_mastdoct >= 10
+308.         gen str8 slab4 = string(pr_mastdoct, "%4.1f") + "%" if pr_mastdoct
+>  >= 10
 309. 
 .         local ylabels ""
 310.         forvalues j = 1/`ncat' {
@@ -948,41 +990,44 @@ added macro:
 314.         }
 315. 
 .         twoway ///
->             (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white) lwidth(vthin) barwidth(
-> 0.7)) ///
->             (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(white) lwidth(vthin) barwidth
-> (0.7)) ///
->             (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(white) lwidth(vthin) barwidt
-> h(0.7)) ///
->             (rbar cum3 cum4 ypos, horizontal fcolor("`aggieblue'") lcolor(white) lwidth(vthin) barwidt
-> h(0.7)) ///
->             (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabcolor(white) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabcolor(white) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabcolor(black) mlabsize(vsmal
-> l)) ///
->             (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabcolor(white) mlabsize(vsmal
-> l)) ///
+>             (rbar cum0 cum1 ypos, horizontal fcolor("215 48 39") lcolor(white
+> ) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum1 cum2 ypos, horizontal fcolor("252 141 89") lcolor(whit
+> e) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum2 cum3 ypos, horizontal fcolor("254 224 139") lcolor(whi
+> te) lwidth(vthin) barwidth(0.7)) ///
+>             (rbar cum3 cum4 ypos, horizontal fcolor("`aggieblue'") lcolor(whi
+> te) lwidth(vthin) barwidth(0.7)) ///
+>             (scatter ypos mid1, msymbol(none) mlabel(slab1) mlabpos(0) mlabco
+> lor(white) mlabsize(vsmall)) ///
+>             (scatter ypos mid2, msymbol(none) mlabel(slab2) mlabpos(0) mlabco
+> lor(white) mlabsize(vsmall)) ///
+>             (scatter ypos mid3, msymbol(none) mlabel(slab3) mlabpos(0) mlabco
+> lor(black) mlabsize(vsmall)) ///
+>             (scatter ypos mid4, msymbol(none) mlabel(slab4) mlabpos(0) mlabco
+> lor(white) mlabsize(vsmall)) ///
 >             , ///
->             title("Adjusted Predicted Probability of Degree Aspirations" "by Sexual Orientation (Contr
-> olling for Assigned Sex at Birth)", size(small)) ///
+>             title("Adjusted Predicted Probability of Degree Aspirations" "by 
+> Sexual Orientation (Controlling for Assigned Sex at Birth)", size(small)) ///
 >             xtitle("Predicted Probability (%)", size(small)) ///
 >             xlabel(0(20)100, format(%3.0f)) ///
 >             ytitle("") ///
 >             ylabel(`ylabels', angle(0) labsize(tiny) nogrid) ///
->             legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Master's/Doctoral") ///
+>             legend(order(1 "Certificate" 2 "Associate" 3 "Bachelor's" 4 "Mast
+> er's/Doctoral") ///
 >                 rows(1) size(small) position(6)) ///
->             note("Predicted probabilities from ordered logit with demographic controls" "and assigned 
-> sex at birth, evaluated at sample means.", size(vsmall)) ///
+>             note("Predicted probabilities from ordered logit with demographic
+>  controls" "and assigned sex at birth, evaluated at sample means.", size(vsma
+> ll)) ///
 >             scheme(white_tableau) ///
 >             graphregion(margin(l+18 r+5))
 316. 
-.         graph export $csacprojdir/fig/getting_down_to_facts/degree2_so_stacked_afab.png, replace width
-> (4000)
+.         graph export $csacprojdir/fig/getting_down_to_facts/degree2_so_stacke
+> d_afab.png, replace width(4000)
 317. 
 .         export delimited group_lab pr_cert pr_assoc pr_bach pr_mastdoct ///
->             using $csacprojdir/tab/getting_down_to_facts/degree2_margins_so_afab.csv, replace
+>             using $csacprojdir/tab/getting_down_to_facts/degree2_margins_so_a
+> fab.csv, replace
 318. 
 .         restore
 319.     }
@@ -999,22 +1044,22 @@ Ordered logistic regression                             Number of obs =  7,497
                                                         Prob > chi2   = 0.0000
 Log likelihood = -10138.203                             Pseudo R2     = 0.0061
 
----------------------------------------------------------------------------------------------
-             highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
-----------------------------+----------------------------------------------------------------
-                 gender_cat |
-           Cisgender Woman  |   .4867148   .0451069    10.79   0.000     .3983069    .5751228
-           Transgender Man  |    .552505   .2341497     2.36   0.018       .09358     1.01143
-         Transgender Woman  |   .1775823   .3978035     0.45   0.655    -.6020982    .9572628
-                Non-binary  |   .5866291   .1160372     5.06   0.000     .3592004    .8140577
-Gender Diverse/Questioning  |   .4600353   .2230186     2.06   0.039     .0229269    .8971436
-         Prefer Not to Say  |   .3134698   .1575549     1.99   0.047     .0046679    .6222717
-----------------------------+----------------------------------------------------------------
-                      /cut1 |  -3.074041   .0690198                     -3.209317   -2.938765
-                      /cut2 |  -1.919021   .0465269                     -2.010212    -1.82783
-                      /cut3 |   .1159815   .0364759                      .0444901     .187473
-                      /cut4 |   1.553101   .0408821                      1.472974    1.633228
----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .4867148   .0451069    10.79   0.000     .3983069    .5751228
+Transgend..  |    .552505   .2341497     2.36   0.018       .09358     1.01143
+Transgend..  |   .1775823   .3978035     0.45   0.655    -.6020982    .9572628
+ Non-binary  |   .5866291   .1160372     5.06   0.000     .3592004    .8140577
+Gender Di..  |   .4600353   .2230186     2.06   0.039     .0229269    .8971436
+Prefer No..  |   .3134698   .1575549     1.99   0.047     .0046679    .6222717
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.074041   .0690198                     -3.209317   -2.938765
+       /cut2 |  -1.919021   .0465269                     -2.010212    -1.82783
+       /cut3 |   .1159815   .0364759                      .0444901     .187473
+       /cut4 |   1.553101   .0408821                      1.472974    1.633228
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "No"
@@ -1033,46 +1078,47 @@ Ordered logistic regression                             Number of obs =  7,475
                                                         Prob > chi2   = 0.0000
 Log likelihood = -9798.1545                             Pseudo R2     = 0.0366
 
--------------------------------------------------------------------------------------------------------
-                       highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                           gender_cat |
-                     Cisgender Woman  |   .5501552   .0457234    12.03   0.000      .460539    .6397714
-                     Transgender Man  |   .5077049   .2427962     2.09   0.037      .031833    .9835768
-                   Transgender Woman  |   .0491151   .4023996     0.12   0.903    -.7395736    .8378037
-                          Non-binary  |   .6035797   .1179628     5.12   0.000     .3723768    .8347826
-          Gender Diverse/Questioning  |   .4323706   .2285071     1.89   0.058    -.0154952    .8802363
-                   Prefer Not to Say  |   .2594948   .1612515     1.61   0.108    -.0565522    .5755419
-                                      |
-                            race_assn |
-              Black/African American  |  -.1282557   .1690473    -0.76   0.448    -.4595823    .2030708
-                     Hispanic/Latinx  |  -.1601002   .1526962    -1.05   0.294    -.4593792    .1391788
-                    Pacific Islander  |   .1569254   .2708532     0.58   0.562    -.3739371     .687788
-                            Filipino  |  -.3353415   .1913865    -1.75   0.080    -.7104522    .0397693
-                               Asian  |   .1930629    .159034     1.21   0.225     -.118638    .5047638
-                               Other  |   .1199616   .2068644     0.58   0.562    -.2854852    .5254084
-                  White/Non-Hispanic  |  -.2423034   .1568195    -1.55   0.122    -.5496639    .0650572
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0333412   .0703651    -0.47   0.636    -.1712541    .1045718
-     Some college, no college degree  |   .1813314   .0799387     2.27   0.023     .0246544    .3380085
-                    Associate degree  |   .1977141   .1052036     1.88   0.060    -.0084812    .4039095
-                   Bachelor's degree  |   .6624567   .0782272     8.47   0.000     .5091342    .8157792
-Graduate/Professional degree beyo..)  |   1.161119   .0798749    14.54   0.000     1.004567    1.317671
-                          Don't know  |   -.563318     .11264    -5.00   0.000    -.7840883   -.3425478
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.929327   .1719913                     -3.266424    -2.59223
-                                /cut2 |  -1.752302   .1643096                     -2.074343   -1.430261
-                                /cut3 |   .3875474     .16207                      .0698961    .7051987
-                                /cut4 |   1.911107   .1635501                      1.590555    2.231659
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .5501552   .0457234    12.03   0.000      .460539    .6397714
+Transgend..  |   .5077049   .2427962     2.09   0.037      .031833    .9835768
+Transgend..  |   .0491151   .4023996     0.12   0.903    -.7395736    .8378037
+ Non-binary  |   .6035797   .1179628     5.12   0.000     .3723768    .8347826
+Gender Di..  |   .4323706   .2285071     1.89   0.058    -.0154952    .8802363
+Prefer No..  |   .2594948   .1612515     1.61   0.108    -.0565522    .5755419
+             |
+   race_assn |
+Black/Afr..  |  -.1282557   .1690473    -0.76   0.448    -.4595823    .2030708
+Hispanic/~x  |  -.1601002   .1526962    -1.05   0.294    -.4593792    .1391788
+Pacific I..  |   .1569254   .2708532     0.58   0.562    -.3739371     .687788
+   Filipino  |  -.3353415   .1913865    -1.75   0.080    -.7104522    .0397693
+      Asian  |   .1930629    .159034     1.21   0.225     -.118638    .5047638
+      Other  |   .1199616   .2068644     0.58   0.562    -.2854852    .5254084
+White/Non~c  |  -.2423034   .1568195    -1.55   0.122    -.5496639    .0650572
+             |
+  parent_edu |
+High scho..  |  -.0333412   .0703651    -0.47   0.636    -.1712541    .1045718
+Some coll..  |   .1813314   .0799387     2.27   0.023     .0246544    .3380085
+Associate..  |   .1977141   .1052036     1.88   0.060    -.0084812    .4039095
+Bachelor'..  |   .6624567   .0782272     8.47   0.000     .5091342    .8157792
+Graduate..)  |   1.161119   .0798749    14.54   0.000     1.004567    1.317671
+ Don't know  |   -.563318     .11264    -5.00   0.000    -.7840883   -.3425478
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.929327   .1719913                     -3.266424    -2.59223
+       /cut2 |  -1.752302   .1643096                     -2.074343   -1.430261
+       /cut3 |   .3875474     .16207                      .0698961    .7051987
+       /cut4 |   1.911107   .1635501                      1.590555    2.231659
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
 
 added macro:
        e(afab_control) : "No"
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/degree_gender.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/degree_gender.rtf)
 
 Iteration 0:  Log likelihood = -7413.6838  
 Iteration 1:  Log likelihood = -7367.2649  
@@ -1084,21 +1130,21 @@ Ordered logistic regression                             Number of obs =  7,497
                                                         Prob > chi2   = 0.0000
 Log likelihood = -7367.2225                             Pseudo R2     = 0.0063
 
----------------------------------------------------------------------------------------------
-           highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
-----------------------------+----------------------------------------------------------------
-                 gender_cat |
-           Cisgender Woman  |   .4462951   .0479179     9.31   0.000     .3523777    .5402125
-           Transgender Man  |   .5490157   .2584984     2.12   0.034     .0423682    1.055663
-         Transgender Woman  |   .2819059   .4388654     0.64   0.521    -.5782544    1.142066
-                Non-binary  |   .5422407   .1268413     4.27   0.000     .2936363    .7908451
-Gender Diverse/Questioning  |   .3768371   .2387351     1.58   0.114    -.0910752    .8447493
-         Prefer Not to Say  |   .2768182   .1680575     1.65   0.100    -.0525685    .6062049
-----------------------------+----------------------------------------------------------------
-                      /cut1 |  -3.095635   .0696471                     -3.232141   -2.959129
-                      /cut2 |  -1.940927   .0474725                     -2.033971   -1.847882
-                      /cut3 |   .0929547   .0377636                      .0189395      .16697
----------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .4462951   .0479179     9.31   0.000     .3523777    .5402125
+Transgend..  |   .5490157   .2584984     2.12   0.034     .0423682    1.055663
+Transgend..  |   .2819059   .4388654     0.64   0.521    -.5782544    1.142066
+ Non-binary  |   .5422407   .1268413     4.27   0.000     .2936363    .7908451
+Gender Di..  |   .3768371   .2387351     1.58   0.114    -.0910752    .8447493
+Prefer No..  |   .2768182   .1680575     1.65   0.100    -.0525685    .6062049
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.095635   .0696471                     -3.232141   -2.959129
+       /cut2 |  -1.940927   .0474725                     -2.033971   -1.847882
+       /cut3 |   .0929547   .0377636                      .0189395      .16697
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "No"
@@ -1117,51 +1163,52 @@ Ordered logistic regression                             Number of obs =  7,475
                                                         Prob > chi2   = 0.0000
 Log likelihood = -6999.2356                             Pseudo R2     = 0.0529
 
--------------------------------------------------------------------------------------------------------
-                     highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                           gender_cat |
-                     Cisgender Woman  |   .5180323   .0497168    10.42   0.000     .4205893    .6154754
-                     Transgender Man  |   .4841644    .275509     1.76   0.079    -.0558232    1.024152
-                   Transgender Woman  |   .1412088   .4568545     0.31   0.757    -.7542096    1.036627
-                          Non-binary  |     .54897    .131451     4.18   0.000     .2913308    .8066093
-          Gender Diverse/Questioning  |   .2980287   .2480754     1.20   0.230    -.1881902    .7842476
-                   Prefer Not to Say  |   .2413534   .1766866     1.37   0.172    -.1049459    .5876527
-                                      |
-                            race_assn |
-              Black/African American  |  -.0768577   .1817388    -0.42   0.672    -.4330591    .2793438
-                     Hispanic/Latinx  |  -.0538791   .1639928    -0.33   0.742     -.375299    .2675408
-                    Pacific Islander  |   .2387655   .3035947     0.79   0.432    -.3562692    .8338002
-                            Filipino  |  -.2975018   .2058388    -1.45   0.148    -.7009383    .1059348
-                               Asian  |   .3387723   .1732166     1.96   0.050     -.000726    .6782707
-                               Other  |   .1528707   .2277263     0.67   0.502    -.2934647     .599206
-                  White/Non-Hispanic  |  -.1392767   .1694086    -0.82   0.411    -.4713115    .1927581
-                                      |
-                           parent_edu |
-                 High school diploma  |   -.031705   .0724845    -0.44   0.662     -.173772     .110362
-     Some college, no college degree  |   .2348129   .0838735     2.80   0.005     .0704237     .399202
-                    Associate degree  |   .1474787   .1084244     1.36   0.174    -.0650292    .3599866
-                   Bachelor's degree  |   .7167844   .0841565     8.52   0.000     .5518407    .8817281
-Graduate/Professional degree beyo..)  |   1.486017   .0928876    16.00   0.000     1.303961    1.668074
-                          Don't know  |  -.5721757   .1132198    -5.05   0.000    -.7940824    -.350269
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.815544   .1824468                     -3.173133   -2.457955
-                                /cut2 |  -1.636005    .175268                     -1.979523   -1.292486
-                                /cut3 |   .5153687   .1733455                      .1756178    .8551196
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .5180323   .0497168    10.42   0.000     .4205893    .6154754
+Transgend..  |   .4841644    .275509     1.76   0.079    -.0558232    1.024152
+Transgend..  |   .1412088   .4568545     0.31   0.757    -.7542096    1.036627
+ Non-binary  |     .54897    .131451     4.18   0.000     .2913308    .8066093
+Gender Di..  |   .2980287   .2480754     1.20   0.230    -.1881902    .7842476
+Prefer No..  |   .2413534   .1766866     1.37   0.172    -.1049459    .5876527
+             |
+   race_assn |
+Black/Afr..  |  -.0768577   .1817388    -0.42   0.672    -.4330591    .2793438
+Hispanic/~x  |  -.0538791   .1639928    -0.33   0.742     -.375299    .2675408
+Pacific I..  |   .2387655   .3035947     0.79   0.432    -.3562692    .8338002
+   Filipino  |  -.2975018   .2058388    -1.45   0.148    -.7009383    .1059348
+      Asian  |   .3387723   .1732166     1.96   0.050     -.000726    .6782707
+      Other  |   .1528707   .2277263     0.67   0.502    -.2934647     .599206
+White/Non~c  |  -.1392767   .1694086    -0.82   0.411    -.4713115    .1927581
+             |
+  parent_edu |
+High scho..  |   -.031705   .0724845    -0.44   0.662     -.173772     .110362
+Some coll..  |   .2348129   .0838735     2.80   0.005     .0704237     .399202
+Associate..  |   .1474787   .1084244     1.36   0.174    -.0650292    .3599866
+Bachelor'..  |   .7167844   .0841565     8.52   0.000     .5518407    .8817281
+Graduate..)  |   1.486017   .0928876    16.00   0.000     1.303961    1.668074
+ Don't know  |  -.5721757   .1132198    -5.05   0.000    -.7940824    -.350269
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.815544   .1824468                     -3.173133   -2.457955
+       /cut2 |  -1.636005    .175268                     -1.979523   -1.292486
+       /cut3 |   .5153687   .1733455                      .1756178    .8551196
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
 
 added macro:
        e(afab_control) : "No"
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/degree2_gender.rtf)
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_or
-> _gender.rtf)
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_or
-> _gender.csv)
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/segment_o
-> r_gender.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/degree2_gender.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/gettin
+> g_down_to_facts/degree_or_gender.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/gettin
+> g_down_to_facts/degree_or_gender.csv)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/gettin
+> g_down_to_facts/segment_or_gender.rtf)
 
 Iteration 0:  Log likelihood = -10170.226  
 Iteration 1:  Log likelihood = -9800.4779  
@@ -1174,39 +1221,39 @@ Ordered logistic regression                             Number of obs =  7,475
                                                         Prob > chi2   = 0.0000
 Log likelihood = -9798.1545                             Pseudo R2     = 0.0366
 
--------------------------------------------------------------------------------------------------------
-                       highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                           gender_cat |
-                     Cisgender Woman  |   .5501552   .0457234    12.03   0.000      .460539    .6397714
-                     Transgender Man  |   .5077049   .2427962     2.09   0.037      .031833    .9835768
-                   Transgender Woman  |   .0491151   .4023996     0.12   0.903    -.7395736    .8378037
-                          Non-binary  |   .6035797   .1179628     5.12   0.000     .3723768    .8347826
-          Gender Diverse/Questioning  |   .4323706   .2285071     1.89   0.058    -.0154952    .8802363
-                   Prefer Not to Say  |   .2594948   .1612515     1.61   0.108    -.0565522    .5755419
-                                      |
-                            race_assn |
-              Black/African American  |  -.1282557   .1690473    -0.76   0.448    -.4595823    .2030708
-                     Hispanic/Latinx  |  -.1601002   .1526962    -1.05   0.294    -.4593792    .1391788
-                    Pacific Islander  |   .1569254   .2708532     0.58   0.562    -.3739371     .687788
-                            Filipino  |  -.3353415   .1913865    -1.75   0.080    -.7104522    .0397693
-                               Asian  |   .1930629    .159034     1.21   0.225     -.118638    .5047638
-                               Other  |   .1199616   .2068644     0.58   0.562    -.2854852    .5254084
-                  White/Non-Hispanic  |  -.2423034   .1568195    -1.55   0.122    -.5496639    .0650572
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0333412   .0703651    -0.47   0.636    -.1712541    .1045718
-     Some college, no college degree  |   .1813314   .0799387     2.27   0.023     .0246544    .3380085
-                    Associate degree  |   .1977141   .1052036     1.88   0.060    -.0084812    .4039095
-                   Bachelor's degree  |   .6624567   .0782272     8.47   0.000     .5091342    .8157792
-Graduate/Professional degree beyo..)  |   1.161119   .0798749    14.54   0.000     1.004567    1.317671
-                          Don't know  |   -.563318     .11264    -5.00   0.000    -.7840883   -.3425478
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.929327   .1719913                     -3.266424    -2.59223
-                                /cut2 |  -1.752302   .1643096                     -2.074343   -1.430261
-                                /cut3 |   .3875474     .16207                      .0698961    .7051987
-                                /cut4 |   1.911107   .1635501                      1.590555    2.231659
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .5501552   .0457234    12.03   0.000      .460539    .6397714
+Transgend..  |   .5077049   .2427962     2.09   0.037      .031833    .9835768
+Transgend..  |   .0491151   .4023996     0.12   0.903    -.7395736    .8378037
+ Non-binary  |   .6035797   .1179628     5.12   0.000     .3723768    .8347826
+Gender Di..  |   .4323706   .2285071     1.89   0.058    -.0154952    .8802363
+Prefer No..  |   .2594948   .1612515     1.61   0.108    -.0565522    .5755419
+             |
+   race_assn |
+Black/Afr..  |  -.1282557   .1690473    -0.76   0.448    -.4595823    .2030708
+Hispanic/~x  |  -.1601002   .1526962    -1.05   0.294    -.4593792    .1391788
+Pacific I..  |   .1569254   .2708532     0.58   0.562    -.3739371     .687788
+   Filipino  |  -.3353415   .1913865    -1.75   0.080    -.7104522    .0397693
+      Asian  |   .1930629    .159034     1.21   0.225     -.118638    .5047638
+      Other  |   .1199616   .2068644     0.58   0.562    -.2854852    .5254084
+White/Non~c  |  -.2423034   .1568195    -1.55   0.122    -.5496639    .0650572
+             |
+  parent_edu |
+High scho..  |  -.0333412   .0703651    -0.47   0.636    -.1712541    .1045718
+Some coll..  |   .1813314   .0799387     2.27   0.023     .0246544    .3380085
+Associate..  |   .1977141   .1052036     1.88   0.060    -.0084812    .4039095
+Bachelor'..  |   .6624567   .0782272     8.47   0.000     .5091342    .8157792
+Graduate..)  |   1.161119   .0798749    14.54   0.000     1.004567    1.317671
+ Don't know  |   -.563318     .11264    -5.00   0.000    -.7840883   -.3425478
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.929327   .1719913                     -3.266424    -2.59223
+       /cut2 |  -1.752302   .1643096                     -2.074343   -1.430261
+       /cut3 |   .3875474     .16207                      .0698961    .7051987
+       /cut4 |   1.911107   .1635501                      1.590555    2.231659
+------------------------------------------------------------------------------
 
 Adjusted predictions                                     Number of obs = 7,475
 Model VCE: OIM
@@ -1240,47 +1287,83 @@ At: 0.gender_cat = .3558528 (mean)
     6.parent_edu = .1918395 (mean)
     7.parent_edu = .0501672 (mean)
 
------------------------------------------------------------------------------------------------
-                              |            Delta-method
-                              |     Margin   std. err.      z    P>|z|     [95% conf. interval]
-------------------------------+----------------------------------------------------------------
-          _predict#gender_cat |
-             1#Cisgender Man  |    .040817   .0027146    15.04   0.000     .0354964    .0461376
-           1#Cisgender Woman  |   .0239595   .0016035    14.94   0.000     .0208168    .0271023
-           1#Transgender Man  |   .0249726   .0060414     4.13   0.000     .0131317    .0368134
-         1#Transgender Woman  |   .0389369   .0151698     2.57   0.010     .0092046    .0686692
-                1#Non-binary  |   .0227414   .0028619     7.95   0.000     .0171323    .0283506
-1#Gender Diverse/Questioning  |    .026874   .0061197     4.39   0.000     .0148797    .0388683
-         1#Prefer Not to Say  |   .0317845   .0051961     6.12   0.000     .0216003    .0419686
-             2#Cisgender Man  |   .0805063   .0039132    20.57   0.000     .0728366     .088176
-           2#Cisgender Woman  |   .0498144   .0024441    20.38   0.000      .045024    .0546048
-           2#Transgender Man  |    .051755   .0113684     4.55   0.000     .0294733    .0740368
-         2#Transgender Woman  |   .0772472    .026336     2.93   0.003     .0256295    .1288649
-                2#Non-binary  |    .047464   .0052366     9.06   0.000     .0372005    .0577276
-2#Gender Diverse/Questioning  |   .0553634   .0113662     4.87   0.000     .0330861    .0776407
-         2#Prefer Not to Say  |   .0644787   .0092183     6.99   0.000     .0464113    .0825461
-             3#Cisgender Man  |   .4185646   .0074618    56.09   0.000     .4039397    .4331895
-           3#Cisgender Woman  |   .3298799   .0063255    52.15   0.000     .3174821    .3422778
-           3#Transgender Man  |   .3371852   .0414418     8.14   0.000     .2559607    .4184097
-         3#Transgender Woman  |   .4114818   .0589798     6.98   0.000     .2958834    .5270801
-                3#Non-binary  |   .3206571   .0198118    16.19   0.000     .2818266    .3594875
-3#Gender Diverse/Questioning  |   .3500612   .0385909     9.07   0.000     .2744244     .425698
-         3#Prefer Not to Say  |   .3788566   .0259965    14.57   0.000     .3279045    .4298087
-             4#Cisgender Man  |    .303473   .0061955    48.98   0.000     .2913301    .3156159
-           4#Cisgender Woman  |   .3527928   .0059906    58.89   0.000     .3410514    .3645342
-           4#Transgender Man  |   .3502693   .0160191    21.87   0.000     .3188724    .3816662
-         4#Transgender Woman  |   .3090969   .0453994     6.81   0.000     .2201158    .3980781
-                4#Non-binary  |   .3556071   .0080134    44.38   0.000     .3399011    .3713132
-4#Gender Diverse/Questioning  |   .3451882   .0172696    19.99   0.000     .3113404    .3790361
-         4#Prefer Not to Say  |   .3308381   .0155351    21.30   0.000     .3003899    .3612864
-             5#Cisgender Man  |    .156639   .0055538    28.20   0.000     .1457539    .1675242
-           5#Cisgender Woman  |   .2435534   .0061562    39.56   0.000     .2314874    .2556193
-           5#Transgender Man  |   .2358179   .0434023     5.43   0.000      .150751    .3208848
-         5#Transgender Woman  |   .1632372   .0548363     2.98   0.003       .05576    .2707145
-                5#Non-binary  |   .2535303   .0215309    11.78   0.000     .2113306    .2957301
-5#Gender Diverse/Questioning  |   .2225131   .0391788     5.68   0.000      .145724    .2993023
-         5#Prefer Not to Say  |   .1940421   .0248268     7.82   0.000     .1453826    .2427016
------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    _predict#|
+  gender_cat |
+          1 #|
+Cisgender..  |    .040817   .0027146    15.04   0.000     .0354964    .0461376
+          1 #|
+Cisgender..  |   .0239595   .0016035    14.94   0.000     .0208168    .0271023
+          1 #|
+Transgend..  |   .0249726   .0060414     4.13   0.000     .0131317    .0368134
+          1 #|
+Transgend..  |   .0389369   .0151698     2.57   0.010     .0092046    .0686692
+          1 #|
+ Non-binary  |   .0227414   .0028619     7.95   0.000     .0171323    .0283506
+          1 #|
+Gender Di..  |    .026874   .0061197     4.39   0.000     .0148797    .0388683
+          1 #|
+Prefer No..  |   .0317845   .0051961     6.12   0.000     .0216003    .0419686
+          2 #|
+Cisgender..  |   .0805063   .0039132    20.57   0.000     .0728366     .088176
+          2 #|
+Cisgender..  |   .0498144   .0024441    20.38   0.000      .045024    .0546048
+          2 #|
+Transgend..  |    .051755   .0113684     4.55   0.000     .0294733    .0740368
+          2 #|
+Transgend..  |   .0772472    .026336     2.93   0.003     .0256295    .1288649
+          2 #|
+ Non-binary  |    .047464   .0052366     9.06   0.000     .0372005    .0577276
+          2 #|
+Gender Di..  |   .0553634   .0113662     4.87   0.000     .0330861    .0776407
+          2 #|
+Prefer No..  |   .0644787   .0092183     6.99   0.000     .0464113    .0825461
+          3 #|
+Cisgender..  |   .4185646   .0074618    56.09   0.000     .4039397    .4331895
+          3 #|
+Cisgender..  |   .3298799   .0063255    52.15   0.000     .3174821    .3422778
+          3 #|
+Transgend..  |   .3371852   .0414418     8.14   0.000     .2559607    .4184097
+          3 #|
+Transgend..  |   .4114818   .0589798     6.98   0.000     .2958834    .5270801
+          3 #|
+ Non-binary  |   .3206571   .0198118    16.19   0.000     .2818266    .3594875
+          3 #|
+Gender Di..  |   .3500612   .0385909     9.07   0.000     .2744244     .425698
+          3 #|
+Prefer No..  |   .3788566   .0259965    14.57   0.000     .3279045    .4298087
+          4 #|
+Cisgender..  |    .303473   .0061955    48.98   0.000     .2913301    .3156159
+          4 #|
+Cisgender..  |   .3527928   .0059906    58.89   0.000     .3410514    .3645342
+          4 #|
+Transgend..  |   .3502693   .0160191    21.87   0.000     .3188724    .3816662
+          4 #|
+Transgend..  |   .3090969   .0453994     6.81   0.000     .2201158    .3980781
+          4 #|
+ Non-binary  |   .3556071   .0080134    44.38   0.000     .3399011    .3713132
+          4 #|
+Gender Di..  |   .3451882   .0172696    19.99   0.000     .3113404    .3790361
+          4 #|
+Prefer No..  |   .3308381   .0155351    21.30   0.000     .3003899    .3612864
+          5 #|
+Cisgender..  |    .156639   .0055538    28.20   0.000     .1457539    .1675242
+          5 #|
+Cisgender..  |   .2435534   .0061562    39.56   0.000     .2314874    .2556193
+          5 #|
+Transgend..  |   .2358179   .0434023     5.43   0.000      .150751    .3208848
+          5 #|
+Transgend..  |   .1632372   .0548363     2.98   0.003       .05576    .2707145
+          5 #|
+ Non-binary  |   .2535303   .0215309    11.78   0.000     .2113306    .2957301
+          5 #|
+Gender Di..  |   .2225131   .0391788     5.68   0.000      .145724    .2993023
+          5 #|
+Prefer No..  |   .1940421   .0248268     7.82   0.000     .1453826    .2427016
+------------------------------------------------------------------------------
 Number of observations (_N) was 0, now 7.
 (7 missing values generated)
 (7 missing values generated)
@@ -1296,10 +1379,10 @@ Number of observations (_N) was 0, now 7.
 (7 real changes made)
 (7 missing values generated)
 (7 missing values generated)
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_facts/degree_gender_stacked.p
-> ng written in PNG format
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_margins_gender.c
-> sv saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_fact
+> s/degree_gender_stacked.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_fact
+> s/degree_margins_gender.csv saved
 
 Iteration 0:  Log likelihood = -7390.1092  
 Iteration 1:  Log likelihood = -7005.1492  
@@ -1312,38 +1395,38 @@ Ordered logistic regression                             Number of obs =  7,475
                                                         Prob > chi2   = 0.0000
 Log likelihood = -6999.2356                             Pseudo R2     = 0.0529
 
--------------------------------------------------------------------------------------------------------
-                     highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                           gender_cat |
-                     Cisgender Woman  |   .5180323   .0497168    10.42   0.000     .4205893    .6154754
-                     Transgender Man  |   .4841644    .275509     1.76   0.079    -.0558232    1.024152
-                   Transgender Woman  |   .1412088   .4568545     0.31   0.757    -.7542096    1.036627
-                          Non-binary  |     .54897    .131451     4.18   0.000     .2913308    .8066093
-          Gender Diverse/Questioning  |   .2980287   .2480754     1.20   0.230    -.1881902    .7842476
-                   Prefer Not to Say  |   .2413534   .1766866     1.37   0.172    -.1049459    .5876527
-                                      |
-                            race_assn |
-              Black/African American  |  -.0768577   .1817388    -0.42   0.672    -.4330591    .2793438
-                     Hispanic/Latinx  |  -.0538791   .1639928    -0.33   0.742     -.375299    .2675408
-                    Pacific Islander  |   .2387655   .3035947     0.79   0.432    -.3562692    .8338002
-                            Filipino  |  -.2975018   .2058388    -1.45   0.148    -.7009383    .1059348
-                               Asian  |   .3387723   .1732166     1.96   0.050     -.000726    .6782707
-                               Other  |   .1528707   .2277263     0.67   0.502    -.2934647     .599206
-                  White/Non-Hispanic  |  -.1392767   .1694086    -0.82   0.411    -.4713115    .1927581
-                                      |
-                           parent_edu |
-                 High school diploma  |   -.031705   .0724845    -0.44   0.662     -.173772     .110362
-     Some college, no college degree  |   .2348129   .0838735     2.80   0.005     .0704237     .399202
-                    Associate degree  |   .1474787   .1084244     1.36   0.174    -.0650292    .3599866
-                   Bachelor's degree  |   .7167844   .0841565     8.52   0.000     .5518407    .8817281
-Graduate/Professional degree beyo..)  |   1.486017   .0928876    16.00   0.000     1.303961    1.668074
-                          Don't know  |  -.5721757   .1132198    -5.05   0.000    -.7940824    -.350269
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.815544   .1824468                     -3.173133   -2.457955
-                                /cut2 |  -1.636005    .175268                     -1.979523   -1.292486
-                                /cut3 |   .5153687   .1733455                      .1756178    .8551196
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+  gender_cat |
+Cisgender..  |   .5180323   .0497168    10.42   0.000     .4205893    .6154754
+Transgend..  |   .4841644    .275509     1.76   0.079    -.0558232    1.024152
+Transgend..  |   .1412088   .4568545     0.31   0.757    -.7542096    1.036627
+ Non-binary  |     .54897    .131451     4.18   0.000     .2913308    .8066093
+Gender Di..  |   .2980287   .2480754     1.20   0.230    -.1881902    .7842476
+Prefer No..  |   .2413534   .1766866     1.37   0.172    -.1049459    .5876527
+             |
+   race_assn |
+Black/Afr..  |  -.0768577   .1817388    -0.42   0.672    -.4330591    .2793438
+Hispanic/~x  |  -.0538791   .1639928    -0.33   0.742     -.375299    .2675408
+Pacific I..  |   .2387655   .3035947     0.79   0.432    -.3562692    .8338002
+   Filipino  |  -.2975018   .2058388    -1.45   0.148    -.7009383    .1059348
+      Asian  |   .3387723   .1732166     1.96   0.050     -.000726    .6782707
+      Other  |   .1528707   .2277263     0.67   0.502    -.2934647     .599206
+White/Non~c  |  -.1392767   .1694086    -0.82   0.411    -.4713115    .1927581
+             |
+  parent_edu |
+High scho..  |   -.031705   .0724845    -0.44   0.662     -.173772     .110362
+Some coll..  |   .2348129   .0838735     2.80   0.005     .0704237     .399202
+Associate..  |   .1474787   .1084244     1.36   0.174    -.0650292    .3599866
+Bachelor'..  |   .7167844   .0841565     8.52   0.000     .5518407    .8817281
+Graduate..)  |   1.486017   .0928876    16.00   0.000     1.303961    1.668074
+ Don't know  |  -.5721757   .1132198    -5.05   0.000    -.7940824    -.350269
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.815544   .1824468                     -3.173133   -2.457955
+       /cut2 |  -1.636005    .175268                     -1.979523   -1.292486
+       /cut3 |   .5153687   .1733455                      .1756178    .8551196
+------------------------------------------------------------------------------
 
 Adjusted predictions                                     Number of obs = 7,475
 Model VCE: OIM
@@ -1376,40 +1459,69 @@ At: 0.gender_cat = .3558528 (mean)
     6.parent_edu = .1918395 (mean)
     7.parent_edu = .0501672 (mean)
 
------------------------------------------------------------------------------------------------
-                              |            Delta-method
-                              |     Margin   std. err.      z    P>|z|     [95% conf. interval]
-------------------------------+----------------------------------------------------------------
-          _predict#gender_cat |
-             1#Cisgender Man  |   .0383997    .002602    14.76   0.000     .0332999    .0434994
-           1#Cisgender Woman  |   .0232351   .0015818    14.69   0.000     .0201349    .0263353
-           1#Transgender Man  |   .0240163   .0065572     3.66   0.000     .0111643    .0368682
-         1#Transgender Woman  |   .0335122   .0148727     2.25   0.024     .0043623    .0626621
-                1#Non-binary  |   .0225432   .0030937     7.29   0.000     .0164798    .0286067
-1#Gender Diverse/Questioning  |   .0287882   .0070619     4.08   0.000     .0149471    .0426293
-         1#Prefer Not to Say  |   .0304159   .0053972     5.64   0.000     .0198375    .0409942
-             2#Cisgender Man  |   .0765642   .0038306    19.99   0.000     .0690563    .0840721
-           2#Cisgender Woman  |   .0485862   .0024443    19.88   0.000     .0437954    .0533771
-           2#Transgender Man  |   .0500958   .0124923     4.01   0.000     .0256113    .0745803
-         2#Transgender Woman  |   .0678464   .0268514     2.53   0.012     .0152186    .1204742
-                2#Non-binary  |   .0472428   .0057369     8.23   0.000     .0359988    .0584869
-2#Gender Diverse/Questioning  |   .0591528   .0130284     4.54   0.000     .0336176    .0846879
-         2#Prefer Not to Say  |   .0621783   .0097303     6.39   0.000     .0431073    .0812493
-             3#Cisgender Man  |   .4125989   .0077646    53.14   0.000     .3973805    .4278172
-           3#Cisgender Woman  |   .3276497   .0065477    50.04   0.000     .3148166    .3404829
-           3#Transgender Man  |   .3335107   .0472765     7.05   0.000     .2408504     .426171
-         3#Transgender Woman  |   .3909305   .0724775     5.39   0.000     .2488772    .5329839
-                3#Non-binary  |   .3222869   .0220789    14.60   0.000     .2790129    .3655608
-3#Gender Diverse/Questioning  |   .3652798   .0412868     8.85   0.000     .2843591    .4462005
-         3#Prefer Not to Say  |    .374705   .0288128    13.00   0.000      .318233     .431177
-             4#Cisgender Man  |   .4724372    .009786    48.28   0.000     .4532571    .4916174
-           4#Cisgender Woman  |   .6005289   .0077576    77.41   0.000     .5853244    .6157335
-           4#Transgender Man  |   .5923772   .0658682     8.99   0.000      .463278    .7214765
-         4#Transgender Woman  |   .5077109   .1137989     4.46   0.000     .2846692    .7307525
-                4#Non-binary  |   .6079271   .0300069    20.26   0.000     .5491146    .6667395
-4#Gender Diverse/Questioning  |   .5467792   .0607542     9.00   0.000     .4277031    .6658553
-         4#Prefer Not to Say  |   .5327009   .0430064    12.39   0.000     .4484099    .6169919
------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    _predict#|
+  gender_cat |
+          1 #|
+Cisgender..  |   .0383997    .002602    14.76   0.000     .0332999    .0434994
+          1 #|
+Cisgender..  |   .0232351   .0015818    14.69   0.000     .0201349    .0263353
+          1 #|
+Transgend..  |   .0240163   .0065572     3.66   0.000     .0111643    .0368682
+          1 #|
+Transgend..  |   .0335122   .0148727     2.25   0.024     .0043623    .0626621
+          1 #|
+ Non-binary  |   .0225432   .0030937     7.29   0.000     .0164798    .0286067
+          1 #|
+Gender Di..  |   .0287882   .0070619     4.08   0.000     .0149471    .0426293
+          1 #|
+Prefer No..  |   .0304159   .0053972     5.64   0.000     .0198375    .0409942
+          2 #|
+Cisgender..  |   .0765642   .0038306    19.99   0.000     .0690563    .0840721
+          2 #|
+Cisgender..  |   .0485862   .0024443    19.88   0.000     .0437954    .0533771
+          2 #|
+Transgend..  |   .0500958   .0124923     4.01   0.000     .0256113    .0745803
+          2 #|
+Transgend..  |   .0678464   .0268514     2.53   0.012     .0152186    .1204742
+          2 #|
+ Non-binary  |   .0472428   .0057369     8.23   0.000     .0359988    .0584869
+          2 #|
+Gender Di..  |   .0591528   .0130284     4.54   0.000     .0336176    .0846879
+          2 #|
+Prefer No..  |   .0621783   .0097303     6.39   0.000     .0431073    .0812493
+          3 #|
+Cisgender..  |   .4125989   .0077646    53.14   0.000     .3973805    .4278172
+          3 #|
+Cisgender..  |   .3276497   .0065477    50.04   0.000     .3148166    .3404829
+          3 #|
+Transgend..  |   .3335107   .0472765     7.05   0.000     .2408504     .426171
+          3 #|
+Transgend..  |   .3909305   .0724775     5.39   0.000     .2488772    .5329839
+          3 #|
+ Non-binary  |   .3222869   .0220789    14.60   0.000     .2790129    .3655608
+          3 #|
+Gender Di..  |   .3652798   .0412868     8.85   0.000     .2843591    .4462005
+          3 #|
+Prefer No..  |    .374705   .0288128    13.00   0.000      .318233     .431177
+          4 #|
+Cisgender..  |   .4724372    .009786    48.28   0.000     .4532571    .4916174
+          4 #|
+Cisgender..  |   .6005289   .0077576    77.41   0.000     .5853244    .6157335
+          4 #|
+Transgend..  |   .5923772   .0658682     8.99   0.000      .463278    .7214765
+          4 #|
+Transgend..  |   .5077109   .1137989     4.46   0.000     .2846692    .7307525
+          4 #|
+ Non-binary  |   .6079271   .0300069    20.26   0.000     .5491146    .6667395
+          4 #|
+Gender Di..  |   .5467792   .0607542     9.00   0.000     .4277031    .6658553
+          4 #|
+Prefer No..  |   .5327009   .0430064    12.39   0.000     .4484099    .6169919
+------------------------------------------------------------------------------
 Number of observations (_N) was 0, now 7.
 (7 missing values generated)
 (7 missing values generated)
@@ -1423,10 +1535,10 @@ Number of observations (_N) was 0, now 7.
 (7 real changes made)
 (7 missing values generated)
 (7 missing values generated)
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_facts/degree2_gender_stacked.
-> png written in PNG format
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree2_margins_gender.
-> csv saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_fact
+> s/degree2_gender_stacked.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_fact
+> s/degree2_margins_gender.csv saved
 
 Iteration 0:  Log likelihood = -10140.534  
 Iteration 1:  Log likelihood =  -10097.49  
@@ -1438,21 +1550,21 @@ Ordered logistic regression                             Number of obs =  7,456
                                                         Prob > chi2   = 0.0000
 Log likelihood = -10097.46                              Pseudo R2     = 0.0042
 
-------------------------------------------------------------------------------------------------
-                highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
--------------------------------+----------------------------------------------------------------
-                        so_cat |
-               Gay or Lesbian  |   .4234546    .102397     4.14   0.000     .2227602    .6241489
-Bisexual/Pansexual/Omnisexual  |   .4919911   .0601107     8.18   0.000     .3741762    .6098059
- Asexual/Aromantic/Demisexual  |   .4200237   .1350131     3.11   0.002     .1554028    .6846446
-      Other/Queer/Questioning  |   .3645009   .1580994     2.31   0.021     .0546317    .6743701
-            Prefer Not to Say  |   .1503102   .0840325     1.79   0.074    -.0143906    .3150109
--------------------------------+----------------------------------------------------------------
-                         /cut1 |  -3.269906   .0657958                     -3.398863   -3.140948
-                         /cut2 |  -2.107008   .0407232                     -2.186825   -2.027192
-                         /cut3 |  -.0740959   .0271083                     -.1272272   -.0209646
-                         /cut4 |   1.359305   .0317886                      1.297001     1.42161
-------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .4234546    .102397     4.14   0.000     .2227602    .6241489
+Bisexual/~l  |   .4919911   .0601107     8.18   0.000     .3741762    .6098059
+Asexual/A~l  |   .4200237   .1350131     3.11   0.002     .1554028    .6846446
+Other/Que~g  |   .3645009   .1580994     2.31   0.021     .0546317    .6743701
+Prefer No..  |   .1503102   .0840325     1.79   0.074    -.0143906    .3150109
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.269906   .0657958                     -3.398863   -3.140948
+       /cut2 |  -2.107008   .0407232                     -2.186825   -2.027192
+       /cut3 |  -.0740959   .0271083                     -.1272272   -.0209646
+       /cut4 |   1.359305   .0317886                      1.297001     1.42161
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "No"
@@ -1470,38 +1582,38 @@ Ordered logistic regression                             Number of obs =  7,433
                                                         Prob > chi2   = 0.0000
 Log likelihood = -9783.449                              Pseudo R2     = 0.0322
 
--------------------------------------------------------------------------------------------------------
-                       highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3277766   .1047026     3.13   0.002     .1225632    .5329899
-       Bisexual/Pansexual/Omnisexual  |   .4617494   .0610205     7.57   0.000     .3421515    .5813474
-        Asexual/Aromantic/Demisexual  |   .2240304   .1375953     1.63   0.103    -.0456514    .4937123
-             Other/Queer/Questioning  |   .2571525   .1621811     1.59   0.113    -.0607166    .5750215
-                   Prefer Not to Say  |   .0477741   .0854285     0.56   0.576    -.1196627    .2152108
-                                      |
-                            race_assn |
-              Black/African American  |  -.1346146   .1686566    -0.80   0.425    -.4651754    .1959462
-                     Hispanic/Latinx  |  -.1641522   .1522661    -1.08   0.281    -.4625883    .1342839
-                    Pacific Islander  |   .1203365   .2710979     0.44   0.657    -.4110056    .6516786
-                            Filipino  |  -.3812761   .1914915    -1.99   0.046    -.7565924   -.0059597
-                               Asian  |    .184948   .1586614     1.17   0.244    -.1260226    .4959187
-                               Other  |   .1491988   .2063715     0.72   0.470    -.2552819    .5536795
-                  White/Non-Hispanic  |  -.2483019    .156462    -1.59   0.113    -.5549619    .0583581
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0687786   .0704839    -0.98   0.329    -.2069246    .0693673
-     Some college, no college degree  |   .1447876   .0799569     1.81   0.070    -.0119251    .3015003
-                    Associate degree  |   .1464487   .1053412     1.39   0.164    -.0600162    .3529137
-                   Bachelor's degree  |   .5858865   .0781243     7.50   0.000     .4327658    .7390072
-Graduate/Professional degree beyo..)  |   1.081365   .0799205    13.53   0.000     .9247233    1.238006
-                          Don't know  |  -.6277384   .1133222    -5.54   0.000    -.8498458   -.4056309
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -3.222213    .169907                     -3.555225   -2.889202
-                                /cut2 |  -2.040437   .1618709                     -2.357699   -1.723176
-                                /cut3 |   .0865439    .159135                      -.225355    .3984429
-                                /cut4 |   1.599993   .1602778                      1.285854    1.914132
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3277766   .1047026     3.13   0.002     .1225632    .5329899
+Bisexual/~l  |   .4617494   .0610205     7.57   0.000     .3421515    .5813474
+Asexual/A~l  |   .2240304   .1375953     1.63   0.103    -.0456514    .4937123
+Other/Que~g  |   .2571525   .1621811     1.59   0.113    -.0607166    .5750215
+Prefer No..  |   .0477741   .0854285     0.56   0.576    -.1196627    .2152108
+             |
+   race_assn |
+Black/Afr..  |  -.1346146   .1686566    -0.80   0.425    -.4651754    .1959462
+Hispanic/~x  |  -.1641522   .1522661    -1.08   0.281    -.4625883    .1342839
+Pacific I..  |   .1203365   .2710979     0.44   0.657    -.4110056    .6516786
+   Filipino  |  -.3812761   .1914915    -1.99   0.046    -.7565924   -.0059597
+      Asian  |    .184948   .1586614     1.17   0.244    -.1260226    .4959187
+      Other  |   .1491988   .2063715     0.72   0.470    -.2552819    .5536795
+White/Non~c  |  -.2483019    .156462    -1.59   0.113    -.5549619    .0583581
+             |
+  parent_edu |
+High scho..  |  -.0687786   .0704839    -0.98   0.329    -.2069246    .0693673
+Some coll..  |   .1447876   .0799569     1.81   0.070    -.0119251    .3015003
+Associate..  |   .1464487   .1053412     1.39   0.164    -.0600162    .3529137
+Bachelor'..  |   .5858865   .0781243     7.50   0.000     .4327658    .7390072
+Graduate..)  |   1.081365   .0799205    13.53   0.000     .9247233    1.238006
+ Don't know  |  -.6277384   .1133222    -5.54   0.000    -.8498458   -.4056309
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.222213    .169907                     -3.555225   -2.889202
+       /cut2 |  -2.040437   .1618709                     -2.357699   -1.723176
+       /cut3 |   .0865439    .159135                      -.225355    .3984429
+       /cut4 |   1.599993   .1602778                      1.285854    1.914132
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
@@ -1520,48 +1632,49 @@ Ordered logistic regression                             Number of obs =  7,423
                                                         Prob > chi2   = 0.0000
 Log likelihood = -9711.8468                             Pseudo R2     = 0.0382
 
--------------------------------------------------------------------------------------------------------
-                       highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3023504   .1053877     2.87   0.004     .0957943    .5089064
-       Bisexual/Pansexual/Omnisexual  |   .3260967   .0625579     5.21   0.000     .2034855    .4487079
-        Asexual/Aromantic/Demisexual  |   .0756927   .1386901     0.55   0.585    -.1961349    .3475203
-             Other/Queer/Questioning  |   .1103306   .1631352     0.68   0.499    -.2094085    .4300697
-                   Prefer Not to Say  |  -.0442853   .0860447    -0.51   0.607    -.2129298    .1243591
-                                      |
-                            race_assn |
-              Black/African American  |  -.1408611   .1692459    -0.83   0.405    -.4725769    .1908547
-                     Hispanic/Latinx  |   -.159059   .1528692    -1.04   0.298     -.458677    .1405591
-                    Pacific Islander  |    .164387   .2720929     0.60   0.546    -.3689053    .6976793
-                            Filipino  |  -.3401089   .1918717    -1.77   0.076    -.7161705    .0359528
-                               Asian  |   .2087471   .1593238     1.31   0.190    -.1035219    .5210161
-                               Other  |   .1429137   .2074269     0.69   0.491    -.2636355    .5494628
-                  White/Non-Hispanic  |  -.2515547   .1570815    -1.60   0.109    -.5594287    .0563193
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0436685   .0706224    -0.62   0.536    -.1820857    .0947488
-     Some college, no college degree  |   .1652765   .0802415     2.06   0.039     .0080061    .3225469
-                    Associate degree  |   .1788692   .1055851     1.69   0.090    -.0280739    .3858122
-                   Bachelor's degree  |   .6477018   .0785779     8.24   0.000     .4936918    .8017117
-Graduate/Professional degree beyo..)  |   1.135649    .080362    14.13   0.000     .9781426    1.293156
-                          Don't know  |  -.5702754   .1132703    -5.03   0.000    -.7922812   -.3482697
-                                      |
-                                 afab |
-                              Female  |   .5004312   .0456875    10.95   0.000     .4108854    .5899771
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.928538   .1724268                     -3.266489   -2.590588
-                                /cut2 |  -1.741547   .1646029                     -2.064163   -1.418931
-                                /cut3 |    .403987   .1623585                      .0857702    .7222038
-                                /cut4 |   1.932973   .1638826                      1.611769    2.254177
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3023504   .1053877     2.87   0.004     .0957943    .5089064
+Bisexual/~l  |   .3260967   .0625579     5.21   0.000     .2034855    .4487079
+Asexual/A~l  |   .0756927   .1386901     0.55   0.585    -.1961349    .3475203
+Other/Que~g  |   .1103306   .1631352     0.68   0.499    -.2094085    .4300697
+Prefer No..  |  -.0442853   .0860447    -0.51   0.607    -.2129298    .1243591
+             |
+   race_assn |
+Black/Afr..  |  -.1408611   .1692459    -0.83   0.405    -.4725769    .1908547
+Hispanic/~x  |   -.159059   .1528692    -1.04   0.298     -.458677    .1405591
+Pacific I..  |    .164387   .2720929     0.60   0.546    -.3689053    .6976793
+   Filipino  |  -.3401089   .1918717    -1.77   0.076    -.7161705    .0359528
+      Asian  |   .2087471   .1593238     1.31   0.190    -.1035219    .5210161
+      Other  |   .1429137   .2074269     0.69   0.491    -.2636355    .5494628
+White/Non~c  |  -.2515547   .1570815    -1.60   0.109    -.5594287    .0563193
+             |
+  parent_edu |
+High scho..  |  -.0436685   .0706224    -0.62   0.536    -.1820857    .0947488
+Some coll..  |   .1652765   .0802415     2.06   0.039     .0080061    .3225469
+Associate..  |   .1788692   .1055851     1.69   0.090    -.0280739    .3858122
+Bachelor'..  |   .6477018   .0785779     8.24   0.000     .4936918    .8017117
+Graduate..)  |   1.135649    .080362    14.13   0.000     .9781426    1.293156
+ Don't know  |  -.5702754   .1132703    -5.03   0.000    -.7922812   -.3482697
+             |
+        afab |
+     Female  |   .5004312   .0456875    10.95   0.000     .4108854    .5899771
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.928538   .1724268                     -3.266489   -2.590588
+       /cut2 |  -1.741547   .1646029                     -2.064163   -1.418931
+       /cut3 |    .403987   .1623585                      .0857702    .7222038
+       /cut4 |   1.932973   .1638826                      1.611769    2.254177
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
 
 added macro:
        e(afab_control) : "Yes"
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/degree_so.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/degree_so.rtf)
 
 Iteration 0:  Log likelihood =  -7370.868  
 Iteration 1:  Log likelihood = -7335.4921  
@@ -1573,20 +1686,20 @@ Ordered logistic regression                             Number of obs =  7,456
                                                         Prob > chi2   = 0.0000
 Log likelihood = -7335.4474                             Pseudo R2     = 0.0048
 
-------------------------------------------------------------------------------------------------
-              highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
--------------------------------+----------------------------------------------------------------
-                        so_cat |
-               Gay or Lesbian  |   .4726598   .1155989     4.09   0.000     .2460901    .6992295
-Bisexual/Pansexual/Omnisexual  |   .4543159   .0661518     6.87   0.000     .3246608     .583971
- Asexual/Aromantic/Demisexual  |   .4846653   .1531033     3.17   0.002     .1845882    .7847423
-      Other/Queer/Questioning  |   .4117053   .1768667     2.33   0.020      .065053    .7583576
-            Prefer Not to Say  |   .1701978   .0907871     1.87   0.061    -.0077417    .3481373
--------------------------------+----------------------------------------------------------------
-                         /cut1 |  -3.269315   .0659579                      -3.39859   -3.140039
-                         /cut2 |   -2.10639   .0409959                     -2.186741    -2.02604
-                         /cut3 |  -.0734916   .0275939                     -.1275746   -.0194086
-------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .4726598   .1155989     4.09   0.000     .2460901    .6992295
+Bisexual/~l  |   .4543159   .0661518     6.87   0.000     .3246608     .583971
+Asexual/A~l  |   .4846653   .1531033     3.17   0.002     .1845882    .7847423
+Other/Que~g  |   .4117053   .1768667     2.33   0.020      .065053    .7583576
+Prefer No..  |   .1701978   .0907871     1.87   0.061    -.0077417    .3481373
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.269315   .0659579                      -3.39859   -3.140039
+       /cut2 |   -2.10639   .0409959                     -2.186741    -2.02604
+       /cut3 |  -.0734916   .0275939                     -.1275746   -.0194086
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "No"
@@ -1605,37 +1718,37 @@ Ordered logistic regression                             Number of obs =  7,433
                                                         Prob > chi2   = 0.0000
 Log likelihood = -6992.0775                             Pseudo R2     = 0.0482
 
--------------------------------------------------------------------------------------------------------
-                     highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3539119   .1203831     2.94   0.003     .1179653    .5898585
-       Bisexual/Pansexual/Omnisexual  |    .424128   .0684383     6.20   0.000     .2899913    .5582646
-        Asexual/Aromantic/Demisexual  |   .2754354   .1599896     1.72   0.085    -.0381384    .5890093
-             Other/Queer/Questioning  |   .2837675   .1850634     1.53   0.125    -.0789502    .6464851
-                   Prefer Not to Say  |   .0814758   .0942676     0.86   0.387    -.1032852    .2662369
-                                      |
-                            race_assn |
-              Black/African American  |  -.0767525   .1819528    -0.42   0.673    -.4333734    .2798683
-                     Hispanic/Latinx  |  -.0557275    .164275    -0.34   0.734    -.3777005    .2662455
-                    Pacific Islander  |   .2138354    .304524     0.70   0.483    -.3830206    .8106914
-                            Filipino  |  -.3459251   .2063023    -1.68   0.094    -.7502701    .0584199
-                               Asian  |   .3179086   .1735043     1.83   0.067    -.0221536    .6579708
-                               Other  |   .1984706   .2277082     0.87   0.383    -.2478292    .6447705
-                  White/Non-Hispanic  |  -.1419717   .1698186    -0.84   0.403      -.47481    .1908667
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0674705   .0725436    -0.93   0.352    -.2096534    .0747124
-     Some college, no college degree  |    .197278   .0838812     2.35   0.019      .032874    .3616821
-                    Associate degree  |   .0991349   .1085561     0.91   0.361    -.1136311    .3119009
-                   Bachelor's degree  |    .640898   .0839307     7.64   0.000     .4763968    .8053992
-Graduate/Professional degree beyo..)  |   1.405835   .0927191    15.16   0.000     1.224109    1.587561
-                          Don't know  |  -.6374453   .1137588    -5.60   0.000    -.8604085   -.4144821
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -3.088746    .180747                     -3.443003   -2.734488
-                                /cut2 |  -1.904243   .1732456                     -2.243799   -1.564688
-                                /cut3 |   .2348934   .1708199                     -.0999074    .5696943
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3539119   .1203831     2.94   0.003     .1179653    .5898585
+Bisexual/~l  |    .424128   .0684383     6.20   0.000     .2899913    .5582646
+Asexual/A~l  |   .2754354   .1599896     1.72   0.085    -.0381384    .5890093
+Other/Que~g  |   .2837675   .1850634     1.53   0.125    -.0789502    .6464851
+Prefer No..  |   .0814758   .0942676     0.86   0.387    -.1032852    .2662369
+             |
+   race_assn |
+Black/Afr..  |  -.0767525   .1819528    -0.42   0.673    -.4333734    .2798683
+Hispanic/~x  |  -.0557275    .164275    -0.34   0.734    -.3777005    .2662455
+Pacific I..  |   .2138354    .304524     0.70   0.483    -.3830206    .8106914
+   Filipino  |  -.3459251   .2063023    -1.68   0.094    -.7502701    .0584199
+      Asian  |   .3179086   .1735043     1.83   0.067    -.0221536    .6579708
+      Other  |   .1984706   .2277082     0.87   0.383    -.2478292    .6447705
+White/Non~c  |  -.1419717   .1698186    -0.84   0.403      -.47481    .1908667
+             |
+  parent_edu |
+High scho..  |  -.0674705   .0725436    -0.93   0.352    -.2096534    .0747124
+Some coll..  |    .197278   .0838812     2.35   0.019      .032874    .3616821
+Associate..  |   .0991349   .1085561     0.91   0.361    -.1136311    .3119009
+Bachelor'..  |    .640898   .0839307     7.64   0.000     .4763968    .8053992
+Graduate..)  |   1.405835   .0927191    15.16   0.000     1.224109    1.587561
+ Don't know  |  -.6374453   .1137588    -5.60   0.000    -.8604085   -.4144821
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.088746    .180747                     -3.443003   -2.734488
+       /cut2 |  -1.904243   .1732456                     -2.243799   -1.564688
+       /cut3 |   .2348934   .1708199                     -.0999074    .5696943
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
@@ -1654,53 +1767,54 @@ Ordered logistic regression                             Number of obs =  7,423
                                                         Prob > chi2   = 0.0000
 Log likelihood = -6941.7655                             Pseudo R2     = 0.0541
 
--------------------------------------------------------------------------------------------------------
-                     highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3490426    .121534     2.87   0.004     .1108403     .587245
-       Bisexual/Pansexual/Omnisexual  |   .2939015   .0701606     4.19   0.000     .1563892    .4314138
-        Asexual/Aromantic/Demisexual  |   .1396955   .1614279     0.87   0.387    -.1766974    .4560884
-             Other/Queer/Questioning  |   .1529298   .1863203     0.82   0.412    -.2122512    .5181108
-                   Prefer Not to Say  |  -.0041237   .0949716    -0.04   0.965    -.1902646    .1820173
-                                      |
-                            race_assn |
-              Black/African American  |  -.0861582   .1827387    -0.47   0.637    -.4443194     .272003
-                     Hispanic/Latinx  |  -.0510885   .1650068    -0.31   0.757    -.3744959    .2723189
-                    Pacific Islander  |   .2453661   .3049053     0.80   0.421    -.3522373    .8429695
-                            Filipino  |  -.2999803   .2072082    -1.45   0.148     -.706101    .1061403
-                               Asian  |   .3477892   .1743496     1.99   0.046     .0060702    .6895081
-                               Other  |   .1825858   .2292681     0.80   0.426    -.2667715    .6319431
-                  White/Non-Hispanic  |  -.1473897   .1705556    -0.86   0.387    -.4816726    .1868932
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0449277   .0727637    -0.62   0.537    -.1875419    .0976865
-     Some college, no college degree  |   .2151677   .0842288     2.55   0.011     .0500823    .3802531
-                    Associate degree  |     .12701   .1090008     1.17   0.244    -.0866276    .3406476
-                   Bachelor's degree  |   .7002956   .0846024     8.28   0.000     .5344779    .8661133
-Graduate/Professional degree beyo..)  |   1.455174   .0933596    15.59   0.000     1.272193    1.638156
-                          Don't know  |   -.582738   .1138955    -5.12   0.000     -.805969   -.3595071
-                                      |
-                                 afab |
-                              Female  |   .4642951   .0496841     9.34   0.000     .3669159    .5616742
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.814381   .1836547                     -3.174337   -2.454424
-                                /cut2 |    -1.6249    .176378                     -1.970595   -1.279206
-                                /cut3 |   .5321212   .1744774                      .1901519    .8740906
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3490426    .121534     2.87   0.004     .1108403     .587245
+Bisexual/~l  |   .2939015   .0701606     4.19   0.000     .1563892    .4314138
+Asexual/A~l  |   .1396955   .1614279     0.87   0.387    -.1766974    .4560884
+Other/Que~g  |   .1529298   .1863203     0.82   0.412    -.2122512    .5181108
+Prefer No..  |  -.0041237   .0949716    -0.04   0.965    -.1902646    .1820173
+             |
+   race_assn |
+Black/Afr..  |  -.0861582   .1827387    -0.47   0.637    -.4443194     .272003
+Hispanic/~x  |  -.0510885   .1650068    -0.31   0.757    -.3744959    .2723189
+Pacific I..  |   .2453661   .3049053     0.80   0.421    -.3522373    .8429695
+   Filipino  |  -.2999803   .2072082    -1.45   0.148     -.706101    .1061403
+      Asian  |   .3477892   .1743496     1.99   0.046     .0060702    .6895081
+      Other  |   .1825858   .2292681     0.80   0.426    -.2667715    .6319431
+White/Non~c  |  -.1473897   .1705556    -0.86   0.387    -.4816726    .1868932
+             |
+  parent_edu |
+High scho..  |  -.0449277   .0727637    -0.62   0.537    -.1875419    .0976865
+Some coll..  |   .2151677   .0842288     2.55   0.011     .0500823    .3802531
+Associate..  |     .12701   .1090008     1.17   0.244    -.0866276    .3406476
+Bachelor'..  |   .7002956   .0846024     8.28   0.000     .5344779    .8661133
+Graduate..)  |   1.455174   .0933596    15.59   0.000     1.272193    1.638156
+ Don't know  |   -.582738   .1138955    -5.12   0.000     -.805969   -.3595071
+             |
+        afab |
+     Female  |   .4642951   .0496841     9.34   0.000     .3669159    .5616742
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.814381   .1836547                     -3.174337   -2.454424
+       /cut2 |    -1.6249    .176378                     -1.970595   -1.279206
+       /cut3 |   .5321212   .1744774                      .1901519    .8740906
+------------------------------------------------------------------------------
 
 added macro:
       e(demo_controls) : "Yes"
 
 added macro:
        e(afab_control) : "Yes"
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_rr/degree2_so.rtf)
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_or
-> _so.rtf)
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_or
-> _so.csv)
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/segment_o
-> r_so.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
+> r/degree2_so.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/gettin
+> g_down_to_facts/degree_or_so.rtf)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/gettin
+> g_down_to_facts/degree_or_so.csv)
+(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/gettin
+> g_down_to_facts/segment_or_so.rtf)
 
 Iteration 0:  Log likelihood =  -10108.85  
 Iteration 1:  Log likelihood = -9785.1866  
@@ -1712,38 +1826,38 @@ Ordered logistic regression                             Number of obs =  7,433
                                                         Prob > chi2   = 0.0000
 Log likelihood = -9783.449                              Pseudo R2     = 0.0322
 
--------------------------------------------------------------------------------------------------------
-                       highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3277766   .1047026     3.13   0.002     .1225632    .5329899
-       Bisexual/Pansexual/Omnisexual  |   .4617494   .0610205     7.57   0.000     .3421515    .5813474
-        Asexual/Aromantic/Demisexual  |   .2240304   .1375953     1.63   0.103    -.0456514    .4937123
-             Other/Queer/Questioning  |   .2571525   .1621811     1.59   0.113    -.0607166    .5750215
-                   Prefer Not to Say  |   .0477741   .0854285     0.56   0.576    -.1196627    .2152108
-                                      |
-                            race_assn |
-              Black/African American  |  -.1346146   .1686566    -0.80   0.425    -.4651754    .1959462
-                     Hispanic/Latinx  |  -.1641522   .1522661    -1.08   0.281    -.4625883    .1342839
-                    Pacific Islander  |   .1203365   .2710979     0.44   0.657    -.4110056    .6516786
-                            Filipino  |  -.3812761   .1914915    -1.99   0.046    -.7565924   -.0059597
-                               Asian  |    .184948   .1586614     1.17   0.244    -.1260226    .4959187
-                               Other  |   .1491988   .2063715     0.72   0.470    -.2552819    .5536795
-                  White/Non-Hispanic  |  -.2483019    .156462    -1.59   0.113    -.5549619    .0583581
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0687786   .0704839    -0.98   0.329    -.2069246    .0693673
-     Some college, no college degree  |   .1447876   .0799569     1.81   0.070    -.0119251    .3015003
-                    Associate degree  |   .1464487   .1053412     1.39   0.164    -.0600162    .3529137
-                   Bachelor's degree  |   .5858865   .0781243     7.50   0.000     .4327658    .7390072
-Graduate/Professional degree beyo..)  |   1.081365   .0799205    13.53   0.000     .9247233    1.238006
-                          Don't know  |  -.6277384   .1133222    -5.54   0.000    -.8498458   -.4056309
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -3.222213    .169907                     -3.555225   -2.889202
-                                /cut2 |  -2.040437   .1618709                     -2.357699   -1.723176
-                                /cut3 |   .0865439    .159135                      -.225355    .3984429
-                                /cut4 |   1.599993   .1602778                      1.285854    1.914132
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3277766   .1047026     3.13   0.002     .1225632    .5329899
+Bisexual/~l  |   .4617494   .0610205     7.57   0.000     .3421515    .5813474
+Asexual/A~l  |   .2240304   .1375953     1.63   0.103    -.0456514    .4937123
+Other/Que~g  |   .2571525   .1621811     1.59   0.113    -.0607166    .5750215
+Prefer No..  |   .0477741   .0854285     0.56   0.576    -.1196627    .2152108
+             |
+   race_assn |
+Black/Afr..  |  -.1346146   .1686566    -0.80   0.425    -.4651754    .1959462
+Hispanic/~x  |  -.1641522   .1522661    -1.08   0.281    -.4625883    .1342839
+Pacific I..  |   .1203365   .2710979     0.44   0.657    -.4110056    .6516786
+   Filipino  |  -.3812761   .1914915    -1.99   0.046    -.7565924   -.0059597
+      Asian  |    .184948   .1586614     1.17   0.244    -.1260226    .4959187
+      Other  |   .1491988   .2063715     0.72   0.470    -.2552819    .5536795
+White/Non~c  |  -.2483019    .156462    -1.59   0.113    -.5549619    .0583581
+             |
+  parent_edu |
+High scho..  |  -.0687786   .0704839    -0.98   0.329    -.2069246    .0693673
+Some coll..  |   .1447876   .0799569     1.81   0.070    -.0119251    .3015003
+Associate..  |   .1464487   .1053412     1.39   0.164    -.0600162    .3529137
+Bachelor'..  |   .5858865   .0781243     7.50   0.000     .4327658    .7390072
+Graduate..)  |   1.081365   .0799205    13.53   0.000     .9247233    1.238006
+ Don't know  |  -.6277384   .1133222    -5.54   0.000    -.8498458   -.4056309
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.222213    .169907                     -3.555225   -2.889202
+       /cut2 |  -2.040437   .1618709                     -2.357699   -1.723176
+       /cut3 |   .0865439    .159135                      -.225355    .3984429
+       /cut4 |   1.599993   .1602778                      1.285854    1.914132
+------------------------------------------------------------------------------
 
 Adjusted predictions                                     Number of obs = 7,433
 Model VCE: OIM
@@ -1776,42 +1890,73 @@ At: 0.so_cat     = .6939325 (mean)
     6.parent_edu = .1918472 (mean)
     7.parent_edu = .0499126 (mean)
 
---------------------------------------------------------------------------------------------------
-                                 |            Delta-method
-                                 |     Margin   std. err.      z    P>|z|     [95% conf. interval]
----------------------------------+----------------------------------------------------------------
-                 _predict#so_cat |
-       1#Straight/Heterosexual   |   .0324112   .0020815    15.57   0.000     .0283315    .0364909
-               1#Gay or Lesbian  |   .0235665   .0027483     8.57   0.000     .0181799    .0289531
-1#Bisexual/Pansexual/Omnisexual  |   .0206727   .0017008    12.15   0.000     .0173392    .0240061
- 1#Asexual/Aromantic/Demisexual  |   .0260756   .0037823     6.89   0.000     .0186625    .0334887
-      1#Other/Queer/Questioning  |   .0252475   .0042326     5.97   0.000     .0169518    .0335433
-            1#Prefer Not to Say  |    .030946   .0030636    10.10   0.000     .0249415    .0369505
-       2#Straight/Heterosexual   |   .0660423   .0030118    21.93   0.000     .0601393    .0719452
-               2#Gay or Lesbian  |   .0493787   .0049815     9.91   0.000     .0396151    .0591423
-2#Bisexual/Pansexual/Omnisexual  |   .0437151   .0028911    15.12   0.000     .0380486    .0493816
- 2#Asexual/Aromantic/Demisexual  |   .0542037   .0069186     7.83   0.000     .0406435     .067764
-      2#Other/Queer/Questioning  |     .05262   .0078686     6.69   0.000     .0371978    .0680422
-            2#Prefer Not to Say  |   .0633476   .0051829    12.22   0.000     .0531893     .073506
-       3#Straight/Heterosexual   |   .3796739   .0063129    60.14   0.000     .3673008     .392047
-               3#Gay or Lesbian  |   .3246913   .0178788    18.16   0.000     .2896495    .3597331
-3#Bisexual/Pansexual/Omnisexual  |     .30164   .0102044    29.56   0.000     .2816398    .3216403
- 3#Asexual/Aromantic/Demisexual  |   .3424506   .0233754    14.65   0.000     .2966357    .3882656
-      3#Other/Queer/Questioning  |    .336801   .0276679    12.17   0.000     .2825729    .3910292
-            3#Prefer Not to Say  |   .3719278   .0141003    26.38   0.000     .3442918    .3995638
-       4#Straight/Heterosexual   |   .3281347   .0057142    57.42   0.000     .3169351    .3393343
-               4#Gay or Lesbian  |   .3522723   .0078467    44.89   0.000     .3368931    .3676515
-4#Bisexual/Pansexual/Omnisexual  |   .3579247   .0062266    57.48   0.000     .3457208    .3701286
- 4#Asexual/Aromantic/Demisexual  |   .3461277   .0105861    32.70   0.000     .3253794    .3668761
-      4#Other/Queer/Questioning  |   .3482505   .0114177    30.50   0.000     .3258723    .3706287
-            4#Prefer Not to Say  |   .3324688   .0089084    37.32   0.000     .3150087    .3499289
-       5#Straight/Heterosexual   |   .1937379   .0051055    37.95   0.000     .1837313    .2037445
-               5#Gay or Lesbian  |   .2500912   .0192984    12.96   0.000      .212267    .2879154
-5#Bisexual/Pansexual/Omnisexual  |   .2760474   .0114913    24.02   0.000     .2535249      .29857
- 5#Asexual/Aromantic/Demisexual  |   .2311423   .0242386     9.54   0.000     .1836356    .2786491
-      5#Other/Queer/Questioning  |    .237081   .0291499     8.13   0.000     .1799483    .2942136
-            5#Prefer Not to Say  |   .2013097   .0134951    14.92   0.000     .1748599    .2277596
---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    _predict#|
+      so_cat |
+          1 #|
+Straight/..  |   .0324112   .0020815    15.57   0.000     .0283315    .0364909
+          1 #|
+Gay or Le..  |   .0235665   .0027483     8.57   0.000     .0181799    .0289531
+          1 #|
+Bisexual/~l  |   .0206727   .0017008    12.15   0.000     .0173392    .0240061
+          1 #|
+Asexual/A~l  |   .0260756   .0037823     6.89   0.000     .0186625    .0334887
+          1 #|
+Other/Que~g  |   .0252475   .0042326     5.97   0.000     .0169518    .0335433
+          1 #|
+Prefer No..  |    .030946   .0030636    10.10   0.000     .0249415    .0369505
+          2 #|
+Straight/..  |   .0660423   .0030118    21.93   0.000     .0601393    .0719452
+          2 #|
+Gay or Le..  |   .0493787   .0049815     9.91   0.000     .0396151    .0591423
+          2 #|
+Bisexual/~l  |   .0437151   .0028911    15.12   0.000     .0380486    .0493816
+          2 #|
+Asexual/A~l  |   .0542037   .0069186     7.83   0.000     .0406435     .067764
+          2 #|
+Other/Que~g  |     .05262   .0078686     6.69   0.000     .0371978    .0680422
+          2 #|
+Prefer No..  |   .0633476   .0051829    12.22   0.000     .0531893     .073506
+          3 #|
+Straight/..  |   .3796739   .0063129    60.14   0.000     .3673008     .392047
+          3 #|
+Gay or Le..  |   .3246913   .0178788    18.16   0.000     .2896495    .3597331
+          3 #|
+Bisexual/~l  |     .30164   .0102044    29.56   0.000     .2816398    .3216403
+          3 #|
+Asexual/A~l  |   .3424506   .0233754    14.65   0.000     .2966357    .3882656
+          3 #|
+Other/Que~g  |    .336801   .0276679    12.17   0.000     .2825729    .3910292
+          3 #|
+Prefer No..  |   .3719278   .0141003    26.38   0.000     .3442918    .3995638
+          4 #|
+Straight/..  |   .3281347   .0057142    57.42   0.000     .3169351    .3393343
+          4 #|
+Gay or Le..  |   .3522723   .0078467    44.89   0.000     .3368931    .3676515
+          4 #|
+Bisexual/~l  |   .3579247   .0062266    57.48   0.000     .3457208    .3701286
+          4 #|
+Asexual/A~l  |   .3461277   .0105861    32.70   0.000     .3253794    .3668761
+          4 #|
+Other/Que~g  |   .3482505   .0114177    30.50   0.000     .3258723    .3706287
+          4 #|
+Prefer No..  |   .3324688   .0089084    37.32   0.000     .3150087    .3499289
+          5 #|
+Straight/..  |   .1937379   .0051055    37.95   0.000     .1837313    .2037445
+          5 #|
+Gay or Le..  |   .2500912   .0192984    12.96   0.000      .212267    .2879154
+          5 #|
+Bisexual/~l  |   .2760474   .0114913    24.02   0.000     .2535249      .29857
+          5 #|
+Asexual/A~l  |   .2311423   .0242386     9.54   0.000     .1836356    .2786491
+          5 #|
+Other/Que~g  |    .237081   .0291499     8.13   0.000     .1799483    .2942136
+          5 #|
+Prefer No..  |   .2013097   .0134951    14.92   0.000     .1748599    .2277596
+------------------------------------------------------------------------------
 Number of observations (_N) was 0, now 6.
 (6 missing values generated)
 (6 missing values generated)
@@ -1827,10 +1972,10 @@ Number of observations (_N) was 0, now 6.
 (6 real changes made)
 (6 missing values generated)
 (6 missing values generated)
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_facts/degree_so_stacked.png w
-> ritten in PNG format
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_margins_so.csv s
-> aved
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_fact
+> s/degree_so_stacked.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_fact
+> s/degree_margins_so.csv saved
 
 Iteration 0:  Log likelihood = -7346.2691  
 Iteration 1:  Log likelihood = -6996.8545  
@@ -1843,37 +1988,37 @@ Ordered logistic regression                             Number of obs =  7,433
                                                         Prob > chi2   = 0.0000
 Log likelihood = -6992.0775                             Pseudo R2     = 0.0482
 
--------------------------------------------------------------------------------------------------------
-                     highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3539119   .1203831     2.94   0.003     .1179653    .5898585
-       Bisexual/Pansexual/Omnisexual  |    .424128   .0684383     6.20   0.000     .2899913    .5582646
-        Asexual/Aromantic/Demisexual  |   .2754354   .1599896     1.72   0.085    -.0381384    .5890093
-             Other/Queer/Questioning  |   .2837675   .1850634     1.53   0.125    -.0789502    .6464851
-                   Prefer Not to Say  |   .0814758   .0942676     0.86   0.387    -.1032852    .2662369
-                                      |
-                            race_assn |
-              Black/African American  |  -.0767525   .1819528    -0.42   0.673    -.4333734    .2798683
-                     Hispanic/Latinx  |  -.0557275    .164275    -0.34   0.734    -.3777005    .2662455
-                    Pacific Islander  |   .2138354    .304524     0.70   0.483    -.3830206    .8106914
-                            Filipino  |  -.3459251   .2063023    -1.68   0.094    -.7502701    .0584199
-                               Asian  |   .3179086   .1735043     1.83   0.067    -.0221536    .6579708
-                               Other  |   .1984706   .2277082     0.87   0.383    -.2478292    .6447705
-                  White/Non-Hispanic  |  -.1419717   .1698186    -0.84   0.403      -.47481    .1908667
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0674705   .0725436    -0.93   0.352    -.2096534    .0747124
-     Some college, no college degree  |    .197278   .0838812     2.35   0.019      .032874    .3616821
-                    Associate degree  |   .0991349   .1085561     0.91   0.361    -.1136311    .3119009
-                   Bachelor's degree  |    .640898   .0839307     7.64   0.000     .4763968    .8053992
-Graduate/Professional degree beyo..)  |   1.405835   .0927191    15.16   0.000     1.224109    1.587561
-                          Don't know  |  -.6374453   .1137588    -5.60   0.000    -.8604085   -.4144821
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -3.088746    .180747                     -3.443003   -2.734488
-                                /cut2 |  -1.904243   .1732456                     -2.243799   -1.564688
-                                /cut3 |   .2348934   .1708199                     -.0999074    .5696943
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3539119   .1203831     2.94   0.003     .1179653    .5898585
+Bisexual/~l  |    .424128   .0684383     6.20   0.000     .2899913    .5582646
+Asexual/A~l  |   .2754354   .1599896     1.72   0.085    -.0381384    .5890093
+Other/Que~g  |   .2837675   .1850634     1.53   0.125    -.0789502    .6464851
+Prefer No..  |   .0814758   .0942676     0.86   0.387    -.1032852    .2662369
+             |
+   race_assn |
+Black/Afr..  |  -.0767525   .1819528    -0.42   0.673    -.4333734    .2798683
+Hispanic/~x  |  -.0557275    .164275    -0.34   0.734    -.3777005    .2662455
+Pacific I..  |   .2138354    .304524     0.70   0.483    -.3830206    .8106914
+   Filipino  |  -.3459251   .2063023    -1.68   0.094    -.7502701    .0584199
+      Asian  |   .3179086   .1735043     1.83   0.067    -.0221536    .6579708
+      Other  |   .1984706   .2277082     0.87   0.383    -.2478292    .6447705
+White/Non~c  |  -.1419717   .1698186    -0.84   0.403      -.47481    .1908667
+             |
+  parent_edu |
+High scho..  |  -.0674705   .0725436    -0.93   0.352    -.2096534    .0747124
+Some coll..  |    .197278   .0838812     2.35   0.019      .032874    .3616821
+Associate..  |   .0991349   .1085561     0.91   0.361    -.1136311    .3119009
+Bachelor'..  |    .640898   .0839307     7.64   0.000     .4763968    .8053992
+Graduate..)  |   1.405835   .0927191    15.16   0.000     1.224109    1.587561
+ Don't know  |  -.6374453   .1137588    -5.60   0.000    -.8604085   -.4144821
+-------------+----------------------------------------------------------------
+       /cut1 |  -3.088746    .180747                     -3.443003   -2.734488
+       /cut2 |  -1.904243   .1732456                     -2.243799   -1.564688
+       /cut3 |   .2348934   .1708199                     -.0999074    .5696943
+------------------------------------------------------------------------------
 
 Adjusted predictions                                     Number of obs = 7,433
 Model VCE: OIM
@@ -1905,36 +2050,61 @@ At: 0.so_cat     = .6939325 (mean)
     6.parent_edu = .1918472 (mean)
     7.parent_edu = .0499126 (mean)
 
---------------------------------------------------------------------------------------------------
-                                 |            Delta-method
-                                 |     Margin   std. err.      z    P>|z|     [95% conf. interval]
----------------------------------+----------------------------------------------------------------
-                 _predict#so_cat |
-       1#Straight/Heterosexual   |   .0310451   .0020153    15.40   0.000     .0270952     .034995
-               1#Gay or Lesbian  |   .0219952   .0028552     7.70   0.000     .0163992    .0275913
-1#Bisexual/Pansexual/Omnisexual  |   .0205344   .0017826    11.52   0.000     .0170406    .0240282
- 1#Asexual/Aromantic/Demisexual  |   .0237482   .0039235     6.05   0.000     .0160583    .0314381
-      1#Other/Queer/Questioning  |   .0235558   .0044453     5.30   0.000     .0148432    .0322685
-            1#Prefer Not to Say  |   .0286857   .0030367     9.45   0.000     .0227339    .0346375
-       2#Straight/Heterosexual   |   .0637645   .0029572    21.56   0.000     .0579685    .0695604
-               2#Gay or Lesbian  |   .0464905   .0053131     8.75   0.000     .0360769     .056904
-2#Bisexual/Pansexual/Omnisexual  |   .0436053   .0030931    14.10   0.000      .037543    .0496676
- 2#Asexual/Aromantic/Demisexual  |   .0499166   .0073776     6.77   0.000     .0354567    .0643765
-      2#Other/Queer/Questioning  |   .0495425   .0084368     5.87   0.000     .0330067    .0660783
-            2#Prefer Not to Say  |   .0593587   .0052827    11.24   0.000     .0490048    .0697126
-       3#Straight/Heterosexual   |   .3759394    .006448    58.30   0.000     .3633015    .3885772
-               3#Gay or Lesbian  |   .3158821   .0204914    15.42   0.000     .2757197    .3560445
-3#Bisexual/Pansexual/Omnisexual  |   .3037535   .0112462    27.01   0.000     .2817113    .3257956
- 3#Asexual/Aromantic/Demisexual  |   .3294331   .0273578    12.04   0.000     .2758128    .3830535
-      3#Other/Queer/Questioning  |   .3279965   .0317355    10.34   0.000      .265796     .390197
-            3#Prefer Not to Say  |   .3624648   .0156513    23.16   0.000     .3317889    .3931407
-       4#Straight/Heterosexual   |    .529251   .0072146    73.36   0.000     .5151106    .5433915
-               4#Gay or Lesbian  |   .6156322   .0277157    22.21   0.000     .5613105    .6699539
-4#Bisexual/Pansexual/Omnisexual  |   .6321068   .0146059    43.28   0.000     .6034798    .6607339
- 4#Asexual/Aromantic/Demisexual  |    .596902   .0378825    15.76   0.000     .5226537    .6711504
-      4#Other/Queer/Questioning  |   .5989052    .043952    13.63   0.000     .5127608    .6850496
-            4#Prefer Not to Say  |   .5494909   .0223593    24.58   0.000     .5056674    .5933143
---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    _predict#|
+      so_cat |
+          1 #|
+Straight/..  |   .0310451   .0020153    15.40   0.000     .0270952     .034995
+          1 #|
+Gay or Le..  |   .0219952   .0028552     7.70   0.000     .0163992    .0275913
+          1 #|
+Bisexual/~l  |   .0205344   .0017826    11.52   0.000     .0170406    .0240282
+          1 #|
+Asexual/A~l  |   .0237482   .0039235     6.05   0.000     .0160583    .0314381
+          1 #|
+Other/Que~g  |   .0235558   .0044453     5.30   0.000     .0148432    .0322685
+          1 #|
+Prefer No..  |   .0286857   .0030367     9.45   0.000     .0227339    .0346375
+          2 #|
+Straight/..  |   .0637645   .0029572    21.56   0.000     .0579685    .0695604
+          2 #|
+Gay or Le..  |   .0464905   .0053131     8.75   0.000     .0360769     .056904
+          2 #|
+Bisexual/~l  |   .0436053   .0030931    14.10   0.000      .037543    .0496676
+          2 #|
+Asexual/A~l  |   .0499166   .0073776     6.77   0.000     .0354567    .0643765
+          2 #|
+Other/Que~g  |   .0495425   .0084368     5.87   0.000     .0330067    .0660783
+          2 #|
+Prefer No..  |   .0593587   .0052827    11.24   0.000     .0490048    .0697126
+          3 #|
+Straight/..  |   .3759394    .006448    58.30   0.000     .3633015    .3885772
+          3 #|
+Gay or Le..  |   .3158821   .0204914    15.42   0.000     .2757197    .3560445
+          3 #|
+Bisexual/~l  |   .3037535   .0112462    27.01   0.000     .2817113    .3257956
+          3 #|
+Asexual/A~l  |   .3294331   .0273578    12.04   0.000     .2758128    .3830535
+          3 #|
+Other/Que~g  |   .3279965   .0317355    10.34   0.000      .265796     .390197
+          3 #|
+Prefer No..  |   .3624648   .0156513    23.16   0.000     .3317889    .3931407
+          4 #|
+Straight/..  |    .529251   .0072146    73.36   0.000     .5151106    .5433915
+          4 #|
+Gay or Le..  |   .6156322   .0277157    22.21   0.000     .5613105    .6699539
+          4 #|
+Bisexual/~l  |   .6321068   .0146059    43.28   0.000     .6034798    .6607339
+          4 #|
+Asexual/A~l  |    .596902   .0378825    15.76   0.000     .5226537    .6711504
+          4 #|
+Other/Que~g  |   .5989052    .043952    13.63   0.000     .5127608    .6850496
+          4 #|
+Prefer No..  |   .5494909   .0223593    24.58   0.000     .5056674    .5933143
+------------------------------------------------------------------------------
 Number of observations (_N) was 0, now 6.
 (6 missing values generated)
 (6 missing values generated)
@@ -1948,10 +2118,10 @@ Number of observations (_N) was 0, now 6.
 (6 real changes made)
 (6 missing values generated)
 (6 missing values generated)
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_facts/degree2_so_stacked.png 
-> written in PNG format
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree2_margins_so.csv 
-> saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_fact
+> s/degree2_so_stacked.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_fact
+> s/degree2_margins_so.csv saved
 
 Iteration 0:  Log likelihood = -10097.088  
 Iteration 1:  Log likelihood = -9714.3521  
@@ -1964,41 +2134,41 @@ Ordered logistic regression                             Number of obs =  7,423
                                                         Prob > chi2   = 0.0000
 Log likelihood = -9711.8468                             Pseudo R2     = 0.0382
 
--------------------------------------------------------------------------------------------------------
-                       highest_degree | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3023504   .1053877     2.87   0.004     .0957943    .5089064
-       Bisexual/Pansexual/Omnisexual  |   .3260967   .0625579     5.21   0.000     .2034855    .4487079
-        Asexual/Aromantic/Demisexual  |   .0756927   .1386901     0.55   0.585    -.1961349    .3475203
-             Other/Queer/Questioning  |   .1103306   .1631352     0.68   0.499    -.2094085    .4300697
-                   Prefer Not to Say  |  -.0442853   .0860447    -0.51   0.607    -.2129298    .1243591
-                                      |
-                            race_assn |
-              Black/African American  |  -.1408611   .1692459    -0.83   0.405    -.4725769    .1908547
-                     Hispanic/Latinx  |   -.159059   .1528692    -1.04   0.298     -.458677    .1405591
-                    Pacific Islander  |    .164387   .2720929     0.60   0.546    -.3689053    .6976793
-                            Filipino  |  -.3401089   .1918717    -1.77   0.076    -.7161705    .0359528
-                               Asian  |   .2087471   .1593238     1.31   0.190    -.1035219    .5210161
-                               Other  |   .1429137   .2074269     0.69   0.491    -.2636355    .5494628
-                  White/Non-Hispanic  |  -.2515547   .1570815    -1.60   0.109    -.5594287    .0563193
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0436685   .0706224    -0.62   0.536    -.1820857    .0947488
-     Some college, no college degree  |   .1652765   .0802415     2.06   0.039     .0080061    .3225469
-                    Associate degree  |   .1788692   .1055851     1.69   0.090    -.0280739    .3858122
-                   Bachelor's degree  |   .6477018   .0785779     8.24   0.000     .4936918    .8017117
-Graduate/Professional degree beyo..)  |   1.135649    .080362    14.13   0.000     .9781426    1.293156
-                          Don't know  |  -.5702754   .1132703    -5.03   0.000    -.7922812   -.3482697
-                                      |
-                                 afab |
-                              Female  |   .5004312   .0456875    10.95   0.000     .4108854    .5899771
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.928538   .1724268                     -3.266489   -2.590588
-                                /cut2 |  -1.741547   .1646029                     -2.064163   -1.418931
-                                /cut3 |    .403987   .1623585                      .0857702    .7222038
-                                /cut4 |   1.932973   .1638826                      1.611769    2.254177
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3023504   .1053877     2.87   0.004     .0957943    .5089064
+Bisexual/~l  |   .3260967   .0625579     5.21   0.000     .2034855    .4487079
+Asexual/A~l  |   .0756927   .1386901     0.55   0.585    -.1961349    .3475203
+Other/Que~g  |   .1103306   .1631352     0.68   0.499    -.2094085    .4300697
+Prefer No..  |  -.0442853   .0860447    -0.51   0.607    -.2129298    .1243591
+             |
+   race_assn |
+Black/Afr..  |  -.1408611   .1692459    -0.83   0.405    -.4725769    .1908547
+Hispanic/~x  |   -.159059   .1528692    -1.04   0.298     -.458677    .1405591
+Pacific I..  |    .164387   .2720929     0.60   0.546    -.3689053    .6976793
+   Filipino  |  -.3401089   .1918717    -1.77   0.076    -.7161705    .0359528
+      Asian  |   .2087471   .1593238     1.31   0.190    -.1035219    .5210161
+      Other  |   .1429137   .2074269     0.69   0.491    -.2636355    .5494628
+White/Non~c  |  -.2515547   .1570815    -1.60   0.109    -.5594287    .0563193
+             |
+  parent_edu |
+High scho..  |  -.0436685   .0706224    -0.62   0.536    -.1820857    .0947488
+Some coll..  |   .1652765   .0802415     2.06   0.039     .0080061    .3225469
+Associate..  |   .1788692   .1055851     1.69   0.090    -.0280739    .3858122
+Bachelor'..  |   .6477018   .0785779     8.24   0.000     .4936918    .8017117
+Graduate..)  |   1.135649    .080362    14.13   0.000     .9781426    1.293156
+ Don't know  |  -.5702754   .1132703    -5.03   0.000    -.7922812   -.3482697
+             |
+        afab |
+     Female  |   .5004312   .0456875    10.95   0.000     .4108854    .5899771
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.928538   .1724268                     -3.266489   -2.590588
+       /cut2 |  -1.741547   .1646029                     -2.064163   -1.418931
+       /cut3 |    .403987   .1623585                      .0857702    .7222038
+       /cut4 |   1.932973   .1638826                      1.611769    2.254177
+------------------------------------------------------------------------------
 
 Adjusted predictions                                     Number of obs = 7,423
 Model VCE: OIM
@@ -2033,42 +2203,73 @@ At: 0.so_cat     = .6943284 (mean)
     0.afab       = .3707396 (mean)
     1.afab       = .6292604 (mean)
 
---------------------------------------------------------------------------------------------------
-                                 |            Delta-method
-                                 |     Margin   std. err.      z    P>|z|     [95% conf. interval]
----------------------------------+----------------------------------------------------------------
-                 _predict#so_cat |
-       1#Straight/Heterosexual   |   .0305295   .0019777    15.44   0.000     .0266533    .0344056
-               1#Gay or Lesbian  |   .0227449   .0026703     8.52   0.000     .0175112    .0279786
-1#Bisexual/Pansexual/Omnisexual  |    .022223   .0018358    12.11   0.000     .0186249    .0258211
- 1#Asexual/Aromantic/Demisexual  |    .028367   .0041218     6.88   0.000     .0202884    .0364457
-      1#Other/Queer/Questioning  |   .0274278   .0046012     5.96   0.000     .0184097    .0364459
-            1#Prefer Not to Say  |   .0318678   .0031579    10.09   0.000     .0256783    .0380573
-       2#Straight/Heterosexual   |   .0630182   .0029075    21.67   0.000     .0573196    .0687169
-               2#Gay or Lesbian  |   .0481241   .0048989     9.82   0.000     .0385224    .0577258
-2#Bisexual/Pansexual/Omnisexual  |   .0470982   .0031237    15.08   0.000     .0409758    .0532206
- 2#Asexual/Aromantic/Demisexual  |   .0589567   .0074862     7.88   0.000     .0442839    .0736294
-      2#Other/Queer/Questioning  |   .0571745    .008498     6.73   0.000     .0405188    .0738302
-            2#Prefer Not to Say  |   .0655033    .005353    12.24   0.000     .0550117     .075995
-       3#Straight/Heterosexual   |   .3751103   .0063355    59.21   0.000     .3626929    .3875277
-               3#Gay or Lesbian  |    .323763   .0181074    17.88   0.000     .2882731    .3592529
-3#Bisexual/Pansexual/Omnisexual  |   .3196523   .0105348    30.34   0.000     .2990044    .3403001
- 3#Asexual/Aromantic/Demisexual  |   .3625391   .0232528    15.59   0.000     .3169644    .4081137
-      3#Other/Queer/Questioning  |   .3567038   .0275507    12.95   0.000     .3027054    .4107021
-            3#Prefer Not to Say  |   .3823282    .014082    27.15   0.000     .3547279    .4099285
-       4#Straight/Heterosexual   |   .3340733   .0058068    57.53   0.000     .3226922    .3454544
-               4#Gay or Lesbian  |   .3558347   .0078913    45.09   0.000     .3403681    .3713014
-4#Bisexual/Pansexual/Omnisexual  |     .35702   .0065037    54.89   0.000     .3442729     .369767
- 4#Asexual/Aromantic/Demisexual  |   .3406072    .012405    27.46   0.000      .316294    .3649205
-      4#Other/Queer/Questioning  |   .3433692   .0136511    25.15   0.000     .3166136    .3701248
-            4#Prefer Not to Say  |   .3299508   .0093864    35.15   0.000     .3115538    .3483479
-       5#Straight/Heterosexual   |   .1972687   .0051963    37.96   0.000     .1870841    .2074533
-               5#Gay or Lesbian  |   .2495333   .0193984    12.86   0.000     .2115132    .2875534
-5#Bisexual/Pansexual/Omnisexual  |   .2540066   .0111519    22.78   0.000     .2321493    .2758639
- 5#Asexual/Aromantic/Demisexual  |     .20953   .0227542     9.21   0.000     .1649326    .2541274
-      5#Other/Queer/Questioning  |   .2153247   .0273745     7.87   0.000     .1616718    .2689777
-            5#Prefer Not to Say  |   .1903498   .0130161    14.62   0.000     .1648388    .2158608
---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    _predict#|
+      so_cat |
+          1 #|
+Straight/..  |   .0305295   .0019777    15.44   0.000     .0266533    .0344056
+          1 #|
+Gay or Le..  |   .0227449   .0026703     8.52   0.000     .0175112    .0279786
+          1 #|
+Bisexual/~l  |    .022223   .0018358    12.11   0.000     .0186249    .0258211
+          1 #|
+Asexual/A~l  |    .028367   .0041218     6.88   0.000     .0202884    .0364457
+          1 #|
+Other/Que~g  |   .0274278   .0046012     5.96   0.000     .0184097    .0364459
+          1 #|
+Prefer No..  |   .0318678   .0031579    10.09   0.000     .0256783    .0380573
+          2 #|
+Straight/..  |   .0630182   .0029075    21.67   0.000     .0573196    .0687169
+          2 #|
+Gay or Le..  |   .0481241   .0048989     9.82   0.000     .0385224    .0577258
+          2 #|
+Bisexual/~l  |   .0470982   .0031237    15.08   0.000     .0409758    .0532206
+          2 #|
+Asexual/A~l  |   .0589567   .0074862     7.88   0.000     .0442839    .0736294
+          2 #|
+Other/Que~g  |   .0571745    .008498     6.73   0.000     .0405188    .0738302
+          2 #|
+Prefer No..  |   .0655033    .005353    12.24   0.000     .0550117     .075995
+          3 #|
+Straight/..  |   .3751103   .0063355    59.21   0.000     .3626929    .3875277
+          3 #|
+Gay or Le..  |    .323763   .0181074    17.88   0.000     .2882731    .3592529
+          3 #|
+Bisexual/~l  |   .3196523   .0105348    30.34   0.000     .2990044    .3403001
+          3 #|
+Asexual/A~l  |   .3625391   .0232528    15.59   0.000     .3169644    .4081137
+          3 #|
+Other/Que~g  |   .3567038   .0275507    12.95   0.000     .3027054    .4107021
+          3 #|
+Prefer No..  |   .3823282    .014082    27.15   0.000     .3547279    .4099285
+          4 #|
+Straight/..  |   .3340733   .0058068    57.53   0.000     .3226922    .3454544
+          4 #|
+Gay or Le..  |   .3558347   .0078913    45.09   0.000     .3403681    .3713014
+          4 #|
+Bisexual/~l  |     .35702   .0065037    54.89   0.000     .3442729     .369767
+          4 #|
+Asexual/A~l  |   .3406072    .012405    27.46   0.000      .316294    .3649205
+          4 #|
+Other/Que~g  |   .3433692   .0136511    25.15   0.000     .3166136    .3701248
+          4 #|
+Prefer No..  |   .3299508   .0093864    35.15   0.000     .3115538    .3483479
+          5 #|
+Straight/..  |   .1972687   .0051963    37.96   0.000     .1870841    .2074533
+          5 #|
+Gay or Le..  |   .2495333   .0193984    12.86   0.000     .2115132    .2875534
+          5 #|
+Bisexual/~l  |   .2540066   .0111519    22.78   0.000     .2321493    .2758639
+          5 #|
+Asexual/A~l  |     .20953   .0227542     9.21   0.000     .1649326    .2541274
+          5 #|
+Other/Que~g  |   .2153247   .0273745     7.87   0.000     .1616718    .2689777
+          5 #|
+Prefer No..  |   .1903498   .0130161    14.62   0.000     .1648388    .2158608
+------------------------------------------------------------------------------
 Number of observations (_N) was 0, now 6.
 (6 missing values generated)
 (6 missing values generated)
@@ -2084,10 +2285,10 @@ Number of observations (_N) was 0, now 6.
 (6 real changes made)
 (6 missing values generated)
 (6 missing values generated)
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_facts/degree_so_stacked_afab.
-> png written in PNG format
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree_margins_so_afab.
-> csv saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_fact
+> s/degree_so_stacked_afab.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_fact
+> s/degree_margins_so_afab.csv saved
 
 Iteration 0:  Log likelihood = -7338.9393  
 Iteration 1:  Log likelihood = -6947.7278  
@@ -2100,40 +2301,40 @@ Ordered logistic regression                             Number of obs =  7,423
                                                         Prob > chi2   = 0.0000
 Log likelihood = -6941.7655                             Pseudo R2     = 0.0541
 
--------------------------------------------------------------------------------------------------------
-                     highest_degree_2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
---------------------------------------+----------------------------------------------------------------
-                               so_cat |
-                      Gay or Lesbian  |   .3490426    .121534     2.87   0.004     .1108403     .587245
-       Bisexual/Pansexual/Omnisexual  |   .2939015   .0701606     4.19   0.000     .1563892    .4314138
-        Asexual/Aromantic/Demisexual  |   .1396955   .1614279     0.87   0.387    -.1766974    .4560884
-             Other/Queer/Questioning  |   .1529298   .1863203     0.82   0.412    -.2122512    .5181108
-                   Prefer Not to Say  |  -.0041237   .0949716    -0.04   0.965    -.1902646    .1820173
-                                      |
-                            race_assn |
-              Black/African American  |  -.0861582   .1827387    -0.47   0.637    -.4443194     .272003
-                     Hispanic/Latinx  |  -.0510885   .1650068    -0.31   0.757    -.3744959    .2723189
-                    Pacific Islander  |   .2453661   .3049053     0.80   0.421    -.3522373    .8429695
-                            Filipino  |  -.2999803   .2072082    -1.45   0.148     -.706101    .1061403
-                               Asian  |   .3477892   .1743496     1.99   0.046     .0060702    .6895081
-                               Other  |   .1825858   .2292681     0.80   0.426    -.2667715    .6319431
-                  White/Non-Hispanic  |  -.1473897   .1705556    -0.86   0.387    -.4816726    .1868932
-                                      |
-                           parent_edu |
-                 High school diploma  |  -.0449277   .0727637    -0.62   0.537    -.1875419    .0976865
-     Some college, no college degree  |   .2151677   .0842288     2.55   0.011     .0500823    .3802531
-                    Associate degree  |     .12701   .1090008     1.17   0.244    -.0866276    .3406476
-                   Bachelor's degree  |   .7002956   .0846024     8.28   0.000     .5344779    .8661133
-Graduate/Professional degree beyo..)  |   1.455174   .0933596    15.59   0.000     1.272193    1.638156
-                          Don't know  |   -.582738   .1138955    -5.12   0.000     -.805969   -.3595071
-                                      |
-                                 afab |
-                              Female  |   .4642951   .0496841     9.34   0.000     .3669159    .5616742
---------------------------------------+----------------------------------------------------------------
-                                /cut1 |  -2.814381   .1836547                     -3.174337   -2.454424
-                                /cut2 |    -1.6249    .176378                     -1.970595   -1.279206
-                                /cut3 |   .5321212   .1744774                      .1901519    .8740906
--------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+highest_de~2 | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+      so_cat |
+Gay or Le..  |   .3490426    .121534     2.87   0.004     .1108403     .587245
+Bisexual/~l  |   .2939015   .0701606     4.19   0.000     .1563892    .4314138
+Asexual/A~l  |   .1396955   .1614279     0.87   0.387    -.1766974    .4560884
+Other/Que~g  |   .1529298   .1863203     0.82   0.412    -.2122512    .5181108
+Prefer No..  |  -.0041237   .0949716    -0.04   0.965    -.1902646    .1820173
+             |
+   race_assn |
+Black/Afr..  |  -.0861582   .1827387    -0.47   0.637    -.4443194     .272003
+Hispanic/~x  |  -.0510885   .1650068    -0.31   0.757    -.3744959    .2723189
+Pacific I..  |   .2453661   .3049053     0.80   0.421    -.3522373    .8429695
+   Filipino  |  -.2999803   .2072082    -1.45   0.148     -.706101    .1061403
+      Asian  |   .3477892   .1743496     1.99   0.046     .0060702    .6895081
+      Other  |   .1825858   .2292681     0.80   0.426    -.2667715    .6319431
+White/Non~c  |  -.1473897   .1705556    -0.86   0.387    -.4816726    .1868932
+             |
+  parent_edu |
+High scho..  |  -.0449277   .0727637    -0.62   0.537    -.1875419    .0976865
+Some coll..  |   .2151677   .0842288     2.55   0.011     .0500823    .3802531
+Associate..  |     .12701   .1090008     1.17   0.244    -.0866276    .3406476
+Bachelor'..  |   .7002956   .0846024     8.28   0.000     .5344779    .8661133
+Graduate..)  |   1.455174   .0933596    15.59   0.000     1.272193    1.638156
+ Don't know  |   -.582738   .1138955    -5.12   0.000     -.805969   -.3595071
+             |
+        afab |
+     Female  |   .4642951   .0496841     9.34   0.000     .3669159    .5616742
+-------------+----------------------------------------------------------------
+       /cut1 |  -2.814381   .1836547                     -3.174337   -2.454424
+       /cut2 |    -1.6249    .176378                     -1.970595   -1.279206
+       /cut3 |   .5321212   .1744774                      .1901519    .8740906
+------------------------------------------------------------------------------
 
 Adjusted predictions                                     Number of obs = 7,423
 Model VCE: OIM
@@ -2167,36 +2368,61 @@ At: 0.so_cat     = .6943284 (mean)
     0.afab       = .3707396 (mean)
     1.afab       = .6292604 (mean)
 
---------------------------------------------------------------------------------------------------
-                                 |            Delta-method
-                                 |     Margin   std. err.      z    P>|z|     [95% conf. interval]
----------------------------------+----------------------------------------------------------------
-                 _predict#so_cat |
-       1#Straight/Heterosexual   |   .0294186   .0019273    15.26   0.000      .025641    .0331961
-               1#Gay or Lesbian  |   .0209322   .0027466     7.62   0.000     .0155489    .0263155
-1#Bisexual/Pansexual/Omnisexual  |   .0220926   .0019268    11.47   0.000     .0183161    .0258691
- 1#Asexual/Aromantic/Demisexual  |   .0256816   .0042572     6.03   0.000     .0173375    .0340256
-      1#Other/Queer/Questioning  |   .0253525   .0047953     5.29   0.000     .0159538    .0347511
-            1#Prefer Not to Say  |   .0295365   .0031312     9.43   0.000     .0233995    .0356736
-       2#Straight/Heterosexual   |   .0611437   .0028705    21.30   0.000     .0555176    .0667698
-               2#Gay or Lesbian  |   .0446983   .0051807     8.63   0.000     .0345444    .0548522
-2#Bisexual/Pansexual/Omnisexual  |   .0470014   .0033446    14.05   0.000     .0404461    .0535566
- 2#Asexual/Aromantic/Demisexual  |   .0540145   .0079629     6.78   0.000     .0384076    .0696214
-      2#Other/Queer/Questioning  |   .0533783     .00906     5.89   0.000      .035621    .0711355
-            2#Prefer Not to Say  |   .0613659   .0054579    11.24   0.000     .0506686    .0720633
-       3#Straight/Heterosexual   |   .3720657   .0064822    57.40   0.000     .3593609    .3847705
-               3#Gay or Lesbian  |   .3121898   .0207949    15.01   0.000     .2714325    .3529472
-3#Bisexual/Pansexual/Omnisexual  |   .3217731   .0115909    27.76   0.000     .2990552    .3444909
- 3#Asexual/Aromantic/Demisexual  |   .3484393   .0274638    12.69   0.000     .2946113    .4022674
-      3#Other/Queer/Questioning  |   .3461675     .03183    10.88   0.000     .2837818    .4085532
-            3#Prefer Not to Say  |   .3727508   .0156659    23.79   0.000     .3420463    .4034553
-       4#Straight/Heterosexual   |    .537372   .0072939    73.67   0.000     .5230762    .5516679
-               4#Gay or Lesbian  |   .6221796   .0278242    22.36   0.000     .5676452    .6767141
-4#Bisexual/Pansexual/Omnisexual  |   .6091329   .0152183    40.03   0.000     .5793055    .6389603
- 4#Asexual/Aromantic/Demisexual  |   .5718646   .0388308    14.73   0.000     .4957577    .6479716
-      4#Other/Queer/Questioning  |   .5751017   .0449569    12.79   0.000     .4869879    .6632156
-            4#Prefer Not to Say  |   .5363467   .0225706    23.76   0.000     .4921091    .5805843
---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+             |            Delta-method
+             |     Margin   std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+    _predict#|
+      so_cat |
+          1 #|
+Straight/..  |   .0294186   .0019273    15.26   0.000      .025641    .0331961
+          1 #|
+Gay or Le..  |   .0209322   .0027466     7.62   0.000     .0155489    .0263155
+          1 #|
+Bisexual/~l  |   .0220926   .0019268    11.47   0.000     .0183161    .0258691
+          1 #|
+Asexual/A~l  |   .0256816   .0042572     6.03   0.000     .0173375    .0340256
+          1 #|
+Other/Que~g  |   .0253525   .0047953     5.29   0.000     .0159538    .0347511
+          1 #|
+Prefer No..  |   .0295365   .0031312     9.43   0.000     .0233995    .0356736
+          2 #|
+Straight/..  |   .0611437   .0028705    21.30   0.000     .0555176    .0667698
+          2 #|
+Gay or Le..  |   .0446983   .0051807     8.63   0.000     .0345444    .0548522
+          2 #|
+Bisexual/~l  |   .0470014   .0033446    14.05   0.000     .0404461    .0535566
+          2 #|
+Asexual/A~l  |   .0540145   .0079629     6.78   0.000     .0384076    .0696214
+          2 #|
+Other/Que~g  |   .0533783     .00906     5.89   0.000      .035621    .0711355
+          2 #|
+Prefer No..  |   .0613659   .0054579    11.24   0.000     .0506686    .0720633
+          3 #|
+Straight/..  |   .3720657   .0064822    57.40   0.000     .3593609    .3847705
+          3 #|
+Gay or Le..  |   .3121898   .0207949    15.01   0.000     .2714325    .3529472
+          3 #|
+Bisexual/~l  |   .3217731   .0115909    27.76   0.000     .2990552    .3444909
+          3 #|
+Asexual/A~l  |   .3484393   .0274638    12.69   0.000     .2946113    .4022674
+          3 #|
+Other/Que~g  |   .3461675     .03183    10.88   0.000     .2837818    .4085532
+          3 #|
+Prefer No..  |   .3727508   .0156659    23.79   0.000     .3420463    .4034553
+          4 #|
+Straight/..  |    .537372   .0072939    73.67   0.000     .5230762    .5516679
+          4 #|
+Gay or Le..  |   .6221796   .0278242    22.36   0.000     .5676452    .6767141
+          4 #|
+Bisexual/~l  |   .6091329   .0152183    40.03   0.000     .5793055    .6389603
+          4 #|
+Asexual/A~l  |   .5718646   .0388308    14.73   0.000     .4957577    .6479716
+          4 #|
+Other/Que~g  |   .5751017   .0449569    12.79   0.000     .4869879    .6632156
+          4 #|
+Prefer No..  |   .5363467   .0225706    23.76   0.000     .4921091    .5805843
+------------------------------------------------------------------------------
 Number of observations (_N) was 0, now 6.
 (6 missing values generated)
 (6 missing values generated)
@@ -2210,10 +2436,10 @@ Number of observations (_N) was 0, now 6.
 (6 real changes made)
 (6 missing values generated)
 (6 missing values generated)
-file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_facts/degree2_so_stacked_afab
-> .png written in PNG format
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts/degree2_margins_so_afab
-> .csv saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/fig/getting_down_to_fact
+> s/degree2_so_stacked_afab.png written in PNG format
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_fact
+> s/degree2_margins_so_afab.csv saved
 
 . 
 . 
@@ -2226,37 +2452,72 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/tab/getting_down_to_facts
 | row percentage |
 +----------------+
 
-                      |    what is the highest degree you hope to complete
-      Gender Identity | Get a cer  Associate  Bachelor’  Master’s   Doctoral  |     Total
-----------------------+-------------------------------------------------------+----------
-        Cisgender Man |       145        192      1,053        839        438 |     2,667 
-                      |      5.44       7.20      39.48      31.46      16.42 |    100.00 
-----------------------+-------------------------------------------------------+----------
-      Cisgender Woman |        95        271      1,397      1,392      1,119 |     4,274 
-                      |      2.22       6.34      32.69      32.57      26.18 |    100.00 
-----------------------+-------------------------------------------------------+----------
-      Transgender Man |         0          2         22         20         15 |        59 
-                      |      0.00       3.39      37.29      33.90      25.42 |    100.00 
-----------------------+-------------------------------------------------------+----------
-    Transgender Woman |         1          1          7          8          3 |        20 
-                      |      5.00       5.00      35.00      40.00      15.00 |    100.00 
-----------------------+-------------------------------------------------------+----------
-           Non-binary |         2         12         93         86         74 |       267 
-                      |      0.75       4.49      34.83      32.21      27.72 |    100.00 
-----------------------+-------------------------------------------------------+----------
-Gender Diverse/Questi |         4          2         24         21         19 |        70 
-                      |      5.71       2.86      34.29      30.00      27.14 |    100.00 
-----------------------+-------------------------------------------------------+----------
-    Prefer Not to Say |         4          9         51         44         32 |       140 
-                      |      2.86       6.43      36.43      31.43      22.86 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |       251        489      2,647      2,410      1,700 |     7,497 
-                      |      3.35       6.52      35.31      32.15      22.68 |    100.00 
+                      |   what is the highest degree you hope to
+                      |                  complete
+      Gender Identity | Get a cer  Associate  Bachelor’  Master’s  |     Total
+----------------------+--------------------------------------------+----------
+        Cisgender Man |       145        192      1,053        839 |     2,667 
+                      |      5.44       7.20      39.48      31.46 |    100.00 
+----------------------+--------------------------------------------+----------
+      Cisgender Woman |        95        271      1,397      1,392 |     4,274 
+                      |      2.22       6.34      32.69      32.57 |    100.00 
+----------------------+--------------------------------------------+----------
+      Transgender Man |         0          2         22         20 |        59 
+                      |      0.00       3.39      37.29      33.90 |    100.00 
+----------------------+--------------------------------------------+----------
+    Transgender Woman |         1          1          7          8 |        20 
+                      |      5.00       5.00      35.00      40.00 |    100.00 
+----------------------+--------------------------------------------+----------
+           Non-binary |         2         12         93         86 |       267 
+                      |      0.75       4.49      34.83      32.21 |    100.00 
+----------------------+--------------------------------------------+----------
+Gender Diverse/Questi |         4          2         24         21 |        70 
+                      |      5.71       2.86      34.29      30.00 |    100.00 
+----------------------+--------------------------------------------+----------
+    Prefer Not to Say |         4          9         51         44 |       140 
+                      |      2.86       6.43      36.43      31.43 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |       251        489      2,647      2,410 |     7,497 
+                      |      3.35       6.52      35.31      32.15 |    100.00 
+
+
+                      |  what is
+                      |    the
+                      |  highest
+                      | degree you
+                      |  hope to
+                      |  complete
+      Gender Identity | Doctoral  |     Total
+----------------------+-----------+----------
+        Cisgender Man |       438 |     2,667 
+                      |     16.42 |    100.00 
+----------------------+-----------+----------
+      Cisgender Woman |     1,119 |     4,274 
+                      |     26.18 |    100.00 
+----------------------+-----------+----------
+      Transgender Man |        15 |        59 
+                      |     25.42 |    100.00 
+----------------------+-----------+----------
+    Transgender Woman |         3 |        20 
+                      |     15.00 |    100.00 
+----------------------+-----------+----------
+           Non-binary |        74 |       267 
+                      |     27.72 |    100.00 
+----------------------+-----------+----------
+Gender Diverse/Questi |        19 |        70 
+                      |     27.14 |    100.00 
+----------------------+-----------+----------
+    Prefer Not to Say |        32 |       140 
+                      |     22.86 |    100.00 
+----------------------+-----------+----------
+                Total |     1,700 |     7,497 
+                      |     22.68 |    100.00 
 
 . 
 . log close 
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down_to_facts/gdtf_reg.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down
+> _to_facts/gdtf_reg.txt
   log type:  text
- closed on:  15 Mar 2026, 19:36:49
---------------------------------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:34:36
+-------------------------------------------------------------------------------

@@ -1,0 +1,108 @@
+                                                       ___  ____  ____  ____  ____(R)
+                                                      /__    /   ____/   /   ____/   
+                                                     ___/   /   /___/   /   /___/    
+                                                       Statistics/Data analysis      
+      
+      -------------------------------------------------------------------------------
+            name:  <unnamed>
+             log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/do_all.smcl
+        log type:  smcl
+       opened on:  20 Jun 2026, 14:24:13
+      
+     1 . 
+     2 . clear all
+      
+     3 . pause off
+      
+     4 . 
+     5 . 
+     6 . graph drop _all
+      
+     7 . set more off
+      
+     8 . set varabbrev off
+      
+     9 . set graphics off
+      
+    10 . set scheme s1color
+      
+    11 . set seed 1984
+      
+    12 . 
+    13 . 
+    14 . 
+    15 . ssc install ngram, replace 
+      checking ngram consistency and verifying not already installed...
+      all files already exist and are up to date.
+      
+    16 . 
+    17 . * Toggle If First Time Running: to create output folders
+    18 . local mkdir 0
+      
+    19 . 
+    20 . 
+    21 . 
+    22 . if `mkdir' == 1 {
+    23 . global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
+    24 . 
+    25 . cap mkdir "$csacprojdir/dta"  //store all output tables
+    26 . cap mkdir "$csacprojdir/dta/cln" // store cleaned data 
+    27 . 
+    28 . cap mkdir "$csacprojdir/tab"  //store all output tables
+    29 . cap mkdir "$csacprojdir/tab/learn" // create subfolder within tables
+    30 . cap mkdir "$csacprojdir/tab/learn/demog" 
+    31 . 
+    32 . cap mkdir "$csacprojdir/fig"  //store all output figures
+    33 . cap mkdir "$csacprojdir/fig/learn" // create subfolder within figures
+    34 . cap mkdir "$csacprojdir/fig/learn/crosstab" // create subfolder within figure
+      > s
+    35 . cap mkdir "$csacprojdir/fig/learn/brief"
+    36 . 
+    37 . cap mkdir "$csacprojdir/log" // store all log files
+    38 . cap mkdir "$csacprojdir/log/clean" // create subfolder within log 
+    39 . cap mkdir "$csacprojdir/log/learn" 
+    40 . }
+      
+    41 . 
+    42 . *-------------- DATA CLEANING
+    43 . * clean survey data exported from qualtrics 
+    44 . do $csacprojdir/do/clean/clean_qualtrics_export.do
+      
+    45 . *****************************************************************************
+      > ***
+    46 . /* clean 2023 CSAC high school senior survey data exported from Qualtrics */
+    47 . *****************************************************************************
+      > ***
+    48 . ************************ Written by Christina Sun 07/05/2023 ****************
+      > ***
+    49 . 
+    50 . /* Change Log:
+      > [CS] 07/19/2023: deleted code that drops incomplete responses. Only delete ob
+      > s with missing email
+      > [BZ] 07/28/2023: assign gender to "PREFER NOT TO SAY" if only report gender o
+      > r asab.
+      >                  moved gender and sexual orientation generating process to pr
+      > ep_brief.do
+      > */
+    51 . 
+    52 . /* Notes:
+      > * The data imported by this do file is downloaded from Qualtrics on July 5, 2
+      > 023
+      > at 15:43. The 2nd and 3rd rows contain only question names and import tags an
+      > d
+      > thus do not need to be imported. First row is variable names.
+      >  */
+    53 . 
+    54 . 
+    55 .  /* to run this do file:
+      >  do $csacprojdir/do/clean/clean_qualtrics_export.do
+      >  */
+    56 . 
+    57 . 
+    58 . *****************************************************************************
+      > ***
+    59 . *----------*
+    60 . * Toggle
+    61 . *----------*
+    62 . 
+    63 . cap log close _all

@@ -1,23 +1,27 @@
-----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down_to
-> _facts/gdtf_adhoc.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down
+> _to_facts/gdtf_adhoc.txt
   log type:  text
- opened on:  16 Mar 2026, 13:32:57
+ opened on:  20 Jun 2026, 14:34:36
 
 . 
 . 
-. *===============================================================================
+. *============================================================================
+> ===
 . * Load genderso dataset (college-bound students with gender/SO constructs)
-. *===============================================================================
+. *============================================================================
+> ===
 . use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso_constructs.dta", clear
 (Fully cleaned CSAC 2023 HS senior survey data)
 
 . 
 . 
-. *===============================================================================
+. *============================================================================
+> ===
 . * What percentage of students selected "Other" + write-in for gender and SO?
-. *===============================================================================
+. *============================================================================
+> ===
 . 
 . di _n "=============================================="
 
@@ -43,18 +47,19 @@ GENDER: Percentage selecting 'Other' with write-in
 
 . local N_gender_other = r(N)
 
-. local pct_gender_other : display %4.1f (`N_gender_other' / `N_gender_resp' * 100
-> )
+. local pct_gender_other : display %4.1f (`N_gender_other' / `N_gender_resp' * 
+> 100)
 
 . 
 . * Students who selected "Other" AND provided a write-in response
-. count if gender_raw == "OTHER" & !mi(gender_other_raw) & gender_other_raw != ""
+. count if gender_raw == "OTHER" & !mi(gender_other_raw) & gender_other_raw != 
+> ""
   86
 
 . local N_gender_writein = r(N)
 
-. local pct_gender_writein : display %4.1f (`N_gender_writein' / `N_gender_resp' *
->  100)
+. local pct_gender_writein : display %4.1f (`N_gender_writein' / `N_gender_resp
+> ' * 100)
 
 . 
 . di "Responded to gender question: `N_gender_resp'"
@@ -63,7 +68,8 @@ Responded to gender question: 7551
 . di "Selected 'Other' for gender: `N_gender_other' (`pct_gender_other'%)"
 Selected 'Other' for gender: 90 ( 1.2%)
 
-. di "Selected 'Other' AND wrote in: `N_gender_writein' (`pct_gender_writein'%)"
+. di "Selected 'Other' AND wrote in: `N_gender_writein' (`pct_gender_writein'%)
+> "
 Selected 'Other' AND wrote in: 86 ( 1.1%)
 
 . di ""
@@ -74,8 +80,8 @@ Selected 'Other' AND wrote in: 86 ( 1.1%)
 . di "Write-in responses for gender 'Other':"
 Write-in responses for gender 'Other':
 
-. tab gender_other_raw if gender_raw == "OTHER" & !mi(gender_other_raw) & gender_o
-> ther_raw != "", sort
+. tab gender_other_raw if gender_raw == "OTHER" & !mi(gender_other_raw) & gende
+> r_other_raw != "", sort
 
    current gender other: please specify |      Freq.     Percent        Cum.
 ----------------------------------------+-----------------------------------
@@ -157,8 +163,8 @@ SEXUAL ORIENTATION: Percentage selecting 'Other' with write-in
 
 . 
 . * Students who selected "Other" AND provided a write-in response
-. count if so_raw == "OTHER (FEEL FREE TO SPECIFY)" & !mi(so_other_raw) & so_other
-> _raw != ""
+. count if so_raw == "OTHER (FEEL FREE TO SPECIFY)" & !mi(so_other_raw) & so_ot
+> her_raw != ""
   231
 
 . local N_so_writein = r(N)
@@ -183,8 +189,8 @@ Selected 'Other' AND wrote in: 231 ( 3.1%)
 . di "Write-in responses for SO 'Other':"
 Write-in responses for SO 'Other':
 
-. tab so_other_raw if so_raw == "OTHER (FEEL FREE TO SPECIFY)" & !mi(so_other_raw)
->  & so_other_raw != "", sort
+. tab so_other_raw if so_raw == "OTHER (FEEL FREE TO SPECIFY)" & !mi(so_other_r
+> aw) & so_other_raw != "", sort
 
        sexual orientation other: please |
                                 specify |      Freq.     Percent        Cum.
@@ -278,8 +284,8 @@ WOW, NOT REALLY RELEVANT TO FINANCIAL.. |          1        0.43      100.00
 . 
 . log close
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down_to
-> _facts/gdtf_adhoc.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down
+> _to_facts/gdtf_adhoc.txt
   log type:  text
- closed on:  16 Mar 2026, 13:32:57
-----------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:34:37
+-------------------------------------------------------------------------------

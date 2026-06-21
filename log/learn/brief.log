@@ -1,11 +1,13 @@
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.log
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.
+> log
   log type:  text
- opened on:  13 May 2024, 15:01:23
+ opened on:  20 Jun 2026, 14:24:24
 
 . 
-. ********************************* Main *****************************************
+. ********************************* Main **************************************
+> ***
 . 
 . * Load fully cleaned data
 . use "$csacprojdir/dta/cln/csac_hs_senior_2023_brief.dta", clear
@@ -28,16 +30,19 @@
 . /* Outcomes */
 . 
 . * hs experience & bullying 
-. global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college hs_type times_bullied reasons_bullied_irace reasons_bullied_ireligion reasons_bull
-> ied_igender reasons_bullied_iso
+. global hsexp hs_academic hs_social hs_community_belong hs_teacher_care hs_goo
+> d_advising hs_prepared_college hs_type times_bullied reasons_bullied_irace re
+> asons_bullied_ireligion reasons_bullied_igender reasons_bullied_iso
 
 . 
 . * college plans
-. global plans college_fall where_college major highest_degree prop_online_class
+. global plans college_fall where_college major highest_degree prop_online_clas
+> s
 
 . 
 . * non-fa college worries
-. global nfaworries worry_academic worry_family worry_community worry_away worry_support //  worry_so 
+. global nfaworries worry_academic worry_family worry_community worry_away worr
+> y_support //  worry_so 
 
 . 
 . * fa college worries
@@ -57,7 +62,8 @@
 . /* Note: */
 . * Use reg on a constant computationally
 . * It estimate the mean = share as dep vars are dummies
-. * For now formatted log file. Think of ways to put into exportable format later.
+. * For now formatted log file. Think of ways to put into exportable format lat
+> er.
 . 
 . /* Reason: race OR gender */
 . gen reasons_race_or_gen = 0
@@ -118,7 +124,8 @@ ever_bullie |
 . * modify value label
 . label copy race_assn_lbl race_brief_lbl, replace
 
-. label define race_brief_lbl 1 "American Indian/Alaskan Native/Pacific Islander" 4 "", modify
+. label define race_brief_lbl 1 "American Indian/Alaskan Native/Pacific Islande
+> r" 4 "", modify
 
 . label val race_brief race_brief_lbl
 
@@ -134,19 +141,23 @@ ever_bullie |
 . gen gender_brief_main = gender_brief
 (2,245 missing values generated)
 
-. replace gender_brief_main = 2 if gender_brief == 3 // combine binary trans & other
+. replace gender_brief_main = 2 if gender_brief == 3 // combine binary trans & 
+> other
 (331 real changes made)
 
-. replace gender_brief_main = 4 if gender_brief == 5 // combine prefer not to say with unsure
+. replace gender_brief_main = 4 if gender_brief == 5 // combine prefer not to s
+> ay with unsure
 (183 real changes made)
 
 . label var gender_brief_main "gender for the main brief"
 
 . 
 . * modify value label
-. label copy gender_brief_lbl gender_brief_main_lbl, replace // copy from finer label
+. label copy gender_brief_lbl gender_brief_main_lbl, replace // copy from finer
+>  label
 
-. label define gender_brief_main_lbl 2 "gender variant" 4 "unsure/prefer not to say",  modify
+. label define gender_brief_main_lbl 2 "gender variant" 4 "unsure/prefer not to
+>  say",  modify
 
 . label val gender_brief_main gender_brief_main_lbl
 
@@ -171,7 +182,8 @@ ever_bullie |
 . * modify value label 
 . label copy parent_edu parent_edu_brief_lbl
 
-. label define parent_edu_brief_lbl 3 "Some college, no college degree/Associate degree", modify
+. label define parent_edu_brief_lbl 3 "Some college, no college degree/Associat
+> e degree", modify
 
 . label val parent_edu_brief parent_edu_brief_lbl
 
@@ -181,10 +193,14 @@ ever_bullie |
 . * Prep 
 . *=======*
 . 
-. /* Store all questions into global macros for easy display during visualization */
-. foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary_english hs_type college_fall fall_plan inf_no_college where_college major highest_degree worry_academic worry_fa
-> mily worry_community worry_away worry_support worry_race worry_gender worry_so worry_religion prop_online_class hs_academic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_
-> prepared_college times_bullied reasons_bullied{
+. /* Store all questions into global macros for easy display during visualizati
+> on */
+. foreach var in $xtab race_simp gender_brief so_brief lgbtq parent_edu primary
+> _english hs_type college_fall fall_plan inf_no_college where_college major hi
+> ghest_degree worry_academic worry_family worry_community worry_away worry_sup
+> port worry_race worry_gender worry_so worry_religion prop_online_class hs_aca
+> demic hs_social hs_community_belong hs_teacher_care hs_good_advising hs_prepa
+> red_college times_bullied reasons_bullied{
   2.         global `var' `: var label `var''
   3. }
 
@@ -243,7 +259,7 @@ Graduate/Professional degree beyond Bac |      1,485       14.53       73.88
 . /* Figure 1: HS academic*/
 . tab hs_academic
 
- how do you |
+ How do you |
     rate HS |
    academic |
  experience |      Freq.     Percent        Cum.
@@ -260,48 +276,96 @@ Graduate/Professional degree beyond Bac |      1,485       14.53       73.88
   2.  tab `var'  hs_academic , nofreq row
   3. }
 
-   race/ethnicity for |         how do you rate HS academic experience
-       the main brief |      Poor       Fair       Good  Very Good  Excellent |     Total
-----------------------+-------------------------------------------------------+----------
-American Indian/Alask |      1.62      14.98      31.17      27.94      24.29 |    100.00 
-Black/African America |      3.04      15.74      25.40      33.81      22.00 |    100.00 
-      Hispanic/Latinx |      3.17      16.60      34.92      27.96      17.34 |    100.00 
-             Filipino |      1.23       7.38      26.64      37.30      27.46 |    100.00 
-                Asian |      1.38       9.54      23.82      31.90      33.36 |    100.00 
-                Other |      2.02       8.08      25.76      37.88      26.26 |    100.00 
-   White/Non-Hispanic |      0.97       7.21      20.03      33.61      38.18 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      2.34      13.16      29.18      30.56      24.76 |    100.00 
+   race/ethnicity for |   How do you rate HS academic experience
+       the main brief |      Poor       Fair       Good  Very Good |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |      1.62      14.98      31.17      27.94 |    100.00 
+Black/African America |      3.04      15.74      25.40      33.81 |    100.00 
+      Hispanic/Latinx |      3.17      16.60      34.92      27.96 |    100.00 
+             Filipino |      1.23       7.38      26.64      37.30 |    100.00 
+                Asian |      1.38       9.54      23.82      31.90 |    100.00 
+                Other |      2.02       8.08      25.76      37.88 |    100.00 
+   White/Non-Hispanic |      0.97       7.21      20.03      33.61 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      2.34      13.16      29.18      30.56 |    100.00 
 
-  gender for the main |         how do you rate HS academic experience
-                brief |      Poor       Fair       Good  Very Good  Excellent |     Total
-----------------------+-------------------------------------------------------+----------
-            cis woman |      2.00      12.26      28.38      31.73      25.63 |    100.00 
-              cis man |      2.65      14.42      30.94      28.88      23.11 |    100.00 
-       gender variant |      3.11      13.88      27.51      30.62      24.88 |    100.00 
-unsure/prefer not to  |      4.71      15.71      22.51      28.27      28.80 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      2.36      13.20      29.11      30.57      24.76 |    100.00 
+
+                      | How do you
+                      |  rate HS
+                      |  academic
+   race/ethnicity for | experience
+       the main brief | Excellent |     Total
+----------------------+-----------+----------
+American Indian/Alask |     24.29 |    100.00 
+Black/African America |     22.00 |    100.00 
+      Hispanic/Latinx |     17.34 |    100.00 
+             Filipino |     27.46 |    100.00 
+                Asian |     33.36 |    100.00 
+                Other |     26.26 |    100.00 
+   White/Non-Hispanic |     38.18 |    100.00 
+----------------------+-----------+----------
+                Total |     24.76 |    100.00 
+
+  gender for the main |   How do you rate HS academic experience
+                brief |      Poor       Fair       Good  Very Good |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      2.00      12.26      28.38      31.73 |    100.00 
+              cis man |      2.65      14.42      30.94      28.88 |    100.00 
+       gender variant |      3.11      13.88      27.51      30.62 |    100.00 
+unsure/prefer not to  |      4.71      15.71      22.51      28.27 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      2.36      13.20      29.11      30.57 |    100.00 
+
+
+                      | How do you
+                      |  rate HS
+                      |  academic
+  gender for the main | experience
+                brief | Excellent |     Total
+----------------------+-----------+----------
+            cis woman |     25.63 |    100.00 
+              cis man |     23.11 |    100.00 
+       gender variant |     24.88 |    100.00 
+unsure/prefer not to  |     28.80 |    100.00 
+----------------------+-----------+----------
+                Total |     24.76 |    100.00 
 
      highest level of |
-      education among |         how do you rate HS academic experience
-              parents |      Poor       Fair       Good  Very Good  Excellent |     Total
-----------------------+-------------------------------------------------------+----------
-Did not complete high |      3.34      18.40      35.72      29.24      13.29 |    100.00 
-  High school diploma |      2.93      17.33      32.96      29.57      17.21 |    100.00 
-Some college, no coll |      2.93      14.47      30.40      30.50      21.70 |    100.00 
-     Associate degree |      1.05      14.35      30.80      33.12      20.68 |    100.00 
-    Bachelor's degree |      1.65       6.96      22.81      33.79      34.79 |    100.00 
-Graduate/Professional |      1.01       5.93      17.37      31.72      43.97 |    100.00 
-           Don't know |      3.36      19.69      46.98      21.48       8.50 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      2.34      13.19      29.13      30.52      24.82 |    100.00 
+      education among |   How do you rate HS academic experience
+              parents |      Poor       Fair       Good  Very Good |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      3.34      18.40      35.72      29.24 |    100.00 
+  High school diploma |      2.93      17.33      32.96      29.57 |    100.00 
+Some college, no coll |      2.93      14.47      30.40      30.50 |    100.00 
+     Associate degree |      1.05      14.35      30.80      33.12 |    100.00 
+    Bachelor's degree |      1.65       6.96      22.81      33.79 |    100.00 
+Graduate/Professional |      1.01       5.93      17.37      31.72 |    100.00 
+           Don't know |      3.36      19.69      46.98      21.48 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      2.34      13.19      29.13      30.52 |    100.00 
+
+
+                      | How do you
+                      |  rate HS
+     highest level of |  academic
+      education among | experience
+              parents | Excellent |     Total
+----------------------+-----------+----------
+Did not complete high |     13.29 |    100.00 
+  High school diploma |     17.21 |    100.00 
+Some college, no coll |     21.70 |    100.00 
+     Associate degree |     20.68 |    100.00 
+    Bachelor's degree |     34.79 |    100.00 
+Graduate/Professional |     43.97 |    100.00 
+           Don't know |      8.50 |    100.00 
+----------------------+-----------+----------
+                Total |     24.82 |    100.00 
 
 . 
 . /* Figure 2: HS social*/
 . tab hs_social
 
- how do you |
+ How do you |
   rate your |
   HS social |
  experience |      Freq.     Percent        Cum.
@@ -318,48 +382,96 @@ Graduate/Professional |      1.01       5.93      17.37      31.72      43.97 | 
   2.  tab `var' hs_social , nofreq row
   3. }
 
-   race/ethnicity for |       how do you rate your HS social experience
-       the main brief |      Poor       Fair       Good  Very Good  Excellent |     Total
-----------------------+-------------------------------------------------------+----------
-American Indian/Alask |      9.31      17.41      34.01      27.53      11.74 |    100.00 
-Black/African America |      8.96      19.71      29.93      24.19      17.20 |    100.00 
-      Hispanic/Latinx |      8.32      22.63      34.03      24.08      10.93 |    100.00 
-             Filipino |      6.15      18.85      40.57      21.31      13.11 |    100.00 
-                Asian |      7.49      22.29      34.68      24.87      10.67 |    100.00 
-                Other |     10.10      16.16      30.30      28.28      15.15 |    100.00 
-   White/Non-Hispanic |      8.31      19.72      34.28      26.03      11.66 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      8.25      21.38      33.99      24.71      11.67 |    100.00 
+   race/ethnicity for |  How do you rate your HS social experience
+       the main brief |      Poor       Fair       Good  Very Good |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |      9.31      17.41      34.01      27.53 |    100.00 
+Black/African America |      8.96      19.71      29.93      24.19 |    100.00 
+      Hispanic/Latinx |      8.32      22.63      34.03      24.08 |    100.00 
+             Filipino |      6.15      18.85      40.57      21.31 |    100.00 
+                Asian |      7.49      22.29      34.68      24.87 |    100.00 
+                Other |     10.10      16.16      30.30      28.28 |    100.00 
+   White/Non-Hispanic |      8.31      19.72      34.28      26.03 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      8.25      21.38      33.99      24.71 |    100.00 
 
-  gender for the main |       how do you rate your HS social experience
-                brief |      Poor       Fair       Good  Very Good  Excellent |     Total
-----------------------+-------------------------------------------------------+----------
-            cis woman |      8.27      22.27      34.33      24.62      10.51 |    100.00 
-              cis man |      6.78      18.74      33.22      26.61      14.65 |    100.00 
-       gender variant |     15.55      28.47      35.17      15.07       5.74 |    100.00 
-unsure/prefer not to  |     16.32      27.37      31.05      15.79       9.47 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      8.31      21.45      33.90      24.62      11.72 |    100.00 
+
+                      | How do you
+                      | rate your
+                      | HS social
+   race/ethnicity for | experience
+       the main brief | Excellent |     Total
+----------------------+-----------+----------
+American Indian/Alask |     11.74 |    100.00 
+Black/African America |     17.20 |    100.00 
+      Hispanic/Latinx |     10.93 |    100.00 
+             Filipino |     13.11 |    100.00 
+                Asian |     10.67 |    100.00 
+                Other |     15.15 |    100.00 
+   White/Non-Hispanic |     11.66 |    100.00 
+----------------------+-----------+----------
+                Total |     11.67 |    100.00 
+
+  gender for the main |  How do you rate your HS social experience
+                brief |      Poor       Fair       Good  Very Good |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      8.27      22.27      34.33      24.62 |    100.00 
+              cis man |      6.78      18.74      33.22      26.61 |    100.00 
+       gender variant |     15.55      28.47      35.17      15.07 |    100.00 
+unsure/prefer not to  |     16.32      27.37      31.05      15.79 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      8.31      21.45      33.90      24.62 |    100.00 
+
+
+                      | How do you
+                      | rate your
+                      | HS social
+  gender for the main | experience
+                brief | Excellent |     Total
+----------------------+-----------+----------
+            cis woman |     10.51 |    100.00 
+              cis man |     14.65 |    100.00 
+       gender variant |      5.74 |    100.00 
+unsure/prefer not to  |      9.47 |    100.00 
+----------------------+-----------+----------
+                Total |     11.72 |    100.00 
 
      highest level of |
-      education among |       how do you rate your HS social experience
-              parents |      Poor       Fair       Good  Very Good  Excellent |     Total
-----------------------+-------------------------------------------------------+----------
-Did not complete high |      8.81      23.84      34.08      23.57       9.70 |    100.00 
-  High school diploma |      8.67      22.44      32.69      24.19      12.01 |    100.00 
-Some college, no coll |      9.68      22.68      35.00      20.92      11.73 |    100.00 
-     Associate degree |      8.02      19.62      33.33      27.22      11.81 |    100.00 
-    Bachelor's degree |      7.25      18.52      32.38      28.57      13.28 |    100.00 
-Graduate/Professional |      7.48      19.61      34.10      26.42      12.40 |    100.00 
-           Don't know |      7.85      24.22      41.26      17.04       9.64 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      8.27      21.45      33.96      24.62      11.70 |    100.00 
+      education among |  How do you rate your HS social experience
+              parents |      Poor       Fair       Good  Very Good |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      8.81      23.84      34.08      23.57 |    100.00 
+  High school diploma |      8.67      22.44      32.69      24.19 |    100.00 
+Some college, no coll |      9.68      22.68      35.00      20.92 |    100.00 
+     Associate degree |      8.02      19.62      33.33      27.22 |    100.00 
+    Bachelor's degree |      7.25      18.52      32.38      28.57 |    100.00 
+Graduate/Professional |      7.48      19.61      34.10      26.42 |    100.00 
+           Don't know |      7.85      24.22      41.26      17.04 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      8.27      21.45      33.96      24.62 |    100.00 
+
+
+                      | How do you
+                      | rate your
+     highest level of | HS social
+      education among | experience
+              parents | Excellent |     Total
+----------------------+-----------+----------
+Did not complete high |      9.70 |    100.00 
+  High school diploma |     12.01 |    100.00 
+Some college, no coll |     11.73 |    100.00 
+     Associate degree |     11.81 |    100.00 
+    Bachelor's degree |     13.28 |    100.00 
+Graduate/Professional |     12.40 |    100.00 
+           Don't know |      9.64 |    100.00 
+----------------------+-----------+----------
+                Total |     11.70 |    100.00 
 
 . 
 . /* Figure 3: Bullied*/
 . tab times_bullied
 
-number of times |
+Number of times |
      bullied or |
     harassed at |
  school last 12 |
@@ -376,7 +488,7 @@ number of times |
   2.  tab `var' times_bullied , nofreq row
   3. }
 
-                      |   number of times bullied or harassed at
+                      |   Number of times bullied or harassed at
    race/ethnicity for |            school last 12 months
        the main brief |   0 times     1 time  2-3 times  4 or more |     Total
 ----------------------+--------------------------------------------+----------
@@ -390,7 +502,7 @@ Black/African America |     75.40       8.62      10.05       5.92 |    100.00
 ----------------------+--------------------------------------------+----------
                 Total |     76.76      10.32       9.06       3.87 |    100.00 
 
-                      |   number of times bullied or harassed at
+                      |   Number of times bullied or harassed at
   gender for the main |            school last 12 months
                 brief |   0 times     1 time  2-3 times  4 or more |     Total
 ----------------------+--------------------------------------------+----------
@@ -401,7 +513,7 @@ unsure/prefer not to  |     63.30      13.83      11.70      11.17 |    100.00
 ----------------------+--------------------------------------------+----------
                 Total |     76.78      10.30       9.04       3.88 |    100.00 
 
-     highest level of |   number of times bullied or harassed at
+     highest level of |   Number of times bullied or harassed at
       education among |            school last 12 months
               parents |   0 times     1 time  2-3 times  4 or more |     Total
 ----------------------+--------------------------------------------+----------
@@ -424,12 +536,14 @@ Graduate/Professional |     74.39      11.19       9.77       4.65 |    100.00
 . di "All"
 All
 
-. foreach y in reasons_bullied_igender reasons_bullied_irace reasons_bullied_ireligion{
+. foreach y in reasons_bullied_igender reasons_bullied_irace reasons_bullied_ir
+> eligion{
   2.         qui eststo: qui reg `y'
   3. }
 
 . 
-. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("Gender" "Race" "Religion") nonum noline varwidth(20)
+. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("Gender" "Race" "Rel
+> igion") nonum noline varwidth(20)
 
                            Gender         Race     Religion
 All                         0.326        0.512        0.127
@@ -444,11 +558,14 @@ N                            1042         1042         1042
   4.         qui levelsof `cat', local(vals)
   5.         foreach val in `vals'{ // foreach subsample
   6.         eststo clear
-  7.         foreach y in reasons_bullied_igender reasons_bullied_irace reasons_bullied_ireligion{
-  8.                 qui eststo: qui reg `y' if `cat' == `val'  // estimate the share
+  7.         foreach y in reasons_bullied_igender reasons_bullied_irace reasons
+> _bullied_ireligion{
+  8.                 qui eststo: qui reg `y' if `cat' == `val'  // estimate the
+>  share
   9.         }
  10.         local lab: label(`cat') `val' // row name
- 11.         esttab, nostar not b(a3) coeflabels(_cons "`lab'") nomtitles varwidth(20) nonum nodep noline // each subsample is a row
+ 11.         esttab, nostar not b(a3) coeflabels(_cons "`lab'") nomtitles varwi
+> dth(20) nonum nodep noline // each subsample is a row
  12.         }
  13. }
 
@@ -494,7 +611,7 @@ N                             201          201          201
 . /* Figure 4: hs_teacher_care */
 . tab hs_teacher_care
 
-  teachers and staff at my |
+  Teachers and staff at my |
    HS care about my future |      Freq.     Percent        Cum.
 ---------------------------+-----------------------------------
          Strongly disagree |        213        2.62        2.62
@@ -509,42 +626,95 @@ Neither agree nor disagree |      1,054       12.96       20.45
   2.  tab `var' hs_teacher_care, nofreq row
   3. }
 
-   race/ethnicity for |    teachers and staff at my HS care about my future
-       the main brief | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-American Indian/Alask |      4.05       4.45      10.53      40.08      40.89 |    100.00 
-Black/African America |      3.24       5.04      13.85      38.67      39.21 |    100.00 
-      Hispanic/Latinx |      2.74       4.83      13.61      38.39      40.43 |    100.00 
-             Filipino |      1.64       2.05      12.70      42.62      40.98 |    100.00 
-                Asian |      2.16       4.91      13.19      42.76      36.98 |    100.00 
-                Other |      4.04       5.56      16.16      34.85      39.39 |    100.00 
-   White/Non-Hispanic |      2.06       5.22      10.32      40.81      41.59 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      2.60       4.86      12.87      39.60      40.08 |    100.00 
+                      |  Teachers and staff at my HS care about my
+   race/ethnicity for |                   future
+       the main brief | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |      4.05       4.45      10.53      40.08 |    100.00 
+Black/African America |      3.24       5.04      13.85      38.67 |    100.00 
+      Hispanic/Latinx |      2.74       4.83      13.61      38.39 |    100.00 
+             Filipino |      1.64       2.05      12.70      42.62 |    100.00 
+                Asian |      2.16       4.91      13.19      42.76 |    100.00 
+                Other |      4.04       5.56      16.16      34.85 |    100.00 
+   White/Non-Hispanic |      2.06       5.22      10.32      40.81 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      2.60       4.86      12.87      39.60 |    100.00 
 
-  gender for the main |    teachers and staff at my HS care about my future
-                brief | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-            cis woman |      2.49       4.94      13.60      39.56      39.41 |    100.00 
-              cis man |      2.70       4.55      11.28      39.05      42.42 |    100.00 
-       gender variant |      1.91       6.22      14.83      43.78      33.25 |    100.00 
-unsure/prefer not to  |      2.65       5.29      16.93      38.62      36.51 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      2.54       4.88      12.91      39.58      40.10 |    100.00 
 
-     highest level of |
-      education among |    teachers and staff at my HS care about my future
-              parents | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-Did not complete high |      2.60       4.31      14.29      38.62      40.19 |    100.00 
-  High school diploma |      2.94       5.88      13.51      39.19      38.48 |    100.00 
-Some college, no coll |      1.86       6.37      12.84      39.41      39.51 |    100.00 
-     Associate degree |      3.80       5.49      11.39      38.61      40.72 |    100.00 
-    Bachelor's degree |      2.37       3.73      12.56      39.84      41.49 |    100.00 
-Graduate/Professional |      2.29       4.25      10.92      41.60      40.93 |    100.00 
-           Don't know |      2.92       4.49      15.96      36.85      39.78 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      2.57       4.87      12.93      39.51      40.11 |    100.00 
+                      |  Teachers
+                      | and staff
+                      |  at my HS
+                      | care about
+   race/ethnicity for | my future
+       the main brief | Strongly  |     Total
+----------------------+-----------+----------
+American Indian/Alask |     40.89 |    100.00 
+Black/African America |     39.21 |    100.00 
+      Hispanic/Latinx |     40.43 |    100.00 
+             Filipino |     40.98 |    100.00 
+                Asian |     36.98 |    100.00 
+                Other |     39.39 |    100.00 
+   White/Non-Hispanic |     41.59 |    100.00 
+----------------------+-----------+----------
+                Total |     40.08 |    100.00 
+
+                      |  Teachers and staff at my HS care about my
+  gender for the main |                   future
+                brief | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      2.49       4.94      13.60      39.56 |    100.00 
+              cis man |      2.70       4.55      11.28      39.05 |    100.00 
+       gender variant |      1.91       6.22      14.83      43.78 |    100.00 
+unsure/prefer not to  |      2.65       5.29      16.93      38.62 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      2.54       4.88      12.91      39.58 |    100.00 
+
+
+                      |  Teachers
+                      | and staff
+                      |  at my HS
+                      | care about
+  gender for the main | my future
+                brief | Strongly  |     Total
+----------------------+-----------+----------
+            cis woman |     39.41 |    100.00 
+              cis man |     42.42 |    100.00 
+       gender variant |     33.25 |    100.00 
+unsure/prefer not to  |     36.51 |    100.00 
+----------------------+-----------+----------
+                Total |     40.10 |    100.00 
+
+     highest level of |  Teachers and staff at my HS care about my
+      education among |                   future
+              parents | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      2.60       4.31      14.29      38.62 |    100.00 
+  High school diploma |      2.94       5.88      13.51      39.19 |    100.00 
+Some college, no coll |      1.86       6.37      12.84      39.41 |    100.00 
+     Associate degree |      3.80       5.49      11.39      38.61 |    100.00 
+    Bachelor's degree |      2.37       3.73      12.56      39.84 |    100.00 
+Graduate/Professional |      2.29       4.25      10.92      41.60 |    100.00 
+           Don't know |      2.92       4.49      15.96      36.85 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      2.57       4.87      12.93      39.51 |    100.00 
+
+
+                      |  Teachers
+                      | and staff
+                      |  at my HS
+     highest level of | care about
+      education among | my future
+              parents | Strongly  |     Total
+----------------------+-----------+----------
+Did not complete high |     40.19 |    100.00 
+  High school diploma |     38.48 |    100.00 
+Some college, no coll |     39.51 |    100.00 
+     Associate degree |     40.72 |    100.00 
+    Bachelor's degree |     41.49 |    100.00 
+Graduate/Professional |     40.93 |    100.00 
+           Don't know |     39.78 |    100.00 
+----------------------+-----------+----------
+                Total |     40.11 |    100.00 
 
 . 
 . /* Figure 5: hs_good_advising */
@@ -565,42 +735,98 @@ Neither agree nor disagree |      1,369       16.82       33.82
   2.  tab `var' hs_good_advising, nofreq row
   3. }
 
-   race/ethnicity for |     I received good advising from HS about college
-       the main brief | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-American Indian/Alask |      7.69      12.96      10.93      39.27      29.15 |    100.00 
-Black/African America |      5.38       9.50      16.13      34.23      34.77 |    100.00 
-      Hispanic/Latinx |      5.99       8.15      15.81      36.18      33.87 |    100.00 
-             Filipino |      5.74      10.25      18.85      35.66      29.51 |    100.00 
-                Asian |      6.56      12.26      21.16      37.22      22.80 |    100.00 
-                Other |     11.11       9.09      17.17      32.32      30.30 |    100.00 
-   White/Non-Hispanic |      8.79      14.15      16.73      35.34      25.00 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      6.74      10.23      16.76      36.02      30.25 |    100.00 
+                      |   I received good advising from HS about
+   race/ethnicity for |                   college
+       the main brief | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |      7.69      12.96      10.93      39.27 |    100.00 
+Black/African America |      5.38       9.50      16.13      34.23 |    100.00 
+      Hispanic/Latinx |      5.99       8.15      15.81      36.18 |    100.00 
+             Filipino |      5.74      10.25      18.85      35.66 |    100.00 
+                Asian |      6.56      12.26      21.16      37.22 |    100.00 
+                Other |     11.11       9.09      17.17      32.32 |    100.00 
+   White/Non-Hispanic |      8.79      14.15      16.73      35.34 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      6.74      10.23      16.76      36.02 |    100.00 
 
-  gender for the main |     I received good advising from HS about college
-                brief | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-            cis woman |      6.38      11.10      16.80      35.77      29.94 |    100.00 
-              cis man |      6.90       7.57      15.90      37.41      32.22 |    100.00 
-       gender variant |      8.37      17.94      18.90      33.01      21.77 |    100.00 
-unsure/prefer not to  |      8.42      15.26      24.74      28.42      23.16 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      6.72      10.29      16.78      36.04      30.17 |    100.00 
 
-     highest level of |
-      education among |     I received good advising from HS about college
-              parents | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-Did not complete high |      4.85       7.51      16.39      35.93      35.31 |    100.00 
-  High school diploma |      6.10       8.04      15.25      38.59      32.02 |    100.00 
-Some college, no coll |      6.95      11.17      18.51      34.28      29.09 |    100.00 
-     Associate degree |      7.61      10.57      14.38      34.25      33.19 |    100.00 
-    Bachelor's degree |      7.05      12.37      18.26      34.22      28.11 |    100.00 
-Graduate/Professional |      9.51      14.30      16.45      35.87      23.87 |    100.00 
-           Don't know |      4.27       5.62      18.20      38.88      33.03 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      6.77      10.27      16.74      36.04      30.18 |    100.00 
+                      | I received
+                      |    good
+                      |  advising
+                      |  from HS
+                      |   about
+   race/ethnicity for |  college
+       the main brief | Strongly  |     Total
+----------------------+-----------+----------
+American Indian/Alask |     29.15 |    100.00 
+Black/African America |     34.77 |    100.00 
+      Hispanic/Latinx |     33.87 |    100.00 
+             Filipino |     29.51 |    100.00 
+                Asian |     22.80 |    100.00 
+                Other |     30.30 |    100.00 
+   White/Non-Hispanic |     25.00 |    100.00 
+----------------------+-----------+----------
+                Total |     30.25 |    100.00 
+
+                      |   I received good advising from HS about
+  gender for the main |                   college
+                brief | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      6.38      11.10      16.80      35.77 |    100.00 
+              cis man |      6.90       7.57      15.90      37.41 |    100.00 
+       gender variant |      8.37      17.94      18.90      33.01 |    100.00 
+unsure/prefer not to  |      8.42      15.26      24.74      28.42 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      6.72      10.29      16.78      36.04 |    100.00 
+
+
+                      | I received
+                      |    good
+                      |  advising
+                      |  from HS
+                      |   about
+  gender for the main |  college
+                brief | Strongly  |     Total
+----------------------+-----------+----------
+            cis woman |     29.94 |    100.00 
+              cis man |     32.22 |    100.00 
+       gender variant |     21.77 |    100.00 
+unsure/prefer not to  |     23.16 |    100.00 
+----------------------+-----------+----------
+                Total |     30.17 |    100.00 
+
+     highest level of |   I received good advising from HS about
+      education among |                   college
+              parents | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      4.85       7.51      16.39      35.93 |    100.00 
+  High school diploma |      6.10       8.04      15.25      38.59 |    100.00 
+Some college, no coll |      6.95      11.17      18.51      34.28 |    100.00 
+     Associate degree |      7.61      10.57      14.38      34.25 |    100.00 
+    Bachelor's degree |      7.05      12.37      18.26      34.22 |    100.00 
+Graduate/Professional |      9.51      14.30      16.45      35.87 |    100.00 
+           Don't know |      4.27       5.62      18.20      38.88 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      6.77      10.27      16.74      36.04 |    100.00 
+
+
+                      | I received
+                      |    good
+                      |  advising
+                      |  from HS
+     highest level of |   about
+      education among |  college
+              parents | Strongly  |     Total
+----------------------+-----------+----------
+Did not complete high |     35.31 |    100.00 
+  High school diploma |     32.02 |    100.00 
+Some college, no coll |     29.09 |    100.00 
+     Associate degree |     33.19 |    100.00 
+    Bachelor's degree |     28.11 |    100.00 
+Graduate/Professional |     23.87 |    100.00 
+           Don't know |     33.03 |    100.00 
+----------------------+-----------+----------
+                Total |     30.18 |    100.00 
 
 . 
 . /* Figure 6: hs_prepared_college */
@@ -621,42 +847,90 @@ Neither agree nor disagree |      1,763       21.68       37.40
   2.  tab `var' hs_prepared_college, nofreq row
   3. }
 
-   race/ethnicity for |              I feel prepared for college
-       the main brief | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-American Indian/Alask |      6.91      11.79      18.29      42.28      20.73 |    100.00 
-Black/African America |      5.39      11.31      18.31      42.55      22.44 |    100.00 
-      Hispanic/Latinx |      5.25      11.63      25.66      39.78      17.67 |    100.00 
-             Filipino |      3.28      12.70      20.49      42.62      20.90 |    100.00 
-                Asian |      4.14      10.86      19.40      42.59      23.02 |    100.00 
-                Other |      4.04      11.62      17.68      39.90      26.77 |    100.00 
-   White/Non-Hispanic |      3.36       8.40      15.05      45.35      27.84 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      4.69      10.91      21.61      41.62      21.16 |    100.00 
+   race/ethnicity for |         I feel prepared for college
+       the main brief | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |      6.91      11.79      18.29      42.28 |    100.00 
+Black/African America |      5.39      11.31      18.31      42.55 |    100.00 
+      Hispanic/Latinx |      5.25      11.63      25.66      39.78 |    100.00 
+             Filipino |      3.28      12.70      20.49      42.62 |    100.00 
+                Asian |      4.14      10.86      19.40      42.59 |    100.00 
+                Other |      4.04      11.62      17.68      39.90 |    100.00 
+   White/Non-Hispanic |      3.36       8.40      15.05      45.35 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      4.69      10.91      21.61      41.62 |    100.00 
 
-  gender for the main |              I feel prepared for college
-                brief | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-            cis woman |      4.72      11.15      21.72      42.50      19.92 |    100.00 
-              cis man |      3.78       9.63      21.61      41.16      23.82 |    100.00 
-       gender variant |      7.66      18.18      19.38      39.71      15.07 |    100.00 
-unsure/prefer not to  |     11.11      10.58      23.28      32.28      22.75 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      4.69      10.96      21.59      41.63      21.13 |    100.00 
+
+                      |   I feel
+                      |  prepared
+                      |    for
+   race/ethnicity for |  college
+       the main brief | Strongly  |     Total
+----------------------+-----------+----------
+American Indian/Alask |     20.73 |    100.00 
+Black/African America |     22.44 |    100.00 
+      Hispanic/Latinx |     17.67 |    100.00 
+             Filipino |     20.90 |    100.00 
+                Asian |     23.02 |    100.00 
+                Other |     26.77 |    100.00 
+   White/Non-Hispanic |     27.84 |    100.00 
+----------------------+-----------+----------
+                Total |     21.16 |    100.00 
+
+  gender for the main |         I feel prepared for college
+                brief | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      4.72      11.15      21.72      42.50 |    100.00 
+              cis man |      3.78       9.63      21.61      41.16 |    100.00 
+       gender variant |      7.66      18.18      19.38      39.71 |    100.00 
+unsure/prefer not to  |     11.11      10.58      23.28      32.28 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      4.69      10.96      21.59      41.63 |    100.00 
+
+
+                      |   I feel
+                      |  prepared
+                      |    for
+  gender for the main |  college
+                brief | Strongly  |     Total
+----------------------+-----------+----------
+            cis woman |     19.92 |    100.00 
+              cis man |     23.82 |    100.00 
+       gender variant |     15.07 |    100.00 
+unsure/prefer not to  |     22.75 |    100.00 
+----------------------+-----------+----------
+                Total |     21.13 |    100.00 
 
      highest level of |
-      education among |              I feel prepared for college
-              parents | Strongly   Somewhat   Neither a  Somewhat   Strongly  |     Total
-----------------------+-------------------------------------------------------+----------
-Did not complete high |      5.26      13.17      28.05      38.84      14.68 |    100.00 
-  High school diploma |      5.88      12.69      24.44      39.42      17.57 |    100.00 
-Some college, no coll |      5.09      12.14      23.90      41.53      17.34 |    100.00 
-     Associate degree |      4.23      13.95      17.97      44.19      19.66 |    100.00 
-    Bachelor's degree |      3.88       9.19      16.58      44.08      26.27 |    100.00 
-Graduate/Professional |      2.77       6.55      14.18      44.63      31.87 |    100.00 
-           Don't know |      6.74      11.01      28.54      39.10      14.61 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      4.69      10.94      21.60      41.63      21.14 |    100.00 
+      education among |         I feel prepared for college
+              parents | Strongly   Somewhat   Neither a  Somewhat  |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      5.26      13.17      28.05      38.84 |    100.00 
+  High school diploma |      5.88      12.69      24.44      39.42 |    100.00 
+Some college, no coll |      5.09      12.14      23.90      41.53 |    100.00 
+     Associate degree |      4.23      13.95      17.97      44.19 |    100.00 
+    Bachelor's degree |      3.88       9.19      16.58      44.08 |    100.00 
+Graduate/Professional |      2.77       6.55      14.18      44.63 |    100.00 
+           Don't know |      6.74      11.01      28.54      39.10 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      4.69      10.94      21.60      41.63 |    100.00 
+
+
+                      |   I feel
+                      |  prepared
+     highest level of |    for
+      education among |  college
+              parents | Strongly  |     Total
+----------------------+-----------+----------
+Did not complete high |     14.68 |    100.00 
+  High school diploma |     17.57 |    100.00 
+Some college, no coll |     17.34 |    100.00 
+     Associate degree |     19.66 |    100.00 
+    Bachelor's degree |     26.27 |    100.00 
+Graduate/Professional |     31.87 |    100.00 
+           Don't know |     14.61 |    100.00 
+----------------------+-----------+----------
+                Total |     21.14 |    100.00 
 
 . 
 . /* Figure 7: where_college */
@@ -678,42 +952,89 @@ Vocational, technical, or career colleg |        193        2.10       89.86
   2.  tab `var' where_college, nofreq row
   3. }
 
-   race/ethnicity for |           where do you plan to attend college this fall
-       the main brief | Californi  Californi  Universit  Private f  Vocationa  College o |     Total
-----------------------+------------------------------------------------------------------+----------
-American Indian/Alask |     39.21      22.03      21.15       7.93       0.88       8.81 |    100.00 
-Black/African America |     33.83      23.50      19.55       7.52       1.69      13.91 |    100.00 
-      Hispanic/Latinx |     46.61      25.49      15.74       4.56       2.90       4.69 |    100.00 
-             Filipino |     36.17      22.98      28.94       5.11       0.43       6.38 |    100.00 
-                Asian |     20.42      17.28      43.28       5.41       0.44      13.18 |    100.00 
-                Other |     39.01      19.23      21.43       5.49       1.65      13.19 |    100.00 
-   White/Non-Hispanic |     28.97      18.83      21.56       7.61       0.93      22.10 |    100.00 
-----------------------+------------------------------------------------------------------+----------
-                Total |     37.58      22.47      22.00       5.64       1.89      10.42 |    100.00 
+                      |  where do you plan to attend college this
+   race/ethnicity for |                    fall
+       the main brief | Californi  Californi  Universit  Private f |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |     39.21      22.03      21.15       7.93 |    100.00 
+Black/African America |     33.83      23.50      19.55       7.52 |    100.00 
+      Hispanic/Latinx |     46.61      25.49      15.74       4.56 |    100.00 
+             Filipino |     36.17      22.98      28.94       5.11 |    100.00 
+                Asian |     20.42      17.28      43.28       5.41 |    100.00 
+                Other |     39.01      19.23      21.43       5.49 |    100.00 
+   White/Non-Hispanic |     28.97      18.83      21.56       7.61 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     37.58      22.47      22.00       5.64 |    100.00 
 
-  gender for the main |           where do you plan to attend college this fall
-                brief | Californi  Californi  Universit  Private f  Vocationa  College o |     Total
-----------------------+------------------------------------------------------------------+----------
-            cis woman |     36.20      22.67      22.30       6.05       1.91      10.88 |    100.00 
-              cis man |     40.46      21.68      21.46       5.18       1.97       9.24 |    100.00 
-       gender variant |     35.50      22.75      23.00       4.50       1.50      12.75 |    100.00 
-unsure/prefer not to  |     33.52      24.58      24.58       6.15       0.56      10.61 |    100.00 
-----------------------+------------------------------------------------------------------+----------
-                Total |     37.61      22.37      22.09       5.66       1.88      10.39 |    100.00 
 
-     highest level of |
-      education among |           where do you plan to attend college this fall
-              parents | Californi  Californi  Universit  Private f  Vocationa  College o |     Total
-----------------------+------------------------------------------------------------------+----------
-Did not complete high |     47.05      27.09      16.90       3.71       3.20       2.04 |    100.00 
-  High school diploma |     47.40      23.51      16.48       4.88       3.17       4.56 |    100.00 
-Some college, no coll |     42.05      25.85      17.54       5.64       1.33       7.59 |    100.00 
-     Associate degree |     49.34      17.26      22.12       3.98       1.11       6.19 |    100.00 
-    Bachelor's degree |     26.71      21.06      28.69       6.60       0.51      16.43 |    100.00 
-Graduate/Professional |     15.88      17.25      32.85       8.87       0.27      24.88 |    100.00 
-           Don't know |     59.17      22.22      10.08       2.33       4.65       1.55 |    100.00 
-----------------------+------------------------------------------------------------------+----------
-                Total |     37.60      22.38      22.04       5.66       1.86      10.47 |    100.00 
+                      | where do you plan to
+                      |  attend college this
+   race/ethnicity for |         fall
+       the main brief | Vocationa  College o |     Total
+----------------------+----------------------+----------
+American Indian/Alask |      0.88       8.81 |    100.00 
+Black/African America |      1.69      13.91 |    100.00 
+      Hispanic/Latinx |      2.90       4.69 |    100.00 
+             Filipino |      0.43       6.38 |    100.00 
+                Asian |      0.44      13.18 |    100.00 
+                Other |      1.65      13.19 |    100.00 
+   White/Non-Hispanic |      0.93      22.10 |    100.00 
+----------------------+----------------------+----------
+                Total |      1.89      10.42 |    100.00 
+
+                      |  where do you plan to attend college this
+  gender for the main |                    fall
+                brief | Californi  Californi  Universit  Private f |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |     36.20      22.67      22.30       6.05 |    100.00 
+              cis man |     40.46      21.68      21.46       5.18 |    100.00 
+       gender variant |     35.50      22.75      23.00       4.50 |    100.00 
+unsure/prefer not to  |     33.52      24.58      24.58       6.15 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     37.61      22.37      22.09       5.66 |    100.00 
+
+
+                      | where do you plan to
+                      |  attend college this
+  gender for the main |         fall
+                brief | Vocationa  College o |     Total
+----------------------+----------------------+----------
+            cis woman |      1.91      10.88 |    100.00 
+              cis man |      1.97       9.24 |    100.00 
+       gender variant |      1.50      12.75 |    100.00 
+unsure/prefer not to  |      0.56      10.61 |    100.00 
+----------------------+----------------------+----------
+                Total |      1.88      10.39 |    100.00 
+
+     highest level of |  where do you plan to attend college this
+      education among |                    fall
+              parents | Californi  Californi  Universit  Private f |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |     47.05      27.09      16.90       3.71 |    100.00 
+  High school diploma |     47.40      23.51      16.48       4.88 |    100.00 
+Some college, no coll |     42.05      25.85      17.54       5.64 |    100.00 
+     Associate degree |     49.34      17.26      22.12       3.98 |    100.00 
+    Bachelor's degree |     26.71      21.06      28.69       6.60 |    100.00 
+Graduate/Professional |     15.88      17.25      32.85       8.87 |    100.00 
+           Don't know |     59.17      22.22      10.08       2.33 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     37.60      22.38      22.04       5.66 |    100.00 
+
+
+                      | where do you plan to
+     highest level of |  attend college this
+      education among |         fall
+              parents | Vocationa  College o |     Total
+----------------------+----------------------+----------
+Did not complete high |      3.20       2.04 |    100.00 
+  High school diploma |      3.17       4.56 |    100.00 
+Some college, no coll |      1.33       7.59 |    100.00 
+     Associate degree |      1.11       6.19 |    100.00 
+    Bachelor's degree |      0.51      16.43 |    100.00 
+Graduate/Professional |      0.27      24.88 |    100.00 
+           Don't know |      4.65       1.55 |    100.00 
+----------------------+----------------------+----------
+                Total |      1.86      10.47 |    100.00 
 
 . 
 . 
@@ -740,48 +1061,137 @@ Public service (e.g., criminal justice, |        420        4.76       92.09
   2.  tab `var'  major , nofreq row
   3. }
 
-   race/ethnicity for |                                 what are you most likely to study in college
-       the main brief |  Business  Engineeri  Natural s  Social sc  Humanitie  Health sc  Education  Applied s  Public se  Undecided |     Total
-----------------------+--------------------------------------------------------------------------------------------------------------+----------
-American Indian/Alask |     12.39      14.60      13.72      13.72      11.95      14.60       4.42       3.54       4.87       6.19 |    100.00 
-Black/African America |     10.19      15.28      14.72      12.26      13.21      16.98       2.45       3.02       4.53       7.36 |    100.00 
-      Hispanic/Latinx |     10.22      12.94      13.13      12.44      10.16      16.75       4.50       4.21       6.72       8.92 |    100.00 
-             Filipino |      9.87      20.17      14.59      10.73       9.87      21.03       2.15       2.15       2.58       6.87 |    100.00 
-                Asian |      8.81      26.70      23.65      10.65       9.77      10.47       1.22       2.44       0.87       5.41 |    100.00 
-                Other |      9.34      21.43      20.33       9.89       8.24      14.84       1.65       2.20       5.49       6.59 |    100.00 
-   White/Non-Hispanic |     10.04      15.86      19.01      13.32      14.99      11.24       3.48       2.54       3.48       6.02 |    100.00 
-----------------------+--------------------------------------------------------------------------------------------------------------+----------
-                Total |     10.00      16.23      16.22      12.25      11.27      14.76       3.52       3.40       4.84       7.51 |    100.00 
+                      |    what are you most likely to study in
+   race/ethnicity for |                   college
+       the main brief |  Business  Engineeri  Natural s  Social sc |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |     12.39      14.60      13.72      13.72 |    100.00 
+Black/African America |     10.19      15.28      14.72      12.26 |    100.00 
+      Hispanic/Latinx |     10.22      12.94      13.13      12.44 |    100.00 
+             Filipino |      9.87      20.17      14.59      10.73 |    100.00 
+                Asian |      8.81      26.70      23.65      10.65 |    100.00 
+                Other |      9.34      21.43      20.33       9.89 |    100.00 
+   White/Non-Hispanic |     10.04      15.86      19.01      13.32 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     10.00      16.23      16.22      12.25 |    100.00 
 
-  gender for the main |                                 what are you most likely to study in college
-                brief |  Business  Engineeri  Natural s  Social sc  Humanitie  Health sc  Education  Applied s  Public se  Undecided |     Total
-----------------------+--------------------------------------------------------------------------------------------------------------+----------
-            cis woman |      9.53       7.78      18.45      14.68      11.21      19.83       4.89       1.23       5.29       7.11 |    100.00 
-              cis man |     12.13      29.99      12.17       7.82       8.91       7.94       1.35       6.96       4.31       8.42 |    100.00 
-       gender variant |      3.00      12.25      18.75      15.50      27.00       8.00       3.00       3.50       3.25       5.75 |    100.00 
-unsure/prefer not to  |      6.78      20.34      20.34      11.86      15.82       7.91       2.82       2.26       3.95       7.91 |    100.00 
-----------------------+--------------------------------------------------------------------------------------------------------------+----------
-                Total |     10.04      16.18      16.29      12.23      11.34      14.71       3.49       3.41       4.80       7.52 |    100.00 
 
-     highest level of |
-      education among |                                 what are you most likely to study in college
-              parents |  Business  Engineeri  Natural s  Social sc  Humanitie  Health sc  Education  Applied s  Public se  Undecided |     Total
-----------------------+--------------------------------------------------------------------------------------------------------------+----------
-Did not complete high |     11.55      13.38      12.50      12.35       7.75      17.47       5.19       4.02       7.09       8.70 |    100.00 
-  High school diploma |     11.00      12.46      13.16      12.97       9.92      17.93       4.26       3.94       5.79       8.58 |    100.00 
-Some college, no coll |      9.70      15.69      13.31      12.49      12.69      16.10       4.33       3.92       5.37       6.40 |    100.00 
-     Associate degree |     10.00      13.78      13.78      10.89      11.33      19.11       2.89       4.22       6.22       7.78 |    100.00 
-    Bachelor's degree |     10.37      17.94      22.79      12.28      12.50      11.47       1.84       1.84       2.94       6.03 |    100.00 
-Graduate/Professional |      7.29      23.80      21.87      12.93      14.31       9.22       1.99       2.06       2.13       4.40 |    100.00 
-           Don't know |     10.94      11.20       8.59       6.77      11.20      15.36       3.91       7.55       6.51      17.97 |    100.00 
-----------------------+--------------------------------------------------------------------------------------------------------------+----------
-                Total |     10.04      16.22      16.27      12.23      11.34      14.71       3.47       3.41       4.82       7.49 |    100.00 
+                      |    what are you most likely to study in
+   race/ethnicity for |                   college
+       the main brief | Humanitie  Health sc  Education  Applied s |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |     11.95      14.60       4.42       3.54 |    100.00 
+Black/African America |     13.21      16.98       2.45       3.02 |    100.00 
+      Hispanic/Latinx |     10.16      16.75       4.50       4.21 |    100.00 
+             Filipino |      9.87      21.03       2.15       2.15 |    100.00 
+                Asian |      9.77      10.47       1.22       2.44 |    100.00 
+                Other |      8.24      14.84       1.65       2.20 |    100.00 
+   White/Non-Hispanic |     14.99      11.24       3.48       2.54 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     11.27      14.76       3.52       3.40 |    100.00 
+
+
+                      |   what are you most
+                      |  likely to study in
+   race/ethnicity for |        college
+       the main brief | Public se  Undecided |     Total
+----------------------+----------------------+----------
+American Indian/Alask |      4.87       6.19 |    100.00 
+Black/African America |      4.53       7.36 |    100.00 
+      Hispanic/Latinx |      6.72       8.92 |    100.00 
+             Filipino |      2.58       6.87 |    100.00 
+                Asian |      0.87       5.41 |    100.00 
+                Other |      5.49       6.59 |    100.00 
+   White/Non-Hispanic |      3.48       6.02 |    100.00 
+----------------------+----------------------+----------
+                Total |      4.84       7.51 |    100.00 
+
+                      |    what are you most likely to study in
+  gender for the main |                   college
+                brief |  Business  Engineeri  Natural s  Social sc |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      9.53       7.78      18.45      14.68 |    100.00 
+              cis man |     12.13      29.99      12.17       7.82 |    100.00 
+       gender variant |      3.00      12.25      18.75      15.50 |    100.00 
+unsure/prefer not to  |      6.78      20.34      20.34      11.86 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     10.04      16.18      16.29      12.23 |    100.00 
+
+
+                      |    what are you most likely to study in
+  gender for the main |                   college
+                brief | Humanitie  Health sc  Education  Applied s |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |     11.21      19.83       4.89       1.23 |    100.00 
+              cis man |      8.91       7.94       1.35       6.96 |    100.00 
+       gender variant |     27.00       8.00       3.00       3.50 |    100.00 
+unsure/prefer not to  |     15.82       7.91       2.82       2.26 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     11.34      14.71       3.49       3.41 |    100.00 
+
+
+                      |   what are you most
+                      |  likely to study in
+  gender for the main |        college
+                brief | Public se  Undecided |     Total
+----------------------+----------------------+----------
+            cis woman |      5.29       7.11 |    100.00 
+              cis man |      4.31       8.42 |    100.00 
+       gender variant |      3.25       5.75 |    100.00 
+unsure/prefer not to  |      3.95       7.91 |    100.00 
+----------------------+----------------------+----------
+                Total |      4.80       7.52 |    100.00 
+
+     highest level of |    what are you most likely to study in
+      education among |                   college
+              parents |  Business  Engineeri  Natural s  Social sc |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |     11.55      13.38      12.50      12.35 |    100.00 
+  High school diploma |     11.00      12.46      13.16      12.97 |    100.00 
+Some college, no coll |      9.70      15.69      13.31      12.49 |    100.00 
+     Associate degree |     10.00      13.78      13.78      10.89 |    100.00 
+    Bachelor's degree |     10.37      17.94      22.79      12.28 |    100.00 
+Graduate/Professional |      7.29      23.80      21.87      12.93 |    100.00 
+           Don't know |     10.94      11.20       8.59       6.77 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     10.04      16.22      16.27      12.23 |    100.00 
+
+
+     highest level of |    what are you most likely to study in
+      education among |                   college
+              parents | Humanitie  Health sc  Education  Applied s |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      7.75      17.47       5.19       4.02 |    100.00 
+  High school diploma |      9.92      17.93       4.26       3.94 |    100.00 
+Some college, no coll |     12.69      16.10       4.33       3.92 |    100.00 
+     Associate degree |     11.33      19.11       2.89       4.22 |    100.00 
+    Bachelor's degree |     12.50      11.47       1.84       1.84 |    100.00 
+Graduate/Professional |     14.31       9.22       1.99       2.06 |    100.00 
+           Don't know |     11.20      15.36       3.91       7.55 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |     11.34      14.71       3.47       3.41 |    100.00 
+
+
+                      |   what are you most
+     highest level of |  likely to study in
+      education among |        college
+              parents | Public se  Undecided |     Total
+----------------------+----------------------+----------
+Did not complete high |      7.09       8.70 |    100.00 
+  High school diploma |      5.79       8.58 |    100.00 
+Some college, no coll |      5.37       6.40 |    100.00 
+     Associate degree |      6.22       7.78 |    100.00 
+    Bachelor's degree |      2.94       6.03 |    100.00 
+Graduate/Professional |      2.13       4.40 |    100.00 
+           Don't know |      6.51      17.97 |    100.00 
+----------------------+----------------------+----------
+                Total |      4.82       7.49 |    100.00 
 
 . 
 . /* Figure 8: prop_online_class */
 . tab prop_online_class
 
-   how many |
+   How many |
     college |
  classes do |
 you plan to |
@@ -799,42 +1209,98 @@ take online |      Freq.     Percent        Cum.
   2.  tab `var' prop_online_class, nofreq row
   3. }
 
-   race/ethnicity for |  how many college classes do you plan to take online
-       the main brief |       All       Most       Half  One or tw       None |     Total
-----------------------+-------------------------------------------------------+----------
-American Indian/Alask |      3.98       6.64       7.52      42.92      38.94 |    100.00 
-Black/African America |      0.94       4.32      10.53      40.79      43.42 |    100.00 
-      Hispanic/Latinx |      2.54       4.89       8.29      45.25      39.04 |    100.00 
-             Filipino |      1.70       2.55      10.21      48.51      37.02 |    100.00 
-                Asian |      0.88       2.98       6.74      47.46      41.94 |    100.00 
-                Other |      4.42       5.52       7.73      44.20      38.12 |    100.00 
-   White/Non-Hispanic |      1.00       4.01       7.55      37.07      50.37 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      1.93       4.38       8.09      43.66      41.93 |    100.00 
+                      |   How many college classes do you plan to
+   race/ethnicity for |                 take online
+       the main brief |       All       Most       Half  One or tw |     Total
+----------------------+--------------------------------------------+----------
+American Indian/Alask |      3.98       6.64       7.52      42.92 |    100.00 
+Black/African America |      0.94       4.32      10.53      40.79 |    100.00 
+      Hispanic/Latinx |      2.54       4.89       8.29      45.25 |    100.00 
+             Filipino |      1.70       2.55      10.21      48.51 |    100.00 
+                Asian |      0.88       2.98       6.74      47.46 |    100.00 
+                Other |      4.42       5.52       7.73      44.20 |    100.00 
+   White/Non-Hispanic |      1.00       4.01       7.55      37.07 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      1.93       4.38       8.09      43.66 |    100.00 
 
-  gender for the main |  how many college classes do you plan to take online
-                brief |       All       Most       Half  One or tw       None |     Total
-----------------------+-------------------------------------------------------+----------
-            cis woman |      1.91       4.66       7.92      45.81      39.70 |    100.00 
-              cis man |      1.98       3.96       8.10      40.26      45.71 |    100.00 
-       gender variant |      2.25       3.50       8.75      44.00      41.50 |    100.00 
-unsure/prefer not to  |      1.13       4.52       9.04      40.68      44.63 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      1.93       4.34       8.05      43.62      42.05 |    100.00 
 
-     highest level of |
-      education among |  how many college classes do you plan to take online
-              parents |       All       Most       Half  One or tw       None |     Total
-----------------------+-------------------------------------------------------+----------
-Did not complete high |      2.55       5.61       7.43      47.52      36.88 |    100.00 
-  High school diploma |      2.60       4.44       9.84      46.48      36.63 |    100.00 
-Some college, no coll |      2.05       5.03      10.47      44.97      37.47 |    100.00 
-     Associate degree |      1.77       8.85      11.95      39.60      37.83 |    100.00 
-    Bachelor's degree |      1.62       2.94       6.02      43.57      45.85 |    100.00 
-Graduate/Professional |      0.48       2.07       5.17      36.85      55.44 |    100.00 
-           Don't know |      3.64       6.49       9.87      45.71      34.29 |    100.00 
-----------------------+-------------------------------------------------------+----------
-                Total |      1.94       4.37       8.03      43.65      42.00 |    100.00 
+                      |  How many
+                      |  college
+                      | classes do
+                      |  you plan
+                      |  to take
+   race/ethnicity for |   online
+       the main brief |      None |     Total
+----------------------+-----------+----------
+American Indian/Alask |     38.94 |    100.00 
+Black/African America |     43.42 |    100.00 
+      Hispanic/Latinx |     39.04 |    100.00 
+             Filipino |     37.02 |    100.00 
+                Asian |     41.94 |    100.00 
+                Other |     38.12 |    100.00 
+   White/Non-Hispanic |     50.37 |    100.00 
+----------------------+-----------+----------
+                Total |     41.93 |    100.00 
+
+                      |   How many college classes do you plan to
+  gender for the main |                 take online
+                brief |       All       Most       Half  One or tw |     Total
+----------------------+--------------------------------------------+----------
+            cis woman |      1.91       4.66       7.92      45.81 |    100.00 
+              cis man |      1.98       3.96       8.10      40.26 |    100.00 
+       gender variant |      2.25       3.50       8.75      44.00 |    100.00 
+unsure/prefer not to  |      1.13       4.52       9.04      40.68 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      1.93       4.34       8.05      43.62 |    100.00 
+
+
+                      |  How many
+                      |  college
+                      | classes do
+                      |  you plan
+                      |  to take
+  gender for the main |   online
+                brief |      None |     Total
+----------------------+-----------+----------
+            cis woman |     39.70 |    100.00 
+              cis man |     45.71 |    100.00 
+       gender variant |     41.50 |    100.00 
+unsure/prefer not to  |     44.63 |    100.00 
+----------------------+-----------+----------
+                Total |     42.05 |    100.00 
+
+     highest level of |   How many college classes do you plan to
+      education among |                 take online
+              parents |       All       Most       Half  One or tw |     Total
+----------------------+--------------------------------------------+----------
+Did not complete high |      2.55       5.61       7.43      47.52 |    100.00 
+  High school diploma |      2.60       4.44       9.84      46.48 |    100.00 
+Some college, no coll |      2.05       5.03      10.47      44.97 |    100.00 
+     Associate degree |      1.77       8.85      11.95      39.60 |    100.00 
+    Bachelor's degree |      1.62       2.94       6.02      43.57 |    100.00 
+Graduate/Professional |      0.48       2.07       5.17      36.85 |    100.00 
+           Don't know |      3.64       6.49       9.87      45.71 |    100.00 
+----------------------+--------------------------------------------+----------
+                Total |      1.94       4.37       8.03      43.65 |    100.00 
+
+
+                      |  How many
+                      |  college
+                      | classes do
+                      |  you plan
+     highest level of |  to take
+      education among |   online
+              parents |      None |     Total
+----------------------+-----------+----------
+Did not complete high |     36.88 |    100.00 
+  High school diploma |     36.63 |    100.00 
+Some college, no coll |     37.47 |    100.00 
+     Associate degree |     37.83 |    100.00 
+    Bachelor's degree |     45.85 |    100.00 
+Graduate/Professional |     55.44 |    100.00 
+           Don't know |     34.29 |    100.00 
+----------------------+-----------+----------
+                Total |     42.00 |    100.00 
 
 . 
 . /* Figure 9: worries */
@@ -842,7 +1308,7 @@ Graduate/Professional |      0.48       2.07       5.17      36.85      55.44 | 
   2.         tab `y'
   3. }
 
-   how worried are |
+   How worried are |
          you about |
    performing well |
       academically |      Freq.     Percent        Cum.
@@ -854,7 +1320,7 @@ Not at all worried |      1,342       16.86       16.86
 -------------------+-----------------------------------
              Total |      7,958      100.00
 
-   how worried are |
+   How worried are |
          you about |
   balancing family |
        obligations |      Freq.     Percent        Cum.
@@ -866,7 +1332,7 @@ Not at all worried |      2,913       36.68       36.68
 -------------------+-----------------------------------
              Total |      7,941      100.00
 
-   how worried are |
+   How worried are |
  you about finding |
          community |      Freq.     Percent        Cum.
 -------------------+-----------------------------------
@@ -877,7 +1343,7 @@ Not at all worried |      2,123       26.76       26.76
 -------------------+-----------------------------------
              Total |      7,934      100.00
 
-   how worried are |
+   How worried are |
   you about living |
     away from home |      Freq.     Percent        Cum.
 -------------------+-----------------------------------
@@ -888,7 +1354,7 @@ Not at all worried |      3,645       45.86       45.86
 -------------------+-----------------------------------
              Total |      7,948      100.00
 
- how worried about |
+ How worried about |
    having adequate |
        support for |
      emotional and |
@@ -948,15 +1414,21 @@ All
   3. }
 
 . 
-. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("academic" "family" "community" "away" "support" "race" "gender" "religion") nonum noline varwidth(20)
+. esttab, nostar not b(a3) coeflabels(_cons "All") mtitles("academic" "family" 
+> "community" "away" "support" "race" "gender" "religion") nonum noline varwidt
+> h(20)
 
-                         academic       family    community         away      support
-All                         0.189        0.106        0.163       0.0970        0.116
-N                            7958         7941         7934         7948         7944
+                         academic       family    community         away      s
+> upport
+All                         0.189        0.106        0.163       0.0970       
+>  0.116
+N                            7958         7941         7934         7948       
+>   7944
 
 . 
 . * Updating Table 3 & 4
-. foreach cat in race_brief gender_brief_main parent_edu { // foreach crosstab variable
+. foreach cat in race_brief gender_brief_main parent_edu { // foreach crosstab 
+> variable
   2.         * Table 3
 .         foreach y in $nfaworries {
   3.                 tab `cat' v_`y', row nofreq
@@ -1499,7 +1971,8 @@ Graduate/Professional |     1,187        261 |     1,448
   3.         foreach val in `vals'{
   4.                 local oldlbl: label (`var') `val'
   5.                 qui count if `var' == `val'
-  6.                 label define new_`var'_lbl `val' "`oldlbl' (N=`r(N)')", add
+  6.                 label define new_`var'_lbl `val' "`oldlbl' (N=`r(N)')", ad
+> d
   7.         }
   8. label val `var' new_`var'_lbl
   9. }
@@ -1515,7 +1988,8 @@ delimiter now ;
 >                 percentages missing
 >                 title("$`var'", span size(medium))
 >                 ;
-  3.                 // note: percentages option make the graph shows the within percentages
+  3.                 // note: percentages option make the graph shows the withi
+> n percentages
 >         #delimit cr 
 delimiter now cr
 .         graph export "$csacprojdir/fig/learn/brief/`var'.png", replace
@@ -1530,10 +2004,12 @@ delimiter now ;
 >                         percentages missing
 >                         title("$`var'", span size(medium))
 >                         ;
-  7.                         // note: percentages option make the graph shows the within percentages
+  7.                         // note: percentages option make the graph shows t
+> he within percentages
 >                 #delimit cr 
 delimiter now cr
-.                 graph export "$csacprojdir/fig/learn/brief/`var'X`cat'.png", replace
+.                 graph export "$csacprojdir/fig/learn/brief/`var'X`cat'.png", 
+> replace
   8.                 }
   9.         }
  10. }
@@ -1550,11 +2026,13 @@ delimiter now cr
 . 
 . 
 . 
-. ********************************* End Main ************************************
+. ********************************* End Main **********************************
+> **
 . 
 . log close
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.log
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/learn/brief.
+> log
   log type:  text
- closed on:  13 May 2024, 15:01:24
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:24:24
+-------------------------------------------------------------------------------

@@ -1,0 +1,38 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> make_csac_data.txt
+  log type:  text
+ opened on:  20 Jun 2026, 14:25:01
+
+. 
+. // import Jaime's dataset with CSAC admin data merged on 
+. use $csacprojdir/dta/cln/csac_hs_senior_2023_brief_admin.dta, clear 
+
+. // keep only matched records
+. keep if _mergexwalk == 3
+(1,142 observations deleted)
+
+. // csac admin data with qualtrics response id
+. keep idunique -  id 
+
+. drop if mi(idunique)
+(0 observations deleted)
+
+. 
+. save $csacprojdir/dta/cln/csac_admin, replace 
+file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_admin.dta
+    saved
+
+. 
+. 
+. 
+. 
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> make_csac_data.txt
+  log type:  text
+ closed on:  20 Jun 2026, 14:25:01
+-------------------------------------------------------------------------------

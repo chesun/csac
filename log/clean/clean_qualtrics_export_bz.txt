@@ -1,8 +1,9 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_qualtrics_export_bz.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_
+> qualtrics_export_bz.txt
   log type:  text
- opened on:   5 Feb 2026, 17:48:38
+ opened on:  20 Jun 2026, 14:24:17
 
 . 
 .         
@@ -25,14 +26,17 @@
 
 . 
 . 
-. // import csv data, variable names in first row, discard row 2 and 3 (question names and import tags, not data)
-. import delimited "$csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv", varnames(1) rowrange(4:) clear
+. // import csv data, variable names in first row, discard row 2 and 3 (questio
+> n names and import tags, not data)
+. import delimited "$csacrawdatadir/csac_hs_senior_2023_export_07_05_2023.csv",
+>  varnames(1) rowrange(4:) clear
 (encoding automatically selected: UTF-8)
 (249 vars, 19,238 obs)
 
 . 
 . // drop unused variables
-. drop status recipientfirstname recipientlastname recipientemail externalreference distributionchannel userlanguage
+. drop status recipientfirstname recipientlastname recipientemail externalrefer
+> ence distributionchannel userlanguage
 
 . drop *firstclick *lastclick *clickcount
 
@@ -77,7 +81,8 @@
 . 
 .         
 . /*
-> // preserve dataset: Only Christina has the access to raw data category. Baiyu commented it out.
+> // preserve dataset: Only Christina has the access to raw data category. Baiy
+> u commented it out.
 > preserve
 > 
 > 
@@ -171,20 +176,24 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q8_pagesubmit t_hear_import_aid
 
-. label var t_hear_import_aid "time spent on 'how did you hear about the importance of fin aid app', in seconds"
+. label var t_hear_import_aid "time spent on 'how did you hear about the import
+> ance of fin aid app', in seconds"
 
 . rename q9 hear_import_aid
 
-. label var hear_import_aid "how did you hear about the importance of fin aid app"
+. label var hear_import_aid "how did you hear about the importance of fin aid a
+> pp"
 
 . rename q9_7_text hear_import_aid_other
 
-. label var hear_import_aid_other "other: specify for how did you hear about importance of fin aid"
+. label var hear_import_aid_other "other: specify for how did you hear about im
+> portance of fin aid"
 
 . 
 . rename q10_pagesubmit t_hs_req_fafsa
 
-. label var t_hs_req_fafsa "time spent on 'did your high school require FAFSA', in seconds"
+. label var t_hs_req_fafsa "time spent on 'did your high school require FAFSA',
+>  in seconds"
 
 . rename q11 hs_req_fafsa
 
@@ -193,7 +202,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q12_pagesubmit t_fafsa_support
 
-. label var t_fafsa_support "time spent on 'support you received completing FAFSA', in seconds"
+. label var t_fafsa_support "time spent on 'support you received completing FAF
+> SA', in seconds"
 
 . rename q13 fafsa_support
 
@@ -204,7 +214,8 @@ duration_sec: all characters numeric; replaced as long
 . // college plans
 . rename q14_pagesubmit t_college_fall
 
-. label var t_college_fall "time spent on 'do you plan to attend college in the fall', in seconds"
+. label var t_college_fall "time spent on 'do you plan to attend college in the
+>  fall', in seconds"
 
 . rename q15 college_fall
 
@@ -213,7 +224,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q16_pagesubmit t_where_college
 
-. label var t_where_college "time spent on 'where do you plan to attend college in the fall', in seconds"
+. label var t_where_college "time spent on 'where do you plan to attend college
+>  in the fall', in seconds"
 
 . rename q17 where_college
 
@@ -222,7 +234,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q18_pagesubmit t_college_contact
 
-. label var t_college_contact "time spent on 'has your college contacted you about fin aid', in seconds"
+. label var t_college_contact "time spent on 'has your college contacted you ab
+> out fin aid', in seconds"
 
 . rename q19 college_contact
 
@@ -231,17 +244,20 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q20_pagesubmit t_college_contact_item
 
-. label var t_college_contact_item "time spent on 'has your college contacted about following about aid', in seconds"
+. label var t_college_contact_item "time spent on 'has your college contacted a
+> bout following about aid', in seconds"
 
 . rename q21 college_contact_item
 
-. label var college_contact_item "has your college contacted you about following about aid"
+. label var college_contact_item "has your college contacted you about followin
+> g about aid"
 
 . 
 . // if not college
 . rename q22_pagesubmit t_fall_plan
 
-. label var t_fall_plan "time spent on 'what you plan to do this fall', in seconds"
+. label var t_fall_plan "time spent on 'what you plan to do this fall', in seco
+> nds"
 
 . rename q23 fall_plan
 
@@ -252,17 +268,20 @@ duration_sec: all characters numeric; replaced as long
 . // if idk college
 . rename q24_pagesubmit t_inf_no_college
 
-. label var t_inf_no_college "time spent on 'which might influence decision not to attend college', in seconds"
+. label var t_inf_no_college "time spent on 'which might influence decision not
+>  to attend college', in seconds"
 
 . rename q25 inf_no_college
 
-. label var inf_no_college "which of these might influence your decision not to attend college"
+. label var inf_no_college "which of these might influence your decision not to
+>  attend college"
 
 . 
 . // summer shcool plans
 . rename q26_pagesubmit t_plan_summer_class
 
-. label var t_plan_summer_class "time spent on 'do you plan to take summer college class', in seconds"
+. label var t_plan_summer_class "time spent on 'do you plan to take summer coll
+> ege class', in seconds"
 
 . rename q27 plan_summer_class
 
@@ -276,13 +295,15 @@ duration_sec: all characters numeric; replaced as long
 
 . rename q30 likely_summer_class
 
-. label var likely_summer_class "after summer nudge how likely to take summer classes"
+. label var likely_summer_class "after summer nudge how likely to take summer c
+> lasses"
 
 . 
 . // majors and paying for college
 . rename q31_pagesubmit t_major
 
-. label var t_major "time spent on 'what are you most likely to study in college, in seconds"
+. label var t_major "time spent on 'what are you most likely to study in colleg
+> e, in seconds"
 
 . rename q32 major
 
@@ -291,7 +312,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q33_pagesubmit t_pay_plan
 
-. label var t_pay_plan "time spent on 'how do you plan to pay for college', in seconds"
+. label var t_pay_plan "time spent on 'how do you plan to pay for college', in 
+> seconds"
 
 . rename q34 pay_plan
 
@@ -301,7 +323,8 @@ duration_sec: all characters numeric; replaced as long
 . // student loan
 . rename q36_pagesubmit t_loan_pay_10k
 
-. label var t_loan_pay_10k "time spent on 'how much do you have to pay back if you borrow 10k', in seconds"
+. label var t_loan_pay_10k "time spent on 'how much do you have to pay back if 
+> you borrow 10k', in seconds"
 
 . rename q37_1 loan_pay_10k
 
@@ -310,7 +333,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q38_pagesubmit t_loan_pay_50k
 
-. label var t_loan_pay_50k "time spent on 'how much do you have to pay back if you borrow 50k', in seconds"
+. label var t_loan_pay_50k "time spent on 'how much do you have to pay back if 
+> you borrow 50k', in seconds"
 
 . rename q39_1 loan_pay_50k
 
@@ -319,7 +343,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q40_pagesubmit t_loan_borrow_amount
 
-. label var t_loan_borrow_amount "time spent on 'how much do you plan to borrow', in seconds"
+. label var t_loan_borrow_amount "time spent on 'how much do you plan to borrow
+> ', in seconds"
 
 . rename q41 loan_borrow_amount
 
@@ -329,7 +354,8 @@ duration_sec: all characters numeric; replaced as long
 . // college experience expectation
 . rename q42_pagesubmit t_highest_degree
 
-. label var t_highest_degree "time spent on 'what is the highest degree you hope to complete', in seconds"
+. label var t_highest_degree "time spent on 'what is the highest degree you hop
+> e to complete', in seconds"
 
 . rename q43 highest_degree
 
@@ -338,7 +364,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q44_pagesubmit t_worry
 
-. label var t_worry "time spent on 'how worried about following in college' (not discrim), in seconds"
+. label var t_worry "time spent on 'how worried about following in college' (no
+> t discrim), in seconds"
 
 . 
 . rename tuition worry_tuition
@@ -351,7 +378,8 @@ duration_sec: all characters numeric; replaced as long
 
 . rename academic worry_academic
 
-. label var worry_academic "How worried are you about performing well academically"
+. label var worry_academic "How worried are you about performing well academica
+> lly"
 
 . rename work worry_work
 
@@ -359,7 +387,8 @@ duration_sec: all characters numeric; replaced as long
 
 . rename family worry_family
 
-. label var worry_family "How worried are you about balancing family obligations"
+. label var worry_family "How worried are you about balancing family obligation
+> s"
 
 . rename community worry_community
 
@@ -371,10 +400,12 @@ duration_sec: all characters numeric; replaced as long
 
 . rename support worry_support
 
-. label var worry_support "How worried about having adequate support for emotional and mental health needs"
+. label var worry_support "How worried about having adequate support for emotio
+> nal and mental health needs"
 
 . 
-. // note: there is not a timing question for worry about discrimination in college
+. // note: there is not a timing question for worry about discrimination in col
+> lege
 . rename race worry_race
 
 . label var worry_race "How worried about discrimination based on race"
@@ -385,7 +416,8 @@ duration_sec: all characters numeric; replaced as long
 
 . rename so worry_so
 
-. label var worry_so "How worried about discrimination based on sexual orientation"
+. label var worry_so "How worried about discrimination based on sexual orientat
+> ion"
 
 . rename religion worry_religion
 
@@ -395,7 +427,8 @@ duration_sec: all characters numeric; replaced as long
 . // note: there is no timing question for the number of online class question
 . rename q47 prop_online_class
 
-. label var prop_online_class "How many college classes do you plan to take online"
+. label var prop_online_class "How many college classes do you plan to take onl
+> ine"
 
 . 
 . // CCC full time nudge
@@ -412,7 +445,8 @@ duration_sec: all characters numeric; replaced as long
 . // high school experience
 . rename q52_pagesubmit t_hs_academic
 
-. label var t_hs_academic "time spent on 'how do you rate HS academic experience', in seconds"
+. label var t_hs_academic "time spent on 'how do you rate HS academic experienc
+> e', in seconds"
 
 . rename q53 hs_academic
 
@@ -421,7 +455,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q54_pagesubmit t_hs_social
 
-. label var t_hs_social "time spent on 'how do you rate HS social experience', in seconds"
+. label var t_hs_social "time spent on 'how do you rate HS social experience', 
+> in seconds"
 
 . rename q55 hs_social
 
@@ -431,7 +466,8 @@ duration_sec: all characters numeric; replaced as long
 . // high school belonging
 . rename q56_pagesubmit t_hs_belong
 
-. label var t_hs_belong "Time spent on high school belonging questions, in seconds"
+. label var t_hs_belong "Time spent on high school belonging questions, in seco
+> nds"
 
 . rename q57_1 hs_community_belong
 
@@ -453,27 +489,33 @@ duration_sec: all characters numeric; replaced as long
 . // high school bullying
 . rename q58_pagesubmit t_times_bullied
 
-. label var t_times_bullied "time spent on 'in last 12 months how many times were you bullied', in seconds"
+. label var t_times_bullied "time spent on 'in last 12 months how many times we
+> re you bullied', in seconds"
 
 . rename q59 times_bullied
 
-. label var times_bullied "Number of times bullied or harassed at school last 12 months"
+. label var times_bullied "Number of times bullied or harassed at school last 1
+> 2 months"
 
 . 
-.     // reasons bullied was displayed only if number of times bullied in previous question was greater than 0
+.     // reasons bullied was displayed only if number of times bullied in previ
+> ous question was greater than 0
 .     rename q60_pagesubmit t_reasons_bullied
 
-.     label var t_reasons_bullied "time spent on 'were you bullied for any of following reasons', in seconds"
+.     label var t_reasons_bullied "time spent on 'were you bullied for any of f
+> ollowing reasons', in seconds"
 
 .     rename q61 reasons_bullied
 
-.     label var reasons_bullied "In last 12 months were you harassed or bullied for any of the following reasons"
+.     label var reasons_bullied "In last 12 months were you harassed or bullied
+>  for any of the following reasons"
 
 . 
 . // demographics
 . rename q62_pagesubmit t_hs_type
 
-. label var t_hs_type "time spent on 'type of hs you are graduating from', in seconds"
+. label var t_hs_type "time spent on 'type of hs you are graduating from', in s
+> econds"
 
 . rename q63 hs_type
 
@@ -482,7 +524,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q64_pagesubmit t_intro_demo
 
-. label var t_intro_demo "time spent on the introduction paragraph for demographics section, in seconds"
+. label var t_intro_demo "time spent on the introduction paragraph for demograp
+> hics section, in seconds"
 
 . 
 . rename q66_pagesubmit t_race
@@ -494,7 +537,8 @@ duration_sec: all characters numeric; replaced as long
 . label var race "race/ethnicity"
 
 . 
-. /* note: there was a page break between the timing question (q68) and the parent education question (q69)
+. /* note: there was a page break between the timing question (q68) and the par
+> ent education question (q69)
 > so the time spent on parent education question was not captured */
 . drop q68_pagesubmit 
 
@@ -506,16 +550,19 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q70_pagesubmit t_primary_english
 
-. label var t_primary_english "time spent on 'was English primary language at home', in seconds"
+. label var t_primary_english "time spent on 'was English primary language at h
+> ome', in seconds"
 
 . rename q71 primary_english
 
-. label var primary_english "growing up was English the primary language spoken at home"
+. label var primary_english "growing up was English the primary language spoken
+>  at home"
 
 . 
 . rename q72_pagesubmit t_primary_lang
 
-. label var t_primary_lang "time spent on 'what was primary language at home when growing up', in seconds"
+. label var t_primary_lang "time spent on 'what was primary language at home wh
+> en growing up', in seconds"
 
 . rename q73 primary_lang
 
@@ -524,14 +571,16 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q74_pagesubmit t_has_job
 
-. label var t_has_job "time spent on 'do you currentlly have a job', in seconds"
+. label var t_has_job "time spent on 'do you currentlly have a job', in seconds
+> "
 
 . rename q75 has_job
 
 . label var has_job "do you currently have job"
 
 . 
-.     // there is no timing for this question; displayed only if previous question answer is yes
+.     // there is no timing for this question; displayed only if previous quest
+> ion answer is yes
 .     rename q76 hours_job
 
 .     label var hours_job "how many hours a wekk do you work at your job"
@@ -539,7 +588,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q77_pagesubmit t_asab
 
-. label var t_asab "time spent on 'what is your assigned sex at birth', in seconds"
+. label var t_asab "time spent on 'what is your assigned sex at birth', in seco
+> nds"
 
 . rename q78 asab
 
@@ -548,7 +598,8 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q79_pagesubmit t_gender
 
-. label var t_gender "time spent on 'what is yoru current gender identity', in seconds"
+. label var t_gender "time spent on 'what is yoru current gender identity', in 
+> seconds"
 
 . rename q80 gender
 
@@ -574,11 +625,13 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q83_pagesubmit t_followup
 
-. label var t_followup "time spent on 'woudl you like to participate in future interviews', in seconds"
+. label var t_followup "time spent on 'woudl you like to participate in future 
+> interviews', in seconds"
 
 . rename q84 followup
 
-. label var followup "would you like to participate in future interview about transition to college"
+. label var followup "would you like to participate in future interview about t
+> ransition to college"
 
 . 
 . // fall email question is already renamed when creating identifier crosswalk
@@ -591,7 +644,8 @@ duration_sec: all characters numeric; replaced as long
 . // open ended why not college
 . rename q87_pagesubmit t_college_whynot
 
-. label var t_college_whynot "time spent on 'why not planning to attend college in fall', in seconds"
+. label var t_college_whynot "time spent on 'why not planning to attend college
+>  in fall', in seconds"
 
 . rename q88 college_whynot
 
@@ -601,7 +655,8 @@ duration_sec: all characters numeric; replaced as long
 . // open ended college expectation
 . rename q89_pagesubmit t_college_excited
 
-. label var t_college_excited "time spent on 'what are you most excited about college', in seconds"
+. label var t_college_excited "time spent on 'what are you most excited about c
+> ollege', in seconds"
 
 . rename q90 college_excited
 
@@ -610,11 +665,13 @@ duration_sec: all characters numeric; replaced as long
 . 
 . rename q91_pagesubmit t_college_challenge
 
-. label var t_college_challenge "time spent on 'what is the biggest challenge you'll face in college', in seconds"
+. label var t_college_challenge "time spent on 'what is the biggest challenge y
+> ou'll face in college', in seconds"
 
 . rename q92 college_challenge
 
-. label var college_challenge "what is the biggest challenge you'll face in college"
+. label var college_challenge "what is the biggest challenge you'll face in col
+> lege"
 
 . 
 . 
@@ -850,7 +907,8 @@ delimiter now cr
 . rename hs_req_fafsa_temp hs_req_fafsa
 
 . 
-. ****** recode: support you received in completing FAFSA/CADAA, check all that apply
+. ****** recode: support you received in completing FAFSA/CADAA, check all that
+>  apply
 . #delimit ;
 delimiter now ;
 . label define fafsa_support
@@ -927,12 +985,15 @@ delimiter now cr
 . rename college_contact_temp college_contact
 
 . 
-. ****** recode: has your college contacted you about the following regarding your financial aid?
-. /* this is a check all that reply question. It is only shown if college_contact is Yes */
+. ****** recode: has your college contacted you about the following regarding y
+> our financial aid?
+. /* this is a check all that reply question. It is only shown if college_conta
+> ct is Yes */
 . #delimit ;
 delimiter now ;
 . label define college_contact_item
->     1 "FAFSA/CADAA verification (additional documentation needed to process financial aid)"
+>     1 "FAFSA/CADAA verification (additional documentation needed to process f
+> inancial aid)"
 >     2 "Financial aid offer/award letter"
 >     3 "Eligibility for work study"
 >     4 "Information about loans"
@@ -940,7 +1001,8 @@ delimiter now ;
 
 . #delimit cr 
 delimiter now cr
-. encode college_contact_item, generate(college_contact_item_temp) label(college_contact_item)
+. encode college_contact_item, generate(college_contact_item_temp) label(colleg
+> e_contact_item)
 
 . label var college_contact_item_temp "`: var lab college_contact_item'"
 
@@ -971,9 +1033,12 @@ delimiter now cr
 . rename fall_plan_temp fall_plan
 
 . 
-. ****** recode: Which of the following might influence your decision of whether or not to attend college? 
-. /* this is check all that apply. only shown if college_fall is I don't know */
-. label define inf_no_college 1 "Financial support" 2 "Academic support" 3 "Family or other support"
+. ****** recode: Which of the following might influence your decision of whethe
+> r or not to attend college? 
+. /* this is check all that apply. only shown if college_fall is I don't know *
+> /
+. label define inf_no_college 1 "Financial support" 2 "Academic support" 3 "Fam
+> ily or other support"
 
 . encode inf_no_college, generate(inf_no_college_temp) label(inf_no_college)
 
@@ -997,7 +1062,8 @@ delimiter now ;
 
 . #delimit cr 
 delimiter now cr
-. encode plan_summer_class, generate(plan_summer_class_temp) label(plan_summer_class)
+. encode plan_summer_class, generate(plan_summer_class_temp) label(plan_summer_
+> class)
 
 . label var plan_summer_class_temp "`: var lab plan_summer_class'"
 
@@ -1006,7 +1072,8 @@ delimiter now cr
 . rename plan_summer_class_temp plan_summer_class
 
 . 
-. ****** recode: After taking this information into account, how likely are you to take college classes this summer?
+. ****** recode: After taking this information into account, how likely are you
+>  to take college classes this summer?
 . /*  this is the summer nudge question */
 . #delimit ;
 delimiter now ;
@@ -1020,7 +1087,8 @@ delimiter now ;
 
 . #delimit cr 
 delimiter now cr
-. encode likely_summer_class, generate(likely_summer_class_temp) label(likely_summer_class)
+. encode likely_summer_class, generate(likely_summer_class_temp) label(likely_s
+> ummer_class)
 
 . label var likely_summer_class_temp "`: var lab likely_summer_class"
 
@@ -1085,7 +1153,8 @@ delimiter now cr
 . ****** recode: 
 . /* Imagine that you borrowed $10,000 in student loans to pay for college. 
 > How much do you think you would actually be required to pay back? 
-> In other words, how much of these loans do you think would not be forgiven? */
+> In other words, how much of these loans do you think would not be forgiven? *
+> /
 . destring loan_pay_10k, replace 
 loan_pay_10k: all characters numeric; replaced as int
 (3370 missing values generated)
@@ -1094,13 +1163,15 @@ loan_pay_10k: all characters numeric; replaced as int
 . ****** recode:
 . /* Imagine that you borrowed $50,000 in student loans to pay for college. 
 > How much do you think you would actually be required to pay back? 
-> In other words, how much of these loans do you think would not be forgiven? */
+> In other words, how much of these loans do you think would not be forgiven? *
+> /
 . destring loan_pay_50k, replace 
 loan_pay_50k: all characters numeric; replaced as long
 (3530 missing values generated)
 
 . 
-. ****** recode: You indicated you plan to take out student loans. How much do you plan to borrow in student loans?
+. ****** recode: You indicated you plan to take out student loans. How much do 
+> you plan to borrow in student loans?
 . #delimit ;
 delimiter now ;
 . label define loan_borrow_amount
@@ -1114,7 +1185,8 @@ delimiter now ;
 
 . #delimit cr 
 delimiter now cr
-. encode loan_borrow_amount, generate(loan_borrow_amount_temp) label(loan_borrow_amount)
+. encode loan_borrow_amount, generate(loan_borrow_amount_temp) label(loan_borro
+> w_amount)
 
 . label var loan_borrow_amount_temp "`: var lab loan_borrow_amount'"
 
@@ -1124,7 +1196,8 @@ delimiter now cr
 
 . 
 . 
-. ****** recode: What is the highest degree you hope to earn after you have completed all of your schooling?
+. ****** recode: What is the highest degree you hope to earn after you have com
+> pleted all of your schooling?
 . #delimit ;
 delimiter now ;
 . label define highest_degree
@@ -1147,8 +1220,10 @@ delimiter now cr
 
 . 
 . 
-. ****** recode: When you think about college, how worried are you about the following? (matrix)
-. ****** recode: When you think about college, how worried are you about experiencing discrimination because of your: (matrix)
+. ****** recode: When you think about college, how worried are you about the fo
+> llowing? (matrix)
+. ****** recode: When you think about college, how worried are you about experi
+> encing discrimination because of your: (matrix)
 . // define value label that's common to all questions in above two categories
 . #delimit ;
 delimiter now ;
@@ -1170,7 +1245,8 @@ delimiter now cr
 
 . 
 . 
-. ****** recode: When thinking about your college classes, how many do you plan to take online?
+. ****** recode: When thinking about your college classes, how many do you plan
+>  to take online?
 . #delimit ;
 delimiter now ;
 . label define prop_online_class
@@ -1183,7 +1259,8 @@ delimiter now ;
 
 . #delimit cr 
 delimiter now cr
-. encode prop_online_class, generate(prop_online_class_temp) label(prop_online_class)
+. encode prop_online_class, generate(prop_online_class_temp) label(prop_online_
+> class)
 
 . label var prop_online_class_temp "`: var lab prop_online_class'"
 
@@ -1193,12 +1270,16 @@ delimiter now cr
 
 . 
 . ****** recode: CCC full time nudge 
-. /* You indicated you plan to enroll in a California Community College next year. 
-> ommunity college students eligible for the Cal Grant can receive as much as $8000 a year 
-> in extra grant aid for taking 15 units each term (4-5 classes). This money could be used for 
+. /* You indicated you plan to enroll in a California Community College next ye
+> ar. 
+> ommunity college students eligible for the Cal Grant can receive as much as $
+> 8000 a year 
+> in extra grant aid for taking 15 units each term (4-5 classes). This money co
+> uld be used for 
 > living expenses and other costs, and would not need to be paid back.
 > 
-> Prior to taking this survey, did you know that Cal Grant recipients could get this additional 
+> Prior to taking this survey, did you know that Cal Grant recipients could get
+>  this additional 
 > money for enrolling in 15 units each term? */
 . label define ccc_ft_yn 0 "No" 1 "Yes"
 
@@ -1243,7 +1324,8 @@ delimiter now cr
 . /* this is a matrix question with 4 statements: 
 > hs_community_belong: I feel that I belong in my high school community  
 > hs_teacher_care: Teachers and staff at my high school care about my future
-> hs_good_advising: I received good advising from my high school about my college plans
+> hs_good_advising: I received good advising from my high school about my colle
+> ge plans
 > hs_prepared_college: I feel prepared for college
 > */
 . #delimit ;
@@ -1259,7 +1341,8 @@ delimiter now ;
 . #delimit cr 
 delimiter now cr
 . 
-. foreach v in hs_community_belong hs_teacher_care hs_good_advising hs_prepared_college {
+. foreach v in hs_community_belong hs_teacher_care hs_good_advising hs_prepared
+> _college {
   2.     encode `v', generate(`v'_temp) label(hs_belong)
   3.     label var `v'_temp "`: var lab `v''"
   4.     drop `v'
@@ -1267,7 +1350,8 @@ delimiter now cr
   6. }
 
 . 
-. ****** recode: During the past 12 months, how many times on school property were you harassed or bullied?
+. ****** recode: During the past 12 months, how many times on school property w
+> ere you harassed or bullied?
 . #delimit ;
 delimiter now ;
 . label define times_bullied
@@ -1289,7 +1373,8 @@ delimiter now cr
 . rename times_bullied_temp times_bullied
 
 . 
-.     ****** recode: During the past 12 months, were you harassed or bullied for any of the following reasons? 
+.     ****** recode: During the past 12 months, were you harassed or bullied fo
+> r any of the following reasons? 
 .     /* (Check all that apply) this is only shown if time_bullied is not 0 */
 .     #delimit ;
 delimiter now ;
@@ -1303,7 +1388,8 @@ delimiter now ;
 .     #delimit cr 
 delimiter now cr
 . 
-.     encode reasons_bullied, generate(reasons_bullied_temp) label(reasons_bullied)
+.     encode reasons_bullied, generate(reasons_bullied_temp) label(reasons_bull
+> ied)
 
 .     label var reasons_bullied_temp "`: var lab reasons_bullied'"
 
@@ -1312,7 +1398,8 @@ delimiter now cr
 .     rename reasons_bullied_temp reasons_bullied
 
 . 
-. ****** recode: Please tell us what type of high school you are graduating from:
+. ****** recode: Please tell us what type of high school you are graduating fro
+> m:
 . #delimit ;
 delimiter now ;
 . label define hs_type
@@ -1362,7 +1449,8 @@ delimiter now cr
 . rename race_temp race 
 
 . 
-. ****** recode: When you were growing up, was English the primary language spoken in your home?
+. ****** recode: When you were growing up, was English the primary language spo
+> ken in your home?
 . label define primary_english 0 "No" 1 "Yes"
 
 . 
@@ -1375,8 +1463,10 @@ delimiter now cr
 . rename primary_english_temp primary_english
 
 . 
-. ****** do not need to recode: What language was primarily spoken in your home when you were growing up?
-. /* this is a text entry question . it is only shown if primary_english is No */
+. ****** do not need to recode: What language was primarily spoken in your home
+>  when you were growing up?
+. /* this is a text entry question . it is only shown if primary_english is No 
+> */
 . 
 . ****** recode: Do you currently have a job?
 . label define has_job 0 "No" 1 "Yes"
@@ -1426,7 +1516,8 @@ delimiter now cr
 
 . 
 . ****** generate a var for assigned gender at birth
-. /* translate male/female from assigned sex at birth to man/woman for assigned gender at birth */
+. /* translate male/female from assigned sex at birth to man/woman for assigned
+>  gender at birth */
 . gen agab =""
 (11,441 missing values generated)
 
@@ -1642,7 +1733,8 @@ wow, not really relevant to Financial.. |          1        0.42      100.00
                                   Total |        239      100.00
 
 . 
-. // first clean the gender and so vars and gender_other and so_other text responses 
+. // first clean the gender and so vars and gender_other and so_other text resp
+> onses 
 . foreach v in gender so gender_other so_other {
   2.     // convert to upper case
 .     replace `v' = strupper(`v')
@@ -1859,17 +1951,21 @@ WOW, NOT REALLY RELEVANT TO FINANCIAL.. |          1        0.42      100.00
 > 2. GENDERFLUID:
 >     includes mentions of genderfluid  
 > 3. OTHERGNC (other gender nonconforming)
->     includes mentions of gender non conforming, androgyne, demiboy(girl), bigender, twospirit,
+>     includes mentions of gender non conforming, androgyne, demiboy(girl), big
+> ender, twospirit,
 >     agender, genderqueer
 > 4. UNSURE/QUESTIONING
->     includes mentions of unsure, unknown, uncertain, questioning, i don't know, IDK
+>     includes mentions of unsure, unknown, uncertain, questioning, i don't kno
+> w, IDK
 > 5. WOMAN
 >     includes mentions of transfem, woman, girl
 > 6. MAN
 >     includes mentions of transmasc, man, boy
-> ** NOTE: by coding nonbinary first, any mention of nonbinary transmasc/fem will be coded as nonbinary 
+> ** NOTE: by coding nonbinary first, any mention of nonbinary transmasc/fem wi
+> ll be coded as nonbinary 
 > 7. CISGENDER/OTHER
->     includes any other responses not in the previous 6 categories, such as overtly queerphobic ones, e.g. attack helicopter
+>     includes any other responses not in the previous 6 categories, such as ov
+> ertly queerphobic ones, e.g. attack helicopter
 >     assume they are cisgender 
 > */
 . #delimit ;
@@ -1950,7 +2046,8 @@ delimiter now cr
 . 
 . 
 . 
-. // create an overall gender variable that combines the free text response with the choice question
+. // create an overall gender variable that combines the free text response wit
+> h the choice question
 . gen gender_clean = gender
 (3,478 missing values generated)
 
@@ -1960,7 +2057,8 @@ delimiter now cr
 variable gender_clean was str17 now str18
 (90 real changes made)
 
-. // assume that people who responded irrelevant/quetab geerphobic text are cisgender, populate with assigned gender at birth 
+. // assume that people who responded irrelevant/quetab geerphobic text are cis
+> gender, populate with assigned gender at birth 
 . replace gender_clean = agab if gender_other_clean=="CISGENDER/OTHER"
 (16 real changes made)
 
@@ -1987,19 +2085,24 @@ UNSURE/QUESTIONING |          8        0.10       43.13
 . rename gender_other gender_other_raw
 
 . 
-. // there are 5 observations which chose "other" for gender but did not write text response. assume they are cisgender
+. // there are 5 observations which chose "other" for gender but did not write 
+> text response. assume they are cisgender
 . replace gender_clean = agab if gender_clean=="OTHER"
 (5 real changes made)
 
 . 
 . 
-. // there are 14 observations didn't answer gender identity but answered assigned sex at birth. assume "prefer not to say"
-. replace gender_clean = "PREFER NOT TO SAY" if !mi(asab) & mi(gender_clean) == 1
+. // there are 14 observations didn't answer gender identity but answered assig
+> ned sex at birth. assume "prefer not to say"
+. replace gender_clean = "PREFER NOT TO SAY" if !mi(asab) & mi(gender_clean) ==
+>  1
 (14 real changes made)
 
 . 
-. // there are 18 observations reported gender-identity but not asab. move to prefer not to say
-. replace gender_clean = "PREFER NOT TO SAY" if !mi(gender_clean) & mi(asab) == 1
+. // there are 18 observations reported gender-identity but not asab. move to p
+> refer not to say
+. replace gender_clean = "PREFER NOT TO SAY" if !mi(gender_clean) & mi(asab) ==
+>  1
 (16 real changes made)
 
 . 
@@ -2009,7 +2112,8 @@ UNSURE/QUESTIONING |          8        0.10       43.13
 > - 11 are straight
 > - 58 chose prefer not to say for sexual orientation
 > - the rest are all non-straight  
-> Therefore, there is good reason to classify them as likely to be not cisgender 
+> Therefore, there is good reason to classify them as likely to be not cisgende
+> r 
 > */
 . tab so if gender_clean=="PREFER NOT TO SAY"
 
@@ -2047,15 +2151,18 @@ UNSURE/QUESTIONING |          8        0.10       43.13
 . //-----------------------------------------------------------
 . // clean sexual orientation variables
 . //-----------------------------------------------------------
-. /* first clean the so_other free text response, collapse down to the following categories: 
+. /* first clean the so_other free text response, collapse down to the followin
+> g categories: 
 > 1. PAN/QUEER
->     includes mentions of PAN, QUEER, ANTHROSEXUAL, ANTROSEXUAL, OMNI, NOT STRAIGHT
+>     includes mentions of PAN, QUEER, ANTHROSEXUAL, ANTROSEXUAL, OMNI, NOT STR
+> AIGHT
 > 2. BISEXUAL
 >     includes mentions of BISEXUAL, BICURIOUS
 > 3. ASEXUAL
 >     includes mentions of ASEXUAL, ACE, ARO, DEMI
 > 4. UNSURE/QUESTIONING
->     includes mentions of UNSURE, UNKNOWN, UNCERTAIN, QUESTIONING, I DON'T KNOW, IDK
+>     includes mentions of UNSURE, UNKNOWN, UNCERTAIN, QUESTIONING, I DON'T KNO
+> W, IDK
 > 5. STRAIGHT/OTHER
 >     all others
 > 
@@ -2170,7 +2277,8 @@ delimiter now cr
 . 
 . 
 . 
-. ****** recode: What is the highest level of education completed among either of your parents (or those who raised you)?
+. ****** recode: What is the highest level of education completed among either 
+> of your parents (or those who raised you)?
 . #delimit ;
 delimiter now ;
 . label define parent_edu
@@ -2179,7 +2287,8 @@ delimiter now ;
 >     3 "Some college, no college degree"
 >     4 "Associate degree"
 >     5 "Bachelor's degree"
->     6 "Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, JD, MD, etc.)"
+>     6 "Graduate/Professional degree beyond Bachelor's degree (Master's, PhD, 
+> JD, MD, etc.)"
 >     7 "Don't know"
 >     ;
 
@@ -2199,7 +2308,8 @@ delimiter now cr
 . foreach v in college_whynot college_excited college_challenge {
   2.     // convert to upper case 
 .     replace `v' = strupper(`v')
-  3.     // collapse internal blanks to one space, and remove leading and trailing blanks
+  3.     // collapse internal blanks to one space, and remove leading and trail
+> ing blanks
 .     replace `v' = stritrim(`v')
   4.     replace `v' = strtrim(`v')
   5. }
@@ -2283,11 +2393,23 @@ delimiter now cr
   college_whynot is strL now coalesced
   college_excited is strL now coalesced
   college_challenge is strL now coalesced
-  (8,749,649 bytes saved)
+  (8,749,721 bytes saved)
 
 . 
-. save $csacclndatadir/csac_hs_senior_2023_clean, replace 
-file /home/research/ca_ed_lab/data/restricted_access/clean/csac_survey/2023/csac_hs_senior_2023_clean.dta saved
+. save $csacclndatadir/csac_hs_senior_2023_clean, replace
+file
+    /home/research/ca_ed_lab/data/restricted_access/clean/csac_survey/2023/cs
+    > ac_hs_senior_2023_clean.dta saved
+
+. 
+. * also save a working copy to the project dir: prep_brief.do and genderso.do
+. * read the cleaned data from $csacprojdir/dta/cln/, not $csacclndatadir
+. cap mkdir "$csacprojdir/dta/cln"
+
+. save $csacprojdir/dta/cln/csac_hs_senior_2023_clean, replace
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_
+    > 2023_clean.dta saved
 
 . 
 . 
@@ -2297,16 +2419,17 @@ file /home/research/ca_ed_lab/data/restricted_access/clean/csac_survey/2023/csac
 
 . 
 . di "Do file start date time: `date1' `time1'"
-Do file start date time:  5 Feb 2026 17:48:38
+Do file start date time: 20 Jun 2026 14:24:17
 
 . di "End date time: `date2' `time2'"
-End date time:  5 Feb 2026 17:48:44
+End date time: 20 Jun 2026 14:24:22
 
 . 
 . 
 . log close
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_qualtrics_export_bz.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/clean_
+> qualtrics_export_bz.txt
   log type:  text
- closed on:   5 Feb 2026, 17:48:44
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:24:22
+-------------------------------------------------------------------------------

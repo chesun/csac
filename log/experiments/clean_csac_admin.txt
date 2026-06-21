@@ -1,12 +1,14 @@
--------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_csac_admin.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> clean_csac_admin.txt
   log type:  text
- opened on:  11 Dec 2025, 18:20:58
+ opened on:  20 Jun 2026, 14:33:55
 
 . 
 . use $csacprojdir/dta/cln/csac_survey_ccc_merged.dta, clear
-(survey data merged to CCC credits, GPA, and SF Awards, only unique individual ma)
+(survey data merged to CCC credits, GPA, and SF Awards, only unique individual 
+> ma)
 
 . 
 . // high school GPA
@@ -56,10 +58,14 @@ derived_assets: all characters numeric; replaced as long
   2.     gen `var'_cat = .
   3.     replace `var'_cat = 99 if mi(`var')
   4.     replace `var'_cat = 1 if `var' <  -1000000 & !mi(`var')
-  5.     replace `var'_cat = 2 if `var' >= -1000000 & `var' < -500000 & !mi(`var')
-  6.     replace `var'_cat = 3 if `var' >= -500000 & `var' < -300000 & !mi(`var')
-  7.     replace `var'_cat = 4 if `var' >= -300000 & `var' < -100000 & !mi(`var')
-  8.     replace `var'_cat = 5 if `var' >= -100000 & `var' < -75000 & !mi(`var')
+  5.     replace `var'_cat = 2 if `var' >= -1000000 & `var' < -500000 & !mi(`va
+> r')
+  6.     replace `var'_cat = 3 if `var' >= -500000 & `var' < -300000 & !mi(`var
+> ')
+  7.     replace `var'_cat = 4 if `var' >= -300000 & `var' < -100000 & !mi(`var
+> ')
+  8.     replace `var'_cat = 5 if `var' >= -100000 & `var' < -75000 & !mi(`var'
+> )
   9.     replace `var'_cat = 6 if `var' >= -75000 & `var' < -50000 & !mi(`var')
  10.     replace `var'_cat = 7 if `var' >= -50000 & `var' < -25000 & !mi(`var')
  11.     replace `var'_cat = 8 if `var' >= -25000 & `var' < 0 & !mi(`var')
@@ -67,12 +73,16 @@ derived_assets: all characters numeric; replaced as long
  13.     replace `var'_cat = 10 if `var' >= 25000 & `var' < 50000 & !mi(`var')
  14.     replace `var'_cat = 11 if `var' >= 50000 & `var' < 75000 & !mi(`var')
  15.     replace `var'_cat = 12 if `var' >= 75000 & `var' < 100000 & !mi(`var')
- 16.     replace `var'_cat = 13 if `var' >= 100000 & `var' < 300000 & !mi(`var')
- 17.     replace `var'_cat = 14 if `var' >= 300000 & `var' < 500000 & !mi(`var')
- 18.     replace `var'_cat = 15 if `var' >= 500000 & `var' < 1000000 & !mi(`var')
+ 16.     replace `var'_cat = 13 if `var' >= 100000 & `var' < 300000 & !mi(`var'
+> )
+ 17.     replace `var'_cat = 14 if `var' >= 300000 & `var' < 500000 & !mi(`var'
+> )
+ 18.     replace `var'_cat = 15 if `var' >= 500000 & `var' < 1000000 & !mi(`var
+> ')
  19.     replace `var'_cat = 16 if `var' >= 1000000 & !mi(`var')
  20. 
-.     lab def `var'_cat 1 "< -1M" 2 "-1M to -500K" 3 "-500K to -300K" 4 "-300K to -100K" ///
+.     lab def `var'_cat 1 "< -1M" 2 "-1M to -500K" 3 "-500K to -300K" 4 "-300K 
+> to -100K" ///
 >         5 "-100K to -75K" 6 "-75K to -50K" 7 "-50K to -25K" 8 "-25K to 0" ///
 >         9 "0 to 25K" 10 "25K to 50K" 11 "50K to 75K" 12 "75K to 100K" ///
 >         13 "100K to 300K" 14 "300K to 500K" 15 "500K to 1M" ///
@@ -210,7 +220,8 @@ efc: all characters numeric; replaced as long
   2.     destring `g'_awd_status, replace 
   3.     gen `g'_cat = 0
   4.     replace `g'_cat = 1 if inlist(`g'_awd_status, 45, 50)
-  5.     lab def `g'_cat 0 "Missing, Ineligible or withdrawn" 1 "Qualified/Accepted"
+  5.     lab def `g'_cat 0 "Missing, Ineligible or withdrawn" 1 "Qualified/Acce
+> pted"
   6.     lab val `g'_cat `g'_cat
   7.     lab var `g'_cat "cal grant `g' status"
   8. }
@@ -247,9 +258,11 @@ pfc_mar_stat_code: all characters numeric; replaced as byte
 (1,487 real changes made)
 
 . 
-. lab def student_marital 1 "Single" 2 "Married/remarried" 3 "Separated" 4 "Divorced or widowed" 99 "Missing"
+. lab def student_marital 1 "Single" 2 "Married/remarried" 3 "Separated" 4 "Div
+> orced or widowed" 99 "Missing"
 
-. lab def parent_marital 1 "Married/remarried" 2 "Never married" 3 "Divorced/separated" ///
+. lab def parent_marital 1 "Married/remarried" 2 "Never married" 3 "Divorced/se
+> parated" ///
 >     4 "Widowed" 5 "Unmarried and both parents living together" 99 "Missing"
 
 . 
@@ -269,14 +282,17 @@ pfc_mar_stat_code: all characters numeric; replaced as byte
 
 . 
 . save $csacprojdir/dta/cln/csac_survey_ccc_merged_clean.dta, replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc_merged_clean.dta saved
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_survey_ccc
+    > _merged_clean.dta saved
 
 . 
 . 
 . 
 . log close 
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/clean_csac_admin.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/experiments/
+> clean_csac_admin.txt
   log type:  text
- closed on:  11 Dec 2025, 18:20:58
--------------------------------------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:33:56
+-------------------------------------------------------------------------------

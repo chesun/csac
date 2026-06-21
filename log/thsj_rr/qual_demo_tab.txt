@@ -3,7 +3,7 @@
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/qual
 > _demo_tab.txt
   log type:  text
- opened on:   6 Feb 2026, 20:13:35
+ opened on:  20 Jun 2026, 14:34:04
 
 . 
 . use "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", clear
@@ -82,76 +82,11 @@ Click to Open File:  /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj
 > _rr/qual_sample_demo.doc
 
 . 
-. //-----use estpost and esttab
-. * Store frequencies for each variable
-. foreach var in gender_cat so_cat race_assn parent_edu {
-  2.     estpost tabulate `var' if qual_sample==1
-  3.     estimates store demo_`var'
-  4. }
-
-  gender_cat |      e(b)     e(pct)  e(cumpct) 
--------------+---------------------------------
-Transgende~n |        50   14.45087   14.45087 
-Transgende~n |        17   4.913295   19.36416 
-  Non-binary |       215   62.13873   81.50289 
-Gender_Div~g |        64   18.49711        100 
--------------+---------------------------------
-       Total |       346        100            
-
-      so_cat |      e(b)     e(pct)  e(cumpct) 
--------------+---------------------------------
-Straight/H~l |        12   3.468208   3.468208 
-Gay_or_Les~n |        69    19.9422    23.4104 
-Bisexual/P~l |       166   47.97688   71.38728 
-Asexual/Ar~l |        41   11.84971   83.23699 
-Other/Quee~g |        38   10.98266   94.21965 
-Prefer_Not~y |        20   5.780347        100 
--------------+---------------------------------
-       Total |       346        100            
-
-   race_assn |      e(b)     e(pct)  e(cumpct) 
--------------+---------------------------------
-American_I~e |        13   3.757225   3.757225 
-Black/Afri~n |        27   7.803468   11.56069 
-Hispanic/L~x |       143   41.32948   52.89017 
-Pacific_Is~r |         5   1.445087   54.33526 
-    Filipino |        18   5.202312   59.53757 
-       Asian |        43   12.42775   71.96532 
-       Other |         3    .867052   72.83237 
-White/Non-~c |        94   27.16763        100 
--------------+---------------------------------
-       Total |       346        100            
-
-  parent_edu |      e(b)     e(pct)  e(cumpct) 
--------------+---------------------------------
-           1 |        42   12.13873   12.13873 
-           2 |        63   18.20809   30.34682 
-           3 |        59   17.05202   47.39884 
-           4 |        25   7.225434   54.62428 
-           5 |        57   16.47399   71.09827 
-           6 |        86   24.85549   95.95376 
-           7 |        14   4.046243        100 
--------------+---------------------------------
-       Total |       346        100            
-
-row labels saved in macro e(labels)
-
-. 
-. * Export all in one table
-. esttab demo_gender_cat demo_so_cat demo_race_assn demo_parent_edu ///
->     using $csacprojdir/tab/thsj_rr/qual_sample_demo.rtf, ///
->     cells("b(label(Frequency)) pct(fmt(1) label(Percent))") ///
->     title("Summary Statistics for Qualitative Response Sample") ///
->     collabels("N" "%") ///
->     label replace noobs
-(output written to /home/research/ca_ed_lab/projects/csac_survey2023/tab/thsj_r
-> r/qual_sample_demo.rtf)
-
 . 
 . log close 
       name:  <unnamed>
        log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/thsj_rr/qual
 > _demo_tab.txt
   log type:  text
- closed on:   6 Feb 2026, 20:13:35
+ closed on:  20 Jun 2026, 14:34:04
 -------------------------------------------------------------------------------

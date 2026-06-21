@@ -1,8 +1,9 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/genderso.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/gender
+> so.txt
   log type:  text
- opened on:   5 Feb 2026, 18:35:03
+ opened on:  20 Jun 2026, 14:24:24
 
 . 
 . * Load fully cleaned data
@@ -89,8 +90,10 @@
 > gender_cat 
 > = 0: cis man (asab == M & gender_raw == M)
 > = 1: cis woman (asab == F & gender_raw == W)
-> = 2: transgender (binary transgender, (asab == M & gender_raw == W) OR (asab == F & gender_raw == M)) 
-> = 3: gender diverse/nonbinary/questioning (including respondents who entered attack helicopter/irrelevant answers into the blank.)
+> = 2: transgender (binary transgender, (asab == M & gender_raw == W) OR (asab 
+> == F & gender_raw == M)) 
+> = 3: gender diverse/nonbinary/questioning (including respondents who entered 
+> attack helicopter/irrelevant answers into the blank.)
 > = 4: prefer not to say (gender_raw == "PREFER NOT TO SAY")
 > */
 . 
@@ -104,73 +107,94 @@
 . 
 . * Manually recode "other - specify" 
 . *** MAN if MALE or HOMBRE
-. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "MALE"
+. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "
+> MALE"
 (1 real change made)
 
-. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "MALE."
+. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "
+> MALE."
 (1 real change made)
 
-. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "HOMBRE"
+. replace gender_clean = "MAN" if gender_raw == "OTHER" & gender_other_raw == "
+> HOMBRE"
 (1 real change made)
 
 . 
 . *** WOMAN if WOMAN or GIRL
-. replace gender_clean = "WOMAN" if gender_raw == "OTHER" & gender_other_raw == "I AM A STRAIGHT WOMAN"
+. replace gender_clean = "WOMAN" if gender_raw == "OTHER" & gender_other_raw ==
+>  "I AM A STRAIGHT WOMAN"
 (1 real change made)
 
-. replace gender_clean = "WOMAN" if gender_raw == "OTHER" & gender_other_raw == "GIRL"
+. replace gender_clean = "WOMAN" if gender_raw == "OTHER" & gender_other_raw ==
+>  "GIRL"
 (1 real change made)
 
 . 
 . 
 . *** Recode to missing if malicious/unserious/irrelevant
-. replace asab = "Male"                                   if strpos(gender_other_raw, "MEANT TO PUT MALE ON LAST QUESTION") !=0
+. replace asab = "Male"                                   if strpos(gender_othe
+> r_raw, "MEANT TO PUT MALE ON LAST QUESTION") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "MEANT TO PUT MALE ON LAST QUESTION") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "MEANT TO PUT MALE ON LAST QUESTION") !=0
 variable gender_clean was str17 now str30
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "ATTACK HELICOPTER") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "ATTACK HELICOPTER") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "BISEXUAL") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "BISEXUAL") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "HIM/ALPHA") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "HIM/ALPHA") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I DON'T PLAY THAT STUPID STUFF") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "I DON'T PLAY THAT STUPID STUFF") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I WAS BORN A GIRL AND NO ONE CAN ") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "I WAS BORN A GIRL AND NO ONE CAN ") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I'M A MAN MALE I DON'T BELIVE ") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "I'M A MAN MALE I DON'T BELIVE ") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "I’M A DUDE THIS IS A BULLSHIT") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "I’M A DUDE THIS IS A BULLSHIT") !=0
 (0 real changes made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "JEWISH") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "JEWISH") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "NIGGER KILLER 5000") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "NIGGER KILLER 5000") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "NOT RELEVANT") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "NOT RELEVANT") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "ROCKET SHIP") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "ROCKET SHIP") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "THERE IS NO SUCH THING AS A") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "THERE IS NO SUCH THING AS A") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "THIS SHOULD NOT BE A QUESTION") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "THIS SHOULD NOT BE A QUESTION") !=0
 (1 real change made)
 
-. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_other_raw, "NO'); DROP TABLE RESPONSES;") !=0
+. replace gender_clean = "Malicious/unserious/irrelevant" if strpos(gender_othe
+> r_raw, "NO'); DROP TABLE RESPONSES;") !=0
 (1 real change made)
 
 . 
@@ -182,7 +206,9 @@ variable gender_clean was str17 now str30
 
 . 
 . * Define gender categories value label
-. label define gender_cat_lbl 0 "Cisgender Man" 1 "Cisgender Woman" 2 "Transgender Man" 3 "Transgender Woman" 4 "Non-binary" 5 "Gender Diverse/Questioning" 6 "Prefer Not to Say", replace
+. label define gender_cat_lbl 0 "Cisgender Man" 1 "Cisgender Woman" 2 "Transgen
+> der Man" 3 "Transgender Woman" 4 "Non-binary" 5 "Gender Diverse/Questioning" 
+> 6 "Prefer Not to Say", replace
 
 . label val gender_cat gender_cat_lbl
 
@@ -272,7 +298,9 @@ IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.49       79.10
 > = 1: Gay or lesbian
 > = 2: Bisexual/pansexual/omnisexual
 > = 3: Asexual/aromantic/demisexual
-> = 4: Other/queer/questioning (including respondents report more than one of the above categories, none of the above cateogries, attack helicopters, and irrelevant ansers)
+> = 4: Other/queer/questioning (including respondents report more than one of t
+> he above categories, none of the above cateogries, attack helicopters, and ir
+> relevant ansers)
 > = 5: prefer not to say 
 > */
 . 
@@ -292,7 +320,8 @@ IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.49       79.10
 . replace so_clean = "A/DEMISEXUAL/ROMANTIC" if so_raw == "ASEXUAL"
 (172 real changes made)
 
-. replace so_clean = "OTHER/QUEER/QUESTIONING" if so_raw == "OTHER (FEEL FREE TO SPECIFY)"
+. replace so_clean = "OTHER/QUEER/QUESTIONING" if so_raw == "OTHER (FEEL FREE T
+> O SPECIFY)"
 (274 real changes made)
 
 . 
@@ -317,11 +346,15 @@ IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.49       79.10
 (2 real changes made)
 
 . *** indicated PAN but not others
-. replace so_clean = "BI/PAN/OMNISEXUAL" if strpos(so_other_raw, "PAN")!=0 & strpos(so_other_raw, "DEMI")==0 & strpos(so_other_raw, "ASEX")==0 & strpos(so_other_raw, "AROM")==0 
+. replace so_clean = "BI/PAN/OMNISEXUAL" if strpos(so_other_raw, "PAN")!=0 & st
+> rpos(so_other_raw, "DEMI")==0 & strpos(so_other_raw, "ASEX")==0 & strpos(so_o
+> ther_raw, "AROM")==0 
 (94 real changes made)
 
 . *** indicated POLY but not others
-. replace so_clean = "BI/PAN/OMNISEXUAL" if strpos(so_other_raw, "POLY")!=0 & strpos(so_other_raw, "DEMI")==0 & strpos(so_other_raw, "ASEX")==0 & strpos(so_other_raw, "AROM")==0
+. replace so_clean = "BI/PAN/OMNISEXUAL" if strpos(so_other_raw, "POLY")!=0 & s
+> trpos(so_other_raw, "DEMI")==0 & strpos(so_other_raw, "ASEX")==0 & strpos(so_
+> other_raw, "AROM")==0
 (0 real changes made)
 
 . *** indicated OMNI but not others
@@ -332,66 +365,84 @@ IDK WHAT IT’S CALLED, BUT I WAS BORN .. |          1        1.49       79.10
 . 
 . /* A/DEMISEXUAL/ROMANTIC */
 . *** indicate ASEXUAL but not others
-. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ASEX")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_other_r
-> aw, "POLY")==0
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ASEX")!=0
+>  & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(
+> so_other_raw, "OMNI")==0 & strpos(so_other_raw, "POLY")==0
 (5 real changes made)
 
 . *** indicate AROMANTIC but not others
-. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ARO")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_other_ra
-> w, "POLY")==0
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "ARO")!=0 
+> & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "QUEER")==0 & strpos(s
+> o_other_raw, "OMNI")==0 & strpos(so_other_raw, "POLY")==0
 (3 real changes made)
 
 . *** indicate DEMI* but not others
-. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "DEMI")!=0 & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "PAN")==0 & strpos(so_other_raw, "OMNI")==0 & strpos(so_other_raw
-> , "POLY")==0 
+. replace so_clean = "A/DEMISEXUAL/ROMANTIC" if strpos(so_other_raw, "DEMI")!=0
+>  & strpos(so_other_raw, "BI")==0 & strpos(so_other_raw, "PAN")==0 & strpos(so
+> _other_raw, "OMNI")==0 & strpos(so_other_raw, "POLY")==0 
 (7 real changes made)
 
 . 
 . /* Malicious/unserious/irrelevant */
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "ATTRACTED TO CARS")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> ATTRACTED TO CARS")!=0
 variable so_clean was str29 now str30
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "BIG TITTY JEWS")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> BIG TITTY JEWS")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "I AM A MINOR. YOU SHOULD NOT BE ")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> I AM A MINOR. YOU SHOULD NOT BE ")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "MAN")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> MAN")!=0
 (13 real changes made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "MENTALLY ILL PEOPLE GOD WILL")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> MENTALLY ILL PEOPLE GOD WILL")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "MUJER")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> MUJER")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NOBODY’S BUSINESS BUT MINE.")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> NOBODY’S BUSINESS BUT MINE.")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NORMAL")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> NORMAL")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "THIS IS PRIVATE INFORMATION")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> THIS IS PRIVATE INFORMATION")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "THIS SHOULD NOT BE A QUESTION")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> THIS SHOULD NOT BE A QUESTION")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "TRANS FEMALE")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> TRANS FEMALE")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "WHY THE FUCK DOES THIS MATTER")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> WHY THE FUCK DOES THIS MATTER")!=0
 (0 real changes made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "WOW, NOT REALLY RELEVANT TO")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> WOW, NOT REALLY RELEVANT TO")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NO'); DROP TABLE RESPONSES;")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> NO'); DROP TABLE RESPONSES;")!=0
 (1 real change made)
 
-. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "NOT RELEVANT")!=0
+. replace so_clean = "Malicious/unserious/irrelevant" if strpos(so_other_raw, "
+> NOT RELEVANT")!=0
 (1 real change made)
 
 . 
@@ -404,7 +455,9 @@ variable so_clean was str29 now str30
 
 . 
 . * Define gender categories value label
-. label define so_cat_lbl 0 "Straight/Heterosexual " 1 "Gay or Lesbian" 2 "Bisexual/Pansexual/Omnisexual" 3 "Asexual/Aromantic/Demisexual" 4 "Other/Queer/Questioning" 5 "Prefer Not to Say", replace
+. label define so_cat_lbl 0 "Straight/Heterosexual " 1 "Gay or Lesbian" 2 "Bise
+> xual/Pansexual/Omnisexual" 3 "Asexual/Aromantic/Demisexual" 4 "Other/Queer/Qu
+> estioning" 5 "Prefer Not to Say", replace
 
 . label val so_cat so_cat_lbl
 
@@ -518,7 +571,15 @@ QUESTIONING LABELS BUT DEFINITELY QUEER |          1        1.14       90.91
 
 . 
 . 
-. 
+. ********************************
+. * assigned sex at birth coding *
+. ********************************
+. lab def afab 0 "Male" 1 "Female"
+
+. encode asab, gen(afab) label(afab)
+
+. lab var afab "Assigned Female at Birth"
+
 . 
 . ********************************
 . * Tab Expression *
@@ -560,40 +621,76 @@ Bisexual/Pansexual/Omnisexual |      1,139       15.23       89.01
 | column percentage |
 +-------------------+
 
-                      |                        Sexual Orientation
-      Gender Identity | Straight/  Gay or Le  Bisexual/  Asexual/A  Other/Que  Prefer No |     Total
-----------------------+------------------------------------------------------------------+----------
-        Cisgender Man |     2,255        107        135         20         15        120 |     2,652 
-                      |     85.03       4.03       5.09       0.75       0.57       4.52 |    100.00 
-                      |     43.52      32.42      11.93      11.05      11.54      23.67 |     35.54 
-----------------------+------------------------------------------------------------------+----------
-      Cisgender Woman |     2,901        129        761         96         64        312 |     4,263 
-                      |     68.05       3.03      17.85       2.25       1.50       7.32 |    100.00 
-                      |     55.98      39.09      67.23      53.04      49.23      61.54 |     57.13 
-----------------------+------------------------------------------------------------------+----------
-      Transgender Man |         4         19         19          4          7          5 |        58 
-                      |      6.90      32.76      32.76       6.90      12.07       8.62 |    100.00 
-                      |      0.08       5.76       1.68       2.21       5.38       0.99 |      0.78 
-----------------------+------------------------------------------------------------------+----------
-    Transgender Woman |         4          8          5          2          0          1 |        20 
-                      |     20.00      40.00      25.00      10.00       0.00       5.00 |    100.00 
-                      |      0.08       2.42       0.44       1.10       0.00       0.20 |      0.27 
-----------------------+------------------------------------------------------------------+----------
-           Non-binary |         5         49        131         35         25         16 |       261 
-                      |      1.92      18.77      50.19      13.41       9.58       6.13 |    100.00 
-                      |      0.10      14.85      11.57      19.34      19.23       3.16 |      3.50 
-----------------------+------------------------------------------------------------------+----------
-Gender Diverse/Questi |         2          9         35         10         13          0 |        69 
-                      |      2.90      13.04      50.72      14.49      18.84       0.00 |    100.00 
-                      |      0.04       2.73       3.09       5.52      10.00       0.00 |      0.92 
-----------------------+------------------------------------------------------------------+----------
-    Prefer Not to Say |        11          9         46         14          6         53 |       139 
-                      |      7.91       6.47      33.09      10.07       4.32      38.13 |    100.00 
-                      |      0.21       2.73       4.06       7.73       4.62      10.45 |      1.86 
-----------------------+------------------------------------------------------------------+----------
-                Total |     5,182        330      1,132        181        130        507 |     7,462 
-                      |     69.45       4.42      15.17       2.43       1.74       6.79 |    100.00 
-                      |    100.00     100.00     100.00     100.00     100.00     100.00 |    100.00 
+                      |             Sexual Orientation
+      Gender Identity | Straight/  Gay or Le  Bisexual/  Asexual/A |     Total
+----------------------+--------------------------------------------+----------
+        Cisgender Man |     2,255        107        135         20 |     2,652 
+                      |     85.03       4.03       5.09       0.75 |    100.00 
+                      |     43.52      32.42      11.93      11.05 |     35.54 
+----------------------+--------------------------------------------+----------
+      Cisgender Woman |     2,901        129        761         96 |     4,263 
+                      |     68.05       3.03      17.85       2.25 |    100.00 
+                      |     55.98      39.09      67.23      53.04 |     57.13 
+----------------------+--------------------------------------------+----------
+      Transgender Man |         4         19         19          4 |        58 
+                      |      6.90      32.76      32.76       6.90 |    100.00 
+                      |      0.08       5.76       1.68       2.21 |      0.78 
+----------------------+--------------------------------------------+----------
+    Transgender Woman |         4          8          5          2 |        20 
+                      |     20.00      40.00      25.00      10.00 |    100.00 
+                      |      0.08       2.42       0.44       1.10 |      0.27 
+----------------------+--------------------------------------------+----------
+           Non-binary |         5         49        131         35 |       261 
+                      |      1.92      18.77      50.19      13.41 |    100.00 
+                      |      0.10      14.85      11.57      19.34 |      3.50 
+----------------------+--------------------------------------------+----------
+Gender Diverse/Questi |         2          9         35         10 |        69 
+                      |      2.90      13.04      50.72      14.49 |    100.00 
+                      |      0.04       2.73       3.09       5.52 |      0.92 
+----------------------+--------------------------------------------+----------
+    Prefer Not to Say |        11          9         46         14 |       139 
+                      |      7.91       6.47      33.09      10.07 |    100.00 
+                      |      0.21       2.73       4.06       7.73 |      1.86 
+----------------------+--------------------------------------------+----------
+                Total |     5,182        330      1,132        181 |     7,462 
+                      |     69.45       4.42      15.17       2.43 |    100.00 
+                      |    100.00     100.00     100.00     100.00 |    100.00 
+
+
+                      |  Sexual Orientation
+      Gender Identity | Other/Que  Prefer No |     Total
+----------------------+----------------------+----------
+        Cisgender Man |        15        120 |     2,652 
+                      |      0.57       4.52 |    100.00 
+                      |     11.54      23.67 |     35.54 
+----------------------+----------------------+----------
+      Cisgender Woman |        64        312 |     4,263 
+                      |      1.50       7.32 |    100.00 
+                      |     49.23      61.54 |     57.13 
+----------------------+----------------------+----------
+      Transgender Man |         7          5 |        58 
+                      |     12.07       8.62 |    100.00 
+                      |      5.38       0.99 |      0.78 
+----------------------+----------------------+----------
+    Transgender Woman |         0          1 |        20 
+                      |      0.00       5.00 |    100.00 
+                      |      0.00       0.20 |      0.27 
+----------------------+----------------------+----------
+           Non-binary |        25         16 |       261 
+                      |      9.58       6.13 |    100.00 
+                      |     19.23       3.16 |      3.50 
+----------------------+----------------------+----------
+Gender Diverse/Questi |        13          0 |        69 
+                      |     18.84       0.00 |    100.00 
+                      |     10.00       0.00 |      0.92 
+----------------------+----------------------+----------
+    Prefer Not to Say |         6         53 |       139 
+                      |      4.32      38.13 |    100.00 
+                      |      4.62      10.45 |      1.86 
+----------------------+----------------------+----------
+                Total |       130        507 |     7,462 
+                      |      1.74       6.79 |    100.00 
+                      |    100.00     100.00 |    100.00 
 
 . 
 . 
@@ -605,12 +702,15 @@ Gender Diverse/Questi |         2          9         35         10         13   
 . /* Quantitative analysis */
 . *** Save Dataset
 . save "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso.dta", replace
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_genderso.dta saved
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_
+    > 2023_genderso.dta saved
 
 . 
 . *** Create Codebook
 . codebookout "$csacprojdir/doc/genderso_codebook.xls", replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_codebook.xls saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_codebook.xl
+> s saved
 
 . 
 . 
@@ -635,30 +735,41 @@ file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_codebook.xls
 (245 real changes made)
 
 . 
-. *** Keep id, open responses, demographics (gender, so, race, parental edu, primary language at home)
-. keep id college_excited college_challenge gender_cat so_cat race_assn parent_edu primary_lang asab gender_raw gender_other_raw so_raw so_other_raw race_raw
+. *** Keep id, open responses, demographics (gender, so, race, parental edu, pr
+> imary language at home)
+. keep id college_excited college_challenge gender_cat so_cat race_assn parent_
+> edu primary_lang asab gender_raw gender_other_raw so_raw so_other_raw race_ra
+> w
 
-. order id college_excited college_challenge gender_cat so_cat race_assn parent_edu primary_lang asab gender_raw gender_other_raw so_raw so_other_raw race_raw
+. order id college_excited college_challenge gender_cat so_cat race_assn parent
+> _edu primary_lang asab gender_raw gender_other_raw so_raw so_other_raw race_r
+> aw
 
 . 
 . *** Save Cleaned datasets
 . save "$csacprojdir/dta/cln/csac_hs_senior_2023_genderso_qual.dta", replace
-file /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_2023_genderso_qual.dta saved
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/csac_hs_senior_
+    > 2023_genderso_qual.dta saved
 
 . 
 . *** Export to Excel to Put Into Box
-. export excel using "$csacprojdir/tab/learn/genderso/qual.xls", first(var) sheet("non-cis") replace
-file /home/research/ca_ed_lab/projects/csac_survey2023/tab/learn/genderso/qual.xls saved
+. export excel using "$csacprojdir/tab/learn/genderso/qual.xls", first(var) she
+> et("non-cis") replace
+file /home/research/ca_ed_lab/projects/csac_survey2023/tab/learn/genderso/qual.
+> xls saved
 
 . 
 . *** Create Codebook
 . codebookout "$csacprojdir/doc/genderso_qual_codebook.xls", replace 
-file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_qual_codebook.xls saved
+file /home/research/ca_ed_lab/projects/csac_survey2023/doc/genderso_qual_codebo
+> ok.xls saved
 
 . 
 . log close
       name:  <unnamed>
-       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/genderso.txt
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/clean/gender
+> so.txt
   log type:  text
- closed on:   5 Feb 2026, 18:35:03
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  20 Jun 2026, 14:24:24
+-------------------------------------------------------------------------------

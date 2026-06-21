@@ -1,0 +1,232 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/csac_survey2023/log/getting_down
+> _to_facts/cde_demographics.txt
+  log type:  text
+ opened on:  20 Jun 2026, 14:34:07
+
+. 
+. 
+. **********************************************
+. *----- 1. Clean annual enrollment file
+. **********************************************
+. 
+. import delimited using $csacprojdir/dta/raw/enr202022.txt, delimiter(tab) var
+> names(1) stringcols(1 2) clear
+(encoding automatically selected: ISO-8859-1)
+(25 vars, 793,380 obs)
+
+. 
+. keep if academic_year == "2022-23"
+(528,356 observations deleted)
+
+. 
+. * fall_year drives the year variable and output filename below; derived from 
+> the
+. * hardcoded "2022-23" academic-year filter above (fall 2022 -> spring 2023)
+. local fall_year = 2022
+
+. 
+. rename cds_code cdscode
+
+. rename gr_kn kdgn  // CDE file names kindergarten gr_kn, not kdgn
+
+.         label var cdscode "CDS Code"
+
+.         label var county "County"
+
+.         label var district "District"
+
+.         label var school "School"
+
+. 
+.         rename race_ethnicity ethnicity  // CDE file names the 0-9 race code 
+> race_ethnicity, not ethnic
+
+.         label def ethnicity 0 "Not reported"
+
+.         label def ethnicity 1 "American Indian or Alaska Native, Not Hispanic
+> ", add
+
+.         label def ethnicity 2 "Asian, Not Hispanic", add
+
+.         label def ethnicity 3 "Pacific Islander, Not Hispanic", add
+
+.         label def ethnicity 4 "Filipino, Not Hispanic", add
+
+.         label def ethnicity 5 "Hispanic or Latino", add
+
+.         label def ethnicity 6 "African American, not Hispanic", add
+
+.         label def ethnicity 7 "White, not Hispanic", add
+
+.         label def ethnicity 9 "Two or More Races, Not Hispanic", add
+
+.         label val ethnicity ethnicity
+
+.         label var ethnicity "Racial/ethnic designation"
+
+. 
+.         label def race 1 "American Indian or Alaska Native"
+
+.         label def race 2 "Asian", add
+
+.         label def race 5 "Hispanic or Latino", add
+
+.         label def race 6 "Black or African American", add
+
+.         label def race 7 "White", add
+
+.         label def race 8 "Two or More Races", add
+
+.         //gen varname:lblname = []
+.         gen race:race = 1 if ethnicity==1
+(246,996 missing values generated)
+
+.         replace race = 2 if inlist(ethnicity, 2, 3, 4)
+(74,532 real changes made)
+
+.         replace race = 5 if ethnicity==5
+(43,237 real changes made)
+
+.         replace race = 6 if ethnicity==6
+(32,868 real changes made)
+
+.         replace race = 7 if ethnicity==7
+(41,034 real changes made)
+
+.         replace race = 8 if ethnicity==9
+(33,640 real changes made)
+
+.         label var race "Race"
+
+. 
+.         label def male 1 "Male" 0 "Female"
+
+.         gen male:male = 1 if gender=="M"
+(133,713 missing values generated)
+
+.         replace male = 0 if gender=="F"
+(127,620 real changes made)
+
+.         replace male = . if mi(gender)
+(0 real changes made)
+
+.         label var male "Male"
+
+.         drop gender
+
+. 
+.         label var kdgn "Students enrolled in kindergarten"
+
+. 
+.         label var gr_1 "Students enrolled in grade one"
+
+. 
+.         label var gr_2 "Students enrolled in grade two"
+
+. 
+.         label var gr_3 "Students enrolled in grade three"
+
+. 
+.         label var gr_4 "Students enrolled in grade four"
+
+. 
+.         label var gr_5 "Students enrolled in grade five"
+
+. 
+.         label var gr_6 "Students enrolled in grade six"
+
+. 
+.         label var gr_7 "Students enrolled in grade seven"
+
+. 
+.         label var gr_8 "Students enrolled in grade eight"
+
+. 
+.         label var ungr_elm "Students enrolled in ungraded elementary classes 
+> in grades kindergarten through eight"
+note: label truncated to 80 characters
+
+. 
+.         label var gr_9 "Students enrolled in grade nine"
+
+. 
+.         label var gr_10 "Students enrolled in grade ten"
+
+. 
+.         label var gr_11 "Students enrolled in grade eleven"
+
+. 
+.         label var gr_12 "Students enrolled in grade twelve"
+
+. 
+.         label var ungr_sec "Students enrolled in ungraded secondary classes i
+> n grades nine through twelve"
+
+. 
+.         label var enr_total "Total school enrollment for fields Kindergarten 
+> (KDGN) through grade twelve (GR_12) plus ungraded elementary (UNGR_ELM) and u
+> ngraded secondary classes (UNGR_SEC). Adults in kindergarten through grade tw
+> elve programs are not included."
+note: label truncated to 80 characters
+
+. 
+.         label var adult "Adults enrolled in kindergarten through grade twelve
+>  programs. This data does not include adult education students."
+note: label truncated to 80 characters
+
+. 
+.         gen year = `fall_year' + 1
+
+.         label var year "Year of Spring Semester"
+
+. 
+.         order cdscode year county district school ethnicity race male
+
+.         sort cdscode year county district school ethnicity race male
+
+.         compress
+  variable year was float now int
+  variable race was float now byte
+  variable male was float now byte
+  (2,120,192 bytes saved)
+
+.         label data "California Department of Education Spring `=`fall_year' +
+>  1' School Enrollment"
+
+.         cap mkdir "$csacprojdir/dta/cln/cde"
+
+.         save "$csacprojdir/dta/cln/cde/enr_`=`fall_year' + 1'_clean.dta", rep
+> lace
+file
+    /home/research/ca_ed_lab/projects/csac_survey2023/dta/cln/cde/enr_2023_cl
+    > ean.dta saved
+
+. 
+end of do-file
+
+. * regressions for Getting Down to Facts 
+. do $csacprojdir/do/getting_down_to_facts/gdtf_reg.do
+
+. /* regressions for Getting Down to Facts */
+. 
+. /* 
+> do $csacprojdir/do/getting_down_to_facts/gdtf_reg.do
+>  */
+. version 17.0
+
+. graph drop _all
+
+. set more off
+
+. set varabbrev off
+
+. set graphics off
+
+. set scheme white_tableau
+
+. set seed 1984
+
+. 
+. cap log close _all

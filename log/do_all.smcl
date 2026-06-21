@@ -1,0 +1,96 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/home/research/ca_ed_lab/projects/csac_survey2023/log/do_all.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}20 Jun 2026, 14:24:13
+{txt}
+{com}. 
+. clear all
+{res}{txt}
+{com}. pause off
+{txt}
+{com}. 
+. 
+. graph drop _all
+{txt}
+{com}. set more off
+{txt}
+{com}. set varabbrev off
+{txt}
+{com}. set graphics off
+{txt}
+{com}. set scheme s1color
+{txt}
+{com}. set seed 1984
+{txt}
+{com}. 
+. 
+. 
+. ssc install ngram, replace 
+{txt}checking {hilite:ngram} consistency and verifying not already installed...
+all files already exist and are up to date.
+
+{com}. 
+. * Toggle If First Time Running: to create output folders
+. local mkdir 0
+{txt}
+{com}. 
+. 
+. 
+. if `mkdir' == 1 {c -(}
+. global csacprojdir "/home/research/ca_ed_lab/projects/csac_survey2023"
+. 
+. cap mkdir "$csacprojdir/dta"  //store all output tables
+. cap mkdir "$csacprojdir/dta/cln" // store cleaned data 
+. 
+. cap mkdir "$csacprojdir/tab"  //store all output tables
+. cap mkdir "$csacprojdir/tab/learn" // create subfolder within tables
+. cap mkdir "$csacprojdir/tab/learn/demog" 
+. 
+. cap mkdir "$csacprojdir/fig"  //store all output figures
+. cap mkdir "$csacprojdir/fig/learn" // create subfolder within figures
+. cap mkdir "$csacprojdir/fig/learn/crosstab" // create subfolder within figures
+. cap mkdir "$csacprojdir/fig/learn/brief"
+. 
+. cap mkdir "$csacprojdir/log" // store all log files
+. cap mkdir "$csacprojdir/log/clean" // create subfolder within log 
+. cap mkdir "$csacprojdir/log/learn" 
+. {c )-}
+{txt}
+{com}. 
+. *-------------- DATA CLEANING
+. * clean survey data exported from qualtrics 
+. do $csacprojdir/do/clean/clean_qualtrics_export.do
+{txt}
+{com}. ********************************************************************************
+. /* clean 2023 CSAC high school senior survey data exported from Qualtrics */
+. ********************************************************************************
+. ************************ Written by Christina Sun 07/05/2023 *******************
+. 
+. /* Change Log:
+> [CS] 07/19/2023: deleted code that drops incomplete responses. Only delete obs with missing email
+> [BZ] 07/28/2023: assign gender to "PREFER NOT TO SAY" if only report gender or asab.
+>                  moved gender and sexual orientation generating process to prep_brief.do
+> */
+. 
+. /* Notes:
+> * The data imported by this do file is downloaded from Qualtrics on July 5, 2023
+> at 15:43. The 2nd and 3rd rows contain only question names and import tags and
+> thus do not need to be imported. First row is variable names.
+>  */
+. 
+. 
+.  /* to run this do file:
+>  do $csacprojdir/do/clean/clean_qualtrics_export.do
+>  */
+. 
+. 
+. ********************************************************************************
+. *----------*
+. * Toggle
+. *----------*
+. 
+. cap log close _all
+{smcl}
+{com}{sf}{ul off}
