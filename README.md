@@ -1,5 +1,7 @@
 # CSAC 2023 High School Senior Survey
 
+> **Part of the [CEL Resource Hub](https://christinasun.net/cel_resource_hub/)** — Christina Sun's index of CEL code handoffs plus setup and workflow guides for inheriting them. Hub page for this repo: <https://christinasun.net/cel_resource_hub/repositories/csac/>.
+
 Code, outputs, and documentation for the **2023 California high school senior survey** project, a collaboration between the California Education Lab (UC Davis) and the California Student Aid Commission (CSAC).
 
 A single survey wave was fielded to graduating California high school seniors in **May 2023**. The survey is merged with CSAC administrative data and California Community Colleges (CCC) administrative data to study the college transition, summer-school enrollment, and financial aid.
